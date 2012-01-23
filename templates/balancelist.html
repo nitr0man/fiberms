@@ -1,0 +1,275 @@
+{include file="header.html"}
+<!--// $Id: balancelist.html,v 1.94 2011/03/02 10:31:06 alec Exp $ //-->
+<H1>{$layout.pagetitle}</H1>
+{include file="calendar_js.html"}
+{literal}
+<SCRIPT type="text/javascript">
+	<!--
+	function CheckAll()
+	{
+		for (var i=0; i<document.page.elements.length; i++)
+		{
+			var e = document.page.elements[i];
+			if (e.name != 'allbox' &&
+			    e.name != 'original' &&
+                            e.name != 'duplicate' &&
+                            e.name != 'copy'
+			)
+				e.checked = document.page.allbox.checked;
+		}
+	}
+
+	function CheckAll2()
+	{
+		document.page.elements['allbox'].checked = !document.page.elements['allbox'].checked;
+		CheckAll();
+	}
+
+	function DeleteMarked()
+	{
+		if(! confirm('{/literal}{t}Are you sure, you want to delete selected operation(s) and/or document item(s)?{/t}{literal}'))
+			return;
+
+		document.page.action="?m=balancedel";
+		document.page.target="";
+		document.page.submit();
+	}
+
+	function printr()
+	{
+		var add = "";
+		if(document.page.original.checked && document.page.copy.checked)
+			add = "";
+		else if(document.page.original.checked && !document.page.copy.checked)
+			add = "&which=original";
+		else if(!document.page.original.checked && document.page.copy.checked)
+			add = "&which=copy";
+		
+		document.page.action = "?m=receipt&print=cached&cash=1" + add;
+		document.page.target = "_blank";
+		document.page.submit();
+	}
+
+	function printi()
+	{
+		var add = "";
+		if(document.page.original.checked)
+	    		add = "&original=1";
+		if(document.page.copy.checked)
+			add += "&copy=1";
+		if(document.page.duplicate.checked)
+			add += "&duplicate=1";
+
+		document.page.action="?m=invoice&print=cached&cash=1" + add;
+		document.page.target="_blank";
+		document.page.submit();
+	}
+
+	function filter()
+	{
+	        document.page.action="?m=balancelist";
+	        document.page.target="";
+	        document.page.submit();
+	}
+{/literal}{if $_config.phpui.short_pagescroller|chkconfig}{literal}
+        function pagechange1()
+	{
+	        document.page.action="?m=balancelist&page=" + document.forms['page'].elements['page1'].value;
+		document.page.target="";
+		document.page.submit();
+	}
+	function pagechange2()
+	{
+	        document.page.action="?m=balancelist&page=" + document.forms['page'].elements['page2'].value;
+	        document.page.target="";
+	        document.page.submit();
+	}
+{/literal}{/if}{literal}
+	//-->
+</SCRIPT>
+{/literal}
+<FORM METHOD="POST" NAME="page">
+<INPUT type="submit" class="hiddenbtn">
+<TABLE width="100%" cellpadding="3">
+	<TR class="dark">
+		<TD width="1%" class="fleftu">
+			{t}Date:{/t}
+		</TD>
+		<TD width="1%" class="fbt">
+			{t}User:{/t}
+		</TD>
+		<TD width="1%" class="fbt" align="right">
+			{t}Liability:{/t}
+		</TD>
+		<TD width="1%" class="fbt" align="right">
+			{t}Income:{/t}
+		</TD>
+		<TD width="1%" class="fbt" align="right">
+			{t}Expense:{/t}
+		</TD>
+		<TD width="1%" class="fbt" align="center">&raquo;</TD>
+		<TD width="1%" class="fbt" align="right">
+			{t}After:{/t}
+		</TD>
+		<TD width="1%" class="fbt">
+			{t}Customer:{/t}
+		</TD>
+		<TD width="91%" class="fbt">
+			{t}Description:{/t}
+		</TD>
+		<TD width="1%" CLASS="frightu">&nbsp;</TD>
+	</TR>
+	<TR class="DARK">
+    		<TD class="fall" colspan="10">
+	                <B>{t}Filter:{/t} </B>
+				<INPUT type="text" name="search" value="{$listdata.search}" size="15" {tip text="Enter value of searching data and select category"}>
+				<SELECT size="1" name="cat" style="width: 150px">
+					<OPTION value=""{if $listdata.cat eq ""} SELECTED{/if}>{t}- select category -{/t}</OPTION>
+					<OPTION value="cdate"{if $listdata.cat eq "cdate"} SELECTED{/if}>{t}date (YYYY/MM/DD){/t}</OPTION>
+					<OPTION value="number"{if $listdata.cat eq "number"} SELECTED{/if}>{t}document number{/t}</OPTION>
+					<OPTION value="value"{if $listdata.cat eq "value"} SELECTED{/if}>{t}value{/t}</OPTION>
+					<OPTION value="name"{if $listdata.cat eq "name"} SELECTED{/if}>{t}customer name{/t}</OPTION>
+					<OPTION value="customerid"{if $listdata.cat eq "customerid"} SELECTED{/if}>{t}customer ID{/t}</OPTION>
+					<OPTION value="ten"{if $listdata.cat eq "ten"} SELECTED{/if}>{t}TEN{/t}</OPTION>
+					<OPTION value="address"{if $listdata.cat eq "address"} SELECTED{/if}>{t}address{/t}</OPTION>
+					<OPTION value="documented"{if $listdata.cat eq "documented"} SELECTED{/if}>{t}with document{/t}</OPTION>
+					<OPTION value="notdocumented"{if $listdata.cat eq "notdocumented"} SELECTED{/if}>{t}without document{/t}</OPTION>
+				</SELECT>&nbsp;
+				{t}Group:{/t}
+				<SELECT size="1" name="group">
+					<OPTION value="0"{if !$listdata.group} SELECTED{/if}>{t}- all groups -{/t}</OPTION>
+					{section name="grouplist" loop=$grouplist}
+					<OPTION value="{$grouplist[grouplist].id}"{if $listdata.group eq $grouplist[grouplist].id} SELECTED{/if}>{$grouplist[grouplist].name|truncate:40:"...":true}</OPTION>
+					{/section}
+				</SELECT>
+				<NOBR>
+				<INPUT type="checkbox" name="groupexclude" {if $listdata.groupexclude} CHECKED{/if}><A HREF="javascript:setCheckbox('groupexclude')">{t}exclude group{/t}</a>
+				</NOBR>
+				<NOBR>
+            			{t}From:{/t}&nbsp;<INPUT TYPE="text" NAME="from" SIZE="10" MAXSIZE="10" value="{if $listdata.from > 0}{$listdata.from|date_format:"%Y/%m/%d"}{/if}" OnClick="javascript:cal1.popup();" {tip text="Enter date in YYYY/MM/DD format (empty field means no limit) or click to choose it from calendar"}>
+				{t}To:{/t}&nbsp;<INPUT TYPE="text" NAME="to" SIZE="10" MAXSIZE="10" value="{if $listdata.to > 0}{$listdata.to|date_format:"%Y/%m/%d"}{/if}" OnClick="javascript:cal2.popup();"  {tip text="Enter date in YYYY/MM/DD format (empty field means no limit) or click to choose it from calendar"}>&nbsp;
+				<A href="javascript: filter();">&raquo;&raquo;&raquo;</A><BR>
+				</NOBR>
+		</TD>
+	</TR>		
+	{if $listdata.total != 0}
+	<TR class="dark">
+		<TD WIDTH="100%" class="fall" COLSPAN="10">
+			{include file="scroller.html" loop=$balancelist scrollerno=1}
+		</TD>
+	</TR>
+	{/if}
+	{cycle values="light,lucid" print=false}
+	{section name=balancelist loop=$balancelist start=$start max=$pagelimit}
+	<TR class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<TD width="1%" class="fleft" nowrap>
+			{$balancelist[balancelist].time|date_format:"%Y/%m/%d %H:%M"}
+		</TD>
+		<TD width="1%" nowrap>
+			{if $balancelist[balancelist].userid}<NOBR>{$balancelist[balancelist].user|truncate:16:"...":true}</NOBR>{else}-{/if}
+		</TD>
+		<TD width="1%" align="right" nowrap>
+			{if $balancelist[balancelist].covenant}{$balancelist[balancelist].value*-1|money_format}{else}-{/if}
+		</TD>
+		<TD width="1%" align="right" nowrap>
+			{if !$balancelist[balancelist].covenant && $balancelist[balancelist].value > 0}{$balancelist[balancelist].value|money_format}{else}-{/if}
+		</TD>
+		<TD width="1%" align="right" nowrap>
+			{if !$balancelist[balancelist].covenant && $balancelist[balancelist].value < 0}{$balancelist[balancelist].value*-1|money_format}{else}-{/if}
+		</TD>
+		<TD width="1%" align="center">
+			&raquo;
+		</TD>
+		<TD width="1%" align="right" nowrap>
+			{if $balancelist[balancelist].covenant}
+			-
+			{else}
+			{$balancelist[balancelist].after|money_format}
+			{/if}
+		</TD>
+		<TD width="1%" nowrap>
+			{if $balancelist[balancelist].customerid}<NOBR><A HREF="?m=customerinfo&id={$balancelist[balancelist].customerid}">{$balancelist[balancelist].customername|truncate:20:"...":true}</A></NOBR>{else} - {/if}
+		</TD>
+		<TD width="91%">
+			{$balancelist[balancelist].comment}
+		</TD>
+		<TD width="1%" class="fright" align="right" nowrap>
+			{if $balancelist[balancelist].docid}
+				{if $balancelist[balancelist].doctype==$smarty.const.DOC_INVOICE}
+				<A HREF="?m=invoice&id={$balancelist[balancelist].docid}" target="_BLANK"><IMG SRC="img/print.gif" ALT="[ {t}Invoice{/t} ]" {tip 0=$balancelist[balancelist].docid dynpopup='?m=number&id=$0'}></A>
+				{elseif $balancelist[balancelist].doctype==$smarty.const.DOC_CNOTE}
+				<A HREF="?m=invoice&id={$balancelist[balancelist].docid}" target="_BLANK"><IMG SRC="img/printn.gif" ALT="[ {t}Credit note{/t} ]" {tip 0=$balancelist[balancelist].docid dynpopup='?m=number&id=$0'}></A>
+				{elseif $balancelist[balancelist].doctype==$smarty.const.DOC_RECEIPT}
+				<A HREF="?m=receipt&id={$balancelist[balancelist].docid}" target="_BLANK"><IMG SRC="img/printr.gif" ALT="[ {t}Cash receipt{/t} ]" {tip 0=$balancelist[balancelist].docid dynpopup='?m=number&id=$0'}></A>
+				{elseif $balancelist[balancelist].doctype==$smarty.const.DOC_DNOTE}
+				<A HREF="?m=note&id={$balancelist[balancelist].docid}" target="_BLANK"><IMG SRC="img/printd.gif" ALT="[ {t}Debit note{/t} ]" {tip 0=$balancelist[balancelist].docid dynpopup='?m=number&id=$0'}></A>
+				{/if}
+			{/if}
+			<INPUT TYPE="checkbox" NAME="marks[{$balancelist[balancelist].id}]" VALUE="{$balancelist[balancelist].id}">
+		</TD>
+	</TR>
+	{sectionelse}
+	<TR>
+		<TD WIDTH="100%" class="fall" ALIGN="center" COLSPAN="10">
+			<P>&nbsp;<?P>
+			<P><B>{t}No such transactions found in database.{/t}</B></P>
+			<P>&nbsp;</P>
+		</TD>
+	</TR>    
+	{/section}
+	<TR class="dark">
+		<TD class="fleftu" COLSPAN="8" nowrap>
+			<A HREF="javascript:DeleteMarked();">{t}Delete{/t} <IMG SRC="img/delete.gif" ALT="{t}Delete{/t}" HSPACE="2"></A>&nbsp;
+			<A HREF="javascript:printi();">{t}Print invoices{/t} <IMG SRC="img/print.gif" ALT="" HSPACE="2"></A>&nbsp;
+			<A HREF="javascript:printr();">{t}Print cash receipts{/t} <IMG SRC="img/printr.gif" ALT="" HSPACE="2"></A>&nbsp;
+			<INPUT type="checkbox" name="original" id="original"{if preg_match('/original/i',$_config.invoices.default_printpage)} checked{/if}><A HREF="javascript:checkElement('original')">{t}original{/t}&nbsp;</a>
+			<INPUT type="checkbox" name="copy" id="copy"{if preg_match('/copy/i',$_config.invoices.default_printpage)} checked{/if}><A HREF="javascript:checkElement('copy')">{t}copy{/t}</a>
+			<INPUT type="checkbox" name="duplicate"id ="duplicate"{if preg_match('/duplicate/i',$_config.invoices.default_printpage)} checked{/if}><A HREF="javascript:checkElement('duplicate')">{t}duplicate{/t}</a>
+		</TD>
+		<TD class="frightu" ALIGN="right" colspan="2">
+			<A HREF="javascript:CheckAll2();">{t}Check All{/t}</A><INPUT TYPE="checkbox" NAME="allbox" onClick="CheckAll();" VALUE="Check All Boxes">
+		</TD>
+	</TR>
+	{if $listdata.total != 0}
+	<TR class="dark">
+		<TD WIDTH="100%" class="fall" COLSPAN="10">
+			{include file="scroller.html" loop=$balancelist scrollerno=2}
+		</TD>
+	</TR>
+	{/if}
+	<TR class="light">
+		<TD colspan="2" align="right" class="fleftu" NOWRAP>
+			<B>{t}Total:{/t}</B><BR>
+		</TD>
+		<TD nowrap class="fbt" align="right">
+			<B>{$listdata.liability|money_format}</B>
+		</TD>
+		<TD nowrap class="fbt" align="right">
+			<B>{$listdata.income|money_format}</B>
+		</TD>
+		<TD nowrap class="fbt" align="right">
+			<B>{$listdata.expense|money_format}</B>
+		</TD>
+		<TD nowrap class="fbt" align="right" colspan="2">
+		</TD>
+		<TD nowrap class="fbt" align="right">
+			<B>{t}Balance:{/t}</B>
+		</TD>
+		<TD nowrap class="fbt" align="left">
+			<B>{$listdata.totalval|money_format}</B>
+		</TD>
+		<TD class="frightu">&nbsp;
+			
+		</TD>
+	</TR>
+</TABLE>
+</FORM>
+<SCRIPT type="text/javascript">
+<!--
+var cal1 = new calendar(document.page.elements['from']);
+cal1.time_comp = false;
+var cal2 = new calendar(document.page.elements['to']);
+cal2.time_comp = false;
+//-->
+</SCRIPT>
+{include file="footer.html"}

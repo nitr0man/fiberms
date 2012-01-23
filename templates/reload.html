@@ -1,0 +1,80 @@
+<!--// $Id: reload.html,v 1.10 2008/12/28 19:03:28 alec Exp $ //-->
+<H1><B>{$layout.pagetitle}</B></H1>
+{literal}
+<SCRIPT type="text/javascript">
+	<!--
+
+	function CheckAll()
+	{
+		for (var i=0; i<document.reload.elements.length; i++)
+		{
+			var e = document.reload.elements[i];
+			if (e.name != 'allbox')
+				e.checked = document.reload.allbox.checked;
+		}
+	}
+
+	function CheckAll2()
+	{
+		document.reload.allbox.checked = !document.reload.allbox.checked;
+		CheckAll();
+	}
+
+	//-->
+</SCRIPT>
+{/literal}
+<P><FORM name="reload" method="POST" action="?m=reload&setreloads">
+<INPUT type="submit" class="hiddenbtn">
+<TABLE WIDTH="100%" CELLPADDING="3">
+	<TR CLASS="DARK">
+		<TD class="fall">
+			<B>{t}Select hosts for configuration reload:{/t}</B>
+		</TD>
+	</TR>
+	<TR>
+		<TD width="100%" class="fall">
+			<TABLE cellpadding="5" cellspacing="0" width="100%">
+				<TR class="dark">
+					<TD width="1%" class="fleftu" nowrap><IMG src="img/host.gif" ALT=""> <B>{t}Name:{/t}</B></TD>
+					<TD width="96%" class="fbt" nowrap>{t}Description:{/t}</TD>
+					<TD width="1%" class="fbt" align="right" nowrap>{t}Last Reload:{/t}</TD>
+					<TD width="1%" class="fbt" nowrap>{t}Status:{/t}</TD>
+					<TD width="1%" class="frightu"></TD>
+				</TR>
+				{cycle values="light,lucid" print=false}
+				{section name=hosts loop=$hosts}
+				<TR class="{cycle}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+					<TD nowrap onClick="return checkElement({$hosts[hosts].id});"><IMG src="img/host.gif" ALT=""> <B>{$hosts[hosts].name}</B></TD>
+					<TD onClick="return checkElement({$hosts[hosts].id});">{$hosts[hosts].description}</TD>
+					<TD align="right" nowrap onClick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].lastreload}{$hosts[hosts].lastreload|date_format:"%Y/%m/%d %H:%M"}{else}-{/if}</TD>
+					<TD nowrap onClick="return checkElement({$hosts[hosts].id});">{if $hosts[hosts].reload==1}{t}waiting{/t}
+						    {elseif $hosts[hosts].reload==0}{t}OK{/t}
+						    {else}{t}unknown{/t}{/if}</TD>
+					<TD>
+						<INPUT TYPE="checkbox" NAME="hosts[]" ID="{$hosts[hosts].id}" VALUE="{$hosts[hosts].id}"{if $hosts[hosts].reload} CHECKED{/if}>
+					</TD>
+				</TR>
+				{sectionelse}
+				<TR>
+					<TD colspan="4" align="center">
+						<P>&nbsp;</P>
+						<P><B>{t}No such hosts in database.{/t}</B></P>
+						<P>&nbsp;</P>
+					</TD>
+				</TR>
+				{/section}
+				<TR class="light">
+					<TD CLASS="ftop" colspan="2"nowrap>
+						<INPUT TYPE="checkbox" NAME="allbox" onClick="CheckAll();" VALUE="Check All Boxes">
+						<A HREF="javascript:CheckAll2();">{t}Check All{/t}</A>
+					</TD>
+					<TD CLASS="ftop" ALIGN="right" colspan="3" nowrap>
+						<A href="javascript:document.reload.submit();">{t}Submit{/t} <IMG src="img/save.gif" ALT=""></A>
+					</TD>
+				</TR>
+			</TABLE>
+		</TD>
+	</TR>
+</TABLE>
+</FORM>
+</P>

@@ -1,0 +1,286 @@
+{include file="header.html"}
+<!--// $Id: customersearch.html,v 1.24 2011/04/07 10:28:17 alec Exp $ //-->
+<H1>{$layout.pagetitle}</H1>
+{include file="calendar_js.html"}
+<SCRIPT type="text/javascript">
+{literal}
+<!-- 
+	function PrintList()
+	{
+		document.customersearch.action = "?m=customersearch&search=1&print=1";
+		document.customersearch.target = "_BLANK";
+		document.customersearch.submit();
+	}
+
+	function Search()
+	{
+		document.customersearch.action = "?m=customersearch&search=1";
+		document.customersearch.target = "";
+		document.customersearch.submit();
+	}
+
+	function setOperator(id)
+	{
+		document.customersearch.elements[id].checked = true;
+	}
+//-->	
+{/literal}
+</SCRIPT>
+<P><FORM METHOD="POST" ACTION="?m=customersearch&search=1" NAME="customersearch">
+<INPUT type="submit" class="hiddenbtn">
+<TABLE WIDTH="100%" CELLPADDING="3">
+	<TR CLASS="DARK">
+		<TD CLASS="FALL" COLSPAN="2">
+			<B>{t}Display customers matching the following criteria:{/t}</B>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/customer.gif" alt=""> <B>{t}First/last or Company name:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[customername]" VALUE="{$search.customername}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/home.gif" alt=""> <B>{t}Address:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%" nowrap>
+			<INPUT TYPE="text" NAME="search[address]" VALUE="{$search.address}">
+			<B>{t}City:{/t}</B> <INPUT TYPE="text" NAME="search[city]" VALUE="{$search.city}">
+			<B>{t}Postcode:{/t}</B> <INPUT TYPE="text" NAME="search[zip]" VALUE="{$search.zip}" SIZE="10">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/phone.gif" alt=""> <B>{t}Phone:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[phone]" VALUE="{$search.phone}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/mail.gif" alt=""> <B>{t}E-mail:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[email]" VALUE="{$search.email}">
+		</TD>
+	</TR>
+	{*
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/gg.gif" alt=""> <B>{t}IM:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[im]" VALUE="{$search.im}">
+		</TD>
+	</TR>
+	*}
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/serialnumber.gif" width="16" alt=""> <B>{t}ICN:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[icn]" VALUE="{$search.icn}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/empty.gif" width="16" alt=""> <B>{t}SSN:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[ssn]" VALUE="{$search.ssn}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/empty.gif" width="16" alt=""> <B>{t}TEN:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[ten]" VALUE="{$search.ten}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/empty.gif" width="16" alt=""> <B>{t}REGON:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[regon]" VALUE="{$search.regon}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/report.gif" alt=""> <B>{t}RBE:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[rbe]" VALUE="{$search.rbe}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/note.gif" alt=""> <B>{t}Notes:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[notes]" VALUE="{$search.notes}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/info1.gif" alt=""> <B>{t}Additional information:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT TYPE="text" NAME="search[info]" VALUE="{$search.info}">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/folder.gif" alt=""> <B>{t}Legal personality:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<SELECT SIZE="1" NAME="search[type]">
+				<OPTION VALUE="">{t}- all -{/t}</OPTION>
+				<OPTION VALUE="0">{t}private person{/t}</OPTION>
+				<OPTION VALUE="1">{t}legal entity{/t}</OPTION>
+			</SELECT>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/state.gif" alt=""> <B>{t}Country state:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<SELECT NAME="search[stateid]" {tip text="Select country state"}>
+		                <OPTION value="">{t}- all states -{/t}</OPTION>
+			        {foreach from=$cstateslist item=item key=key}
+				<OPTION value="{$key}">{$item.name}</OPTION>
+				{/foreach}
+			</SELECT>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/netdev.gif" alt=""> <B>{t}Link type:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<SELECT SIZE="1" NAME="search[linktype]">
+				<OPTION VALUE="">{t}- all -{/t}</OPTION>
+				<OPTION VALUE="0">{t}wire{/t}</OPTION>
+				<OPTION VALUE="1">{t}wireless{/t}</OPTION>
+			</SELECT>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/empty.gif" width="16" alt=""> <B>{t}Created:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			{t}from{/t} <INPUT type="text" value="" name="search[createdfrom]" size="10" OnClick="javascript:cal1.popup();">
+			{t}to{/t} <INPUT type="text" value="" name="search[createdto]" size="10" OnClick="javascript:cal2.popup();">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/empty.gif" width="16" alt=""> <B>{t}Deleted:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			{t}from{/t} <INPUT type="text" value="" name="search[deletedfrom]" size="10" OnClick="javascript:cal3.popup();">
+			{t}to{/t} <INPUT type="text" value="" name="search[deletedto]" size="10" OnClick="javascript:cal4.popup();">
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/empty.gif" width="16" alt=""> <B>{t}Qualification operator:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<INPUT class="radio light" type="radio" id="operator0" value="AND" name="k"{if $k!='OR'} CHECKED{/if}><A HREF="javascript:setOperator('operator0')"> {t}AND{/t} </A>
+			<INPUT class="radio light" type="radio" id="operator1" value="OR" name="k"{if $k=='OR'} CHECKED{/if}><A HREF="javascript:setOperator('operator1')"> {t}OR{/t} </A>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="flr" WIDTH="100%" COLSPAN="2">&nbsp;</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/access.gif" width="16" alt=""> <B>{t}Status:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<SELECT SIZE="1" NAME="s">
+				<OPTION VALUE="0">{t}- all -{/t}</OPTION>
+				<OPTION VALUE="3">{t}connected<!plural>{/t}</OPTION>
+				<OPTION VALUE="2">{t}waiting{/t}</OPTION>
+				<OPTION VALUE="1">{t}interested<!plural>{/t}</OPTION>
+				<OPTION VALUE="4">{t}deleted<!plural>{/t}</OPTION>
+				<OPTION VALUE="5">{t}disconnected<!plural>{/t}</OPTION>
+				<OPTION VALUE="6">{t}in debt{/t}</OPTION>
+				<OPTION VALUE="11">{t}in debt above 100%{/t}</OPTION>
+				<OPTION VALUE="7">{t}online{/t}</OPTION>
+				<OPTION VALUE="8">{t}without group{/t}</OPTION>
+				<OPTION VALUE="9">{t}without tariff{/t}</OPTION>
+				<OPTION VALUE="10">{t}suspended<!plural>{/t}</OPTION>
+			</SELECT>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/network.gif" alt=""> <B>{t}Network:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<SELECT SIZE="1" NAME="n">
+				<OPTION value="0" {if !$listdata.network} SELECTED {/if}>{t}- all networks -{/t}</OPTION>
+				{section name=networks loop=$networks}
+				<OPTION value="{$networks[networks].id}" {if $listdata.network eq $networks[networks].id} SELECTED {/if}>{$networks[networks].name|truncate:50:"...":true}</OPTION>
+				{/section}
+			</SELECT>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/group.gif" alt=""> <B>{t}Group:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<SELECT SIZE="1" NAME="g">
+				<OPTION value="" {if !$listdata.customergroup} SELECTED {/if}>{t}- all groups -{/t}</OPTION>
+				{section name=customergroups loop=$customergroups}
+				<OPTION value="{$customergroups[customergroups].id}" {if $listdata.customergroup eq $customergroups[customergroups].id} SELECTED {/if}>{$customergroups[customergroups].name|truncate:50:"...":true}</OPTION>
+				{/section}
+			</SELECT>
+		</TD>
+	</TR>
+	<TR CLASS="LIGHT">
+		<TD CLASS="fleft" WIDTH="1%" NOWRAP>
+			<IMG src="img/nodegroup.gif" alt=""> <B>{t}Nodes Group:{/t}</B>
+		</TD>
+		<TD CLASS="fright" WIDTH="99%">
+			<SELECT SIZE="1" NAME="ng">
+    			    <OPTION value="" {if !$listdata.nodegroup} SELECTED {/if}>{t}- all groups -{/t}</OPTION>
+	        	    {foreach from=$nodegroups item=nodegroup}
+		            <OPTION value="{$nodegroup.id}" {if $listdata.nodegroup eq $nodegroup.id} SELECTED {/if}>{$nodegroup.name|truncate:30:"...":true}</OPTION>
+			    {/foreach}
+			</SELECT>
+		</TD>
+	</TR>
+	<TR CLASS="light">
+		<TD CLASS="fbottomu" WIDTH="100%" COLSPAN="2" ALIGN="right">
+			<A ACCESSKEY="S" href="javascript:Search();">{t}Search{/t} <IMG SRC="img/search.gif" alt=""></A>&nbsp;
+			<A href="javascript:PrintList();">{t}Print{/t} <IMG SRC="img/print.gif" alt=""></A>
+		</TD>
+	</TR>
+</TABLE>
+</FORM>
+</P>
+<SCRIPT type="text/javascript">
+<!--
+document.forms['customersearch'].elements['search[customername]'].focus();
+var cal1 = new calendar(document.customersearch.elements['search[createdfrom]']);
+cal1.time_comp = false;
+var cal2 = new calendar(document.customersearch.elements['search[createdto]']);
+cal2.time_comp = false;
+var cal3 = new calendar(document.customersearch.elements['search[deletedfrom]']);
+cal3.time_comp = false;
+var cal4 = new calendar(document.customersearch.elements['search[deletedto]']);
+cal4.time_comp = false;
+//-->
+</SCRIPT>
+{include file="footer.html"}

@@ -1,0 +1,99 @@
+{include file="header.html"}
+<!--// $Id: configlist.html,v 1.22 2011/03/31 11:53:13 alec Exp $ //-->
+<H1>{$layout.pagetitle}</H1>
+<P><TABLE cellpadding="3" WIDTH="100%">
+	<TR class="dark">
+		<TD width="1%" class="fleftu" NOWRAP>
+			<IMG src="img/settings.gif" alt=""><A href="?m=configlist&o=var{if $listdata.direction eq "asc" && $listdata.order eq "var"},desc{/if}"> <B>{t}Name:{/t}</B></A> {if $listdata.order eq "var"}<IMG src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}<BR>
+			<IMG src="img/empty.gif" alt="" width="16" height="16"><A href="?m=configlist&o=section{if $listdata.direction eq "asc" && $listdata.order eq "section"},desc{/if}"> {t}Section:{/t}</A> {if $listdata.order eq "section"}<IMG src="img/{if $listdata.direction eq "desc"}asc{else}desc{/if}_order.gif" alt="">{/if}
+		</TD>
+		<TD width="1%" class="fbt" align="center">
+			{t}Value:{/t}
+		</TD>
+		<TD width="97%" class="fbt" align="center">
+			{t}Comment:{/t}
+		</TD>
+		<TD width="1%" class="frightu" align="right" nowrap>
+			<A href="?m=configadd{if $listdata.section}&section={$listdata.section}{/if}">{t}Add option{/t} <IMG src="img/save.gif" alt=""> </A>
+		</TD>
+	</TR>
+	<TR class="DARK">
+		<TD class="fall" colspan="4">
+			<FORM method="GET" action="?m=configlist" name="filter">
+				<INPUT type="submit" class="hiddenbtn">
+				<INPUT type="HIDDEN" name="m" value="configlist">
+				<INPUT type="HIDDEN" name="page" value="1">
+				<B>{t}Filter:{/t} </B> {t}Section:{/t}
+				<SELECT size="1" name="s" OnChange="document.filter.submit();">
+					<OPTION value=""{if !$listdata.section} SELECTED{/if}>{t}- all -{/t}</OPTION>
+					<OPTION value="phpui"{if $listdata.section eq "phpui"} SELECTED{/if}>phpui</OPTION>
+					<OPTION value="invoices"{if $listdata.section eq "invoices"} SELECTED{/if}>invoices</OPTION>
+					<OPTION value="receipts"{if $listdata.section eq "receipts"} SELECTED{/if}>receipts</OPTION>
+					<OPTION value="finances"{if $listdata.section eq "finances"} SELECTED{/if}>finances</OPTION>
+					<OPTION value="mail"{if $listdata.section eq "mail"} SELECTED{/if}>mail</OPTION>
+					<OPTION value="sms"{if $listdata.section eq "sms"} SELECTED{/if}>sms</OPTION>
+					 <OPTION value="zones"{if $listdata.section eq "zones"} SELECTED{/if}>zones</OPTION>
+				</SELECT>
+				{t}Option{/t}:
+				<INPUT type="text" name="n" value="{$listdata.search}" size="15" {tip text="Enter option name"}>
+				&nbsp;<A href="javascript: document.filter.submit();">&raquo;&raquo;&raquo;</A>
+			</FORM>
+		</TD>
+	</TR>
+	{if $listdata.total != 0}
+	<TR CLASS="DARK">
+		<TD COLSPAN="4" CLASS="FALL">
+			{include file="scroller.html" loop=$configlist}
+		</TD>
+	</TR>
+	{/if}
+	{cycle values="light,lucid" print=false}
+	{section name=configlist loop=$configlist start=$start max=$pagelimit}
+	<TR class="{cycle}{if $configlist[configlist].disabled} blend{/if}" onmouseover="addClass(this, 'highlight')" onmouseout="removeClass(this, 'highlight')">
+		<TD class="fleft" valign="top" NOWRAP OnClick="return self.location.href='?m=configedit&id={$configlist[configlist].id}';">
+			<IMG src="img/settings.gif" alt=""><B> {$configlist[configlist].var}</B><BR>
+			<IMG src="img/empty.gif" alt="" width="16" height="16"> [{$configlist[configlist].section}]
+		</TD>
+		<TD align="right" valign="top" OnClick="return self.location.href='?m=configedit&id={$configlist[configlist].id}';">
+			{$configlist[configlist].value|escape}
+		</TD>
+		<TD valign="top" OnClick="return self.location.href='?m=configedit&id={$configlist[configlist].id}';">
+			{$configlist[configlist].description|truncate:400:"..."}
+			{if $configlist[configlist].usercomment != ''}<BR><B>{t}Comment:{/t}</B> {$configlist[configlist].usercomment|truncate:400:"..."}{/if}
+		</TD>
+		<TD class="fright" align="right" nowrap>
+			<A href="?m=configedit&id={$configlist[configlist].id}&statuschange=1"><IMG src="img/wait.gif" alt="[ {if $configlist[configlist].disabled}{t}Enable{/t}{else}{t}Disable{/t}{/if} ]" title="[ {if $configlist[configlist].disabled}{t}Enable{/t}{else}{t}Disable{/t}{/if} ]"></A>
+			<A href="?m=configdel&id={$configlist[configlist].id}" OnClick="return confirmLink(this, '{t 0=$configlist[configlist].var}Are you sure, you want to delete option \'$0\' from database?{/t}');"><IMG src="img/delete.gif" alt="[ {t}Delete{/t} ]" title="[ {t}Delete{/t} ]"></A>
+			<A href="?m=configedit&id={$configlist[configlist].id}"><IMG src="img/edit.gif" alt="[ {t}Edit{/t} ]" title="[ {t}Edit{/t} ]"></A>
+		</TD>
+	</TR>
+	{sectionelse}
+	<TR>
+		<TD colspan="4" align="center" class="fall">
+			<p>&nbsp;</p>
+			<p><B>
+			    {if $listdata.search}
+			        {t}No configuration options in database.{/t}
+			    {else}
+			        {t}No configuration options in database.{/t} {t}Click <A href="?m=configload">here</A> to import them from lms.ini.{/t}
+			    {/if}
+			    </B></p>
+			<p>&nbsp;</p>
+		</TD>
+	</TR>
+	{/section}
+	{if $listdata.total != 0}
+	<TR CLASS="DARK">
+		<TD COLSPAN="4" CLASS="FALL">
+			{include file="scroller.html" loop=$configlist}
+		</TD>
+	</TR>
+	{/if}
+	<TR CLASS="DARK">
+		<TD colspan="4" class="FALL" align="right">
+			<A href="?m=configadd{if $listdata.section}&section={$listdata.section}{/if}">{t}Add option{/t} <IMG src="img/save.gif" alt=""></A>
+		</TD>
+	</TR>
+
+</TABLE></P>
+{include file="footer.html"}

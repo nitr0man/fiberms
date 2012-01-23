@@ -1,0 +1,187 @@
+<!-- $Id: rtticketinfobox.html,v 1.31 2010/03/08 09:59:21 alec Exp $ -->
+<P><TABLE WIDTH="100%" CELLPADDING="3">
+	<TR CLASS="dark">
+		<TD width="100%" CLASS="fall" colspan="3">
+			<IMG src="img/ticket.gif" alt="">
+			<B>{t 0=$ticket.ticketid|string_format:"%06d"}Ticket No. $0{/t}</B>
+		</TD>
+	</TR>
+	<TR CLASS="light">
+		<TD width="100%" class="flr" colspan="3">
+<TABLE width="100%" cellpadding="0">
+    <TR>
+	<TD width="50%">
+	    <TABLE>
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+			<IMG src="img/ticket.gif" alt="">
+			<B>{t}Subject:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%" NOWRAP>
+		        {$ticket.subject|escape|truncate:50:"...":true}
+		    </TD>
+		</TR>
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+		    	<IMG src="img/customer.gif" alt="">
+			<B>{t}Submitter:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%" NOWRAP>
+			{if $ticket.customerid}
+				<A href="?m=customerinfo&id={$ticket.customerid}">{$ticket.customername|escape} ({$ticket.customerid|string_format:"%04d"})</A>
+			{else}
+				{$ticket.requestor|escape} 
+			{/if}
+			{if $ticket.requestoremail && !$ticket.customerid}
+				&lt;<A HREF="mailto:{$ticket.requestoremail}">{$ticket.requestoremail}</A>&gt;
+			{/if}
+		    </TD>
+		</TR>
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+		    	<IMG src="img/calendar.gif" alt="">
+			<B>{t}Create time:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%">
+			{$ticket.createtime|date_format:"%Y/%m/%d %H:%M:%S"}
+		    </TD>
+		</TR>
+		{if $ticket.creatorid}
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+		    	<IMG src="img/users.gif" alt="">
+			<B>{t}Created by:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%">
+			<A href="?m=userinfo&id={$ticket.creatorid}">{$ticket.creator}</a>
+		    </TD>
+		</TR>
+		{/if}
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+		    	<IMG src="img/time.gif" alt="">
+			<B>{t}Uptime:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%">
+			{$ticket.uptime}
+		    </TD>
+		</TR>
+	    </TABLE>
+	</TD>
+	<TD width="50%" style="vertical-align:top;">	
+	    <TABLE>
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+			<IMG src="img/users.gif" alt="">
+			<B>{t}Owner:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%">
+			<A href="?m=userinfo&id={$ticket.owner}">{$ticket.ownername}</A>
+		    </TD>
+		</TR>
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+		    	<IMG src="img/queue.gif" alt="">
+			<B>{t}Queue:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%">
+			<A HREF="?m=rtqueueview&id={$ticket.queueid}">{$ticket.queuename}</A>
+		    </TD>
+		</TR>
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+		    	<IMG src="img/dead.gif" alt="">
+			<B>{t}Status:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%">
+			{$ticket.status}
+		    </TD>
+		</TR>
+		<TR>
+		    <TD WIDTH="1%" NOWRAP>
+		    	<IMG src="img/desc.gif" alt="">
+			<B>{t}Cause:{/t}</B>
+		    </TD>
+		    <TD WIDTH="99%">
+			{if $ticket.cause==2}{t}company's side{/t}
+			{elseif $ticket.cause==1}{t}customer's side{/t}
+			{else}{t}unknown/other{/t}{/if}
+		    </TD>
+		</TR>
+	    </TABLE>
+	</TD>
+    </TR>
+</TABLE>
+		</TD>
+	</TR>
+	<TR CLASS="light">
+		<TD class="flr" ALIGN="RIGHT" colspan="3">
+			{if $ticket.state < 2}
+			<A href="?m=rtticketedit&id={$ticket.ticketid}&state=2">{t}Resolve{/t} <IMG src="img/resolved.gif" alt=""></A>&nbsp;
+			{/if}
+			<A href="?m=rtticketdel&id={$ticket.ticketid}" onClick="return confirmLink(this, '{t 0=$ticket.ticketid}Are you sure, you want to remove ticket $0?{/t}')">{t}Delete{/t} <IMG src="img/delete.gif" alt=""></A>
+			<A href="?m=rtticketedit&id={$ticket.ticketid}">{t}Edit{/t} <IMG src="img/edit.gif" alt=""></A>
+			<A href="?m=rtticketprint&id={$ticket.ticketid}" target="_BLANK">{t}Print{/t} <IMG src="img/print.gif" alt=""></A>
+		</TD>
+	</TR>
+	<TR CLASS="dark">
+		<TD CLASS="fall" width="100%" align="center" colspan="3" NOWRAP>
+			{if $ticket.prev_ticketid neq NULL}
+				<A HREF="?m=rtticketview&id={$ticket.prev_ticketid}">&laquo;&laquo;&laquo;&nbsp;{t}Previous ticket{/t}</A>
+			{else}
+				&laquo;&laquo;&laquo;&nbsp;{t}Previous ticket{/t}
+			{/if}
+			&nbsp;&nbsp;&nbsp;
+			{if $ticket.next_ticketid neq NULL}
+				<A HREF="?m=rtticketview&id={$ticket.next_ticketid}">{t}Next ticket{/t}&nbsp;&raquo;&raquo;&raquo;</A>
+			{else}
+				{t}Next ticket{/t}&nbsp;&raquo;&raquo;&raquo;
+			{/if}
+		</TD>
+	</TR>
+</TABLE>
+</P>
+{if $stats}
+<P>
+<TABLE WIDTH="100%" CELLPADDING="3">
+        <TR CLASS="dark">
+	        <TD CLASS="fleftu" WIDTH="1%" nowrap>
+		        <IMG SRC="img/ticket.gif" ALT=""> <B>{t}Requests causes (last year):{/t}</B>
+		</TD>
+		<TD CLASS="frightu" WIDTH="99%">
+		        {t}company's side{/t}: <B>{$stats.2.num|default:0}</B>, 
+			{t}customer's side{/t}: <B>{$stats.1.num|default:0}</B>,
+			{t}unknown/other<!plural>{/t}: <B>{$stats.0.num|default:0}</B>,
+			{t}all{/t}: <B>{$stats.0.num+$stats.1.num+$stats.2.num}</B>
+		</TD>
+	</TR>
+</TABLE>
+</P>
+{/if}
+{if $customerinfo}
+<P>
+<TABLE WIDTH="100%" CELLPADDING="3">
+	<TR CLASS="dark">
+		<TD CLASS="fleftu" WIDTH="1%" nowrap>
+			<IMG SRC="img/customer.gif" ALT=""> <B>{t}Customer:{/t}</B>
+		</TD>
+		<TD CLASS="fbt" WIDTH="1%" nowrap>
+			<B>{$customerinfo.customername}</B> 
+			&nbsp;&raquo;&nbsp; {$customerinfo.address} &nbsp; {$customerinfo.zip} {$customerinfo.city}
+			{if $customerinfo.phone}&nbsp;&raquo;&nbsp; {$customerinfo.phone}{/if}
+			&nbsp;&raquo;&nbsp; {if $customerinfo.balance < 0}<FONT class="red">{/if}{$customerinfo.balance|money_format}{if $customerinfo.balance < 0}</FONT>{/if}
+		</TD>
+		<TD CLASS="frightu" WIDTH="98%" align="right">
+			{if $customerinfo.groups}<FONT class="red bold">
+			({foreach from=$customerinfo.groups item=item name=groups}{$item.name}{if $smarty.foreach.groups.iteration < sizeof($customerinfo.groups)}, {/if}{/foreach})
+			</FONT>{/if}
+		</TD>
+	</TR>
+</TABLE>
+</P>
+{/if}
+{if $customernodes}
+<P>
+{include file="customernodesbox.html"}
+</P>
+{/if}
