@@ -323,7 +323,7 @@ CREATE INDEX tariffs_type_idx ON tariffs (type);
 -------------------------------------------------------- */
 DROP SEQUENCE promotions_id_seq;
 CREATE SEQUENCE promotions_id_seq;
-DROP TABLE promotions CASCADE
+DROP TABLE promotions CASCADE;
 CREATE TABLE promotions (
     id integer          DEFAULT nextval('promotions_id_seq'::text) NOT NULL,
     name varchar(255)   NOT NULL,
