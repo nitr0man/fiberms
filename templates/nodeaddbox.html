@@ -167,7 +167,18 @@
 		<TD WIDTH="98%">
 			<TEXTAREA NAME="nodedata[info]" COLS="50" ROWS="5" {tip text="Enter additional information (optional)"}>{$nodedata.info}</TEXTAREA>
 		</TD>
+		
 	</TR>
+<!--Вот ано-->
+	<TR>
+		<TD WIDTH="1%">
+			<IMG SRC="img/info1.gif" ALT="{t}Description:{/t}">
+		</TD>
+		<TD WIDTH="98%">
+			<TEXTAREA NAME="nodedata[opengis]" COLS="50" ROWS="5" {tip text="openGIS (optional)"}>{$nodedata.info}</TEXTAREA>
+		</TD>
+	</TR>
+<!--Вот ано2-->
 	<TR CLASS="LIGHT">
 		<TD WIDTH="1%">
 			<IMG SRC="img/{if ! $nodedata.access}no{/if}access.gif" ALT="">
@@ -188,7 +199,7 @@
 				<OPTION VALUE="1"{if $nodedata.warning} SELECTED{/if}>{t}enabled{/t}</OPTION>
 				<OPTION VALUE="0"{if ! $nodedata.warning} SELECTED{/if}>{t}disabled{/t}</OPTION>
 			</SELECT>
-		</TD>
+		</TD>		
 	</TR>
 	                        		</TABLE>
 				        </TD>
