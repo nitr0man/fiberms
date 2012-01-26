@@ -22,7 +22,7 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	$height = $_POST['#$height'];
 		    	$length = $_POST['#$length'];
 		    	$diameter = $_POST['#$diameter'];
-		    	print("INSERT INTO NetworkBoxType(
+		    	PQuery("INSERT INTO NetworkBoxType(
         	    marking, manufacturer, units, width, height, length, diameter)
 		    	VALUES ('$marking', '$manufacturer', '$units', '$width', '$height', '$length', '$diameter');");
 		    	print("done");
