@@ -16,9 +16,12 @@
  </div>
  </div>
 <script type="text/javascript">
+ 
 function initscript(block)
 {
-	$(block).replaceWith( "<td id=\""+block+"\"> <input type=\"text\" name=\""+block+"\" size=\"30\" /></td>" );
+	lol = block;
+	lol = lol.replace(/\#/g,"");
+	$(block).replaceWith( "<td id=\""+block+"\"> <input type=\"text\" name=\""+lol+"\" size=\"30\" /></td>" );
 }
 
 	</script>
