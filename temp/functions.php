@@ -8,7 +8,7 @@ function PQuery($query)
 
 
 if($_SERVER["REQUEST_METHOD"] == 'POST')
-	{		function AddNetworkBox();
+	{		function AddNetworkBox()
 		{		if ($_POST['whichadded'] == 'networkboxtype')
 			{    	    	PQuery("INSERT INTO NetworkBoxType(
         	    marking, manufacturer, units, width, height, length, diameter)
