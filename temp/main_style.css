@@ -1,0 +1,160 @@
+
+/* //////////////////////////////////////   Layout */
+body {
+	font-family: Tahoma, Arial, sans-serif;
+	font-size: 12px; 
+	color: #000;
+	background: #F3F3F3 url('http://seti.kr.ua/i/all_bg.jpg') top center no-repeat;
+	line-height:16px;
+	height:100%;
+}
+li { 
+	background-attachment: scroll; 
+	background-repeat: no-repeat; 
+	background-position: 0px 4px; 
+	background-origin: padding-box;
+	background-clip: border-box; 
+	background-color: transparent; 
+	background-image: url("http://seti.kr.ua/i/bull.gif"); 
+	background-size: auto 
+	}
+#main {
+	margin: 0 auto;
+	width: 920px;
+}
+.header {
+	width: 915px;
+	height: 100%;
+	text-align: center;
+  border: 0px solid black;
+  padding-top: 16px;
+}
+#footer {
+width: 100%;
+height: 210px;
+clear: both;
+}
+.leftcolumn {
+	width: 210px;
+	float: left;
+	height: 400px;
+	margin-bottom: 40px;
+}
+.content {
+	width: 350px;
+	float: left;
+	min-height:424px;
+	background: url('http://seti.kr.ua/i/col2.jpg') 0px 22px no-repeat;
+	padding-bottom: 40px;
+}
+.rightcolumn {
+	width: 350px;
+	float: left;
+	background: url('http://seti.kr.ua/i/col3.jpg') 0px 22px no-repeat;
+}
+/* //////////////////////////////////////  # Layout */
+
+/* //////////////////////////////////////       Null */
+ul,ol { list-style: none; }
+h1,h2,h3,h4,h5,h6,pre,code,p { font-size: 1em; }
+ul,ol,dl,li,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input { margin: 0; padding: 0; }
+a img,:link img,:visited img { border: none; }
+address { font-style: normal; }
+.clear { clear:both; display:block; overflow:hidden; width:100%; height:1px; }
+/* //////////////////////////////////////      # Null */
+
+/* //////////////////////////////////////       Links */
+a:link { color: #BC2417; text-decoration: underline; }
+a:visited { color: #BC2417; text-decoration: underline; }
+a:active { color: #BC2417; text-decoration: underline; }
+a:hover { text-decoration: none; }
+/* //////////////////////////////////////    # Links */
+
+/* //////////////////////////////////////    Paragraphs */
+p { margin: 0 0 12px 0; line-height: 1.2em; }
+small { font-size: 11px; }
+blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; background: #EBF1C1; }
+/* //////////////////////////////////////   # Paragraphs */
+
+/* //////////////////////////////////////    Block H */
+.head_button { position: relative; height: 36px; margin: 0 0 0 210px; text-align: left; border: 0px solid black;}
+.head_button img { margin: 0 7px 0 0; border: 0px; }
+.head_button .img_t { height: 44px; margin: 0 30px 0 0; border: 0px; }
+
+.head_content { position: relative; height: 186px; margin: 36px 0 0 0; }
+.head_content .logo { float: left; width: 144px; height: 179px; margin: 7px 34px 0 30px;  }
+
+.head_content .info { float: left; width: 450px; height: 186px; text-align: left; }
+.info .kks { height: 35px; margin: 0; }
+.head_content .info .kks_txt { font: 11px Tahoma, Arial; color: #5A5A5A; }
+.head_content .info .kks_txt p:first-letter { padding-left: 7px; }
+.head_content .info .koord {  width: 320px; text-align: left; font: bold 11px Tahoma, Arial; color: #5A5A5A; line-height: 14px; border: 0px solid black;}
+.koord a, .koord a:visited { font: normal 11px Tahoma, Arial; color: #CD1A0B; }
+a.koord-mail  { font: normal 11px Tahoma, Arial; color: #5A5A5A; font-weight: bold; text-decoration: none; margin-left: 30px;}
+a.koord-mail:hover { font: normal 11px Tahoma, Arial; color: #df4336; font-weight: bold;}
+.head_content .info .koord2 { float: left; width: 200px; height: 35px; text-align: left; font: bold 11px Tahoma, Arial; color: #5A5A5A; line-height: 14px; }
+
+.head_content .info .koord-center {text-align: center; font: bold 11px Tahoma, Arial; color: #5A5A5A; line-height: 14px; border: 0px solid black; padding-top: 10px;}
+.head_content .info .koord-left {font: bold 11px Tahoma, Arial; color: #5A5A5A; line-height: 14px; border: 0px solid black; padding-top: 10px;}
+.koord-center a:hover {color: #df4336; font-weight: bold;}
+
+.auth_block { position: relative; width: 220px; margin-left: 30px; text-align: left; }
+.auth_block { float: left; height: 186px; background: url('http://seti.kr.ua/i/auth_head.gif') top center no-repeat; }
+.auth_block .auth_bg { float: right; width: 220px; height: 186px; background: url('i/auth_bg.gif') 0px 46px no-repeat; }
+.auth_block form { width:135px; margin: 49px 0 0 65px;  }
+.auth_block fieldset { border: none; }
+.auth_block input { width:122px; height: 18px; vertical-align: middle; margin-bottom: 5px; background: #F1F2F3; border: 1px solid #C0C0C0; font: 11px Tahoma, Arial; }
+.auth_block .btn input { width:60px; height: 22px; margin:7px 0 0 0; background: url('i/btn.gif') no-repeat; border: none; }
+.auth_block .support { width:130px; height: 40px auto; margin:0 0 0 50px; font: 10px Tahoma, Arial; color: #7A7A7A; line-height: 140%; }
+
+
+.head_bann { position: relative; margin: 48px 0 38px 0; border: 0px solid black; }
+.head_bann .left { position: relative; float: left; }
+.head_bann .banner { position: relative; border: 0px solid black; text-align: center;}
+.head_bann .right { position: relative; float: right; margin-right: 6px; }
+/* //////////////////////////////////////   # Block H */
+
+/* //////////////////////////////////////    Block COL1 */
+.left_col .menu { padding:20px; }
+.left_col .menu h3 { font: 14px Tahoma, Arial; color: #7A7A7A; margin:0 0 20px 0; text-transform: uppercase; font-weight: bold; }
+.left_col .menu ul li { padding:0 0 0 20px; background:url('http://seti.kr.ua/i/bull.gif') no-repeat 0 4px; margin:12px 0 0 0; list-style:none; }
+.left_col .menu ul li:hover { padding:0 0 0 20px; background:url('http://seti.kr.ua/i/bull_on.gif') no-repeat 0 4px; margin:12px 0 0 0; list-style:none; }
+.menu ul li a, .menu ul li a:visited { font: 11px Tahoma, Arial; color:#BC2417; text-decoration:none; font-weight: bold; }
+.menu ul li a:hover { font: 11px Tahoma, Arial; color:#df4336; text-decoration:none; font-weight: bold; }
+
+/* //////////////////////////////////////   # Block H */
+
+/* //////////////////////////////////////    Block COL2 */
+.content .col2 h3 { font: 14px Tahoma, Arial; color: #7A7A7A; margin-bottom: 18px;  text-transform: uppercase; font-weight: bold; }
+div.events { text-align:left; margin: 14px 0 10px 0; padding: 0 10px 0 0; }
+div.events_date { font-family: Tahoma, sans-serif; font-weight:bold; font-size: 11px; color: #7A7A7A; margin-bottom: 7px; }
+div.events_name { }
+div.events_name a, .events_name a:visited { font-family: Tahoma, sans-serif; font-weight:normal; font-size: 12px; color: #036c81; text-decoration: none;}
+div.events_name a:hover { font-family: Tahoma, sans-serif; font-weight:normal; font-size: 12px; color: #00b3c5; text-decoration:underline;  }
+.events_anonce { font-family: Tahoma, sans-serif; font-weight:normal; font-size: 12px; color: #000; margin: 4px 0 4px 0; }
+/* //////////////////////////////////////   # Block H */
+
+/* //////////////////////////////////////    Block COL3 */
+.rightcolumn .col3 h3 { font: 14px Tahoma, Arial; color: #7A7A7A; margin-bottom: 18px; padding-left: 25px; text-transform: uppercase; font-weight: bold; text-decoration: none;}
+
+div.hroniki { text-align:left; margin: 20px 0 10px 0; padding: 0 10px 0 25px; }
+div.hroniki_date { font-family: Tahoma, sans-serif; font-weight:bold; font-size: 11px; color: #7A7A7A; margin-bottom: 7px; }
+div.hroniki_name { }
+div.hroniki_name a, .hroniki_name a:visited { font-family: Tahoma, sans-serif; font-weight:normal; font-size: 12px; color: #036c81;  text-decoration:none;}
+div.hroniki_name a:hover { font-family: Tahoma, sans-serif; font-weight:normal; font-size: 12px; color: #00b3c5; text-decoration:underline; }
+/* //////////////////////////////////////   # Block H */
+
+.padding-a{
+  padding-top: 12px;
+  border: 0px solid black; 
+
+}
+
+.arrow-down{
+  margin: 0px;
+  padding: 0px;
+}
+
+.img-arrow{
+  margin-top: 10px;
+}
