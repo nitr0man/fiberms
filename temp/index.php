@@ -30,7 +30,12 @@ function initscript(block)
 <table><tr><td>
 <table>
 <tr>
-<td><label class="events_anonce">Тип ящика</label></td><td id="networkboxtype"> <label onclick="initscript('#networkboxtype')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
+<td><label class="events_anonce">Тип ящика</label></td><td> <!--id="networkboxtype"> <label onclick="initscript('#networkboxtype')">\получить из базы\</label>-->
+<select name="networkboxtype">
+ <option></option>
+</select>
+
+</td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
 <br />
 </tr>
 <tr>
