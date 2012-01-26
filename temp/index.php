@@ -27,61 +27,61 @@ function initscript(block)
 
 	</script>
 <!--<div id="content">-->
-<form onSubmit="return false">
-<table><tr><td>
-<table>
-<tr>
+<form onsubmit="return false">
 <div id="newboxform">
-<td><label class="events_anonce">Тип ящика</label></td><td> <!--id="networkboxtype"> <label onclick="initscript('#networkboxtype')">\получить из базы\</label>-->
-<select name="networkboxtype">
- <option></option>
-</select>
-</div>
+	<table>
+		<tr>
+		<td><label class="events_anonce">Тип ящика</label></td><td> <!--id="networkboxtype"> <label onclick="initscript('#networkboxtype')">\получить из базы\</label>-->
+		<select name="networkboxtype">
+			<option></option>
+			</select>
+		</td>
 
-</td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
 <br />
-</tr>
-<tr>
-<td><label class="events_anonce">Инв. номер</label></td><td id="inventorynumber"> <label onclick="initscript('#inventorynumber')">\получить из базы\</label></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Инв. номер</label></td><td id="inventorynumber"> <label onclick="initscript('#inventorynumber')">\получить из базы\</label></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
 <br />
-</tr>
-<tr>
-<td><label class="events_anonce">deprecated</label></td><td><input type="hidden" name="whichadded" value="networkbo2x" size="30" /></td>
-</tr><tr><td><input type="submit" />
+		</tr>
+		<tr>
+		<td><label class="events_anonce">deprecated</label></td><td><input type="hidden" name="whichadded" value="networkbo2x" size="30" /></td>
+		</tr>
+		<tr>
+		<td><input type="submit" /></td>
+		</tr>
+	</table>
+</div>
 </form>
-</table>
-</td></tr>
-<tr><td>
-<form name="boxtype" onSubmit="return false">
-<div id="addnewboxtype">
-<table>
-<tr>
-<td><label class="events_anonce">Маркировка</label></td><td id="marking"> <label onclick="initscript('#marking')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
-<br />
-</tr>
-<tr>
-<td><label class="events_anonce">Производитель</label></td><td id="manufacturer"> <label onclick="initscript('#manufacturer')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>--><!--<td><input type="text" name="invmun" size="30" /></td>-->
-<br />
-</tr>
-<tr>
-<td><label class="events_anonce">Units</label></td><td id="units"> <label onclick="initscript('#units')">\получить из базы\</label></td>
-</tr>
-<tr>
-<td><label class="events_anonce">Width</label></td><td id="width"> <label onclick="initscript('#width')">\получить из базы\</label></td>
-</tr>
-<tr>
-<td><label class="events_anonce">Height</label></td><td id="height"> <label onclick="initscript('#height')">\получить из базы\</label></td>
-</tr>
-<tr>
-<td><label class="events_anonce">Length</label></td><td id="length"> <label onclick="initscript('#length')">\получить из базы\</label></td>
-</tr>
-<tr>
-<td><label class="events_anonce">Diameter</label></td><td id="diameter"> <label onclick="initscript('#diameter')">\получить из базы\</label></td>
-</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype3" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.marking.value,document.boxtype.manufacturer.value,document.boxtype.units.value,document.boxtype.width.value,document.boxtype.height.value,document.boxtype.length.value,document.boxtype.diameter.value,document.boxtype.whichadded.value)" /></td></form>
-</tr>
-</div>
 
-</table>
+<form name="boxtype" onSubmit="return false">
+	<div id="addnewboxtype">
+		<table>
+		<tr>
+		<td><label class="events_anonce">Маркировка</label></td><td id="marking"> <label onclick="initscript('#marking')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
+<br />
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Производитель</label></td><td id="manufacturer"> <label onclick="initscript('#manufacturer')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>--><!--<td><input type="text" name="invmun" size="30" /></td>-->
+		<br />
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Units</label></td><td id="units"> <label onclick="initscript('#units')">\получить из базы\</label></td>
+		</tr>
+		<tr>	
+		<td><label class="events_anonce">Width</label></td><td id="width"> <label onclick="initscript('#width')">\получить из базы\</label></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Height</label></td><td id="height"> <label onclick="initscript('#height')">\получить из базы\</label></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Length</label></td><td id="length"> <label onclick="initscript('#length')">\получить из базы\</label></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Diameter</label></td><td id="diameter"> <label onclick="initscript('#diameter')">\получить из базы\</label></td>
+		</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype3" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.marking.value,document.boxtype.manufacturer.value,document.boxtype.units.value,document.boxtype.width.value,document.boxtype.height.value,document.boxtype.length.value,document.boxtype.diameter.value,document.boxtype.whichadded.value)" /></td></form>
+		</tr>
+		</table>
+	</div>
 </form>
 <br />
 
