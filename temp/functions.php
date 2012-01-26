@@ -2,7 +2,7 @@
 
 function PQuery($query)
 {
-	require_once "config.php";
+	require "config.php";
 	$result = pg_query($connection, $query) or die(pg_last_error($connection));
 	return $result;
 }
@@ -27,21 +27,64 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
     			print("	<table>
 				<tr>
 				<td><label class=\"events_anonce\">Тип ящика</label></td><td>");
-    			print("<select name=\"networkboxtypes\">");
+    			print("<select name=\"networkboxtypes\" onChange=\"javascript: gettypeboxinfo(document.boxtypevalue.networkboxtypes.value,2);\">");
 				while ($networkbox = pg_fetch_array($res)) {
 					print("<option value=\"".$networkbox['id']."\">".$networkbox['marking']."</option>");
 				}
 				print('SELECT id FROM "NetworkBoxType" ORDER BY id LIMIT 1');
 				$res = PQuery('SELECT "id" FROM "NetworkBoxType" ORDER BY "id" LIMIT 1');
-				$boxtypeid = $res['id'];
+				while ($row = pg_fetch_array($res)) {
+					$boxtypeid = $row['id'];
+				}
+				$res = PQuery('SELECT COUNT(*) AS count FROM "NetworkBox" WHERE "NetworkBoxType"='.$boxtypeid);
+				while ($row = pg_fetch_array($res)) {
+					$boxtypeid = $row['count'];
+				}
 
 				print("</select>
 				</td>
-
 				<br />
 				</tr>
 				<tr>
-				<td><label class=\"events_anonce\">Инв. номер</label></td><td id=\"inventorynumber\"> <label onclick=\"initscript('#inventorynumber')\">\получить из базы\</label></td><!--<td><input type=\"text\" name=\"invmun\" size=\"30\" /></td>-->
+				<td><label class=\"events_anonce\">Количество ящиков:</label></td><td id=\"inventorynumber\"> <a href=\"#\">$boxtypeid</a></td><!--<td><input type=\"text\" name=\"invmun\" size=\"30\" /></td>-->
+				<br />
+				</tr>
+				<tr>
+				<td><label class=\"events_anonce\">deprecated</label></td><td><input type=\"hidden\" name=\"whichadded\" value=\"networkbo2x\" size=\"30\" /></td>
+				</tr>
+				<tr>
+				<td><input type=\"submit\" /></td>
+				</tr>
+				</table>");
+			}
+		else
+		if ($_POST['mode'] == 2)
+			{				$boxtypeid = $_POST['boxtypeid'];
+				$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');
+    			print("	<table>
+				<tr>
+				<td><label class=\"events_anonce\">Тип ящика</label></td><td>");
+    			print("<select name=\"networkboxtypes\" onChange=\"javascript: gettypeboxinfo(document.boxtypevalue.networkboxtypes.value,2);\">");
+				while ($networkbox = pg_fetch_array($res)) {					if ($boxtypeid == $networkbox['id'])
+					{
+						print("<option value=\"".$networkbox['id']."\" selected>".$networkbox['marking']."</option>");
+					}
+					else
+					{
+						print("<option value=\"".$networkbox['id']."\">".$networkbox['marking']."</option>");
+					}
+				}
+				$res = PQuery('SELECT COUNT(*) AS count FROM "NetworkBox" WHERE "NetworkBoxType"='.$boxtypeid);
+				while ($row = pg_fetch_array($res)) {
+					$boxtypeid = $row['count'];
+				}
+
+				print("</select>
+				</td>
+				<br />
+				</tr>
+				<tr>
+				<td><label class=\"events_anonce\">Количество ящиков:</label></td><td id=\"inventorynumber\"> <a href=\"#\">$boxtypeid</a></td><!--<td><input type=\"text\" name=\"invmun\" size=\"30\" /></td>-->
 				<br />
 				</tr>
 				<tr>

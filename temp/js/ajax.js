@@ -307,3 +307,14 @@ ajax.method = 'POST';
 ajax.element = 'newboxform';
 ajax.sendAJAX(varsString);
 }
+function gettypeboxinfo(boxtypeid,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "functions.php";
+ajax.setVar("boxtypeid", boxtypeid);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'newboxform';
+ajax.sendAJAX(varsString);
+}
