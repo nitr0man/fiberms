@@ -67,7 +67,7 @@ function initscript(block)
 		<tr>
 		<td><label class="events_anonce">Units</label></td><td id="units"> <label onclick="initscript('#units')">\получить из базы\</label></td>
 		</tr>
-		<tr>	
+		<tr>
 		<td><label class="events_anonce">Width</label></td><td id="width"> <label onclick="initscript('#width')">\получить из базы\</label></td>
 		</tr>
 		<tr>

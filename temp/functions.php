@@ -24,12 +24,29 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 		else
 		if ($_POST['mode'] == 1)
 			{    			$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');
-    			print("<tr><td><label class=\"events_anonce\">Тип ящика</label></td><td>");
-    			print("<select name=\"warnreason\">");
+    			print("	<table>
+				<tr>
+				<td><label class=\"events_anonce\">Тип ящика</label></td><td>");
+    			print("<select name=\"networkboxtypes\">");
 				while ($networkbox = pg_fetch_array($res)) {
 					print("<option value=\"".$networkbox['id']."\">".$networkbox['marking']."</option>");
 				}
-				print("</select>");
+				print("</select>
+				</td>
+
+				<br />
+				</tr>
+				<tr>
+				<td><label class=\"events_anonce\">Инв. номер</label></td><td id=\"inventorynumber\"> <label onclick=\"initscript('#inventorynumber')\">\получить из базы\</label></td><!--<td><input type=\"text\" name=\"invmun\" size=\"30\" /></td>-->
+				<br />
+				</tr>
+				<tr>
+				<td><label class=\"events_anonce\">deprecated</label></td><td><input type=\"hidden\" name=\"whichadded\" value=\"networkbo2x\" size=\"30\" /></td>
+				</tr>
+				<tr>
+				<td><input type=\"submit\" /></td>
+				</tr>
+				</table>");
 				/*print("<br />
 				</tr>
 				<tr>
