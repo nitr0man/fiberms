@@ -1,9 +1,9 @@
 <?php
 
 function PQuery($query)
-{	require_once "config.php";
+{
+	require_once "config.php";
 	$result = pg_query($connection, $query) or die(pg_last_error($connection));
-	$qcount++;
 	return $result;
 }
 
@@ -31,12 +31,12 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 				while ($networkbox = pg_fetch_array($res)) {
 					print("<option value=\"".$networkbox['id']."\">".$networkbox['marking']."</option>");
 				}
-				$boxtypeid = "javascript: document.boxtypevalue.networkbox.value";
-//				$res = PQuery('SELECT COUNT(*) FROM "NetworkBox" WHERE "NetworkBoxType"=$boxtypeid');
+				print('SELECT id FROM "NetworkBoxType" ORDER BY id LIMIT 1');
+				$res = PQuery('SELECT "id" FROM "NetworkBoxType" ORDER BY "id" LIMIT 1');
+				$boxtypeid = $res['id'];
 
 				print("</select>
 				</td>
-				SELECT COUNT(*) FROM \"NetworkBox\" WHERE \"NetworkBoxType\"=$boxtypeid
 
 				<br />
 				</tr>
@@ -51,17 +51,6 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 				<td><input type=\"submit\" /></td>
 				</tr>
 				</table>");
-				/*print("<br />
-				</tr>
-				<tr>
-				<td><label class=\"events_anonce\">Инв. номер</label></td><td id=\"inventorynumber\"> <label onclick=\"initscript('#inventorynumber')\">\получить из базы\</label></td><!--<td><input type=\"text\" name=\"invmun\" size=\"30\" /></td>-->
-				<br />
-				</tr>
-				<tr>
-				<td><label class=\"events_anonce\">deprecated</label></td><td><input type=\"hidden\" name=\"whichadded\" value=\"networkbox\" size=\"30\" /></td>
-				</tr><tr><td><input type=\"submit\" />
-				</table>
-				</td></tr>");*/
 			}
 	}
 else print("bris!");
