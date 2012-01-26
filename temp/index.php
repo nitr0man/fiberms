@@ -1,5 +1,5 @@
 <?php include 'header.php' ?>
-<body onload="<?  ?>">
+<body onload="javascript: getformfornewbox(1);">
  <div class="leftcolumn">
  <div class="left_col">
  <div class="menu">
@@ -16,7 +16,7 @@
  </div>
  </div>
 <script type="text/javascript">
- 
+
 function initscript(block)
 {
 	lol = block;
@@ -27,6 +27,7 @@ function initscript(block)
 	</script>
 <div id="content">
 <!--<form method="post" action="functions.php">-->
+<div id="newboxform">
 <table><tr><td>
 <table>
 <tr>
@@ -48,6 +49,7 @@ function initscript(block)
 <!--</form>-->
 </table>
 </td></tr>
+</div>
 <tr><td>
 <form name="boxtype" onSubmit="return false">
 <div id="addnewboxtype">

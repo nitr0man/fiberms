@@ -2,8 +2,9 @@
 
 function PQuery($query)
 {	require_once "config.php";
-	pg_query($connection, $query) or die(pg_last_error($connection));
+	$result = pg_query($connection, $query) or die(pg_last_error($connection));
 	$qcount++;
+	return $result;
 }
 
 
@@ -19,6 +20,29 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	PQuery('INSERT INTO "NetworkBoxType" (marking, manufacturer, units, width, height, length, diameter) VALUES (\''.$marking.'\', \''.$manufacturer.'\', '.$units.', '.$width.', '.$height.', '.$length.', '.$diameter.')');
 		    	print("Добавлено!
 		    	<br><a href=\"index.php\">Назад</a>");
+			}
+		if ($_POST['mode'] == 1)
+			{    			$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');
+    			print("<table><tr><td>
+				<table>
+				<tr>
+    			<tr><td><label class=\"events_anonce\">Тип ящика</label></td><td>");
+    			print("<select name=\"warnreason\">");
+				while ($networkbox = pg_fetch_array($res)) {
+					print("<option value=\"".$networkbox['id']."\">".$networkbox['marking']."</option>");
+				}
+				print("</select>");
+				print("<br />
+				</tr>
+				<tr>
+				<td><label class=\"events_anonce\">Инв. номер</label></td><td id=\"inventorynumber\"> <label onclick=\"initscript('#inventorynumber')\">\получить из базы\</label></td><!--<td><input type=\"text\" name=\"invmun\" size=\"30\" /></td>-->
+				<br />
+				</tr>
+				<tr>
+				<td><label class=\"events_anonce\">deprecated</label></td><td><input type=\"hidden\" name=\"whichadded\" value=\"networkbox\" size=\"30\" /></td>
+				</tr><tr><td><input type=\"submit\" />
+				</table>
+				</td></tr>");
 			}
 	}
 else print("bris!");
