@@ -9,8 +9,8 @@ function PQuery($query)
 }
 
 
-if($_SERVER["REQUEST_METHOD"] == 'POST')
-	{		function AddNetworkBox()
+/*if($_SERVER["REQUEST_METHOD"] == 'POST')
+	{*/		function AddNetworkBox()
 		{		if ($_POST['whichadded'] == 'networkboxtype')
 			{				print('1');/*    	    	PQuery("INSERT INTO NetworkBoxType(
         	    marking, manufacturer, units, width, height, length, diameter)
@@ -28,6 +28,6 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	print("done");
 			}
 		}
-	}
-else print("bris!");
+/*	}
+else print("bris!");*/
 ?>
