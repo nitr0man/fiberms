@@ -1,5 +1,6 @@
 <?php include 'header.php' ?>
 <body onload="javascript: getformfornewbox(1);">
+<!--<body>   -->
  <div class="leftcolumn">
  <div class="left_col">
  <div class="menu">
