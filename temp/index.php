@@ -44,7 +44,7 @@ function initscript(block)
 <br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">deprecated</label></td><td><input type="hidden" name="whichadded" value="networkbo2x" size="30" /></td>
+		<td><label class="events_anonce">deprecated</label></td><td><input type="hidden" name="whichadded" value="networkbox" size="30" /></td>
 		</tr>
 		<tr>
 		<td><input type="submit" /></td>
@@ -78,7 +78,7 @@ function initscript(block)
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Diameter</label></td><td id="diameter"> <label onclick="initscript('#diameter')">\получить из базы\</label></td>
-		</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype3" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.marking.value,document.boxtype.manufacturer.value,document.boxtype.units.value,document.boxtype.width.value,document.boxtype.height.value,document.boxtype.length.value,document.boxtype.diameter.value,document.boxtype.whichadded.value)" /></td></form>
+		</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.marking.value,document.boxtype.manufacturer.value,document.boxtype.units.value,document.boxtype.width.value,document.boxtype.height.value,document.boxtype.length.value,document.boxtype.diameter.value,document.boxtype.whichadded.value)" /></td></form>
 		</tr>
 		</table>
 	</div>
