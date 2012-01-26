@@ -9,13 +9,13 @@ function PQuery($query)
 
 if($_SERVER["REQUEST_METHOD"] == 'POST')
 	{		if ($_POST['whichadded'] == 'networkboxtype')
-			{		    	$marking = $_POST['#marking'];
-		    	$manufacturer = $_POST['#manufacturer'];
-		    	$units = $_POST['#units'];
-		    	$width = $_POST['#width'];
-		    	$height = $_POST['#height'];
-		    	$length = $_POST['#length'];
-		    	$diameter = $_POST['#diameter'];
+			{		    	$marking = $_POST['marking'];
+		    	$manufacturer = $_POST['manufacturer'];
+		    	$units = $_POST['units'];
+		    	$width = $_POST['width'];
+		    	$height = $_POST['height'];
+		    	$length = $_POST['length'];
+		    	$diameter = $_POST['diameter'];
 		    	PQuery('INSERT INTO "NetworkBoxType" (marking, manufacturer, units, width, height, length, diameter) VALUES (\''.$marking.'\', \''.$manufacturer.'\', '.$units.', '.$width.', '.$height.', '.$length.', '.$diameter.')');
 		    	print("done");
 			}
