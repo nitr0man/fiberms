@@ -69,11 +69,8 @@ function initscript(block)
 </tr>
 <tr>
 <td><label class="events_anonce">Diameter</label></td><td id="diameter"> <label onclick="initscript('#diameter')">\получить из базы\</label></td>
-</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.#marking.value,document.boxtype.#manufacturer.value,document.boxtype.#units.value,document.boxtype.#width.value,document.boxtype.#height.value,document.boxtype.#length.value,document.boxtype.#diameter.value,document.boxtype.#whichadded.value)" /></td></form>
+</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.marking.value,document.boxtype.manufacturer.value,document.boxtype.units.value,document.boxtype.width.value,document.boxtype.height.value,document.boxtype.length.value,document.boxtype.diameter.value,document.boxtype.whichadded.value)" /></td></form>
 </tr>
-<script type="text/javascript">
-alert(document.boxtype.#whichadded.value);
-</script>
 
 </table>
 </form>

@@ -12,4 +12,5 @@
      <div style="font-weight:bold" id="loading-layer-text">Загрузка. Пожалуйста, подождите...</div><br />
      <img src="pic/loading.gif" border="0" />
   </div>
+  <div id="warn-layer" style="position:absolute; z-index:1; visibility:hidden; font-family: Verdana;font-size: 11px;background:#FFF;padding:10px;text-align:center;border:1px solid #000"></div>
  </head>

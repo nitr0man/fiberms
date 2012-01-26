@@ -17,7 +17,8 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	$length = $_POST['length'];
 		    	$diameter = $_POST['diameter'];
 		    	PQuery('INSERT INTO "NetworkBoxType" (marking, manufacturer, units, width, height, length, diameter) VALUES (\''.$marking.'\', \''.$manufacturer.'\', '.$units.', '.$width.', '.$height.', '.$length.', '.$diameter.')');
-		    	print("done");
+		    	print("Добавлено!
+		    	<br><a href=\"index.php\">Назад</a>");
 			}
 	}
 else print("bris!");
