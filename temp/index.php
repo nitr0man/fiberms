@@ -26,16 +26,17 @@ function initscript(block)
 }
 
 	</script>
-<div id="content">
-<!--<form method="post" action="functions.php">-->
-<div id="newboxform">
+<!--<div id="content">-->
+<form onSubmit="return false">
 <table><tr><td>
 <table>
 <tr>
+<div id="newboxform">
 <td><label class="events_anonce">Тип ящика</label></td><td> <!--id="networkboxtype"> <label onclick="initscript('#networkboxtype')">\получить из базы\</label>-->
 <select name="networkboxtype">
  <option></option>
 </select>
+</div>
 
 </td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
 <br />
@@ -45,12 +46,11 @@ function initscript(block)
 <br />
 </tr>
 <tr>
-<td><label class="events_anonce">deprecated</label></td><td><input type="hidden" name="whichadded" value="networkbox" size="30" /></td>
+<td><label class="events_anonce">deprecated</label></td><td><input type="hidden" name="whichadded" value="networkbo2x" size="30" /></td>
 </tr><tr><td><input type="submit" />
-<!--</form>-->
+</form>
 </table>
 </td></tr>
-</div>
 <tr><td>
 <form name="boxtype" onSubmit="return false">
 <div id="addnewboxtype">
@@ -77,12 +77,12 @@ function initscript(block)
 </tr>
 <tr>
 <td><label class="events_anonce">Diameter</label></td><td id="diameter"> <label onclick="initscript('#diameter')">\получить из базы\</label></td>
-</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.marking.value,document.boxtype.manufacturer.value,document.boxtype.units.value,document.boxtype.width.value,document.boxtype.height.value,document.boxtype.length.value,document.boxtype.diameter.value,document.boxtype.whichadded.value)" /></td></form>
+</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype3" /></td><td><input type="submit" onclick="javascript: addnewboxtype(document.boxtype.marking.value,document.boxtype.manufacturer.value,document.boxtype.units.value,document.boxtype.width.value,document.boxtype.height.value,document.boxtype.length.value,document.boxtype.diameter.value,document.boxtype.whichadded.value)" /></td></form>
 </tr>
+</div>
 
 </table>
 </form>
-</div>
 <br />
 
 </body>
