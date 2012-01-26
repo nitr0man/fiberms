@@ -1,5 +1,5 @@
 <?php
-require_once("config.php");
+require_once "config.php";
 
 function PQuery($query)
 {
@@ -9,9 +9,8 @@ function PQuery($query)
 }
 
 
-/*if($_SERVER["REQUEST_METHOD"] == 'POST')
-	{*/		function AddNetworkBox()
-		{		if ($_POST['whichadded'] == 'networkboxtype')
+if($_SERVER["REQUEST_METHOD"] == 'POST')
+	{		if ($_POST['whichadded'] == 'networkboxtype')
 			{				print('1');/*    	    	PQuery("INSERT INTO NetworkBoxType(
         	    marking, manufacturer, units, width, height, length, diameter)
 		    	VALUES ('$_POST[#marking]', '$_POST[#manufacturer]', '$_POST[#units]', '$_POST[#width]', '$_POST[#height]', '$_POST[#length]', '$_POST[#diameter]');");*/
@@ -22,12 +21,9 @@ function PQuery($query)
 		    	$height = $_POST['#height'];
 		    	$length = $_POST['#length'];
 		    	$diameter = $_POST['#diameter'];
-		    	PQuery("INSERT INTO NetworkBoxType(
-        	    marking, manufacturer, units, width, height, length, diameter)
-		    	VALUES ('$marking', '$manufacturer', '$units', '$width', '$height', '$length', '$diameter')");
+		    	PQuery("INSERT INTO NetworkBoxType (marking, manufacturer, units, width, height, length, diameter) VALUES ('$marking', '$manufacturer', '$units', '$width', '$height', '$length', '$diameter')");
 		    	print("done");
 			}
-		}
-/*	}
-else print("bris!");*/
+	}
+else print("bris!");
 ?>

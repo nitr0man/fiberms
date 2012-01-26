@@ -16,9 +16,9 @@
  </div>
  </div>
 <script type="text/javascript">
-function initscript(block) 
+function initscript(block)
 {
-	$(block).replaceWith( "<td id=\""+block+"\"> <input type=\"text\" name=\""+block+"\" size=\"30\" /></td>" ); 
+	$(block).replaceWith( "<td id=\""+block+"\"> <input type=\"text\" name=\""+block+"\" size=\"30\" /></td>" );
 }
 
 	</script>
@@ -69,6 +69,7 @@ function initscript(block)
 </tr>
 
 </table>
+</form>
 <br />
 
 </body>
