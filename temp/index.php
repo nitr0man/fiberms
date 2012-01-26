@@ -1,5 +1,5 @@
 <?php include 'header.php' ?>
-<body>
+<body onload="<?  ?>">
  <div class="leftcolumn">
  <div class="left_col">
  <div class="menu">
