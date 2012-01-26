@@ -37,9 +37,11 @@ function initscript(block)
 <tr>
 <td><label class="events_anonce">deprecated</label></td><td><input type="hidden" name="whichadded" value="networkbox" size="30" /></td>
 </tr><tr><td><input type="submit" />
+</form>
 </table>
 </td></tr>
 <tr><td>
+<form method="post" action="functions.php">
 <table>
 <tr>
 <td><label class="events_anonce">Маркировка</label></td><td id="marking"> <label onclick="initscript('#marking')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
@@ -63,7 +65,7 @@ function initscript(block)
 </tr>
 <tr>
 <td><label class="events_anonce">Diameter</label></td><td id="diameter"> <label onclick="initscript('#diameter')">\получить из базы\</label></td>
-</tr><td><input type="hidden" name="whichadded" value="networkboxtype" /></td><td><input type="submit" /></td>
+</tr><td><input type="hidden" name="whichadded" value="networkboxtype" /></td><td><input type="submit" /></td></form>
 </tr>
 
 </table>
