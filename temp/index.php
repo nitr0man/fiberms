@@ -71,6 +71,5 @@ function initscript(block)
 </table>
 <br />
 
-</form>
 </body>
 </html>
