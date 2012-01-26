@@ -31,8 +31,12 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 				while ($networkbox = pg_fetch_array($res)) {
 					print("<option value=\"".$networkbox['id']."\">".$networkbox['marking']."</option>");
 				}
+				$boxtypeid = "javascript: document.boxtypevalue.networkbox.value";
+//				$res = PQuery('SELECT COUNT(*) FROM "NetworkBox" WHERE "NetworkBoxType"=$boxtypeid');
+
 				print("</select>
 				</td>
+				SELECT COUNT(*) FROM \"NetworkBox\" WHERE \"NetworkBoxType\"=$boxtypeid
 
 				<br />
 				</tr>

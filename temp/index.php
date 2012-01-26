@@ -27,7 +27,7 @@ function initscript(block)
 
 	</script>
 <!--<div id="content">-->
-<form onsubmit="return false">
+<form name="boxtypevalue" onsubmit="return false">
 <div id="newboxform">
 	<table>
 		<tr>
