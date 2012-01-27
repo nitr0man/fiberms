@@ -11,19 +11,22 @@ function initscript(block)
 	</script>
 <!--<div id="content">-->
 <form name="boxtypevalue" onsubmit="return false">
-<div id="newboxform">
+<div id="ololo">
 	<table>
 		<tr>
-		<td><label class="events_anonce">Тип ящика</label></td><td> <!--id="networkboxtype"> <label onclick="initscript('#networkboxtype')">\получить из базы\</label>-->
+		<td><label class="events_anonce">Тип ящика</label></td><td id="newboxform"> <!--id="networkboxtype"> <label onclick="initscript('#networkboxtype')">\получить из базы\</label>-->
 		<select name="networkboxtype">
+		
+			<option>k;hj</option>
 			<option></option>
 			</select>
+		
 		</td>
 
 <br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Инв. номер</label></td><td id="inventorynumber"> <label onclick="initscript('#inventorynumber')">\получить из базы\</label></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
+		<td><label class="events_anonce">Инв. номер</label></td><td id="inventorynumber"> <a href="#" id="boxinv" onclick="initscript('#inventorynumber')">\получить из базы\</a></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
 <br />
 		</tr>
 		<tr>

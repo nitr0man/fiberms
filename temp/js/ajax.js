@@ -315,6 +315,7 @@ ajax.requestFile = "functions.php";
 ajax.setVar("boxtypeid", boxtypeid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
-ajax.element = 'newboxform';
+ajax.element = 'boxinv';
 ajax.sendAJAX(varsString);
 }
+
