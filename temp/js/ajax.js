@@ -319,3 +319,16 @@ ajax.element = 'boxinv';
 ajax.sendAJAX(varsString);
 }
 
+function getcurrentscripts(mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "functions.php";
+//ajax.setVar("scriptid", scriptid);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'backscript';
+ajax.sendAJAX(varsString);
+}
+
+

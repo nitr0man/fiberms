@@ -31,6 +31,7 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 				print("<option value=\"".$mybox['id']."\">".$mybox['marking']."</option>");
 				}
 				print("</select>");
+				print("<script type=\"text/javascript\">var a=2; var b=3; alert(a+b);</script>");
 			}
 		else
 		if ($_POST['mode'] == 2)
