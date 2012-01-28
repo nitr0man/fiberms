@@ -13,7 +13,7 @@ $smarty = new Smarty;
 
 //$smarty->force_compile = true;
 $smarty->debugging = true;
-$smarty->caching = true;
+$smarty->caching = false;
 $smarty->cache_lifetime = 120;
 
 $smarty->assign("Name","Fred Irving Johnathan Bradley Peppergill",true);
@@ -29,5 +29,5 @@ $smarty->assign("option_values", array("NY","NE","KS","IA","OK","TX"));
 $smarty->assign("option_output", array("New York","Nebraska","Kansas","Iowa","Oklahoma","Texas"));
 $smarty->assign("option_selected", "NE");
 
-$smarty->display('index.tpl');
+$smarty->display('networkbox.tpl');
 ?>
