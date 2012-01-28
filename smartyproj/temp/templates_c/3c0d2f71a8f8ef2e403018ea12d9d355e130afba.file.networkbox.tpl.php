@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-01-28 16:00:22
+<?php /* Smarty version Smarty-3.1.7, created on 2012-01-28 16:20:30
          compiled from ".\templates\networkbox.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:267524f23ff76977559-86895894%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3c0d2f71a8f8ef2e403018ea12d9d355e130afba' => 
     array (
       0 => '.\\templates\\networkbox.tpl',
-      1 => 1327758944,
+      1 => 1327760429,
       2 => 'file',
     ),
   ),
@@ -15,16 +15,20 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'function' => 
   array (
   ),
-  'has_nocache_code' => false,
   'version' => 'Smarty-3.1.7',
   'unifunc' => 'content_4f23ff769cd9b',
+  'variables' => 
+  array (
+    'marking' => 0,
+  ),
+  'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_4f23ff769cd9b')) {function content_4f23ff769cd9b($_smarty_tpl) {?>﻿<?php  $_config = new Smarty_Internal_Config("test.conf", $_smarty_tpl->smarty, $_smarty_tpl);$_config->loadConfigVars("setup", 'local'); ?>
 <?php echo $_smarty_tpl->getSubTemplate ("header.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array('title'=>'foo'), 0);?>
 
 <?php echo $_smarty_tpl->getSubTemplate ("menu.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
-
+<div id="boxinv">
 <body onload="javascript: getformfornewbox(1);">
 <div id="backscript">&nbsp;</div>
 <script type="text/javascript">
@@ -61,7 +65,7 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 <br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> <a href="#" id="boxinv" onclick="initscript('#inventorynumber')">\получить из базы\</a></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
+		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> <a href="#" id="boxinv1" onclick="initscript('#inventorynumber')">\получить из базы\</a></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
 <br />
 		</tr>
 		<tr>
@@ -78,7 +82,8 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 	<div id="addnewboxtype">
 		<table>
 		<tr>
-		<td><label class="events_anonce">Маркировка</label></td><td> <label id="marking" onclick="initscript('#marking')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
+		<td><label class="events_anonce">Маркировка</label></td><td> <?php echo $_smarty_tpl->tpl_vars['marking']->value;?>
+<label id="marking" onclick="initscript('#marking')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
 <br />
 		</tr>
 		<tr>
@@ -106,4 +111,5 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 </form>
 <br />
 
-</body><?php }} ?>
+</body>
+</div><?php }} ?>
