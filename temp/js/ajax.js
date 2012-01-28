@@ -268,8 +268,8 @@ if (elemNodeName == "input" || elemNodeName == "select" || elemNodeName == "opti
     }
 } else {
 	if (self.elementObj.innerHTML.indexOf("&nbsp;") == 0) {
-		self.elementObj.innerHTML = self.response; setvalues(marking,manufacturer,units,width,height,length,diameter); } else { self.elementObj.innerHTML = self.response; }
-//    self.elementObj.innerHTML = self.response;
+		self.elementObj.innerHTML = self.response; setvalues("marking","manufacturer","units","width","height","length","diameter"); } else { self.elementObj.innerHTML = self.response; }
+//    self.elementObj.innerHTML = self.response;setvalues(marking,manufacturer,units,width,height,length,diameter); } else { self.elementObj.innerHTML = self.response; }
 //    alert(self.elementObj.innerHTML);
 }
 }
