@@ -55,9 +55,8 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 					var height = \"".$boxrow['height']."\";
 					var length = \"".$boxrow['length']."\";
 					var diameter = \"".$boxrow['diameter']."\";
-					eval(\"setvalues(marking,manufacturer,units,width,height,length,diameter);\");
 					</script>");
-				}
+				}//\");
 			}
 	}
 else print("bris!");

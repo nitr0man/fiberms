@@ -267,7 +267,10 @@ if (elemNodeName == "input" || elemNodeName == "select" || elemNodeName == "opti
 	self.elementObj.value = self.response;
     }
 } else {
-    self.elementObj.innerHTML = self.response;
+	if (self.elementObj.innerHTML.indexOf("&nbsp;") == 0) {
+		self.elementObj.innerHTML = self.response; setvalues(marking,manufacturer,units,width,height,length,diameter); } else { self.elementObj.innerHTML = self.response; }
+//    self.elementObj.innerHTML = self.response;
+//    alert(self.elementObj.innerHTML);
 }
 }
 }
@@ -329,6 +332,7 @@ ajax.setVar("mode", mode);
 ajax.method = 'POST';
 ajax.element = 'backscript';
 ajax.sendAJAX(varsString);
+	//setvalues(marking,manufacturer,units,width,height,length,diameter);
 }
 
 
