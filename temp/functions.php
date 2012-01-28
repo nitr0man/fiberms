@@ -48,14 +48,14 @@ if($_SERVER["REQUEST_METHOD"] == 'POST')
 				$res = PQuery('SELECT * FROM "NetworkBoxType" WHERE id='.$boxtypeid.';');
 				while ($boxrow = pg_fetch_array($res)) {
 					print("&nbsp;<script type=\"text/javascript\">
-					var marking = \"".$boxrow['marking']."\";
-					var manufacturer = \"".$boxrow['manufacturer']."\";
-					var units = \"".$boxrow['units']."\";
-					var width = \"".$boxrow['width']."\";
-					var height = \"".$boxrow['height']."\";
-					var length = \"".$boxrow['length']."\";
-					var diameter = \"".$boxrow['diameter']."\";
-					</script>");
+var marking = \"".$boxrow['marking']."\";
+var manufacturer = \"".$boxrow['manufacturer']."\";
+var units = \"".$boxrow['units']."\";
+var width = \"".$boxrow['width']."\";
+var height = \"".$boxrow['height']."\";
+var length = \"".$boxrow['length']."\";
+var diameter = \"".$boxrow['diameter']."\";
+</script>");
 				}//\");
 			}
 	}

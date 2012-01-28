@@ -1,4 +1,5 @@
 ﻿<body onload="javascript: getformfornewbox(1);">
+<div id="backscript">&nbsp;</div>
 <script type="text/javascript">
 
 function initscript(block)
@@ -17,7 +18,6 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 	$('#diameter').replaceWith("<label id=\"diameter\" onclick=\"initscript('#diameter')\">"+seventh+"</label>");
 }
 	</script>
-<div id="backscript">&nbsp;</div>
 <!--<div id="content">-->
 <form name="boxtypevalue" onsubmit="return false">
 <div id="ololo">
