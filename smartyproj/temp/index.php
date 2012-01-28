@@ -16,7 +16,7 @@ $smarty->debugging = false;
 $smarty->caching = false;
 $smarty->cache_lifetime = 120;
 
-$smarty->assign("Name","Fred Irving Johnathan Bradley Peppergill",true);
+/*$smarty->assign("Name","Fred Irving Johnathan Bradley Peppergill",true);
 $smarty->assign("FirstName",array("John","Mary","James","Henry"));
 $smarty->assign("LastName",array("Doe","Smith","Johnson","Case"));
 $smarty->assign("Class",array(array("A","B","C","D"), array("E", "F", "G", "H"),
@@ -27,7 +27,8 @@ $smarty->assign("contacts", array(array("phone" => "1", "fax" => "2", "cell" => 
 
 $smarty->assign("option_values", array("NY","NE","KS","IA","OK","TX"));
 $smarty->assign("option_output", array("New York","Nebraska","Kansas","Iowa","Oklahoma","Texas"));
-$smarty->assign("option_selected", "NE");
+$smarty->assign("option_selected", "NE");*/
+$smarty->assign("marking","1");
 
 $smarty->display('networkbox.tpl');
 ?>

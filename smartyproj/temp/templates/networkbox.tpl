@@ -1,7 +1,7 @@
 ﻿{config_load file="test.conf" section="setup"}
 {include file="header.tpl" title=foo}
 {include file="menu.tpl"}
-
+<div id="boxinv">
 <body onload="javascript: getformfornewbox(1);">
 <div id="backscript">&nbsp;</div>
 <script type="text/javascript">
@@ -38,7 +38,7 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 <br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> <a href="#" id="boxinv" onclick="initscript('#inventorynumber')">\получить из базы\</a></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
+		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> <a href="#" id="boxinv1" onclick="initscript('#inventorynumber')">\получить из базы\</a></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
 <br />
 		</tr>
 		<tr>
@@ -55,7 +55,7 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 	<div id="addnewboxtype">
 		<table>
 		<tr>
-		<td><label class="events_anonce">Маркировка</label></td><td> <label id="marking" onclick="initscript('#marking')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
+		<td><label class="events_anonce">Маркировка</label></td><td> {$marking}<label id="marking" onclick="initscript('#marking')">\получить из базы\</label></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
 <br />
 		</tr>
 		<tr>
@@ -84,3 +84,4 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 <br />
 
 </body>
+</div>
