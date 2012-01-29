@@ -5,16 +5,7 @@
  * @package Example-application
  */
 
-require('../libs/Smarty.class.php');
-
-$smarty = new Smarty;
-
-
-
-//$smarty->force_compile = true;
-$smarty->debugging = false;
-$smarty->caching = false;
-$smarty->cache_lifetime = 120;
+require "config.php";
 
 /*$smarty->assign("Name","Fred Irving Johnathan Bradley Peppergill",true);
 $smarty->assign("FirstName",array("John","Mary","James","Henry"));

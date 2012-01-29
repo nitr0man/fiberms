@@ -95,7 +95,7 @@ this.divobj.style.left = setX + "px";
 this.divobj.style.top  = setY + "px";
 }
 function tbdev_ajax(file){
-this.AjaxFailedAlert = "Ваш браузер не поддерживает расширенные возможности управления сайтом, мы настоятельно рекомендуем сменить браузер.\n";
+this.AjaxFailedAlert = "Г  в± н±ўн¶° оЈ рђЇ¤е¦°з©ўб¦І сЎІёй±Ґо®»гЎўпЁ¬п§­пІІжЎірђ± г¬Ґо©ї тЎЄІпЄ¬ н№ оЎ±у°ЂІж¬јо¬ с¦«®еґҐкЎ±йіј в± н±ўн¶°.\n";
 this.requestFile = file;
 this.method = "POST";
 this.URLString = "";
@@ -252,7 +252,7 @@ var elemNodeName = self.elementObj.nodeName.toLowerCase();
 self.onHide();
 
 
-if (self.response == 'error') { alert('Доступ отклонен'); } else {
+if (self.response == 'error') { alert('Р”РѕСЃС‚СѓРї РѕС‚РєР»РѕРЅРµРЅ'); } else {
 if (elemNodeName == "input" || elemNodeName == "select" || elemNodeName == "option" || elemNodeName == "textarea"){
     if (elemNodeName == "select") {
 	self.elementObj.options.length = 0;
@@ -297,11 +297,11 @@ ajax.method = 'POST';
 ajax.element = 'addnewboxtype';
 ajax.sendAJAX(varsString);
 }
-function getformfornewbox(mode){
+function GetBoxTypeList(mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
-ajax.requestFile = "functions.php";
+ajax.requestFile = "NetworkBoxType_ajax.php";
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
 ajax.element = 'newboxform';
@@ -311,11 +311,11 @@ function gettypeboxinfo(boxtypeid,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
-ajax.requestFile = "functions.php";
+ajax.requestFile = "NetworkBoxType_ajax.php";
 ajax.setVar("boxtypeid", boxtypeid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
-ajax.element = 'boxinv';
+ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
 
