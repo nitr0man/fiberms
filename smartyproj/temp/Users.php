@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		    			{		    				$query = $query.',"password"=\''.md5($password).'\'';
 		    			}
 				   	Users_UPDATE($query,'id='.$id);
-				   	print("Пользователь изменен!<br />
+				   	print("Пользователь успешно изменен!<br />
 					<a href=\"Users.php\">Назад</a>");
 				}
 				else
@@ -58,9 +58,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 					if (pg_num_rows($res) > 0)
 					{
 						print("Пользователь с таким логином существует!<br />
-						<a href=\"Users.php\">Назад</a>");
+						<a href=\"Users.php\">РќР°Р·Р°Рґ</a>");
 					}					Users_INSERT('(username, password, class) VALUES (\''.$login.'\', \''.md5($password).'\', \''.$group.'\')');
-					print("Пользователь добавлен успешно!<br />
+					print("Пользователь добавлен!<br />
 					<a href=\"Users.php\">Назад</a>");
 				}
 			}

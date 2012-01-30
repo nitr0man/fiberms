@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-01-30 19:49:06
+<?php /* Smarty version Smarty-3.1.7, created on 2012-01-30 21:52:20
          compiled from ".\templates\Users_content.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:279174f26cea7bfcf73-45901140%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '682b7ab69ff17150a003807bd610c9d41061d436' => 
     array (
       0 => '.\\templates\\Users_content.tpl',
-      1 => 1327945724,
+      1 => 1327953137,
       2 => 'file',
     ),
   ),
@@ -32,12 +32,12 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_4f26cea7d27ce')) {function content_4f26cea7d27ce($_smarty_tpl) {?><?php if (!is_callable('smarty_function_html_options')) include 'S:\\home\\localhost\\www\\kkc\\fiberms\\smartyproj\\libs\\plugins\\function.html_options.php';
-?>﻿<form name="usersvalue" onsubmit="return false">
+?><form name="usersvalue" onsubmit="return false">
 <div id="ololo">
 	<table>
 		<tr>
 		<td><label class="events_anonce">Пользователь:</label></td><td id="newboxform">
-		<select name="Users" onChange="javascript: GetTypeBoxInfo(document.usersvalue.Users.value,1);">
+		<select name="Users" onChange="javascript: GetUserInfo(document.usersvalue.Users.value,1);">
 		<?php echo smarty_function_html_options(array('values'=>$_smarty_tpl->tpl_vars['combobox_users_values']->value,'selected'=>$_smarty_tpl->tpl_vars['combobox_users_selected']->value,'output'=>$_smarty_tpl->tpl_vars['combobox_users_text']->value),$_smarty_tpl);?>
 
 		</select>

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-01-30 13:33:52
+<?php /* Smarty version Smarty-3.1.7, created on 2012-01-30 21:50:56
          compiled from ".\templates\NetworkBoxType_content.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:127394f251f8f9d8115-94949027%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '0ef2e558cccbe59f3fb843e5b95ad20d3efb36df' => 
     array (
       0 => '.\\templates\\NetworkBoxType_content.tpl',
-      1 => 1327923231,
+      1 => 1327952963,
       2 => 'file',
     ),
   ),
@@ -35,7 +35,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
   'has_nocache_code' => false,
 ),false); /*/%%SmartyHeaderCode%%*/?>
 <?php if ($_valid && !is_callable('content_4f251f8f9e706')) {function content_4f251f8f9e706($_smarty_tpl) {?><?php if (!is_callable('smarty_function_html_options')) include 'S:\\home\\localhost\\www\\kkc\\fiberms\\smartyproj\\libs\\plugins\\function.html_options.php';
-?>﻿<form name="boxtypevalue" onsubmit="return false">
+?><form name="boxtypevalue" onsubmit="return false">
 <div id="ololo">
 	<table>
 		<tr>

@@ -1,4 +1,4 @@
-﻿function _get_obj_toppos(obj)
+function _get_obj_toppos(obj)
 {
 var top = obj.offsetTop;
 while( (obj = obj.offsetParent) != null )

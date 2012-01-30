@@ -1,4 +1,4 @@
-﻿<form name="boxtypevalue" onsubmit="return false">
+<form name="boxtypevalue" onsubmit="return false">
 <div id="ololo">
 	<table>
 		<tr>

@@ -58,13 +58,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	if ($_POST['rb'] == 'true')
 		    	{
 				   	NetworkBoxType_UPDATE('"marking"=\''.$marking.'\',"manufacturer"=\''.$manufacturer.'\',"units"='.$units.',"width"='.$width.',"height"='.$height.',"length"='.$length.',"diameter"='.$diameter,'id='.$id);
-				   	print("Успешно изменено!<br />
-					<a href=\"NetworkBoxType.php\">Назад</a>");
+				   	print("РЈСЃРїРµС€РЅРѕ РёР·РјРµРЅРµРЅРѕ!<br />
+					<a href=\"NetworkBoxType.php\">РќР°Р·Р°Рґ</a>");
 				}
 				else
 				{					NetworkBoxtype_INSERT('(marking, manufacturer, units, width, height, length, diameter) VALUES (\''.$marking.'\', \''.$manufacturer.'\', '.$units.', '.$width.', '.$height.', '.$length.', '.$diameter.')');
-					print("Добавлено успешно!<br />
-					<a href=\"NetworkBoxType.php\">Назад</a>");
+					print("Р”РѕР±Р°РІР»РµРЅРѕ СѓСЃРїРµС€РЅРѕ!<br />
+					<a href=\"NetworkBoxType.php\">РќР°Р·Р°Рґ</a>");
 				}
 			}
 	}

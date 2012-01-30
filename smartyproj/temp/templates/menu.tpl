@@ -1,4 +1,4 @@
-﻿<body>
+<body>
 <div class="leftcolumn">
  <div class="left_col">
  <div class="menu">
@@ -9,7 +9,7 @@
 	<li id="li4">element3</li>
 	<li id="li4">element4</li>
 	<li id="li4">element5</li>
-	<li id="li4">element6</li>
+	<li id="li4"><a href="logout.php">Выход</a></li>
  </ul>
  </div>
  </div>

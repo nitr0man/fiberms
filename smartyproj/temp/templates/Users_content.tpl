@@ -1,9 +1,9 @@
-﻿<form name="usersvalue" onsubmit="return false">
+<form name="usersvalue" onsubmit="return false">
 <div id="ololo">
 	<table>
 		<tr>
 		<td><label class="events_anonce">Пользователь:</label></td><td id="newboxform">
-		<select name="Users" onChange="javascript: GetTypeBoxInfo(document.usersvalue.Users.value,1);">
+		<select name="Users" onChange="javascript: GetUserInfo(document.usersvalue.Users.value,1);">
 		{html_options values=$combobox_users_values selected=$combobox_users_selected output=$combobox_users_text}
 		</select>
 		

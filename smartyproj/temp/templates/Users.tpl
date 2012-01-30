@@ -1,4 +1,4 @@
-﻿{config_load file="test.conf" section="setup"}
+{config_load file="test.conf" section="setup"}
 {include file="header.tpl" title=foo}
 {include file="menu.tpl"}
 <!--<div id="boxinv">-->

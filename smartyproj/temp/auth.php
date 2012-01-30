@@ -5,10 +5,7 @@ require_once("smarty.php");
 if (isset($_COOKIE['token']) && !isset($_SESSION['user']))
 {
 	$token = htmlspecialchars($_COOKIE['token']);
-	$link = mysql_connect('localhost','root','123');
-	mysql_select_db('alta', $link);
-//	$res = mysql_query("SELECT login FROM users WHERE token='$token'", $link);
-	$res = PQuery('SELECT "username" FROM Users WHERE "token"=\''.$token.'\'');
+	$res = PQuery('SELECT "username" FROM "Users" WHERE "token"=\''.$token.'\'');
 	if (pg_num_rows($res) < 1)
 	{
 		setcookie('token', '');
