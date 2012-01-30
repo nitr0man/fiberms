@@ -1,4 +1,4 @@
-function _get_obj_toppos(obj)
+﻿function _get_obj_toppos(obj)
 {
 var top = obj.offsetTop;
 while( (obj = obj.offsetParent) != null )
@@ -95,7 +95,7 @@ this.divobj.style.left = setX + "px";
 this.divobj.style.top  = setY + "px";
 }
 function tbdev_ajax(file){
-this.AjaxFailedAlert = "à Ⱡ������ 𐯤妰穢ᦲ 񡲸鱥㡢館吝ﲲ桳𐱠㬥 򡪲窱 ���󰀲欼񦫮崥ꡱ鳼 Ⱡ������.\n";
+this.AjaxFailedAlert = "Г  в± н±ўн¶° оЈ рђЇ¤е¦°з©ўб¦І сЎІёй±Ґо®»гЎўпЁ¬п§­пІІжЎірђ± г¬Ґо©ї тЎЄІпЄ¬ н№ оЎ±у°ЂІж¬јо¬ с¦«®еґҐкЎ±йіј в± н±ўн¶°.\n";
 this.requestFile = file;
 this.method = "POST";
 this.URLString = "";
@@ -252,7 +252,7 @@ var elemNodeName = self.elementObj.nodeName.toLowerCase();
 self.onHide();
 
 
-if (self.response == 'error') { alert('Доступ отклонен'); } else {
+if (self.response == 'error') { alert('Р”РѕСЃС‚СѓРї РѕС‚РєР»РѕРЅРµРЅ'); } else {
 if (elemNodeName == "input" || elemNodeName == "select" || elemNodeName == "option" || elemNodeName == "textarea"){
     if (elemNodeName == "select") {
 	self.elementObj.options.length = 0;
@@ -280,24 +280,6 @@ break;
 };
 this.createAJAX();
 }
-function addnewboxtype(marking,manufacturer,units,width,height,length,diameter,whichadded){
-var ajax = new tbdev_ajax();
-ajax.onShow ('');
-var varsString = "";
-ajax.requestFile = "functions.php";
-ajax.setVar("marking", marking);
-ajax.setVar("manufacturer", manufacturer);
-ajax.setVar("units", units);
-ajax.setVar("width", width);
-ajax.setVar("height", height);
-ajax.setVar("length", length);
-ajax.setVar("diameter", diameter);
-ajax.setVar("whichadded", whichadded);
-ajax.method = 'POST';
-ajax.element = 'addnewboxtype';
-ajax.sendAJAX(varsString);
-}
-
 function AddNewOrChangeBoxType(mode,rb,id,marking,manufacturer,units,width,height,length,diameter){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
@@ -317,17 +299,6 @@ ajax.method = 'POST';
 ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
-
-function GetBoxTypeList(mode){
-var ajax = new tbdev_ajax();
-ajax.onShow ('');
-var varsString = "";
-ajax.requestFile = "NetworkBoxType_ajax.php";
-ajax.setVar("mode", mode);
-ajax.method = 'POST';
-ajax.element = 'newboxform';
-ajax.sendAJAX(varsString);
-}
 function GetTypeBoxInfo(boxtypeid,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
@@ -339,18 +310,3 @@ ajax.method = 'POST';
 ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
-
-function getcurrentscripts(boxtypeid,mode){
-var ajax = new tbdev_ajax();
-ajax.onShow ('');
-var varsString = "";
-ajax.requestFile = "functions.php";
-ajax.setVar("boxtypeid", boxtypeid);
-ajax.setVar("mode", mode);
-ajax.method = 'POST';
-ajax.element = 'backscript';
-ajax.sendAJAX(varsString);
-	//setvalues(marking,manufacturer,units,width,height,length,diameter);
-}
-
-
