@@ -1,5 +1,4 @@
 <?php
-
 function PQuery($query)
 {
 	require "config.php";

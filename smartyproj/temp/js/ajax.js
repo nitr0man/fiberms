@@ -310,3 +310,29 @@ ajax.method = 'POST';
 ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
+function GetUserInfo(userid,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "Users.php";
+ajax.setVar("userid", userid);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+function AddNewOrChangeUser(mode,rb,userid,login,password,group){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "Users.php";
+ajax.setVar("mode", mode);
+ajax.setVar("rb", rb);
+ajax.setVar("userid", userid);
+ajax.setVar("login", login);
+ajax.setVar("password", password);
+ajax.setVar("group", group);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}

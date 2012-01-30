@@ -1,23 +1,11 @@
 <?php
-require "smarty.php";
+require_once("auth.php");
+require_once("smarty.php");
+
 if ($_SERVER["REQUEST_METHOD"] == 'POST')
 	{
 		require "functions/NetworkBoxType_func.php";
-		require_once("functions.php");;
-		if ($_POST['whichadded'] == 'networkboxtype')
-			{
-		    	$marking = $_POST['marking'];
-		    	$manufacturer = $_POST['manufacturer'];
-		    	$units = $_POST['units'];
-		    	$width = $_POST['width'];
-		    	$height = $_POST['height'];
-		    	$length = $_POST['length'];
-		    	$diameter = $_POST['diameter'];
-		    	PQuery('INSERT INTO "NetworkBoxType" (marking, manufacturer, units, width, height, length, diameter) VALUES (\''.$marking.'\', \''.$manufacturer.'\', '.$units.', '.$width.', '.$height.', '.$length.', '.$diameter.')');
-		    	print("Добавлено!
-		    	<br><a href=\"index.php\">Назад</a>");
-			}
-		else
+		require_once("functions.php");
 		if ($_POST['mode'] == 1)
 			{
 				$boxtypeid = $_POST['boxtypeid'];
