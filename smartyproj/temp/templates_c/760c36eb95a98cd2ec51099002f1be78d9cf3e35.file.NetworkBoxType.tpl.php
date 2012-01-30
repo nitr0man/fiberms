@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-01-29 12:47:41
+<?php /* Smarty version Smarty-3.1.7, created on 2012-01-30 13:29:59
          compiled from ".\templates\NetworkBoxType.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:135244f251f8f8044d4-48958935%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '760c36eb95a98cd2ec51099002f1be78d9cf3e35' => 
     array (
       0 => '.\\templates\\NetworkBoxType.tpl',
-      1 => 1327834052,
+      1 => 1327922964,
       2 => 'file',
     ),
   ),
@@ -24,9 +24,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
 <?php echo $_smarty_tpl->getSubTemplate ("menu.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
-<div id="boxinv">
-<body onload="javascript: GetBoxTypeList(1);">
-<div id="backscript">&nbsp;</div>
+<!--<div id="boxinv">-->
+<body onload="javascript: GetTypeBoxInfo(0,1);">
+<!--<div id="backscript">&nbsp;</div>-->
 <script type="text/javascript">
 
 function initscript(block)
@@ -35,6 +35,7 @@ function initscript(block)
 	lol = lol.replace(/\#/g,"");
 	$(block).replaceWith( "<input id=\""+block+"\" type=\"text\" name=\""+lol+"\" size=\"30\" />" );
 }
+
 function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 	$('#marking').replaceWith("<label id=\"marking\" onclick=\"initscript('#marking')\">"+first+"</label>");
 	$('#manufacturer').replaceWith("<label id=\"manufacturer\" onclick=\"initscript('#manufacturer')\">"+second+"</label>");
@@ -44,7 +45,19 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 	$('#length').replaceWith("<label id=\"length\" onclick=\"initscript('#length')\">"+sixs+"</label>");
 	$('#diameter').replaceWith("<label id=\"diameter\" onclick=\"initscript('#diameter')\">"+seventh+"</label>");
 }
-	</script>
+
+function ClearInput()
+{
+document.boxtype.id.value = '';
+document.boxtype.marking.value = '';
+document.boxtype.manufacturer.value = '';
+document.boxtype.units.value = '';
+document.boxtype.width.value = '';
+document.boxtype.height.value = '';
+document.boxtype.length.value = '';
+document.boxtype.diameter.value = '';
+}
+</script>
 <div id="content">
 <?php echo $_smarty_tpl->getSubTemplate ("NetworkBoxType_content.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
@@ -52,4 +65,4 @@ function setvalues(first,second,third,fourth,fifth,sixs,seventh) {
 <br />
 
 </body>
-</div><?php }} ?>
+<!--</div>--><?php }} ?>

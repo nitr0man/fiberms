@@ -297,6 +297,27 @@ ajax.method = 'POST';
 ajax.element = 'addnewboxtype';
 ajax.sendAJAX(varsString);
 }
+
+function AddNewOrChangeBoxType(mode,rb,id,marking,manufacturer,units,width,height,length,diameter){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkBoxType.php";
+ajax.setVar("mode", mode);
+ajax.setVar("rb", rb);
+ajax.setVar("id", id);
+ajax.setVar("marking", marking);
+ajax.setVar("manufacturer", manufacturer);
+ajax.setVar("units", units);
+ajax.setVar("width", width);
+ajax.setVar("height", height);
+ajax.setVar("length", length);
+ajax.setVar("diameter", diameter);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+
 function GetBoxTypeList(mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
@@ -307,11 +328,11 @@ ajax.method = 'POST';
 ajax.element = 'newboxform';
 ajax.sendAJAX(varsString);
 }
-function gettypeboxinfo(boxtypeid,mode){
+function GetTypeBoxInfo(boxtypeid,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
-ajax.requestFile = "NetworkBoxType_ajax.php";
+ajax.requestFile = "NetworkBoxType.php";
 ajax.setVar("boxtypeid", boxtypeid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
