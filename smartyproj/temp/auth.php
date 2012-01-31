@@ -5,7 +5,7 @@ require_once("smarty.php");
 if (isset($_COOKIE['token']) && !isset($_SESSION['user']))
 {
 	$token = htmlspecialchars($_COOKIE['token']);
-	$res = PQuery('SELECT "username" FROM "Users" WHERE "token"=\''.$token.'\'');
+	$res = PQuery('SELECT "username","class" FROM "Users" WHERE "token"=\''.$token.'\'');
 	if (pg_num_rows($res) < 1)
 	{
 		setcookie('token', '');
@@ -13,6 +13,7 @@ if (isset($_COOKIE['token']) && !isset($_SESSION['user']))
 	else
 	{
 		$_SESSION['user'] = pg_result($res, 0);
+		$_SESSION['class'] = pg_result($res, 0, 1);
 	}
 }
 if (!isset($_SESSION['user']))
