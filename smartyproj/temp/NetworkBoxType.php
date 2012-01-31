@@ -4,7 +4,7 @@ require_once("smarty.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST')
 	{
-		require "functions/NetworkBoxType_func.php";
+		require "func/NetworkBoxType_func.php";
 		require_once("functions.php");
 		if ($_POST['mode'] == 1)
 			{

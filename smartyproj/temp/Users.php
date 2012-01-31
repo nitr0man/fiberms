@@ -4,7 +4,7 @@ require_once("smarty.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST')
 	{
-		require "functions/Users_func.php";
+		require "func/Users_func.php";
 		require_once("functions.php");
 		if ($_POST['mode'] == 1)
 			{
@@ -32,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 				$smarty->assign("combobox_users_text",$combobox_users_text);
 				$smarty->assign("combobox_users_selected",$userid);
 				$smarty->assign("combobox_usergroup_values",array("1","2"));
-				$smarty->assign("combobox_usergroup_text",array("Админ","ReadOnly"));
+				$smarty->assign("combobox_usergroup_text",array("РђРґРјРёРЅ","ReadOnly"));
 				$smarty->assign("combobox_usergroup_selected",$class);
 				$smarty->display('Users_content.tpl');
 			}
@@ -49,19 +49,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		    			{		    				$query = $query.',"password"=\''.md5($password).'\'';
 		    			}
 				   	Users_UPDATE($query,'id='.$id);
-				   	print("Пользователь успешно изменен!<br />
-					<a href=\"Users.php\">Назад</a>");
+				   	print("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СѓСЃРїРµС€РЅРѕ РёР·РјРµРЅРµРЅ!<br />
+					<a href=\"Users.php\">РќР°Р·Р°Рґ</a>");
 				}
 				else
 				{
 					$res = Users_SELECT('id','','"username"=\''.$login.'\'');
 					if (pg_num_rows($res) > 0)
 					{
-						print("Пользователь с таким логином существует!<br />
-						<a href=\"Users.php\">РќР°Р·Р°Рґ</a>");
+						print("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ СЃ С‚Р°РєРёРј Р»РѕРіРёРЅРѕРј СЃСѓС‰РµСЃС‚РІСѓРµС‚!<br />
+						<a href=\"Users.php\">Р СњР В°Р В·Р В°Р Т‘</a>");
 					}					Users_INSERT('(username, password, class) VALUES (\''.$login.'\', \''.md5($password).'\', \''.$group.'\')');
-					print("Пользователь добавлен!<br />
-					<a href=\"Users.php\">Назад</a>");
+					print("РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ РґРѕР±Р°РІР»РµРЅ!<br />
+					<a href=\"Users.php\">РќР°Р·Р°Рґ</a>");
 				}
 			}
 	}
