@@ -6,6 +6,7 @@
  <ul>
 	<li id="li4"><a href="#">Ящики</a>
 		<ul>
+			<li id="li4"><a href="NetworkBox.php">Все ящики</a></li>
 			<li id="li4"><a href="NetworkBoxType.php">Типы ящиков</a></li>
 			<li id="li4"><a href="#">Добавить ящик</a></li>
 			<li id="li4"><a href="#">Добавить\изменить тип</a></li>

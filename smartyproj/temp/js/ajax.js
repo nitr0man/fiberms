@@ -336,3 +336,14 @@ ajax.method = 'POST';
 ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
+function GetBoxInfo(boxtypeid,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkBox.php";
+ajax.setVar("boxtypeid", boxtypeid);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
