@@ -4,4 +4,5 @@
 <body onload="javascript: GetBoxInfo(0,1);">
 <div id="content">
 {include file="NetworkBox_content.tpl"}
-
+</div>
+</body>
