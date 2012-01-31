@@ -158,3 +158,9 @@ div.hroniki_name a:hover { font-family: Tahoma, sans-serif; font-weight:normal; 
 .img-arrow{
   margin-top: 10px;
 }
+.menu li ul{
+    display:none;
+}
+.menu li:hover ul {
+	display:block;
+}
