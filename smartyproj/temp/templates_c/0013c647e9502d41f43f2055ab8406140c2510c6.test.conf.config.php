@@ -12,6 +12,5 @@
   'vars' => 
   array (
     'title' => 'Welcome to Smarty!',
-    'cutoff_size' => 40,
   ),
 ); ?>

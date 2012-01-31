@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 $host = "nitr0.homelinux.net";
 $user = "development";
 $pass = "devpass12";

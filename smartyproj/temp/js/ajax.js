@@ -95,7 +95,7 @@ this.divobj.style.left = setX + "px";
 this.divobj.style.top  = setY + "px";
 }
 function tbdev_ajax(file){
-this.AjaxFailedAlert = "Ваш браузер не поддерживает расширенные возможности управления сайтом, мы настоятельно рекомендуем сменить браузер.\n";
+this.AjaxFailedAlert = "Р“В  РІВ±В РЅВ±СћРЅВ¶В° РѕР€В СЂС’Р‡В¤РµВ¦В°Р·В©СћР±В¦Р† СЃРЋР†С‘Р№В±ТђРѕВ®В»РіРЋСћРїРЃВ¬РїВ§В­РїР†Р†Р¶РЋС–СЂС’В±В РіВ¬ТђРѕВ©С— С‚РЋР„Р†РїР„В¬ РЅв„–В РѕРЋВ±СѓВ°Р‚Р†Р¶В¬СРѕВ¬В СЃВ¦В«В®РµТ‘ТђРєРЋВ±Р№С–С РІВ±В РЅВ±СћРЅВ¶В°.\n";
 this.requestFile = file;
 this.method = "POST";
 this.URLString = "";
@@ -252,7 +252,7 @@ var elemNodeName = self.elementObj.nodeName.toLowerCase();
 self.onHide();
 
 
-if (self.response == 'error') { alert('Доступ отклонен'); } else {
+if (self.response == 'error') { alert('Р вЂќР С•РЎРѓРЎвЂљРЎС“Р С— Р С•РЎвЂљР С”Р В»Р С•Р Р…Р ВµР Р…'); } else {
 if (elemNodeName == "input" || elemNodeName == "select" || elemNodeName == "option" || elemNodeName == "textarea"){
     if (elemNodeName == "select") {
 	self.elementObj.options.length = 0;
@@ -280,11 +280,14 @@ break;
 };
 this.createAJAX();
 }
-function addnewboxtype(marking,manufacturer,units,width,height,length,diameter,whichadded){
+function AddNewOrChangeBoxType(mode,rb,id,marking,manufacturer,units,width,height,length,diameter){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
-ajax.requestFile = "functions.php";
+ajax.requestFile = "NetworkBoxType.php";
+ajax.setVar("mode", mode);
+ajax.setVar("rb", rb);
+ajax.setVar("id", id);
 ajax.setVar("marking", marking);
 ajax.setVar("manufacturer", manufacturer);
 ajax.setVar("units", units);
@@ -292,44 +295,44 @@ ajax.setVar("width", width);
 ajax.setVar("height", height);
 ajax.setVar("length", length);
 ajax.setVar("diameter", diameter);
-ajax.setVar("whichadded", whichadded);
 ajax.method = 'POST';
-ajax.element = 'addnewboxtype';
+ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
-function getformfornewbox(mode){
+function GetTypeBoxInfo(boxtypeid,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
-ajax.requestFile = "functions.php";
-ajax.setVar("mode", mode);
-ajax.method = 'POST';
-ajax.element = 'newboxform';
-ajax.sendAJAX(varsString);
-}
-function gettypeboxinfo(boxtypeid,mode){
-var ajax = new tbdev_ajax();
-ajax.onShow ('');
-var varsString = "";
-ajax.requestFile = "functions.php";
+ajax.requestFile = "NetworkBoxType.php";
 ajax.setVar("boxtypeid", boxtypeid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
-ajax.element = 'boxinv';
+ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
-
-function getcurrentscripts(boxtypeid,mode){
+function GetUserInfo(userid,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
-ajax.requestFile = "functions.php";
-ajax.setVar("boxtypeid", boxtypeid);
+ajax.requestFile = "Users.php";
+ajax.setVar("userid", userid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
-ajax.element = 'backscript';
+ajax.element = 'content';
 ajax.sendAJAX(varsString);
-	//setvalues(marking,manufacturer,units,width,height,length,diameter);
 }
-
-
+function AddNewOrChangeUser(mode,rb,userid,login,password,group){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "Users.php";
+ajax.setVar("mode", mode);
+ajax.setVar("rb", rb);
+ajax.setVar("userid", userid);
+ajax.setVar("login", login);
+ajax.setVar("password", password);
+ajax.setVar("group", group);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}

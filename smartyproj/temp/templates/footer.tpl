@@ -1,2 +1,2 @@
-﻿</BODY>
+</BODY>
 </HTML>

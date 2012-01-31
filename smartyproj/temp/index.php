@@ -1,34 +1,33 @@
 <?php
- /**
- * Example Application
-
- * @package Example-application
- */
-
-require('../libs/Smarty.class.php');
-
-$smarty = new Smarty;
-
-
-
-//$smarty->force_compile = true;
-$smarty->debugging = false;
-$smarty->caching = false;
-$smarty->cache_lifetime = 120;
-
-/*$smarty->assign("Name","Fred Irving Johnathan Bradley Peppergill",true);
-$smarty->assign("FirstName",array("John","Mary","James","Henry"));
-$smarty->assign("LastName",array("Doe","Smith","Johnson","Case"));
-$smarty->assign("Class",array(array("A","B","C","D"), array("E", "F", "G", "H"),
-	  array("I", "J", "K", "L"), array("M", "N", "O", "P")));
-
-$smarty->assign("contacts", array(array("phone" => "1", "fax" => "2", "cell" => "3"),
-	  array("phone" => "555-4444", "fax" => "555-3333", "cell" => "760-1234")));
-
-$smarty->assign("option_values", array("NY","NE","KS","IA","OK","TX"));
-$smarty->assign("option_output", array("New York","Nebraska","Kansas","Iowa","Oklahoma","Texas"));
-$smarty->assign("option_selected", "NE");*/
-$smarty->assign("marking","1");
-
-$smarty->display('networkbox.tpl');
+if ($_POST['login'] == 'login')
+{
+	require_once("functions.php");
+	$passwordHash = md5($_POST['password']);
+	$login = $_POST['user'];
+	if (!preg_match("/^\w{3,}$/", $login))
+	{
+		die('Неверный логин!');
+	}
+	$res = PQuery('SELECT id,"class" FROM "Users" WHERE "username"=\''.$login.'\' AND "password"=\''.$passwordHash.'\'');
+	if (pg_num_rows($res) < 1)
+	{
+		die('Такого пользователя не существует!');
+	}
+	session_start();
+	$token = md5(time().$login);
+	if ($_POST['remember'])
+	{
+		setcookie('token', $token, time() + 60 * 60 * 24 * 14);
+	}
+	PQuery('UPDATE "Users" SET "token"=\''.$token.'\' WHERE "username"=\''.$login.'\'');
+//	session_start();
+    $_SESSION['user'] = $login;
+    $_SESSION['class'] = pg_result($res, 0, 1);
+	header("Location: NetworkBoxType.php");
+}
+else
+{
+	require_once("smarty.php");
+	$smarty->display('index.tpl');
+}
 ?>
