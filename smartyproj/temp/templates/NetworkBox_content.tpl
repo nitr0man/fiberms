@@ -1,11 +1,11 @@
+<form name="boxtypevalue" onsubmit="return false">
+<div>
 	<table>
 		<tr>
-			<td><label>Идентификатор:</td><td>{$id}</td>
+			<td>
+			{html_table loop=$data cols="<a href=\"#\">ID</a>,BoxType,InvNum,Change,Delete"}
+			</td>
+		<br />
 		</tr>
-		<tr>
-			<td><label>Инвент. номер:</td><td>{$inventoryNumber}</td>
-		</tr>
-		<tr>
-			<td><label>Тип ящика:</label></td><td>{$NetworkBoxType}</td>
-		</tr>
-	</table>
+</div>
+</form>

@@ -34,12 +34,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 				}
 /*				$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');*/
 				$res = NetworkBoxType_SELECT('id, "marking"','','');
-				while ($mybox = pg_fetch_array($res)) {
+				while ($boxtype = pg_fetch_array($res)) {
 //					print("<option value=\"".$mybox['id']."\">".$mybox['marking']."</option>");
-					$combobox_boxtype_values[] = $mybox['id'];
-					$combobox_boxtype_text[] = $mybox['marking'];
+					$combobox_boxtype_values[] = $boxtype['id'];
+					$combobox_boxtype_text[] = $boxtype['marking'];
 				}
-				$smarty->assign("count",$boxtypecount);
+				$smarty->assign("count",'<a href="NetworkBox.php?typeid='.$boxtypeid.'" target="_blank">'.$boxtypecount."</a>");
 				$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
 				$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
 				$smarty->assign("combobox_boxtype_selected",$boxtypeid);

@@ -1,76 +1,132 @@
 <?php
 require_once("auth.php");
 require_once("smarty.php");
+require_once("func/NetworkBoxType_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST')
 	{
-		require "func/NetworkBoxType_func.php";
 		require_once("functions.php");
 		if ($_POST['mode'] == 1)
 			{
-				$boxtypeid = $_POST['boxtypeid'];
-				if ($boxtypeid == 0)
-					{
-						$res = NetworkBox_SELECT('id','ORDER BY id LIMIT 1','');
-/*						$res = PQuery('SELECT id
-						  FROM "NetworkBoxType" ORDER BY id LIMIT 1');*/
-  					    while ($row = pg_fetch_array($res)) {
-  					    	$boxtypeid = $row['id'];
-//  					    	$smarty->assign("id",$boxtypeid);
-  					    }
-					}
-/*				$res = PQuery('SELECT COUNT(*) AS count FROM "NetworkBox" WHERE "NetworkBoxType"='.$boxtypeid);
-				$res = NetworkBox_SELECT('COUNT(*) AS count','','"NetworkBoxType"='.$boxtypeid);
-				while ($row = pg_fetch_array($res)) {
-					$boxtypecount = $row['count'];
-				}*/
-/*				$res = PQuery('SELECT * FROM "NetworkBoxType" WHERE id='.$boxtypeid);*/
-				$res = NetworkBox_SELECT('*','','id='.$boxtypeid);
-				while ($boxrow = pg_fetch_array($res)) {
-					$smarty->assign("id",$boxrow['id']);
-					$smarty->assign("NetworkBoxType",$boxrow['NetworkBoxType']);
-					$smarty->assign("inventoryNumber",$boxrow['inventoryNumber']);
-				}
-/*				$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');*/
-				/*$res = NetworkBoxType_SELECT('id, "marking"','','');
-				while ($mybox = pg_fetch_array($res)) {
-//					print("<option value=\"".$mybox['id']."\">".$mybox['marking']."</option>");
-					$combobox_boxtype_values[] = $mybox['id'];
-					$combobox_boxtype_text[] = $mybox['marking'];
-				}
-				$smarty->assign("count",$boxtypecount);
-				$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
-				$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
-				$smarty->assign("combobox_boxtype_selected",$boxtypeid);*/
-				$smarty->display('NetworkBox_content.tpl');
+            	$boxtypeid = $_POST['networkboxtypes'];
+            	$boxid = $_POST['boxid'];
+            	$invnum = $_POST['invnum'];
+            	if ($boxid == '')
+            	{					$query = '"inventoryNumber"='.$invnum;
+            	}
+                else
+                {                	$query = '"NetworkBoxType"='.$boxtypeid.', "inventoryNumber"='.$invnum;
+                }
+            	NetworkBox_UPDATE($query,'id='.$boxid);
+            	header("Refresh: 2; url=NetworkBox.php");
+            	print('Ящик изменен!');
 			}
-/*		else
+		else
 		if ($_POST['mode'] == 2)
 			{
-				$id = $_POST['id'];
-				$marking = $_POST['marking'];
-		    	$manufacturer = $_POST['manufacturer'];
-		    	$units = $_POST['units'];
-		    	$width = $_POST['width'];
-		    	$height = $_POST['height'];
-		    	$length = $_POST['length'];
-		    	$diameter = $_POST['diameter'];
-		    	if ($_POST['rb'] == 'true')
-		    	{
-				   	NetworkBoxType_UPDATE('"marking"=\''.$marking.'\',"manufacturer"=\''.$manufacturer.'\',"units"='.$units.',"width"='.$width.',"height"='.$height.',"length"='.$length.',"diameter"='.$diameter,'id='.$id);
-				   	print("Изменено успешно!<br />
-					<a href=\"NetworkBoxType.php\">Назад</a>");
-				}
-				else
-				{
-					NetworkBoxtype_INSERT('(marking, manufacturer, units, width, height, length, diameter) VALUES (\''.$marking.'\', \''.$manufacturer.'\', '.$units.', '.$width.', '.$height.', '.$length.', '.$diameter.')');
-					print("Тип успешно добавлен!<br />
-					<a href=\"NetworkBoxType.php\">Назад</a>");
-				}
-			}*/
+				$boxtype = $_POST['networkboxtypes'];
+				$invnum = $_POST['invnum'];
+				NetworkBox_INSERT('("NetworkBoxType", "inventoryNumber") VALUES ('.$boxtype.', '.$invnum.')');
+				header("Refresh: 2; url=NetworkBox.php");
+				print("Ящик успешно добавлен!");
+			}
 	}
 else
 {
+/*	if (isset($_GET['boxid']))
+	{
+		$smarty->assign("body",'<body onload="javascript: GetBoxInfo('.$_GET['boxid'].',1);">');
+	}
+	else
+	{		$smarty->assign("body",'<body onload="javascript: GetBoxInfo(0,1);">');
+	}  */
+    if (!isset($_GET['mode']))
+    {
+		require_once("functions.php");
+		$typeid = $_GET['typeid'];
+		if (!isset($_GET['typeid']))
+		{
+			$res = NetworkBox_SELECT('*','','');
+		}
+		else
+		{
+    		$res = NetworkBox_SELECT('*','','"NetworkBoxType"='.$typeid);
+    		if (pg_num_rows($res) < 1)
+			{
+				print('Ящиков с таким ID не существует!<br />
+				<a href="NetworkBox.php">Назад</a>');
+				die();
+			}
+		}
+		while ($boxrow = pg_fetch_array($res))
+  		{
+			$box_arr[] = $boxrow['id'];
+			$box_arr[] = $boxrow['NetworkBoxType'];
+			$box_arr[] = $boxrow['inventoryNumber'];
+			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$boxrow['id'].'">Изменить</a>';
+			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$boxrow['id'].'">Удалить</a>';
+	  	}
+		$smarty->assign("data",$box_arr);
+	}
+	elseif (($_GET['mode'] == 'change') and (isset($_GET['boxid'])))
+	{
+		if ($_SESSION['class'] > 1)
+		{
+			die("!!!");
+		}
+    	$smarty->assign("mode","change");
+
+    	$res = NetworkBox_SELECT('*','','id='.$_GET['boxid']);
+		while ($boxinfo = pg_fetch_array($res))
+		{
+			$smarty->assign("id",$boxinfo['id']);
+			$boxtypeid = $boxinfo['NetworkBoxType'];
+			$smarty->assign("invNum",$boxinfo['inventoryNumber']);
+		}
+		if (pg_num_rows($res) < 1)
+		{
+			print('Ящика с таким ID не существует!<br />
+			<a href="NetworkBox.php">Назад</a>');
+			die();
+		}
+    	$res = NetworkBoxType_SELECT('id, "marking"','','');
+		while ($boxtype = pg_fetch_array($res))
+		{
+			$combobox_boxtype_values[] = $boxtype['id'];
+			$combobox_boxtype_text[] = $boxtype['marking'];
+		}
+
+		$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
+		$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
+		$smarty->assign("combobox_boxtype_selected",$boxtypeid);
+	}
+	elseif ($_GET['mode'] == 'add')
+	{
+		if ($_SESSION['class'] > 1)
+		{
+			die("!!!");
+		}
+		$smarty->assign("mode","add");
+
+		$res = NetworkBoxType_SELECT('id, "marking"','','');
+		while ($boxtype = pg_fetch_array($res))
+		{
+			$combobox_boxtype_values[] = $boxtype['id'];
+			$combobox_boxtype_text[] = $boxtype['marking'];
+		}
+		$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
+		$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
+	}
+	elseif (($_GET['mode'] == 'delete') and (isset($_GET['boxid'])))
+	{
+		if ($_SESSION['class'] > 1)
+		{			die("!!!");
+		}    	NetworkBox_DELETE('id='.$_GET['boxid']);
+    	header("Refresh: 2; url=NetworkBox.php");
+		print("Ящик удален!");
+		die();
+ 	}
+
 	$smarty->display('NetworkBox.tpl');
 }
 ?>

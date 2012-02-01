@@ -16,6 +16,31 @@ function NetworkBox_SELECT($sel,$fr,$where)
  	return $result;
 }
 
+function NetworkBox_INSERT($ins)
+{
+	$query = 'INSERT INTO "NetworkBox" '.$ins;
+	$result = PQuery($query);
+	return $result;
+}
+
+function NetworkBox_UPDATE($upd,$where)
+{
+	$query = 'UPDATE "NetworkBox" SET '.$upd;
+	if ($where != '')
+	{
+		$query = $query.' WHERE '.$where;
+	}
+	$result = PQuery($query);
+	return $result;
+}
+
+function NetworkBox_DELETE($where)
+{
+	$query = 'DELETE FROM "NetworkBox" WHERE '.$where;
+	$result = PQuery($query);
+	return $result;
+}
+
 function NetworkBoxType_SELECT($sel,$fr,$where)
 {
 	$query = 'SELECT '.$sel.' FROM "NetworkBoxType"';

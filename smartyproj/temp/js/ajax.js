@@ -336,12 +336,25 @@ ajax.method = 'POST';
 ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
-function GetBoxInfo(boxtypeid,mode){
+function ChangeBoxInfo(boxid,boxtypeid,invnum,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
 ajax.requestFile = "NetworkBox.php";
+ajax.setVar("boxid", boxid);
 ajax.setVar("boxtypeid", boxtypeid);
+ajax.setVar("invnum", invnum);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+function DeleteBox(boxid,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkBox.php";
+ajax.setVar("boxid", boxid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
 ajax.element = 'content';
