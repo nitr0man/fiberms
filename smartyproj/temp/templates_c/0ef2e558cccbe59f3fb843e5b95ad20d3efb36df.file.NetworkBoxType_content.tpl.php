@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-01-31 12:15:53
+<?php /* Smarty version Smarty-3.1.7, created on 2012-02-01 17:21:12
          compiled from ".\templates\NetworkBoxType_content.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:229704f27bf43b9bb52-13655112%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '0ef2e558cccbe59f3fb843e5b95ad20d3efb36df' => 
     array (
       0 => '.\\templates\\NetworkBoxType_content.tpl',
-      1 => 1328004933,
+      1 => 1328109671,
       2 => 'file',
     ),
   ),
@@ -50,8 +50,8 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> <a href="#" class="events_anonce"><?php echo $_smarty_tpl->tpl_vars['count']->value;?>
-</a></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
+		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> <?php echo $_smarty_tpl->tpl_vars['count']->value;?>
+</td><!--<td><input type="text" name="invmun" size="30" /></td>-->
 <br />
 		</tr>
 		<tr>

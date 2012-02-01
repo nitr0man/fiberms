@@ -12,7 +12,7 @@
 <br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> <a href="#" class="events_anonce">{$count}</a></td><!--<td><input type="text" name="invmun" size="30" /></td>-->
+		<td><label class="events_anonce">Кол-во:</label></td><td id="inventorynumber"> {$count}</td><!--<td><input type="text" name="invmun" size="30" /></td>-->
 <br />
 		</tr>
 		<tr>
