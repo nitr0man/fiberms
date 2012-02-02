@@ -336,6 +336,18 @@ ajax.method = 'POST';
 ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
+function GetBoxInfo(boxtypeid,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkBox.php";
+ajax.setVar("boxtypeid", boxtypeid);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+
 function ChangeBoxInfo(boxid,boxtypeid,invnum,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
@@ -355,6 +367,67 @@ ajax.onShow ('');
 var varsString = "";
 ajax.requestFile = "NetworkBox.php";
 ajax.setVar("boxid", boxid);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+
+function GetNodeInfo(nodeid,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkNodes.php";
+ajax.setVar("nodeid", nodeid);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+/*function AddNewOrChangeNetworkNode(mode,rb,id,name,NetworkBox,note,OpenGIS,SettlementGeoSpartial,Building,Apartment){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkNodes.php";
+ajax.setVar("mode", mode);
+ajax.setVar("rb", rb);
+ajax.setVar("id", id);
+ajax.setVar("name", name);
+ajax.setVar("NetworkBox", NetworkBox);
+ajax.setVar("note", note);
+ajax.setVar("OpenGIS", OpenGIS);
+ajax.setVar("SettlementGeoSpartial", SettlementGeoSpartial);
+ajax.setVar("Building", Building);
+ajax.setVar("Apartment", Apartment);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+*/
+function ChangeNode(nodeid,name,NetworkBox,note,OpenGIS,SettlementGeoSpatial,Building,Apartment,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkNodes.php";
+ajax.setVar("id", id);
+ajax.setVar("name", name);
+ajax.setVar("NetworkBox", NetworkBox);
+ajax.setVar("note", note);
+ajax.setVar("OpenGIS", OpenGIS);
+ajax.setVar("SettlementGeoSpatial", SettlementGeoSpatial);
+ajax.setVar("Building", Building);
+ajax.setVar("Apartment", Apartment);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+function DeleteNode(nodeid,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "NetworkNodes.php";
+ajax.setVar("nodeid", boxid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
 ajax.element = 'content';
