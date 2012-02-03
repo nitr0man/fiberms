@@ -11,22 +11,25 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 				$userid = $_POST['userid'];
 				if ($userid == 0)
 					{
-						$res = Users_SELECT('id','ORDER BY id LIMIT 1','');/*						$res = PQuery('SELECT id
-						  FROM "NetworkBoxType" ORDER BY id LIMIT 1');*/
-  					    while ($row = pg_fetch_array($res)) {  					    	$userid = $row['id'];
-  					    }
+						$res = Users_SELECT('id LIMIT 1','');
+						$userid = $res['rows'][0]['id'];/*  					    while ($row = pg_fetch_array($res)) {  					    	$userid = $row['id'];
+  					    }*/
 					}
-				$res = Users_SELECT('id,"username","class"','','id='.$userid);
-				while ($usersrow = pg_fetch_array($res)) {					$smarty->assign("id",$usersrow['id']);
-					$smarty->assign("login",$usersrow['username']);
-					$class = $usersrow['class'];
-				}
+				$wr['id'] = $userid;
+				$res = Users_SELECT('',$wr);
+				$rows = $res['rows'];
+
+				$smarty->assign("id",$rows[0]['id']);
+				$smarty->assign("login",$rows[0]['username']);
+				$class = $rows[0]['class'];
 /*				$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');*/
-				$res = Users_SELECT('id, "username"','','');
-				while ($mybox = pg_fetch_array($res)) {
-//					print("<option value=\"".$mybox['id']."\">".$mybox['marking']."</option>");
-					$combobox_users_values[] = $mybox['id'];
-					$combobox_users_text[] = $mybox['username'];
+				$res = Users_SELECT('','');
+				$rows = $res['rows'];
+				$i = -1;
+				while (++$i<$res['count'])
+				{
+					$combobox_users_values[] = $rows[$i]['id'];
+					$combobox_users_text[] = $rows[$i]['username'];
 				}
 				$smarty->assign("combobox_users_values",$combobox_users_values);
 				$smarty->assign("combobox_users_text",$combobox_users_text);
@@ -44,22 +47,29 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	$group = $_POST['group'];
 		    	if ($_POST['rb'] == 'true')
 		    	{
-		    		$query = '"username"=\''.$login.'\',"class"=\''.$group.'\'';
+		    		$wr['id'] = $id;
+		    		$upd['username'] = "'$login'";
+		    		$upd['class'] = "'$group'";
 		    		if ($password != '')
-		    			{		    				$query = $query.',"password"=\''.md5($password).'\'';
-		    			}
-				   	Users_UPDATE($query,'id='.$id);
+		    		{
+		    			$upd['password'] = "'".md5($password)."'";		    		}
+				   	Users_UPDATE($upd,$wr);
 				   	print("Пользователь изменен!<br />
 					<a href=\"Users.php\">Назад</a>");
 				}
 				else
 				{
-					$res = Users_SELECT('id','','"username"=\''.$login.'\'');
-					if (pg_num_rows($res) > 0)
+					$wr['username'] = "'$login'";
+					$res = Users_SELECT('',$wr);
+					if ($res['count'] < 1)
 					{
 						print("Такого пользователя не существует!<br />
 						<a href=\"Users.php\">Назад</a>");
-					}					Users_INSERT('(username, password, class) VALUES (\''.$login.'\', \''.md5($password).'\', \''.$group.'\')');
+						die();
+					}
+					$ins['username'] = "'$login'";
+					$ins['password'] = "'".md5($password)."'";
+		    		$ins['class'] = "'$group'";					Users_INSERT($ins);
 					print("Пользователь добавлен!<br />
 					<a href=\"Users.php\">Назад</a>");
 				}

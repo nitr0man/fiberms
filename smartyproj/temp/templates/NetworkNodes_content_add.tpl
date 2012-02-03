@@ -21,7 +21,10 @@
 			<td><label>Имя</label></td><td><input name="name" type="text" value=""/></td>
 		</tr>
 		<tr>
-			<td><label>Тип ящика:</label></td><td><input name="NetworkBox" type="text" value="" /></td>
+			<td><label>Ящик:</label></td><td><select name="boxes">
+			{html_options values=$combobox_box_values selected=$combobox_box_selected output=$combobox_box_text}
+			</select>
+			</td>
 		</tr>
 		<tr>
 			<td><label>Примечание:</label></td><td><textarea name="note" form="NetworkNode"></textarea></td>

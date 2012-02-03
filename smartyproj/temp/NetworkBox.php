@@ -12,12 +12,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
             	$boxid = $_POST['boxid'];
             	$invnum = $_POST['invnum'];
             	if ($boxid == '')
-            	{					$query = '"inventoryNumber"='.$invnum;
+            	{					$upd['inventoryNumber'] = $invnum;
             	}
                 else
-                {                	$query = '"NetworkBoxType"='.$boxtypeid.', "inventoryNumber"='.$invnum;
-                }
-            	NetworkBox_UPDATE($query,'id='.$boxid);
+                {
+                	$upd['NetworkBoxType'] = $boxtypeid;
+                	$upd['inventoryNumber'] = $invnum;                }
+                $wr['id'] = $boxid;
+            	NetworkBox_UPDATE($upd,$wr);
             	header("Refresh: 2; url=NetworkBox.php");
             	print('Ящик изменен!');
 			}
@@ -26,7 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 			{
 				$boxtype = $_POST['networkboxtypes'];
 				$invnum = $_POST['invnum'];
-				NetworkBox_INSERT('("NetworkBoxType", "inventoryNumber") VALUES ('.$boxtype.', '.$invnum.')');
+				$ins['NetworkBoxType'] = $boxtype;
+				$ins['inventoryNumber'] = $invnum;
+				NetworkBox_INSERT($ins);
+//				NetworkBox_INSERT('("NetworkBoxType", "inventoryNumber") VALUES ('.$boxtype.', '.$invnum.')');
 				header("Refresh: 2; url=NetworkBox.php");
 				print("Ящик успешно добавлен!");
 			}
@@ -46,25 +51,37 @@ else
 		$typeid = $_GET['typeid'];
 		if (!isset($_GET['typeid']))
 		{
-			$res = NetworkBox_SELECT('*','','');
+//			$res = NetworkBox_SELECT('*','','');
+			$res = NetworkBox_SELECT('','');
 		}
 		else
 		{
-    		$res = NetworkBox_SELECT('*','','"NetworkBoxType"='.$typeid);
-    		if (pg_num_rows($res) < 1)
+//    		$res = NetworkBox_SELECT('*','','"NetworkBoxType"='.$typeid);
+			$wr['NetworkBoxType'] = $typeid;
+			$res = NetworkBox_SELECT('',$wr);
+    		if ($res['count'] < 1)
 			{
 				print('Ящиков с таким ID не существует!<br />
 				<a href="NetworkBox.php">Назад</a>');
 				die();
 			}
 		}
-		while ($boxrow = pg_fetch_array($res))
+		$rows = $res['rows'];
+/*		while ($boxrow = pg_fetch_array($res))
   		{
 			$box_arr[] = $boxrow['id'];
 			$box_arr[] = $boxrow['NetworkBoxType'];
 			$box_arr[] = $boxrow['inventoryNumber'];
 			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$boxrow['id'].'">Изменить</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$boxrow['id'].'">Удалить</a>';
+	  	} */
+	  	$i = -1;
+	  	while (++$i<$res['count'])
+	  	{	  		$box_arr[] = $rows[$i]['id'];
+	  		$box_arr[] = $rows[$i]['NetworkBoxType'];
+			$box_arr[] = $rows[$i]['inventoryNumber'];
+			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$rows[$i]['id'].'">Изменить</a>';
+			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}
 		$smarty->assign("data",$box_arr);
 	}
@@ -76,25 +93,38 @@ else
 		}
     	$smarty->assign("mode","change");
 
-    	$res = NetworkBox_SELECT('*','','id='.$_GET['boxid']);
-		while ($boxinfo = pg_fetch_array($res))
-		{
-			$smarty->assign("id",$boxinfo['id']);
-			$boxtypeid = $boxinfo['NetworkBoxType'];
-			$smarty->assign("invNum",$boxinfo['inventoryNumber']);
-		}
-		if (pg_num_rows($res) < 1)
+		$wr['id'] = $_GET['boxid'];
+    	$res = NetworkBox_SELECT('',$wr);
+    	if ($res['count'] < 1)
 		{
 			print('Ящика с таким ID не существует!<br />
 			<a href="NetworkBox.php">Назад</a>');
 			die();
 		}
-    	$res = NetworkBoxType_SELECT('id, "marking"','','');
-		while ($boxtype = pg_fetch_array($res))
+    	$rows = $res['rows'];
+/*		while ($boxinfo = pg_fetch_array($res))
+		{
+			$smarty->assign("id",$boxinfo['id']);
+			$boxtypeid = $boxinfo['NetworkBoxType'];
+			$smarty->assign("invNum",$boxinfo['inventoryNumber']);
+		}   */
+		$smarty->assign("id",$rows[0]['id']);
+		$boxtypeid = $rows[0]['NetworkBoxType'];
+		$smarty->assign("invNum",$rows[0]['inventoryNumber']);
+//    	$res = NetworkBoxType_SELECT('id, "marking"','','');
+		$res = NetworkBoxType_SELECT('','');
+		$rows = $res['rows'];
+		$i = -1;
+		while (++$i<$res['count'])
+		{
+			$combobox_boxtype_values[] = $rows[$i]['id'];
+			$combobox_boxtype_text[] = $rows[$i]['marking'];
+		}
+/*		while ($boxtype = pg_fetch_array($res))
 		{
 			$combobox_boxtype_values[] = $boxtype['id'];
 			$combobox_boxtype_text[] = $boxtype['marking'];
-		}
+		}*/
 
 		$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
 		$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
@@ -108,11 +138,13 @@ else
 		}
 		$smarty->assign("mode","add");
 
-		$res = NetworkBoxType_SELECT('id, "marking"','','');
-		while ($boxtype = pg_fetch_array($res))
+		$res = NetworkBoxType_SELECT('','');
+		$rows = $res['rows'];
+		$i = -1;
+		while (++$i<$res['count'])
 		{
-			$combobox_boxtype_values[] = $boxtype['id'];
-			$combobox_boxtype_text[] = $boxtype['marking'];
+			$combobox_boxtype_values[] = $rows[$i]['id'];
+			$combobox_boxtype_text[] = $rows[$i]['marking'];
 		}
 		$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
 		$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
@@ -121,7 +153,9 @@ else
 	{
 		if ($_SESSION['class'] > 1)
 		{			die("!!!");
-		}    	NetworkBox_DELETE('id='.$_GET['boxid']);
+		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
+		$wr['id'] = $_GET['boxid'];
+		NetworkBox_DELETE($wr);
     	header("Refresh: 2; url=NetworkBox.php");
 		print("Ящик удален!");
 		die();

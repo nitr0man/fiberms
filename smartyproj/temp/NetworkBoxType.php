@@ -11,33 +11,31 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 				$boxtypeid = $_POST['boxtypeid'];
 				if ($boxtypeid == 0)
 					{
-						$res = NetworkBoxType_SELECT('id','ORDER BY id LIMIT 1','');/*						$res = PQuery('SELECT id
-						  FROM "NetworkBoxType" ORDER BY id LIMIT 1');*/
-  					    while ($row = pg_fetch_array($res)) {  					    	$boxtypeid = $row['id'];
-  					    }
+						$res = NetworkBoxType_SELECT('id LIMIT 1','');  					    $rows = $res['rows'];
+           				$boxtypeid = $rows[0]['id'];
 					}
-/*				$res = PQuery('SELECT COUNT(*) AS count FROM "NetworkBox" WHERE "NetworkBoxType"='.$boxtypeid);*/
-				$res = NetworkBox_SELECT('COUNT(*) AS count','','"NetworkBoxType"='.$boxtypeid);
-				while ($row = pg_fetch_array($res)) {
-					$boxtypecount = $row['count'];
-				}
-/*				$res = PQuery('SELECT * FROM "NetworkBoxType" WHERE id='.$boxtypeid);*/
-				$res = NetworkBoxType_SELECT('*','','id='.$boxtypeid);
-				while ($boxrow = pg_fetch_array($res)) {					$smarty->assign("id",$boxrow['id']);
-					$smarty->assign("marking",$boxrow['marking']);
-					$smarty->assign("manufacturer",$boxrow['manufacturer']);
-					$smarty->assign("units",$boxrow['units']);
-					$smarty->assign("width",$boxrow['width']);
-					$smarty->assign("height",$boxrow['height']);
-					$smarty->assign("length",$boxrow['length']);
-					$smarty->assign("diameter",$boxrow['diameter']);
-				}
-/*				$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');*/
-				$res = NetworkBoxType_SELECT('id, "marking"','','');
-				while ($boxtype = pg_fetch_array($res)) {
-//					print("<option value=\"".$mybox['id']."\">".$mybox['marking']."</option>");
-					$combobox_boxtype_values[] = $boxtype['id'];
-					$combobox_boxtype_text[] = $boxtype['marking'];
+				$wr['NetworkBoxType'] = $boxtypeid;
+				$res = NetworkBox_SELECT('',$wr);
+				$boxtypecount = $res['count'];
+				unset($wr);
+				$wr['id'] = $boxtypeid;
+				$res = NetworkBoxType_SELECT('',$wr);
+				$rows = $res['rows'];
+				$smarty->assign("id",$rows[0]['id']);
+				$smarty->assign("marking",$rows[0]['marking']);
+				$smarty->assign("manufacturer",$rows[0]['manufacturer']);
+				$smarty->assign("units",$rows[0]['units']);
+				$smarty->assign("width",$rows[0]['width']);
+				$smarty->assign("height",$rows[0]['height']);
+				$smarty->assign("length",$rows[0]['length']);
+				$smarty->assign("diameter",$rows[0]['diameter']);
+				$res = NetworkBoxType_SELECT('','');
+				$typecount = $res['count'];
+				$rows = $res['rows'];
+				$i = -1;
+				while (++$i<$typecount)
+				{					$combobox_boxtype_values[] = $rows[$i]['id'];
+					$combobox_boxtype_text[] = $rows[$i]['marking'];
 				}
 				$smarty->assign("count",'<a href="NetworkBox.php?typeid='.$boxtypeid.'" target="_blank">'.$boxtypecount."</a>");
 				$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
@@ -57,12 +55,27 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	$diameter = $_POST['diameter'];
 		    	if ($_POST['rb'] == 'true')
 		    	{
-				   	NetworkBoxType_UPDATE('"marking"=\''.$marking.'\',"manufacturer"=\''.$manufacturer.'\',"units"='.$units.',"width"='.$width.',"height"='.$height.',"length"='.$length.',"diameter"='.$diameter,'id='.$id);
+		    		$upd['marking'] = "'$marking'";
+		    		$upd['manufacturer'] = "'$manufacturer'";
+		    		$upd['units'] = "$units";
+		    		$upd['width'] = "$width";
+		    		$upd['height'] = "$height";
+		    		$upd['length'] = "$length";
+		    		$upd['diameter'] = "$diameter";
+		    		$wr['id'] = $id;
+				   	NetworkBoxType_UPDATE($upd,$wr);
 				   	print("Изменено успешно!<br />
 					<a href=\"NetworkBoxType.php\">Назад</a>");
 				}
 				else
-				{					NetworkBoxtype_INSERT('(marking, manufacturer, units, width, height, length, diameter) VALUES (\''.$marking.'\', \''.$manufacturer.'\', '.$units.', '.$width.', '.$height.', '.$length.', '.$diameter.')');
+				{
+					$ins['marking'] = "'$marking'";
+		    		$ins['manufacturer'] = "'$manufacturer'";
+		    		$ins['units'] = "$units";
+		    		$ins['width'] = "$width";
+		    		$ins['height'] = "$height";
+		    		$ins['length'] = "$length";
+		    		$ins['diameter'] = "$diameter";					NetworkBoxType_INSERT($ins);
 					print("Тип успешно добавлен!<br />
 					<a href=\"NetworkBoxType.php\">Назад</a>");
 				}

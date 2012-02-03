@@ -12,6 +12,12 @@
 			<li id="li4"><a href="#">Добавить\изменить тип</a></li>
 		</ul>
 	</li>
+	<li id="li4"><a href="#">Узлы</a>
+		<ul>
+			<li id="li4"><a href="NetworkNodes.php">Список узлов</a></li>
+			<li id="li4"><a href="NetworkNodes.php?mode=add">Добавить узел</a></li>
+		</ul>
+	</li>
 	<li id="li4"><a href="Users.php">Пользователи</a></li>
 	<li id="li4">element3</li>
 	<li id="li4">element4</li>

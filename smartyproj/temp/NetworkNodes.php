@@ -8,10 +8,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		require_once("functions.php");
 		if ($_POST['mode'] == 1)
 			{
-				$nodeid= $_POST['nodeid'];
+				$nodeid= $_POST['id'];
 //            	$id = $_POST['id'];
 				$name = $_POST['name'];
-		    	$NetworkBox = $_POST['NetworkBox'];
+		    	$NetworkBox = $_POST['boxes'];
 		    	$note = $_POST['note'];
 		    	$opengis = $_POST['OpenGIS'];
 		    	if ($_POST['SettlementGeoSpatial'] == '') { $geospartial = 'NULL'; }
@@ -21,17 +21,26 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	if ($_POST['Apartment'] == '') { $apartment = 'NULL'; }
 		    	if ($_POST['Apartment'] != '') { $apartment = $_POST['Apartment']; }
 		  //  	$apartment = $_POST['Apartment'];
-            	
+
             	if ($nodeid == '')
             	{
-					print('nya?');//$query = '"inventoryNumber"='.$invnum;
+					print('nya?');
+					die();
             	}
                 else
                 {
 					$query = '"name"=\''.$name.'\',"NetworkBox"=\''.$NetworkBox.'\',"note"=\''.$note.'\',"OpenGIS"=\''.$opengis.'\',"SettlementGeoSpatial"='.$geospartial.',"Building"='.$building.',"Apartment"='.$apartment;
-                	//$query = '"NetworkBoxType"='.$boxtypeid.', "inventoryNumber"='.$invnum;
                 }
-            	NetworkNode_UPDATE($query,'id='.$nodeid);
+                $upd['name'] = "'$name'";
+                $upd['NetworkBox'] = "'$NetworkBox'";
+                $upd['note'] = "'$note'";
+                $upd['OpenGIS'] = "'$opengis'";
+                $upd['SettlementGeoSpatial'] = "$geospartial";
+                $upd['Building'] = "$building";
+                $upd['Apartment'] = "$apartment";
+                $wr['id'] = $nodeid;
+            	//NetworkNode_UPDATE($query,'id='.$nodeid);
+            	NetworkNode_UPDATE($upd,$wr);
             	header("Refresh: 2; url=NetworkNodes.php");
             	print('Ящик изменен!');
 			}
@@ -40,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 			{
 				//$nodeid = $_POST['nodeid'];
 				$name = $_POST['name'];
-		    	$networkbox = $_POST['NetworkBox'];
+		    	$networkbox = $_POST['boxes'];
 		    	$note = $_POST['note'];
 		    	$opengis = $_POST['OpenGIS'];
 		    	if ($_POST['SettlementGeoSpatial'] == '') { $geospartial = 'NULL'; }
@@ -49,13 +58,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		    	if ($_POST['Building'] != '') { $building = $_POST['Building']; }
 		    	if ($_POST['Apartment'] == '') { $apartment = 'NULL'; }
 		    	if ($_POST['Apartment'] != '') { $apartment = $_POST['Apartment']; }
-		    	//$geospartical = $_POST['SettlementGeoSpatial'];
-		    	//$building = $_POST['Building'];
-		    	//$Apartment = $_POST['Apartment'];
-				//$boxtype = $_POST['networkboxtypes'];
-				//$invnum = $_POST['invnum'];
-				//NetworkBox_INSERT('("NetworkBoxType", "inventoryNumber") VALUES ('.$boxtype.', '.$invnum.')');
-				NetworkNode_INSERT('(name, "NetworkBox", note, "OpenGIS", "SettlementGeoSpatial", "Building", "Apartment") VALUES (\''.$name.'\', '.$networkbox.', \''.$note.'\', \''.$opengis.'\', '.$geospartial.', '.$building.', '.$apartment.')');
+		    	$ins['name'] = "'$name'";
+                $ins['NetworkBox'] = "'$networkbox'";
+                $ins['note'] = "'$note'";
+                $ins['OpenGIS'] = "'$opengis'";
+                $ins['SettlementGeoSpatial'] = "$geospartial";
+                $ins['Building'] = "$building";
+                $ins['Apartment'] = "$apartment";
+                NetworkNode_INSERT($ins);
 				header("Refresh: 2; url=NetworkNodes.php");
 				print("Нода успешно добавлена!");
 			}
@@ -76,41 +86,41 @@ else
 		$nodeid = $_GET['nodeid'];
 		if (!isset($_GET['nodeid']))
 		{
-			$res = NetworkNode_SELECT('*','','');
+			$res = NetworkNode_SELECT('','');
 		}
 		else
 		{
-    		$res = NetworkNode_SELECT('*','','"id"='.$nodeid);
-    		if (pg_num_rows($res) < 1)
+    		$wr['id'] = $nodeid;
+    		$res = NetworkNode_SELECT('',$wr);
+    		if ($res['count'] < 1)
 			{
 				print('Нода с таким ID не существует!<br />
 				<a href="NetworkBox.php">Назад</a>');
 				die();
 			}
 		}
-		while ($boxrow = pg_fetch_array($res))
+		$rows = $res['rows'];
+		$i = -1;
+		while (++$i<$res['count'])
   		{
-				$box_arr[] = $boxrow['id'];
-				$box_arr[] = $boxrow['name'];
-		    	$box_arr[] = $boxrow['NetworkBox'];
-		    	$box_arr[] = $boxrow['note'];
-		    	$box_arr[] = $boxrow['OpenGIS'];
-		    	$box_arr[] = $boxrow['SettlementGeoSpatial'];
-		    	$box_arr[] = $boxrow['Building'];
-		    	$box_arr[] = $boxrow['Apartment'];
-				$box_arr[] = '<a href="NetworkNodes.php?mode=change&nodeid='.$boxrow['id'].'">Изменить</a>';
-				$box_arr[] = '<a href="NetworkNodes.php?mode=delete&nodeid='.$boxrow['id'].'">Удалить</a>';
+			$node_arr[] = $rows[$i]['id'];
+			$node_arr[] = $rows[$i]['name'];
+		    $node_arr[] = $rows[$i]['NetworkBox'];
+		    $node_arr[] = $rows[$i]['note'];
+		    $node_arr[] = $rows[$i]['OpenGIS'];
+		    $node_arr[] = $rows[$i]['SettlementGeoSpatial'];
+		    $node_arr[] = $rows[$i]['Building'];
+		    $node_arr[] = $rows[$i]['Apartment'];
+			$node_arr[] = '<a href="NetworkNodes.php?mode=change&nodeid='.$rows[$i]['id'].'">Изменить</a>';
+			$node_arr[] = '<a href="NetworkNodes.php?mode=delete&nodeid='.$rows[$i]['id'].'">Удалить</a>';
 
-		/*	$box_arr[] = $boxrow['id'];
-			$box_arr[] = $boxrow['NetworkBoxType'];
-			$box_arr[] = $boxrow['inventoryNumber'];
-			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$boxrow['id'].'">Изменить</a>';
-			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$boxrow['id'].'">Удалить</a>';*/
 	  	}
-		$smarty->assign("data",$box_arr);
+		$smarty->assign("data",$node_arr);
 	}
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['nodeid'])))
 	{
+		require_once("func/NetworkBoxType_func.php");
+
 		if ($_SESSION['class'] > 1)
 		{
 			die("!!!");
@@ -118,27 +128,37 @@ else
 
     	$smarty->assign("mode","change");
 
-    	$res = NetworkNode_SELECT('*','','id='.$_GET['nodeid']);
-		while ($nodeinfo = pg_fetch_array($res))
-		{
-				$smarty->assign("id",$nodeinfo['id']);
-		//		$smarty->assign("invNum",$boxinfo['inventoryNumber']);	
-				$smarty->assign("name",$nodeinfo['name']);
-		    	$smarty->assign("NetworkBox",$nodeinfo['NetworkBox']);
-		    	$smarty->assign("note",$nodeinfo['note']);
-		    	$smarty->assign("OpenGIS",$nodeinfo['OpenGIS']);
-		    	$smarty->assign("SettlementGeoSpatial",$nodeinfo['SettlementGeoSpatial']);
-		    	$smarty->assign("Building",$nodeinfo['Building']);
-		    	$smarty->assign("Apartment",$nodeinfo['Apartment']);
-		}
-		if (pg_num_rows($res) < 1)
+		$wr['id'] = $_GET['nodeid'];
+    	$res = NetworkNode_SELECT('',$wr);
+    	if ($res['count'] < 1)
 		{
 			print('Ящика с таким ID не существует!<br />
 			<a href="NetworkNodes.php">Назад</a>');
 			die();
 		}
-    	$res = NetworkNode_SELECT('id, "name"','','');
-		while ($boxtype = pg_fetch_array($res))
+    	$rows = $res['rows'];
+		$smarty->assign("id",$rows[0]['id']);
+		$smarty->assign("name",$rows[0]['name']);
+    	$smarty->assign("NetworkBox",$rows[0]['NetworkBox']);
+    	$smarty->assign("note",$rows[0]['note']);
+    	$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
+    	$smarty->assign("SettlementGeoSpatial",$rows[0]['SettlementGeoSpatial']);
+    	$smarty->assign("Building",$rows[0]['Building']);
+    	$smarty->assign("Apartment",$rows[0]['Apartment']);
+    	$NetworkBox = $rows[0]['NetworkBox'];
+
+    	$res = NetworkBox_SELECT('','');
+		$rows = $res['rows'];
+		$i = -1;
+		while (++$i<$res['count'])
+		{
+			$combobox_box_values[] = $rows[$i]['id'];
+			$combobox_box_text[] = $rows[$i]['inventoryNumber'];
+		}
+		$smarty->assign("combobox_box_values",$combobox_box_values);
+		$smarty->assign("combobox_box_text",$combobox_box_text);
+		$smarty->assign("combobox_boxtype_selected",$NetworkBox);
+		/*while ($boxtype = pg_fetch_array($res))
 		{
 			$combobox_netnode_values[] = $boxtype['id'];
 			$combobox_netnode_name[] = $boxtype['name'];
@@ -147,10 +167,12 @@ else
 
 		$smarty->assign("combobox_netnode_values",$combobox_netnode_values);
 		$smarty->assign("combobox_netnode_name",$combobox_netnode_name);
-		$smarty->assign("combobox_netnode_selected",$nodeinfo['id']);
+		$smarty->assign("combobox_netnode_selected",$nodeinfo['id']);*/
 	}
 	elseif ($_GET['mode'] == 'add')
 	{
+		require_once("func/NetworkBoxType_func.php");
+
 		if ($_SESSION['class'] > 1)
 		{
 			die("!!!");
@@ -158,32 +180,25 @@ else
 
 		$smarty->assign("mode","add");
 
-    /*	$res = NetworkNode_SELECT('id, "name"','','');
-		while ($boxtype = pg_fetch_array($res))
+		$res = NetworkBox_SELECT('','');
+		$rows = $res['rows'];
+		$i = -1;
+		while (++$i<$res['count'])
 		{
-			$combobox_netbox_values[] = $boxtype['id'];
-			$combobox_netbox_invnum[] = $boxtype['inventoryNumber'];
-			
-			//$combobox_netbox_text[] = $boxtype['marking'];
+			$combobox_box_values[] = $rows[$i]['id'];
+			$combobox_box_text[] = $rows[$i]['inventoryNumber'];
 		}
-        $smarty->assign("name",$nodeinfo['name']);
-		$smarty->assign("NetworkBox",$nodeinfo['NetworkBox']);
-		$smarty->assign("note",$nodeinfo['note']);
-		$smarty->assign("OpenGIS",$nodeinfo['OpenGIS']);
-		$smarty->assign("SettlementGeoSpatial",$nodeinfo['SettlementGeoSpatial']);
-		$smarty->assign("Building",$nodeinfo['Building']);
-		$smarty->assign("Apartment",$nodeinfo['Apartment']);
-		*/    	
-		//$smarty->assign("combobox_netbox_values",$combobox_netbox_values);
-		//$smarty->assign("combobox_netbox_text",$combobox_netbox_text);
+		$smarty->assign("combobox_box_values",$combobox_box_values);
+		$smarty->assign("combobox_box_text",$combobox_box_text);
 	}
-	elseif (($_GET['mode'] == 'delete') and (isset($_GET['boxid'])))
+	elseif (($_GET['mode'] == 'delete') and (isset($_GET['nodeid'])))
 	{
 		if ($_SESSION['class'] > 1)
 		{
 			die("!!!");
 		}
-    	NetworkNode_DELETE('id='.$_GET['nodeid']);
+		$wr['id'] = $_GET['nodeid'];
+    	NetworkNode_DELETE($wr);
     	header("Refresh: 2; url=NetworkNodes.php");
 		print("Нода удалена!");
 		die();
