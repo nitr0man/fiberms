@@ -117,8 +117,8 @@ a.koord-mail:hover { font: normal 11px Tahoma, Arial; color: #df4336; font-weigh
 /* //////////////////////////////////////    Block COL1 */
 .left_col .menu { padding:20px; }
 .left_col .menu h3 { font: 14px Tahoma, Arial; color: #7A7A7A; margin:0 0 20px 0; text-transform: uppercase; font-weight: bold; }
-.left_col .menu ul li { padding:0 0 0 20px; background:url('http://seti.kr.ua/i/bull.gif') no-repeat 0 4px; margin:12px 0 0 0; list-style:none; }
-.left_col .menu ul li:hover { padding:0 0 0 20px; background:url('http://seti.kr.ua/i/bull_on.gif') no-repeat 0 4px; margin:12px 0 0 0; list-style:none; }
+.left_col .menu ul li { padding:0 0 0 20px; background:url('http://seti.kr.ua/i/bull.gif') no-repeat 0 4px; margin:0 0 0 0; list-style:none; }
+.left_col .menu ul li:hover { padding:0 0 0 20px; background:url('http://seti.kr.ua/i/bull_on.gif') no-repeat 0 4px; margin:0px 0 0 0; list-style:none; }
 .menu ul li a, .menu ul li a:visited { font: 11px Tahoma, Arial; color:#BC2417; text-decoration:none; font-weight: bold; }
 .menu ul li a:hover { font: 11px Tahoma, Arial; color:#df4336; text-decoration:none; font-weight: bold; }
 
@@ -157,10 +157,4 @@ div.hroniki_name a:hover { font-family: Tahoma, sans-serif; font-weight:normal; 
 
 .img-arrow{
   margin-top: 10px;
-}
-.menu li ul{
-    display:none;
-}
-.menu li:hover ul {
-	display:block;
 }
