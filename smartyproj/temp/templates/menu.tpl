@@ -26,6 +26,11 @@
 			<li id="li4"><a href="CableLine.php?mode=add">Добавить кабель</a></li>
 		</ul>
 	</li>
+	<li id="li4"><a href="#">Волокно</a>
+		<ul>
+			<li id="li4"><a href="FSOT.php">Список типов волокон</a></li>
+		</ul>
+	</li>
 	<li id="li4"><a href="Users.php">Пользователи</a></li>
 	<li id="li4">element3</li>
 	<li id="li4">element4</li>

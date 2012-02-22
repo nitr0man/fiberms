@@ -3,7 +3,7 @@
 	<table>
 		<tr>
 			<td>
-			{html_table loop=$data cols="<a href=\"#\">ID</a>,OpenGIS,CableType,length,comment,Change,Delete"}
+			{html_table loop=$data cols=$cols}
 			</td>
 		<br />
 		</tr>

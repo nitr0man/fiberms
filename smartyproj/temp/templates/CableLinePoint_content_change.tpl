@@ -11,8 +11,8 @@
 		<br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">CableType</label></td><td> <select name="cabletypes">
-			{html_options values=$combobox_cabletype_values selected=$combobox_cabletype_selected output=$combobox_cabletype_text}
+		<td><label class="events_anonce">CableLine</label></td><td> <select name="cablelines">
+			{html_options values=$combobox_cableline_values selected=$combobox_cableline_selected output=$combobox_cableline_text}
 			</select></td>
 		<br />
 		</tr>
@@ -27,7 +27,7 @@
 		<br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">note</label></td><td> <input type="text" value="{$OpenGIS}" name="OpenGIS"></td>
+		<td><label class="events_anonce">note</label></td><td> <textarea name="note">{$note}</textarea></td>
 		<br />
 		</tr>
 		<tr>

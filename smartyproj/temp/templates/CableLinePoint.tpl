@@ -4,11 +4,11 @@
 <body>
 <div id="content">
 {if $mode == 'change'}
-	{include file="CableLine_content_change.tpl"}
+	{include file="CableLinePoint_content_change.tpl"}
 {elseif $mode == 'add'}
-	{include file="CableLine_content_add.tpl"}
+	{include file="CableLinePoint_content_add.tpl"}
 {else}
-	{include file="CableLine_content.tpl"}
+	{include file="CableLinePoint_content.tpl"}
 {/if}
 </div>
 </body>

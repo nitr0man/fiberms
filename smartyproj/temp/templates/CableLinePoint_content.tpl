@@ -3,7 +3,7 @@
 	<table>
 		<tr>
 			<td>
-			{html_table loop=$data cols="<a href=\"#\">ID</a>,OpenGIS,CableLine,meterSign,NetworkNode,note,Apartment,Building,SettlementGeoSpatial,Delete"}
+			{html_table loop=$data cols="<a href=\"#\">ID</a>,OpenGIS,CableLine,meterSign,NetworkNode,note,Apartment,Building,SettlementGeoSpatial,Change,Delete"}
 			</td>
 		<br />
 		</tr>

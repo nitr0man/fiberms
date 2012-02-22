@@ -79,11 +79,47 @@ else
 	  	while (++$i<$res['count'])
 	  	{	  		$box_arr[] = $rows[$i]['id'];
 	  		$box_arr[] = $rows[$i]['NetworkBoxType'];
-			$box_arr[] = $rows[$i]['inventoryNumber'];
+			$box_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['id'].'">'.$rows[$i]['inventoryNumber'].'</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$rows[$i]['id'].'">Изменить</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}
 		$smarty->assign("data",$box_arr);
+	}
+	elseif (($_GET['mode'] == 'charac') and (isset($_GET['boxid'])))
+	{		$smarty->assign("mode","charac");
+		require_once("func/NetworkNodes_func.php");
+
+		$wr['id'] = $_GET['boxid'];
+    	$res = NetworkBox_SELECT('',$wr);
+    	if ($res['count'] < 1)
+		{
+			print('Ящика с таким ID не существует!<br />
+			<a href="NetworkBox.php">Назад</a>');
+			die();
+		}
+    	$rows = $res['rows'];
+//		$smarty->assign("id",$rows[0]['id']);
+//		$boxtypeid = $rows[0]['NetworkBoxType'];
+		$smarty->assign("invNum",$rows[0]['inventoryNumber']);
+		unset($wr);
+		$wr['id'] = $rows[0]['NetworkBoxType'];
+		$res = NetworkBoxType_SELECT('',$wr);
+		$smarty->assign("boxtype",$res['rows'][0]['marking']);
+		unset($wr);
+		$wr['NetworkBox'] = $_GET['boxid'];
+		$res = NetworkNode_SELECT('',$wr);
+		$smarty->assign("nodename",$res['rows'][0]['name']);
+
+/*		$rows = $res['rows'];
+		$i = -1;
+		while (++$i<$res['count'])
+		{
+			$combobox_boxtype_values[] = $rows[$i]['id'];
+			$combobox_boxtype_text[] = $rows[$i]['marking'];
+		}
+		$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
+		$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
+		$smarty->assign("combobox_boxtype_selected",$boxtypeid);*/
 	}
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['boxid'])))
 	{
@@ -102,16 +138,9 @@ else
 			die();
 		}
     	$rows = $res['rows'];
-/*		while ($boxinfo = pg_fetch_array($res))
-		{
-			$smarty->assign("id",$boxinfo['id']);
-			$boxtypeid = $boxinfo['NetworkBoxType'];
-			$smarty->assign("invNum",$boxinfo['inventoryNumber']);
-		}   */
 		$smarty->assign("id",$rows[0]['id']);
 		$boxtypeid = $rows[0]['NetworkBoxType'];
 		$smarty->assign("invNum",$rows[0]['inventoryNumber']);
-//    	$res = NetworkBoxType_SELECT('id, "marking"','','');
 		$res = NetworkBoxType_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
@@ -120,12 +149,6 @@ else
 			$combobox_boxtype_values[] = $rows[$i]['id'];
 			$combobox_boxtype_text[] = $rows[$i]['marking'];
 		}
-/*		while ($boxtype = pg_fetch_array($res))
-		{
-			$combobox_boxtype_values[] = $boxtype['id'];
-			$combobox_boxtype_text[] = $boxtype['marking'];
-		}*/
-
 		$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
 		$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
 		$smarty->assign("combobox_boxtype_selected",$boxtypeid);
