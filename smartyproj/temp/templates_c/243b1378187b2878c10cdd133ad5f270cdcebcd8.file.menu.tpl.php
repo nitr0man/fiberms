@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-02-20 13:22:09
+<?php /* Smarty version Smarty-3.1.7, created on 2012-02-22 18:41:13
          compiled from "./templates/menu.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:1761087674f2a4d6ca8e950-80896190%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '243b1378187b2878c10cdd133ad5f270cdcebcd8' => 
     array (
       0 => './templates/menu.tpl',
-      1 => 1329729727,
+      1 => 1329921668,
       2 => 'file',
     ),
   ),
@@ -38,10 +38,23 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 			  <li><a href="NetworkNodes.php?mode=add">Добавить узел</a></li>
 		    </ul>
 		  </li>
+		  <li id="li4"><a href="#">Кабеля</a>
+			<ul>
+			  <li id="li4"><a href="CableType.php">Список типов кабелей</a></li>
+			  <li id="li4"><a href="CableType.php?mode=add">Добавить тип кабеля</a></li>
+			  <li id="li4"><a href="CableLine.php">Список кабелей</a></li>
+			  <li id="li4"><a href="CableLine.php?mode=add">Добавить кабель</a></li>
+			</ul>
+		  </li>
+		  <li id="li4"><a href="#">Волокно</a>
+			<ul>
+			  <li id="li4"><a href="FSOT.php">Список типов волокон</a></li>
+			</ul>
+		  </li>
 		  <li><a href="Users.php">Пользователи</a></li>
 		  <li><a href="logout.php">Выйти</a></li>
 		</ul>
-	  <br style="clear: left" />
+	   <br style="clear: left" />
 	  </div>
 	</div>
   </div>

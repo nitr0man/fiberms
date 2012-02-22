@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.7, created on 2012-02-01 16:10:23
+<?php /* Smarty version Smarty-3.1.7, created on 2012-02-12 12:10:49
          compiled from ".\templates\NetworkBox.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:206644f27e67b141802-42566697%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'f699fc0f73d516ffdf768d9e2c0efd9c597d25ef' => 
     array (
       0 => '.\\templates\\NetworkBox.tpl',
-      1 => 1328105422,
+      1 => 1329041447,
       2 => 'file',
     ),
   ),
@@ -35,6 +35,9 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
 <?php }elseif($_smarty_tpl->tpl_vars['mode']->value=='add'){?>
 	<?php echo $_smarty_tpl->getSubTemplate ("NetworkBox_content_add.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
+
+<?php }elseif($_smarty_tpl->tpl_vars['mode']->value=='charac'){?>
+	<?php echo $_smarty_tpl->getSubTemplate ("NetworkBox_content_charac.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>
 
 <?php }else{ ?>
 	<?php echo $_smarty_tpl->getSubTemplate ("NetworkBox_content.tpl", $_smarty_tpl->cache_id, $_smarty_tpl->compile_id, null, null, array(), 0);?>

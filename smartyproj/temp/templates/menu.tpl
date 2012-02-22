@@ -17,10 +17,23 @@
 			  <li><a href="NetworkNodes.php?mode=add">Добавить узел</a></li>
 		    </ul>
 		  </li>
+		  <li id="li4"><a href="#">Кабеля</a>
+			<ul>
+			  <li id="li4"><a href="CableType.php">Список типов кабелей</a></li>
+			  <li id="li4"><a href="CableType.php?mode=add">Добавить тип кабеля</a></li>
+			  <li id="li4"><a href="CableLine.php">Список кабелей</a></li>
+			  <li id="li4"><a href="CableLine.php?mode=add">Добавить кабель</a></li>
+			</ul>
+		  </li>
+		  <li id="li4"><a href="#">Волокно</a>
+			<ul>
+			  <li id="li4"><a href="FSOT.php">Список типов волокон</a></li>
+			</ul>
+		  </li>
 		  <li><a href="Users.php">Пользователи</a></li>
 		  <li><a href="logout.php">Выйти</a></li>
 		</ul>
-	  <br style="clear: left" />
+	   <br style="clear: left" />
 	  </div>
 	</div>
   </div>
