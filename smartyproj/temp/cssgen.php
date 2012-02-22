@@ -1,0 +1,19 @@
+$body["color"] = $_POST["bodycolor"];
+		$body["background"] = $_POST["bodybackground"];
+		$content["background"] = $_POST["contentbackground"];
+		$content["th-color"] = $_POST["contentth"];
+		$content["td-color"] = $_POST["contenttd"];
+		$a["link-color"] = $_POST["alinkcolor"];
+		$a["visited-color"] = $_POST["avisitedcolor"];
+		$a["active-color"] = $_POST["aactivecolor"];
+		$menu["background"] = $_POST["leftcolmenu"];
+		$menu["h3-color"] = $_POST["leftcolmenuh3"];
+		$menu["menu-ul-li"] = $_POST["leftcolmenuulli"];
+		$menu["menu-ul-li-li"] = $_POST["leftcolmenuullili"];
+		$menu["li-li-border-color"] =  $_POST[""];
+		$menu["menu-ul-li-hover"] = $_POST["leftcolmenuullihover"];
+/*		$menu["background-color-hover"] = $_POST[""];
+		$menu["li-a-visited"] = $_POST[""];
+		$menu["li-a-hover"] = $_POST[""];*/
+		$contablebordercolor = $_POST["contable"];
+		

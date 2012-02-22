@@ -1,7 +1,7 @@
 <form name="boxtypeinfo" action="NetworkBoxType.php" method="post">
 <div>
 <input type="hidden" value="2" name="mode" />
-	<table>
+	<table id="contable">
 		<tr>
 		<td><label class="events_anonce">Маркировка</label></td><td> <input type="text" value="{$marking}" name="marking"></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
 		<br />

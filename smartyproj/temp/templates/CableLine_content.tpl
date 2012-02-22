@@ -1,11 +1,3 @@
 <form name="cabletype" onsubmit="return false">
-<div>
-	<table>
-		<tr>
-			<td>
-			{html_table loop=$data cols="<a href=\"#\">ID</a>,OpenGIS,CableType,length,comment,Delete"}
-			</td>
-		<br />
-		</tr>
-</div>
+			{html_table table_attr='id="contable"' loop=$data cols="<a href=\"#\">ID</a>,OpenGIS,CableType,length,comment,Delete"}
 </form>

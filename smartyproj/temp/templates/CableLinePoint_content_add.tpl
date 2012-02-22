@@ -1,7 +1,7 @@
 <form name="cablelineinfo" action="CableLine.php" method="post">
 <div>
 <input type="hidden" value="2" name="mode" />
-	<table>
+	<table id="contable">
 		<tr>
 		<td><label class="events_anonce">OpenGIS</label></td><td> <input type="text" value="{$OpenGIS}" name="OpenGIS"></td>
 		<br />

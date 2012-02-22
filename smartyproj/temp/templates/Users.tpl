@@ -17,6 +17,4 @@ document.users.password.value = '';
 {include file="Users_content.tpl"}
 </div>
 <br />
-
-</body>
-<!--</div>-->
+{include file="footer.tpl"}

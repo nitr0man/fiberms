@@ -1,0 +1,81 @@
+<?php
+require_once("auth.php");
+require_once("smarty.php");
+
+if ($_SERVER["REQUEST_METHOD"] == 'POST')
+	{
+		require "func/NetworkNodes_func.php";
+		require_once("functions.php");
+		if ($_POST['mode'] == 1)
+			{
+				$nodeid = $_POST['nodeid'];
+				if ($nodeid == 0)
+					{
+						$res = NetworkNode_SELECT('id','ORDER BY id LIMIT 1','');
+/*						$res = PQuery('SELECT id
+						  FROM "NetworkBoxType" ORDER BY id LIMIT 1');*/
+  					    while ($row = pg_fetch_array($res)) {
+  					    	$nodeid = $row['id'];
+//  					    	$smarty->assign("id",$boxtypeid);
+  					    }
+					}
+/*				$res = PQuery('SELECT COUNT(*) AS count FROM "NetworkBox" WHERE "NetworkBoxType"='.$boxtypeid);
+				$res = NetworkBox_SELECT('COUNT(*) AS count','','"NetworkBoxType"='.$boxtypeid);
+				while ($row = pg_fetch_array($res)) {
+					$boxtypecount = $row['count'];
+				}*/
+/*				$res = PQuery('SELECT * FROM "NetworkBoxType" WHERE id='.$boxtypeid);*/
+				$res = NetworkNode_SELECT('*','','id='.$nodeid);
+				while ($noderow = pg_fetch_array($res)) {
+					$smarty->assign("id",$noderow['id']);
+					$smarty->assign("name",$noderow['name']);
+					$smarty->assign("NetworkBox",$noderow['NetworkBox']);
+					$smarty->assign("note",$noderow['note']);
+					$smarty->assign("OpenGIS",$noderow['OpenGIS']);
+					$smarty->assign("SettlementGeoSpatial",$noderow['SettlementGeoSpatial']);
+					$smarty->assign("Building",$noderow['Building']);
+					$smarty->assign("Apartment",$noderow['Apartement']);
+				}
+/*				$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');*/
+				$res = NetworkNode_SELECT('id, "name"','','');
+				while ($noderow = pg_fetch_array($res)) {
+//					print("<option value=\"".$mybox['id']."\">".$mybox['marking']."</option>");
+					$combobox_netnode_values[] = $noderow['id'];
+					$combobox_netnode_text[] = $noderow['name'];
+				}
+		//		$smarty->assign("count",$boxtypecount);
+				$smarty->assign("combobox_netnode_values",$combobox_netnode_values);
+				$smarty->assign("combobox_netnode_text",$combobox_netnode_text);
+				$smarty->assign("combobox_netnode_selected",$nodeid);
+				$smarty->display('NetworkNodes_content.tpl');
+			}
+		else
+		if ($_POST['mode'] == 2)
+			{
+				$id = $_POST['id'];
+				$name = $_POST['name'];
+		    	$NetworkBox = $_POST['NetworkBox'];
+		    	$note = $_POST['note'];
+		    	$opengis = $_POST['OpenGIS'];
+		    	$geospartical = $_POST['SettlementGeoSpartial'];
+		    	$building = $_POST['Building'];
+		    	$Apartment = $_POST['Apartment'];
+		    	if ($_POST['rb'] == 'true')
+		    	{
+				   	NetworkNode_UPDATE('"name"=\''.$name.'\',"NetworkBox"=\''.$NetworkBox.'\',"note"='.$note.',"OpenGIS"='.$opengis.',"SettlementGeoSpartial"='.$geospartial.',"Building"='.$building.',"Apartment"='.$apartment,'id='.$id);
+				   	print("Изменено успешно!<br />
+					<a href=\"NetworkNodes.php\">Назад</a>");
+				}
+				else
+				{
+					NetworkNode_INSERT('(name, NetworkBox, note, OpenGIS, SettlementGeoSpartial, Building, Apartment) VALUES (\''.$name.'\', \''.$networkbox.'\', '.$note.', '.$opengis.', '.$geospartial.', '.$building.', '.$apartment.')');
+					print("Тип успешно добавлен!<br />
+					<a href=\"NetworkNo.php\">Назад</a>");
+				}
+			}
+	}
+else
+{
+	$smarty->display('NetworkNodes.tpl');
+}
+?>

@@ -11,4 +11,4 @@
 	{include file="CableType_content.tpl"}
 {/if}
 </div>
-</body>
+{include file="footer.tpl"}
