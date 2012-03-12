@@ -239,8 +239,8 @@ function GetFiberTable($NodeID)
 	foreach ($fs_array['rows'] as $elem) {
 		$ColA = $CableLinePoints[$elem['CableLinePointA']];
 		$ColB = $CableLinePoints[$elem['CableLinePointB']];
-		$RowA = $elem['FiberA'];
-		$RowB = $elem['FiberB'];
+		$RowA = $elem['fiberA'];
+		$RowB = $elem['fiberB'];
 		$SpliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, '0');
 		$SpliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, '1');
 	}

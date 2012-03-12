@@ -44,13 +44,13 @@ else
 		for ($i = 1; $i<=$res['maxfiber']; $i++)
 		{        	for ($j = 0; $j < count($res['CableLinePoints']); $j++)
         	{
-            	$arr = $res['SpliceArray'][$i][$j];
+            	$arr = $res['SpliceArray'][$j][$i];
 				$table[] = $arr[1]+1 . ' - ' . $arr[2];
 			}
 		}
-		print_r($res['SpliceArray']);
 		for ($i = 0; $i<=3; $i++)
-		{//			print_r($table[$i]."<br>");
+		{
+			print($table[$i]."<br>");
 		}
 
 
