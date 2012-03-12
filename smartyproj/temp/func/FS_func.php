@@ -203,9 +203,9 @@ function GetCableLineInfo($NodeId)
 
 function GetNodeFibers($NodeId)
 {
-	$query = 'SELECT * FROM "FiberSplice" WHERE 
-		"CableLinePointA" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeID.') 
-		OR "CableLinePointB" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeID.')';
+	$query = 'SELECT * FROM "FiberSplice" WHERE
+		"CableLinePointA" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeId.')
+		OR "CableLinePointB" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeId.')';
 	$res = PQuery($query);
 	$result['count'] = pg_num_rows($res);
 	while ($row = pg_fetch_array($res))
@@ -241,8 +241,8 @@ function GetFiberTable($NodeID)
 		$ColB = $CableLinePoints[$elem['CableLinePointB']];
 		$RowA = $elem['FiberA'];
 		$RowB = $elem['FiberB'];
-		$SpliceArray[$ColA][$RowA] = ($elem['id'], $ColB, $RowB);
-		$SpliceArray[$ColB][$RowB] = ($elem['id'], $ColA, $RowA);
+		$SpliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, '0');
+		$SpliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, '1');
 	}
 	$res['maxfiber'] = $maxfiber;
 	$res['CableLinePoints'] = $CableLinePoints;
