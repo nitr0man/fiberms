@@ -174,36 +174,83 @@ function FiberInfo($fiber)
 	$res = PQuery($query);
 	$result['count'] = pg_num_rows($res);
 	if (pg_num_rows($res) > 0)
-	{		$i = 0;
+	{
 	 	while ($row = pg_fetch_array($res))
 		{
-			$rowarr[$i++] = $row;
+			$rowarr[] = $row;
 		}
-		$result['rows'] = $rowsarr;
+		$result['rows'] = $rowarr;
 	}
     return $result;
 }
 
-function GetFiberNum($NodeId)
-{	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name" FROM "NetworkNode"
-       LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
-       LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
-       LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$NodeId;
+function GetCableLineInfo($NodeId)
+{
+	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name" FROM "NetworkNode"
+		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
+		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
+		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$NodeId;
 	$res = PQuery($query);
-	$i = 0;
-    while ($row = pg_fetch_array($res))
-	{
-		$result['fiber'] = $row['fiber'];
-		$result['clpid'][$i++] = $row['clpid'];
-	}
+	$result['count'] = pg_num_rows($res);
 	while ($row = pg_fetch_array($res))
 	{
-		$rowarr[$i++] = $row;
+		$rowarr[] = $row;
 	}
-	$result['rows'] = $rowsarr;
+	$result['rows'] = $rowarr;
 	pg_free_result($res);
 	return $result;
 }
+
+function GetNodeFibers($NodeId)
+{
+	$query = 'SELECT * FROM "FiberSplice" WHERE 
+		"CableLinePointA" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeID.') 
+		OR "CableLinePointB" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeID.')';
+	$res = PQuery($query);
+	$result['count'] = pg_num_rows($res);
+	while ($row = pg_fetch_array($res))
+	{
+		$rowarr[] = $row;
+	}
+	$result['rows'] = $rowarr;
+	pg_free_result($res);
+	return $result;
+}
+
+/*---------------*/
+function GetFiberTable($NodeID)
+{
+	$cl_array = GetCableLineInfo($NodeID);
+	$i = 0;
+	$maxfiber = 0;
+	if ($cl_array['count'] == 0)
+	{
+		// TODO: exit and return zero table
+		return;
+	}
+	// Array of cableline points
+	foreach ($cl_array['rows'] as $elem) {
+		if ($maxfiber < $elem['fiber'])
+			$maxfiber = $elem['fiber'];
+		$CableLinePoints[$elem['clpid']] = $i++;
+	}
+	// Buiding array of fiber splices
+	$fs_array = GetNodeFibers($NodeID);
+	foreach ($fs_array['rows'] as $elem) {
+		$ColA = $CableLinePoints[$elem['CableLinePointA']];
+		$ColB = $CableLinePoints[$elem['CableLinePointB']];
+		$RowA = $f_elem['FiberA'];
+		$RowB = $f_elem['FiberB'];
+		$SpliceArray[$ColA][$RowA] = ($elem['id'], $ColB, $RowB);
+		$SpliceArray[$ColB][$RowB] = ($elem['id'], $ColA, $RowA);
+	}
+	$res['maxfiber'] = $maxfiber;
+	$res['CableLinePoints'] = $CableLinePoints;
+	$res['SpliceArray'] = $SpliceArray;
+	return $res;
+}
+
+/*---------------*/
 
 /*function CableLinePoint_SELECT($ob,$wr)
 {
