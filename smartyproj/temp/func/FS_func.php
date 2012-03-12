@@ -185,16 +185,22 @@ function FiberInfo($fiber)
 }
 
 function GetFiberNum($NodeId)
-{	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid" FROM "NetworkNode"
+{	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name" FROM "NetworkNode"
        LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
        LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
        LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$NodeId;
 	$res = PQuery($query);
+	$i = 0;
     while ($row = pg_fetch_array($res))
 	{
 		$result['fiber'] = $row['fiber'];
-		$result['clpid'] = $row['clpid'];
+		$result['clpid'][$i++] = $row['clpid'];
 	}
+	while ($row = pg_fetch_array($res))
+	{
+		$rowarr[$i++] = $row;
+	}
+	$result['rows'] = $rowsarr;
 	pg_free_result($res);
 	return $result;
 }

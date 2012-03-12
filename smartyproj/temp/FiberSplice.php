@@ -39,10 +39,23 @@ else
     if (isset($_GET['networknodeid']))
     {
     	require_once("func/CableType_func.php");
-/*    	$NetworkNodeId = $_GET['networknodeid'];
-		$res = GetFiberNum($NetworkNodeId);
+    	$NetworkNodeId = $_GET['networknodeid'];
+
+
+
+
+		/*$res = GetFiberNum($NetworkNodeId);
 		$fiber_count = $res['fiber'];
-//		$CableLinePointId = $res['clpid'];
+		$CableLinePointA = $res['clpid'][0];
+        $CableLinePointB = $res['clpid'][1];
+        $wr['CableLinePointA'] = $CableLinePointA;
+        $wr['CableLinePointB'] = $CableLinePointB;
+        $res2 = FiberSplice_SELECT('',$wr,1);
+        $rows2 = $res2['rows'];
+        $FibResCount = $res2['count'];
+//        pg_free_result($res2);
+        unset($wr);
+
 		$wr['NetworkNode'] = $NetworkNodeId;
         $res1 = CableLinePoint_SELECT('',$wr);
         $rows1 = $res1['rows'];
@@ -52,7 +65,15 @@ else
 //        	print($cables[$rows1[$i]['id']]." ".$rows1[$i]['id']."<br />")
         }
         $col_count = $i;
-        for ($i=1; $i<=$fiber_count; $i++)
+
+        for ($i=0; $i<$FibResCount; $i++)
+        {        	$fiber = $rows2[$i]['fiberB'];
+        	$CableLinePoint = $CableLinePointB;
+        	$col = $CableLinePointA;
+        	print($cables[$CableLinePoint].'-'.$fiber.'(колонка '.$cables[$col].')'.'<br />');
+        } */
+
+        /*for ($i=1; $i<=$fiber_count; $i++)
         {
         	unset($wr);
         	$wr['fiberA'] = $i;
@@ -82,7 +103,7 @@ else
         	}
         }
         $smarty->assign("cols",$cols);
-        $smarty->assign("data",$table);  */
+        $smarty->assign("data",$table);      */
 
 /*  		for ($i=0; $i<=$fiber; $i++)
   		{
