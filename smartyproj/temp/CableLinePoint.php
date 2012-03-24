@@ -9,8 +9,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		if ($_POST['mode'] == 1)
 			{
 				$id = $_POST['id'];
-				$OpenGIS = $_POST['OpenGIS'];
-				$CableLine = $_POST['cabletypes'];
+				$OpenGIS = "'".$_POST['OpenGIS']."'";
+				$CableLine = $_POST['cablelines'];
 				$meterSign = $_POST['meterSign'];
 				$NetworkNode = $_POST['networknodes'];
 				$note = $_POST['note'];
@@ -34,7 +34,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		if ($_POST['mode'] == 2)
 			{
 				$OpenGIS = $_POST['OpenGIS'];
-				$CableLine = $_POST['cabletypes'];
+				$CableLine = $_POST['cablelines'];
 				$meterSign = $_POST['meterSign'];
 				$NetworkNode = $_POST['networknodes'];
 				$note = $_POST['note'];
@@ -92,6 +92,7 @@ else
 			die("!!!");
 		}
 		require_once("func/NetworkBoxType_func.php");
+		require_once("func/NetworkNodes_func.php");
     	$smarty->assign("mode","change");
 
 		$wr['id'] = $_GET['cablelinepointid'];
@@ -125,13 +126,13 @@ else
 		$smarty->assign("combobox_cableline_text",$combobox_cableline_text);
 		$smarty->assign("combobox_cableline_selected",$CableLineId);
 
-		$res = NetworkBox_SELECT('','');
+		$res = NetworkNode_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
 		while (++$i<$res['count'])
 		{
 			$combobox_networknode_values[] = $rows[$i]['id'];
-			$combobox_networknode_text[] = $rows[$i]['inventoryNumber'];
+			$combobox_networknode_text[] = $rows[$i]['note'];
 		}
 		$smarty->assign("combobox_networknode_values",$combobox_networknode_values);
 		$smarty->assign("combobox_networknode_text",$combobox_networknode_text);

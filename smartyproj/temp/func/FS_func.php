@@ -241,12 +241,13 @@ function GetFiberTable($NodeID)
 		$ColB = $CableLinePoints[$elem['CableLinePointB']];
 		$RowA = $elem['fiberA'];
 		$RowB = $elem['fiberB'];
-		$SpliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, '0');
-		$SpliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, '1');
+		$SpliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0);
+		$SpliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1);
 	}
 	$res['maxfiber'] = $maxfiber;
 	$res['CableLinePoints'] = $CableLinePoints;
 	$res['SpliceArray'] = $SpliceArray;
+	$res['cl_array'] = $cl_array;
 	return $res;
 }
 

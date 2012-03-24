@@ -1,4 +1,4 @@
-<form name="cablelineinfo" action="CableLine.php" method="post">
+<form name="cablelineinfo" action="CableLinePoint.php" method="post">
 <div>
 <input type="hidden" value="1" name="mode" />
 	<table>

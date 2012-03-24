@@ -33,25 +33,160 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 				header("Refresh: 2; url=FSOT.php");
 				print("FSOT добавлен!");
 			}
+		else
+		if ($_POST['mode'] == 3)
+		{
+			require_once('func/CableLine_func.php');			$clpid = $_POST['clpid'];
+			$NetworkNode = $_POST['NetworkNode'];
+			$wr['NetworkNode'] = $NetworkNode;
+			$res = CableLinePoint_SELECT('',$wr);
+			$rows = $res['rows'];
+			for ($i = 0; $i<$res['count']; $i++)
+			{
+				$ComboBox_CableLinePoint_values[] = $rows[$i]['id'];
+				$ComboBox_CableLinePoint_text[] = $rows[$i]['note'];			}
+			$smarty->assign("ComboBox_CableLinePoint_values",$ComboBox_CableLinePoint_values);
+			$smarty->assign("ComboBox_CableLinePoint_text",$ComboBox_CableLinePoint_text);
+
+
+
+			$res = GetFiberTable($NetworkNodeId);
+			$j = $res['CableLinePoins'][$clpid];
+			for ($i = 1; $i<=$res['cl_array']['rows'][$j]['fiber']; $i++)
+			{
+				$arr = $res['SpliceArray'][$j][$i];
+				if (!isset($arr))
+				{					$fibers[] = $i;
+				}
+			}
+			$smarty->assign("ComboBox_Fibers_values",$fibers);
+			$smarty->assign("ComboBox_Fibers_text",$fibers);
+			$smarty->display('Fiber_Splice_content_change.tpl');
+		}
 	}
 else
-{
-    if (isset($_GET['networknodeid']))
+{   if (($_GET['mode'] == 'change') and (isset($_GET['networknodeid'])) and (isset($_GET['clpid1'])) and (isset($_GET['fiber1'])))
+	{
+	    $smarty->assign("mode","change");
+        require_once('func/CableType_func.php');
+			$clpid = $_GET['clpid2'];
+			$NetworkNodeId = $_GET['networknodeid'];
+			$wr['NetworkNode'] = $NetworkNodeId;
+			$res = CableLinePoint_SELECT('',$wr);
+			$rows = $res['rows'];
+			for ($i = 0; $i<$res['count']; $i++)
+			{
+				$ComboBox_CableLinePoint_values[] = $rows[$i]['id'];
+				$ComboBox_CableLinePoint_text[] = $rows[$i]['note'];
+			}
+			$smarty->assign("ComboBox_CableLinePoint_values",$ComboBox_CableLinePoint_values);
+			$smarty->assign("ComboBox_CableLinePoint_text",$ComboBox_CableLinePoint_text);
+
+
+
+			$res = GetFiberTable($NetworkNodeId);
+			$j = $res['CableLinePoins'][$clpid];
+			for ($i = 1; $i<=$res['cl_array']['rows'][$j]['fiber']; $i++)
+			{
+				$arr = $res['SpliceArray'][$j][$i];
+				if (!isset($arr))
+				{
+					$fibers[] = $i;
+				}
+			}
+			$smarty->assign("ComboBox_Fibers_values",$fibers);
+			$smarty->assign("ComboBox_Fibers_text",$fibers);
+//			$smarty->display('Fiber_Splice_content_change.tpl');
+
+
+    	/*require_once('func/CableType_func.php');
+    	$wr['id'] = $_GET['clpid2'];
+    	$res = CableLine_SELECT('',$wr);
+    	if ($res['count'] < 1)
+		{
+			print('Кабеля с таким ID не существует!<br />
+			<a href="CableType.php">Назад</a>');
+			die();
+		}
+    	$rows = $res['rows'];
+		$smarty->assign("id",$rows[0]['id']);
+		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
+		$cabletypeid = $rows[0]['CableType'];
+		$smarty->assign("length",$rows[0]['length']);
+		$smarty->assign("comment",$rows[0]['comment']);
+
+		$res = CableType_SELECT('','');
+		$rows = $res['rows'];
+		$i = -1;
+		while (++$i<$res['count'])
+		{
+			$combobox_cabletype_values[] = $rows[$i]['id'];
+			$combobox_cabletype_text[] = $rows[$i]['marking'];
+		}
+		$smarty->assign("combobox_cabletype_values",$combobox_cabletype_values);
+		$smarty->assign("combobox_cabletype_text",$combobox_cabletype_text);
+		$smarty->assign("combobox_cabletype_selected",$cabletypeid);
+
+		unset($wr);
+		$wr['CableLine'] = $_GET['cablelineid'];
+		$res = CableLinePoint_SELECT('',$wr);
+        $rows = $res['rows'];
+	  	$i = -1;
+	  	while (++$i<$res['count'])
+	  	{
+	  		$cableline_arr[] = $rows[$i]['id'];
+	  		$cableline_arr[] = $rows[$i]['OpenGIS'];
+			$cableline_arr[] = $rows[$i]['CableLine'];
+			$cableline_arr[] = $rows[$i]['meterSign'];
+			$cableline_arr[] = '<a href="NetworkNode?mode=charac&nodeid='.$rows[$i]['NetworkNode'].'">'.$rows[$i]['NetworkNode'].'</a>';
+			$cableline_arr[] = $rows[$i]['note'];
+			$cableline_arr[] = $rows[$i]['Apartment'];
+			$cableline_arr[] = $rows[$i]['Building'];
+			$cableline_arr[] = $rows[$i]['SettlementGeoSpatial'];
+			$cableline_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
+			$cableline_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[$i]['id'].'">Удалить</a>';
+	  	}
+		$smarty->assign("data",$cableline_arr);*/
+	}
+    elseif (isset($_GET['networknodeid']))
     {
     	require_once("func/CableType_func.php");
     	$NetworkNodeId = $_GET['networknodeid'];
 		$res = GetFiberTable($NetworkNodeId);
+		print_r($res);
+		print('ff '.$res['cl_array']['rows'][0]['fiber']);
+		if ($NPrint != 1)
+		{
+			$linksD = ' <a href="#">[x]</a>';
+			$linksN = '<a href="#">[+]</a>';
+		}
 		for ($i = 1; $i<=$res['maxfiber']; $i++)
-		{        	for ($j = 0; $j < count($res['CableLinePoints']); $j++)
+		{
+			$cols[] = $i;        	for ($j = 0; $j < count($res['CableLinePoints']); $j++)
         	{
             	$arr = $res['SpliceArray'][$j][$i];
-				$table[] = $arr[1]+1 . ' - ' . $arr[2];
+            	$clpid1 = $res['cl_array']['rows'][1][$j];
+            	$clpid2 = $arr[1];
+            	$fiber1 = $i;
+            	$fiber2 = $arr[2];
+            	$is_a = $arr[4];
+            	$splice_id = $arr[0];
+            	if (isset($arr))
+				{
+					$table[] = $arr[1]+1 . ' - ' . $arr[2].'</a> <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'">[E]</a> '.$linksD;
+				}
+				else
+				{
+					$table = $linksN;
+				}
 			}
 		}
-		for ($i = 0; $i<=3; $i++)
+		$smarty->assign("cols",$cols);
+		$smarty->assign("data",$table);
+/*		for ($i = 0; $i<=3; $i++)
 		{
 			print($table[$i]."<br>");
-		}
+		}    */
 
 
 
@@ -137,57 +272,6 @@ else
 			$cableline_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}
 		$smarty->assign("data",$cableline_arr); */
-	}
-	elseif (($_GET['mode'] == 'charac') and (isset($_GET['cablelineid'])))
-	{
-	    $smarty->assign("mode","charac");
-    	$wr['id'] = $_GET['cablelineid'];
-    	$res = CableLine_SELECT('',$wr);
-    	if ($res['count'] < 1)
-		{
-			print('Кабеля с таким ID не существует!<br />
-			<a href="CableType.php">Назад</a>');
-			die();
-		}
-    	$rows = $res['rows'];
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
-		$cabletypeid = $rows[0]['CableType'];
-		$smarty->assign("length",$rows[0]['length']);
-		$smarty->assign("comment",$rows[0]['comment']);
-
-		$res = CableType_SELECT('','');
-		$rows = $res['rows'];
-		$i = -1;
-		while (++$i<$res['count'])
-		{
-			$combobox_cabletype_values[] = $rows[$i]['id'];
-			$combobox_cabletype_text[] = $rows[$i]['marking'];
-		}
-		$smarty->assign("combobox_cabletype_values",$combobox_cabletype_values);
-		$smarty->assign("combobox_cabletype_text",$combobox_cabletype_text);
-		$smarty->assign("combobox_cabletype_selected",$cabletypeid);
-
-		unset($wr);
-		$wr['CableLine'] = $_GET['cablelineid'];
-		$res = CableLinePoint_SELECT('',$wr);
-        $rows = $res['rows'];
-	  	$i = -1;
-	  	while (++$i<$res['count'])
-	  	{
-	  		$cableline_arr[] = $rows[$i]['id'];
-	  		$cableline_arr[] = $rows[$i]['OpenGIS'];
-			$cableline_arr[] = $rows[$i]['CableLine'];
-			$cableline_arr[] = $rows[$i]['meterSign'];
-			$cableline_arr[] = '<a href="NetworkNode?mode=charac&nodeid='.$rows[$i]['NetworkNode'].'">'.$rows[$i]['NetworkNode'].'</a>';
-			$cableline_arr[] = $rows[$i]['note'];
-			$cableline_arr[] = $rows[$i]['Apartment'];
-			$cableline_arr[] = $rows[$i]['Building'];
-			$cableline_arr[] = $rows[$i]['SettlementGeoSpatial'];
-			$cableline_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
-			$cableline_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[$i]['id'].'">Удалить</a>';
-	  	}
-		$smarty->assign("data",$cableline_arr);
 	}
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['fsotid'])))
 	{
