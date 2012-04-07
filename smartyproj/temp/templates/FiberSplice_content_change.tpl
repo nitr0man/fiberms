@@ -16,7 +16,7 @@
 		<td><label class="events_anonce">Кабель2:</label></td><td> <select name="CableLinePoint" onChange="javascript: GetFiber(document.fibersplice.cable.value,document.fibersplice.fiber.value,document.fibersplice.CableLinePoint.value,3);"> {html_options values=$ComboBox_CableLinePoint_values selected=$combobox_boxtype_selected output=$ComboBox_CableLinePoint_text}</select></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Волокно2:</label></td><td> <select name="CableLinePoint"> {html_options values=$ComboBox_Fibers_values selected=$combobox_boxtype_selected output=$ComboBox_Fiber_text}</select></td>
+		<td><label class="events_anonce">Волокно2:</label></td><td> <select name="Fibers"> {html_options values=$ComboBox_Fibers_values selected=$Combobox_Fibers_selected output=$ComboBox_Fibers_text}</select></td>
 		<br />
 		</tr>
 		<tr>

@@ -69,6 +69,26 @@ else
 	{
 	    $smarty->assign("mode","change");
         require_once('func/CableType_func.php');
+
+        $NetworkNodeId = $_GET['networknodeid'];
+        $res = GetFiberTable($NetworkNodeId);
+        $j = $res['CableLinePoins'][$clpid];
+        for ($i = 1; $i<=$res['cl_array']['rows'][$j]['fiber']; $i++)
+		{
+			$arr = $res['SpliceArray'][$j][$i];
+			if (!isset($arr))
+			{
+				$fibers[] = $i;
+			}
+		}
+  		$fibers[] = $_GET['fiber2'];
+  		$smarty->assign("cable1",$_GET['clpid1']);
+  		$smarty->assign("fiber1",$_GET['fiber1']);
+  		$smarty->assign("Combobox_Fibers_selected",$_GET['fiber2']);
+  		$smarty->assign("ComboBox_Fibers_values",$fibers);
+		$smarty->assign("ComboBox_Fibers_text",$fibers);
+
+
 			$clpid = $_GET['clpid2'];
 			$NetworkNodeId = $_GET['networknodeid'];
 			$wr['NetworkNode'] = $NetworkNodeId;
@@ -84,7 +104,7 @@ else
 
 
 
-			$res = GetFiberTable($NetworkNodeId);
+			/*$res = GetFiberTable($NetworkNodeId);
 			$j = $res['CableLinePoins'][$clpid];
 			for ($i = 1; $i<=$res['cl_array']['rows'][$j]['fiber']; $i++)
 			{
@@ -93,9 +113,8 @@ else
 				{
 					$fibers[] = $i;
 				}
-			}
-			$smarty->assign("ComboBox_Fibers_values",$fibers);
-			$smarty->assign("ComboBox_Fibers_text",$fibers);
+			}*/
+
 //			$smarty->display('Fiber_Splice_content_change.tpl');
 
 
@@ -165,15 +184,15 @@ else
 			$cols[] = $i;        	for ($j = 0; $j < count($res['CableLinePoints']); $j++)
         	{
             	$arr = $res['SpliceArray'][$j][$i];
-            	$clpid1 = $res['cl_array']['rows'][1][$j];
-            	$clpid2 = $arr[1];
+            	$clpid1 = $res['cl_array']['rows'][$j][1];
+            	$clpid2 = $res['cl_array']['rows'][$arr[1]][1];
             	$fiber1 = $i;
             	$fiber2 = $arr[2];
             	$is_a = $arr[4];
             	$splice_id = $arr[0];
             	if (isset($arr))
 				{
-					$table[] = $arr[1]+1 . ' - ' . $arr[2].'</a> <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'">[E]</a> '.$linksD;
+					$table[] = $arr[1]+1 . ' - ' . $arr[2].'</a> <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'">[E]</a> '.$linksD;
 				}
 				else
 				{
