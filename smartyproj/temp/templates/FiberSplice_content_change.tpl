@@ -1,4 +1,6 @@
 <form name="fibersplice" action="FSOT.php" method="post">
+<input type="hidden" value="{$IsA}" name="IsA">
+<input type="hidden" value="{$SpliceId}" name="SpliceId">
 	<table>
 		<tr>
 		<td> <input type="hidden" value="{$id}" name="id"></td>

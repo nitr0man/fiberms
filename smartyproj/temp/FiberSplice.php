@@ -72,35 +72,46 @@ else
 
         $NetworkNodeId = $_GET['networknodeid'];
         $res = GetFiberTable($NetworkNodeId);
-        $j = $res['CableLinePoins'][$clpid];
+        $j = $res['CableLinePoins'][intval($_GET['clpid1'])];
+        print($j."ff".$res['cl_array']['rows'][$j]['fiber']);
         for ($i = 1; $i<=$res['cl_array']['rows'][$j]['fiber']; $i++)
 		{
 			$arr = $res['SpliceArray'][$j][$i];
-			if (!isset($arr))
+			print("start<br>");
+			print($i."<br>");
+			if ((!isset($arr)) or ($i == $_GET['fiber2']))
 			{
 				$fibers[] = $i;
 			}
 		}
-  		$fibers[] = $_GET['fiber2'];
-  		$smarty->assign("cable1",$_GET['clpid1']);
+  		//$fibers[] = $_GET['fiber2'];
+
+		$cl_array = $res['cl_array'];
+		for ($i = 0; $i<$cl_array['count']; $i++){			$ComboBox_CableLinePoint_values[] = $cl_array['rows'][$i]['clpid'];
+			$ComboBox_CableLinePoint_text[] = $cl_array['rows'][$i]['name'];
+		}
+		$cable1 = $cl_array['rows'][$res['CableLinePoints'][$_GET['clpid1']]]['name'];
+
+  		$smarty->assign("cable1",$cable1);
   		$smarty->assign("fiber1",$_GET['fiber1']);
   		$smarty->assign("Combobox_Fibers_selected",$_GET['fiber2']);
   		$smarty->assign("ComboBox_Fibers_values",$fibers);
 		$smarty->assign("ComboBox_Fibers_text",$fibers);
 
-
-			$clpid = $_GET['clpid2'];
-			$NetworkNodeId = $_GET['networknodeid'];
-			$wr['NetworkNode'] = $NetworkNodeId;
-			$res = CableLinePoint_SELECT('',$wr);
-			$rows = $res['rows'];
-			for ($i = 0; $i<$res['count']; $i++)
-			{
-				$ComboBox_CableLinePoint_values[] = $rows[$i]['id'];
-				$ComboBox_CableLinePoint_text[] = $rows[$i]['note'];
-			}
-			$smarty->assign("ComboBox_CableLinePoint_values",$ComboBox_CableLinePoint_values);
-			$smarty->assign("ComboBox_CableLinePoint_text",$ComboBox_CableLinePoint_text);
+/*		$clpid = $_GET['clpid2'];
+		$NetworkNodeId = $_GET['networknodeid'];
+		$wr['NetworkNode'] = $NetworkNodeId;
+		$res = CableLinePoint_SELECT('',$wr);
+		$rows = $res['rows'];
+		for ($i = 0; $i<$res['count']; $i++)
+		{
+			$ComboBox_CableLinePoint_values[] = $rows[$i]['id'];
+			$ComboBox_CableLinePoint_text[] = $rows[$i]['note'];
+		}               */
+		$smarty->assign("ComboBox_CableLinePoint_values",$ComboBox_CableLinePoint_values);
+		$smarty->assign("ComboBox_CableLinePoint_text",$ComboBox_CableLinePoint_text);
+		$smarty->assign("IsA",$_GET['isa']);
+		$smarty->assign("SpliceId",$_GET['spliceid']);
 
 
 
@@ -188,11 +199,11 @@ else
             	$clpid2 = $res['cl_array']['rows'][$arr[1]][1];
             	$fiber1 = $i;
             	$fiber2 = $arr[2];
-            	$is_a = $arr[4];
+            	$is_a = $arr[3];
             	$splice_id = $arr[0];
             	if (isset($arr))
 				{
-					$table[] = $arr[1]+1 . ' - ' . $arr[2].'</a> <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'">[E]</a> '.$linksD;
+					$table[] = $arr[1]+1 . ' - ' . $arr[2].'</a> <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">[E]</a> '.$linksD;
 				}
 				else
 				{
