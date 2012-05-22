@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 		$menu["menu-ul-li-li"] = $_POST["leftcolmenuullili"];
 	//	$menu["li-li-border-color"] =  $_POST[""];
 		$menu["menu-ul-li-hover"] = $_POST["leftcolmenuullihover"];
-		if ($_POST["leftcolmenuullihover"] = "") { $menu["menu-ul-li-hover"] = "#e3e3e3 url('http://seti.kr.ua/i/bull_on.gif') no-repeat 0 4px"; };
+		if ($_POST["leftcolmenuullihover"] = "") { $menu["menu-ul-li-hover"] = "#e3e3e3 url('pic/bull_on.gif') no-repeat 0 4px"; };
 /*		$menu["background-color-hover"] = $_POST[""];
 		$menu["li-a-visited"] = $_POST[""];
 		$menu["li-a-hover"] = $_POST[""];*/
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 	height:100%;
 }
 li { 
-	background: #e3e3e3 url('http://seti.kr.ua/i/bull.gif') no-repeat 4px;
+	background: #e3e3e3 url('pic/bull_on.gif') no-repeat 4px;
 	}
 #main {
 	margin: 0 auto;

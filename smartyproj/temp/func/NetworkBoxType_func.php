@@ -10,11 +10,12 @@ function NetworkBox_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			foreach ($wr as $field => $value)
+/* 			foreach ($wr as $field => $value)
 			 {
 			 	if (strlen($where) > 0) $where .= ' AND ';			 	$where .= ' "'.$field.'"='.$value;
 			 }
-			 $query .= ' WHERE '.$where;
+			 $query .= ' WHERE '.$where; */
+			 $query .= GenWhere($wr);
  		}
  	$res = PQuery($query);
  	$result['count'] = pg_num_rows($res);
@@ -30,16 +31,8 @@ function NetworkBox_SELECT($ob,$wr)
 
 function NetworkBox_INSERT($ins)
 {
-	$query = 'INSERT INTO "NetworkBox" (';
-	foreach ($ins as $field => $value)
-	{
-		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "NetworkBox"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -47,21 +40,16 @@ function NetworkBox_INSERT($ins)
 function NetworkBox_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "NetworkBox" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';
-    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+/*		foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;*/
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -70,12 +58,13 @@ function NetworkBox_UPDATE($upd,$wr)
 
 function NetworkBox_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+/*	foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "NetworkBox" WHERE '.$where;
+	}          */
+	$query = 'DELETE FROM "NetworkBox"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }
@@ -89,12 +78,13 @@ function NetworkBoxType_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			foreach ($wr as $field => $value)
+ 			/*foreach ($wr as $field => $value)
 			 {
 			 	if (strlen($where) > 0) $where .= ' AND ';
 			 	$where .= ' "'.$field.'"='.$value;
 			 }
-			 $query .= ' WHERE '.$where;
+			 $query .= ' WHERE '.$where; */
+			$query .= GenWhere($wr);
  		}
  	unset($field,$value);
  	$res = PQuery($query);
@@ -111,15 +101,8 @@ function NetworkBoxType_SELECT($ob,$wr)
 
 function NetworkBoxType_INSERT($ins)
 {
-	$query = 'INSERT INTO "NetworkBoxType" (';
-	foreach ($ins as $field => $value)
-	{		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "NetworkBoxType"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -127,20 +110,16 @@ function NetworkBoxType_INSERT($ins)
 function NetworkBoxType_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "NetworkBoxType" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+/*		foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;*/
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -149,12 +128,13 @@ function NetworkBoxType_UPDATE($upd,$wr)
 
 function NetworkBoxType_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+/*	foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "NetworkBoxType" WHERE '.$where;
+	}                    */
+	$query = 'DELETE FROM "NetworkBoxType"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }

@@ -9,6 +9,7 @@
 			  <li><a href="NetworkBox.php">Все ящики</a></li>
 			  <li><a href="NetworkBox.php?mode=add">Добавить ящик</a></li>
 			  <li><a href="NetworkBoxType.php">Типы ящиков</a></li>
+			  <li><a href="NetworkBoxType.php?mode=add">Добавить тип ящика</a></li>
 			</ul>
 		  </li>
 		  <li><a href="#">Узлы</a>
@@ -28,8 +29,13 @@
 		  <li id="li4"><a href="#">Волокно</a>
 			<ul>
 			  <li id="li4"><a href="FSOT.php">Список типов волокон</a></li>
+			  <li id="li4"><a href="FSOT.php?mode=add">Добавить тип волокна</a></li>
 			</ul>
 		  </li>
+		  <li id="li4"><a href="#">Сварки</a>
+			<ul>
+			  <li id="li4"><a href="FiberSplice.php?networknodeid=8">Таблица сварок (Node=8)</a></li>
+			</ul>
 		  <li><a href="Users.php">Пользователи</a></li>
 		  <li><a href="logout.php">Выйти</a></li>
 		</ul>

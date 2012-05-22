@@ -13,4 +13,5 @@
 	{include file="FiberSplice_content.tpl"}
 {/if}
 </div>
-</body>
+<!-- </body> -->
+{include file="footer.tpl"}

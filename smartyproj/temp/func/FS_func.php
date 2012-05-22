@@ -1,6 +1,35 @@
 <?php
 require_once("functions.php");
 
+function FSO_SELECT($ob,$wr)
+{
+	$query = 'SELECT * FROM "FiberSpliceOrganizer"';
+	if ($ob != '')
+		{
+			$query .= ' ORDER BY '.$ob;
+		}
+ 	if ($wr != '')
+ 		{
+ 			/*foreach ($wr as $field => $value)
+			 {
+			 	if (strlen($where) > 0) $where .= ' AND ';
+			 	$where .= ' "'.$field.'"='.$value;
+			 }
+			 $query .= ' WHERE '.$where; */
+			$query .= GenWhere($wr);
+ 		}
+ 	$res = PQuery($query);
+ 	$result['count'] = pg_num_rows($res);
+ 	$i = 0;
+ 	while ($row = pg_fetch_array($res))
+	{
+		$rowarr[$i++] = $row;
+	}
+	pg_free_result($res);
+	$result['rows']=$rowarr;
+ 	return $result;
+}
+
 function FSOT_SELECT($ob,$wr)
 {
 	$query = 'SELECT * FROM "FiberSpliceOrganizerType"';
@@ -10,11 +39,12 @@ function FSOT_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			foreach ($wr as $field => $value)
+/* 			foreach ($wr as $field => $value)
 			 {
 			 	if (strlen($where) > 0) $where .= ' AND ';			 	$where .= ' "'.$field.'"='.$value;
 			 }
-			 $query .= ' WHERE '.$where;
+			 $query .= ' WHERE '.$where;*/
+			 $query .= GenWhere($wr);
  		}
  	$res = PQuery($query);
  	$result['count'] = pg_num_rows($res);
@@ -30,16 +60,8 @@ function FSOT_SELECT($ob,$wr)
 
 function FSOT_INSERT($ins)
 {
-	$query = 'INSERT INTO "FiberSpliceOrganizerType" (';
-	foreach ($ins as $field => $value)
-	{
-		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "FiberSpliceOrganizerType"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -47,21 +69,16 @@ function FSOT_INSERT($ins)
 function FSOT_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "FiberSpliceOrganizerType" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';
-    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+/*		foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;   */
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -70,49 +87,30 @@ function FSOT_UPDATE($upd,$wr)
 
 function FSOT_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+/*	foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "FiberSpliceOrganizerType" WHERE '.$where;
+	}              */
+	$query = 'DELETE FROM "FiberSpliceOrganizerType"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }
 
-function FiberSplice_SELECT($ob,$wr,$orand)
+function FiberSplice_SELECT($ob,$wr,$OrAnd)
 {
 	$query = 'SELECT * FROM "FiberSplice"';
-	if ($ob != '')
-		{
+	if ($ob != '') {
 			$query .= ' ORDER BY '.$ob;
-		}
- 	if ($wr != '')
- 		{
- 			foreach ($wr as $field => $value)
-			 {
-
-			 	if (strlen($where) > 0)
-			 	{
-			 		if ($orand==0)
-			 		{
-			 	  		$sl = 'AND';
-					}
-					elseif ($orand==1)
-					{						$sl = 'OR';
-					}
-					$where .= ' '.$sl.' ';
-				}
-			 	$where .= ' "'.$field.'"='.$value;
-			 }
-			 $query .= ' WHERE '.$where;
- 		}
- 	unset($field,$value);
+	}
+ 	if ($wr != '') {
+			$query .= GenWhereAndOr($wr,$OrAnd);
+	}
  	$res = PQuery($query);
  	$result['count'] = pg_num_rows($res);
  	$i = 0;
- 	while ($row = pg_fetch_array($res))
-	{
+ 	while ($row = pg_fetch_array($res))	{
 		$rowarr[$i++] = $row;
 	}
 	pg_free_result($res);
@@ -122,15 +120,8 @@ function FiberSplice_SELECT($ob,$wr,$orand)
 
 function FiberSplice_INSERT($ins)
 {
-	$query = 'INSERT INTO "FiberSplice" (';
-	foreach ($ins as $field => $value)
-	{		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "FiberSplice"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -138,20 +129,16 @@ function FiberSplice_INSERT($ins)
 function FiberSplice_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "FiberSplice" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+/*		foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;*/
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -160,15 +147,17 @@ function FiberSplice_UPDATE($upd,$wr)
 
 function FiberSplice_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+/*	foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "FiberSplice" WHERE '.$where;
+	}             */
+	$query = 'DELETE FROM "FiberSplice"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }
+
 function FiberInfo($fiber)
 {	$query = 'SELECT * FROM "FiberSplice" WHERE "fiberA"='.$fiber.' OR "fiberB"='.$fiber;
 	$res = PQuery($query);
@@ -186,7 +175,7 @@ function FiberInfo($fiber)
 
 function GetCableLineInfo($NodeId)
 {
-	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name" FROM "NetworkNode"
+	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking" FROM "NetworkNode"
 		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
 		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
 		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$NodeId;
@@ -252,6 +241,22 @@ function GetFiberTable($NodeID)
 }
 
 /*---------------*/
+
+function GetFibers($CableLinePoint, $NetworkNodeId, $fiber)
+{
+	//$NetworkNodeId = $_GET['networknodeid'];
+    $res = GetFiberTable($NetworkNodeId);
+    $j = $res['CableLinePoints'][$CableLinePoint];
+    for ($i = 1; $i <= $res['cl_array']['rows'][$j]['fiber']; $i++)
+	{
+		$arr = $res['SpliceArray'][$j][$i];
+		if ((!isset($arr)) or ($i == $fiber))
+		{
+			$fibers[] = $i;
+		}
+	}
+    return $fibers;
+}
 
 /*function CableLinePoint_SELECT($ob,$wr)
 {

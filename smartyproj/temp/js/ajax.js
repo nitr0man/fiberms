@@ -95,7 +95,7 @@ this.divobj.style.left = setX + "px";
 this.divobj.style.top  = setY + "px";
 }
 function tbdev_ajax(file){
-this.AjaxFailedAlert = "Г  в± н±ўн¶° оЈ рђЇ¤е¦°з©ўб¦І сЎІёй±Ґо®»гЎўпЁ¬п§­пІІжЎірђ± г¬Ґо©ї тЎЄІпЄ¬ н№ оЎ±у°ЂІж¬јо¬ с¦«®еґҐкЎ±йіј в± н±ўн¶°.\n";
+this.AjaxFailedAlert = "Ваш браузер не поддерживает расширенные возможности управления сайтом, мы настоятельно рекомендуем сменить браузер.\n";
 this.requestFile = file;
 this.method = "POST";
 this.URLString = "";
@@ -188,11 +188,9 @@ url = url.replace(regcheck[i], '%u00' + (regcheck[i].charCodeAt(0) & 0xFF).toStr
 }
 return escape(url).replace(/\+/g, "%2B");
 }
-
 this.runResponse = function(){
 eval(this.response);
 }
-
 this.sendAJAX = function(urlstring){
 this.responseStatus = new Array(2);
 if(this.failed && this.AjaxFailedAlert){
@@ -211,7 +209,6 @@ this.URLString = this.encodeURLString(this.URLString);
 //this.setVar("rndval", timeval);
 }
 if (this.element) { this.elementObj = document.getElementById(this.element); }
-
 if (this.xmlhttp) {
 var self = this;
 if (this.method == "GET") {
@@ -220,13 +217,11 @@ this.xmlhttp.open(this.method, totalurlstring, true);
 } else {
 this.xmlhttp.open(this.method, this.requestFile, true);
 }
-
 if (this.method == "POST"){
 try {
 this.xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
 } catch (e) {}
 }
-
 this.xmlhttp.send(this.URLString);
 this.xmlhttp.onreadystatechange = function() {
 switch (self.xmlhttp.readyState){
@@ -246,28 +241,17 @@ self.responseStatus[0] = self.xmlhttp.status;
 self.responseStatus[1] = self.xmlhttp.statusText;
 self.onCompletion();
 if(self.execute){ self.runResponse(); }
-
 if (self.elementObj) {
-var elemNodeName = self.elementObj.nodeName.toLowerCase();
+var elemNodeName = self.elementObj.nodeName;
+elemNodeName.toLowerCase();
 self.onHide();
-
-
-if (self.response == 'error') { alert('Р”РѕСЃС‚СѓРї РѕС‚РєР»РѕРЅРµРЅ'); } else {
 if (elemNodeName == "input" || elemNodeName == "select" || elemNodeName == "option" || elemNodeName == "textarea"){
-    if (elemNodeName == "select") {
-	self.elementObj.options.length = 0;
-	var arr = self.response.split('\n');
-	for(var i in arr){
-	    if (arr[i].length > 0) {
-		val = arr[i].split('\t');
-		self.elementObj.options[self.elementObj.options.length] = new Option(val[1], val[0], false, i==0);
-	    }
-        }
-    } else {
-	self.elementObj.value = self.response;
-    }
+if (self.response == 'error') { alert('Доступ отклонен'); } else {
+self.elementObj.value = self.response;
+}
 } else {
-    self.elementObj.innerHTML = self.response;
+if (self.response == 'error') { alert('Доступ отклонен'); } else {
+self.elementObj.innerHTML = self.response;
 }
 }
 }
@@ -280,6 +264,7 @@ break;
 };
 this.createAJAX();
 }
+
 function AddNewOrChangeBoxType(mode,rb,id,marking,manufacturer,units,width,height,length,diameter){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
@@ -431,5 +416,18 @@ ajax.setVar("nodeid", boxid);
 ajax.setVar("mode", mode);
 ajax.method = 'POST';
 ajax.element = 'content';
+ajax.sendAJAX(varsString);
+}
+function GetFiber(CableLinePoint,NetworkNodeId,CurrFiber,mode){
+var ajax = new tbdev_ajax();
+ajax.onShow ('');
+var varsString = "";
+ajax.requestFile = "FiberSplice.php";
+ajax.setVar("CableLinePoint", CableLinePoint);
+ajax.setVar("NetworkNodeId", NetworkNodeId);
+ajax.setVar("CurrFiber", CurrFiber);
+ajax.setVar("mode", mode);
+ajax.method = 'POST';
+ajax.element = 'Fibs';
 ajax.sendAJAX(varsString);
 }

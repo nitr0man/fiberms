@@ -61,9 +61,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST')
 				{
 					$wr['username'] = "'$login'";
 					$res = Users_SELECT('',$wr);
-					if ($res['count'] < 1)
+					if ($res['count'] > 0)
 					{
-						print("Такого пользователя не существует!<br />
+						print("Пользователь с такими логином существует!<br />
 						<a href=\"Users.php\">Назад</a>");
 						die();
 					}

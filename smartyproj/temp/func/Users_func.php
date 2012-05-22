@@ -10,12 +10,13 @@ function Users_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			foreach ($wr as $field => $value)
+/* 			foreach ($wr as $field => $value)
 			 {
 			 	if (strlen($where) > 0) $where .= ' AND ';
 			 	$where .= ' "'.$field.'"='.$value;
 			 }
-			 $query .= ' WHERE '.$where;
+			 $query .= ' WHERE '.$where;        */
+			 $query .= GenWhere($wr);
  		}
  	$res = PQuery($query);
  	$result['count'] = pg_num_rows($res);
@@ -31,16 +32,8 @@ function Users_SELECT($ob,$wr)
 
 function Users_INSERT($ins)
 {
-	$query = 'INSERT INTO "Users" (';
-	foreach ($ins as $field => $value)
-	{
-		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "Users"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -48,21 +41,16 @@ function Users_INSERT($ins)
 function Users_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "Users" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';
-    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+/*		foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;  */
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -71,12 +59,13 @@ function Users_UPDATE($upd,$wr)
 
 function Users_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+	/*foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "Users" WHERE '.$where;
+	}*/
+	$query = 'DELETE FROM "Users"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }

@@ -1,0 +1,1 @@
+<div id="Fibs"><select name="Fibers"> {html_options values=$ComboBox_Fibers_values selected=$Combobox_Fibers_selected output=$ComboBox_Fibers_text}</select></div>

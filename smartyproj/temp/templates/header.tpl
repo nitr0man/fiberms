@@ -8,7 +8,8 @@
   <link href="main_style.css" rel="stylesheet" type="text/css" media="screen" />
   <link rel="stylesheet" type="text/css" href="ddsmoothmenu-v.css" />
   <link rel="stylesheet" type="text/css" href="ddsmoothmenu.css" />
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+  <!--script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script-->
+  <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
   <script type="text/javascript" src="js/jquery.corner.js"></script>
   <script type="text/javascript">

@@ -53,6 +53,8 @@ position: absolute;
 left: 0;
 display: none; /*collapse all sub menus to begin with*/
 visibility: hidden;
+border-right: 1px solid gray;  /*правая палосачка в саб-меню*/
+border-top: 1px solid gray;    /*верхняя палосачка в саб-меню*/
 }
 
 /*Sub level menu list items (undo style from Top level List Items)*/

@@ -2,12 +2,12 @@ body {
 	font-family: Tahoma, Arial, sans-serif;
 	font-size: 12px; 
 	color: #000;
-	background: #F3F3F3 url('http://seti.kr.ua/i/all_bg.jpg') top center no-repeat;
+	background: #F3F3F3 url('pic/all_bg.jpg') top center no-repeat;
 	line-height:16px;
 	height:100%;
 }
 li { 
-	background: #e3e3e3 url("http://seti.kr.ua/i/bull.gif") no-repeat 4px;
+	background: #e3e3e3 url("pic/bull.gif") no-repeat 4px;
 	}
 #main {
 	margin: 0 auto;
@@ -30,7 +30,8 @@ li {
 #content td {
 background: #F0F0F0;}
 #content th {
-background: #989898;}
+/*background: #989898;*/
+background: #E3E3E3}
 
 ul,ol { list-style: none; }
 h1,h2,h3,h4,h5,h6,pre,code,p { font-size: 1em; }

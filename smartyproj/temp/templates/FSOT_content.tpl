@@ -3,7 +3,7 @@
 	<table>
 		<tr>
 			<td>
-			{html_table loop=$data cols="ID,<a href=\"#\">marking</a>,manufacturer,note,Change,Delete"}
+			{html_table loop=$data cols="ID,<a href=\"#\">marking</a>,manufacturer,note,Change,Delete" caption="Список типов волокон"}
 			</td>
 		<br />
 		</tr>

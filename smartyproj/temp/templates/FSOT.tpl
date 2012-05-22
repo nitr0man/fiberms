@@ -13,4 +13,5 @@
 	{include file="FSOT_content.tpl"}
 {/if}
 </div>
-</body>
+<!--/body-->
+{include file="footer.tpl"}

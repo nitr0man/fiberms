@@ -10,11 +10,12 @@ function CableLine_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			foreach ($wr as $field => $value)
+ 			/*foreach ($wr as $field => $value)
 			 {
 			 	if (strlen($where) > 0) $where .= ' AND ';			 	$where .= ' "'.$field.'"='.$value;
 			 }
-			 $query .= ' WHERE '.$where;
+			 $query .= ' WHERE '.$where; */
+			$query .= GenWhere($wr);
  		}
  	$res = PQuery($query);
  	$result['count'] = pg_num_rows($res);
@@ -30,16 +31,8 @@ function CableLine_SELECT($ob,$wr)
 
 function CableLine_INSERT($ins)
 {
-	$query = 'INSERT INTO "CableLine" (';
-	foreach ($ins as $field => $value)
-	{
-		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "CableLine"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -47,21 +40,16 @@ function CableLine_INSERT($ins)
 function CableLine_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "CableLine" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';
-    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+		/*foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;    */
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -70,12 +58,13 @@ function CableLine_UPDATE($upd,$wr)
 
 function CableLine_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+	/*foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "CableLine" WHERE '.$where;
+	} */
+	$query = 'DELETE FROM "CableLine"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }
@@ -89,12 +78,13 @@ function CableType_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			foreach ($wr as $field => $value)
+ 			/*foreach ($wr as $field => $value)
 			 {
 			 	if (strlen($where) > 0) $where .= ' AND ';
 			 	$where .= ' "'.$field.'"='.$value;
 			 }
-			 $query .= ' WHERE '.$where;
+			 $query .= ' WHERE '.$where;*/
+			 $query .= GenWhere($wr);
  		}
  	unset($field,$value);
  	$res = PQuery($query);
@@ -111,15 +101,8 @@ function CableType_SELECT($ob,$wr)
 
 function CableType_INSERT($ins)
 {
-	$query = 'INSERT INTO "CableType" (';
-	foreach ($ins as $field => $value)
-	{		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "CableType"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -127,20 +110,16 @@ function CableType_INSERT($ins)
 function CableType_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "CableType" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+		/*foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;*/
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -149,12 +128,13 @@ function CableType_UPDATE($upd,$wr)
 
 function CableType_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+/*	foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "CableType" WHERE '.$where;
+	}       */
+	$query = 'DELETE FROM "CableType"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }
@@ -167,12 +147,13 @@ function CableLinePoint_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			foreach ($wr as $field => $value)
+ 			/*foreach ($wr as $field => $value)
 			 {
 			 	if (strlen($where) > 0) $where .= ' AND ';
 			 	$where .= ' "'.$field.'"='.$value;
 			 }
-			 $query .= ' WHERE '.$where;
+			 $query .= ' WHERE '.$where;*/
+			$query .= GenWhere($wr);
  		}
  	$res = PQuery($query);
  	$result['count'] = pg_num_rows($res);
@@ -188,16 +169,8 @@ function CableLinePoint_SELECT($ob,$wr)
 
 function CableLinePoint_INSERT($ins)
 {
-	$query = 'INSERT INTO "CableLinePoint" (';
-	foreach ($ins as $field => $value)
-	{
-		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
+	$query = 'INSERT INTO "CableLinePoint"';
+	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
@@ -205,21 +178,16 @@ function CableLinePoint_INSERT($ins)
 function CableLinePoint_UPDATE($upd,$wr)
 {
 	$query = 'UPDATE "CableLinePoint" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';
-    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
+    $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-		foreach ($wr as $field => $value)
+		/*foreach ($wr as $field => $value)
 	    {
     		if (strlen($where) > 0) $where .= ' AND ';
     		$where .= ' "'.$field.'"='.$value;
 	    }
-		$query .= ' WHERE '.$where;
+		$query .= ' WHERE '.$where;    */
+		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
 	$result = PQuery($query);
@@ -228,12 +196,13 @@ function CableLinePoint_UPDATE($upd,$wr)
 
 function CableLinePoint_DELETE($wr)
 {
-	foreach ($wr as $field => $value)
+	/*foreach ($wr as $field => $value)
 	{
     	if (strlen($where) > 0) $where .= ' AND ';
     	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "CableLinePoint" WHERE '.$where;
+	}   */
+	$query = 'DELETE FROM "CableLinePoint"';
+	$query .= GenWhere($wr);
 	$result = PQuery($query);
 	return $result;
 }
