@@ -158,6 +158,20 @@ function FiberSplice_DELETE($wr)
 	return $result;
 }
 
+function GetDirection($CableLinePoint,$NetworkNodeId) {	$query = 'SELECT * FROM "CableLinePoint" WHERE id='.$CableLinePoint;
+	$res = PQuery($query);
+ 	while ($row = pg_fetch_array($res)) {
+		$CableLine = $row['CableLine'];
+	}
+	$query = 'SELECT * FROM "CableLinePoint" WHERE "CableLine"='.$CableLine.'AND "NetworkNode"!=NULL AND "NetworkNode"!='.$NetworkNodeId;
+	$res = PQuery($query);
+	if (pg_num_rows($res) == 1) {		while ($row = pg_fetch_array($res)) {			return $row['NetworkNode'];
+		}
+	}
+	else {		return '-';
+	}
+}
+
 function FiberInfo($fiber)
 {	$query = 'SELECT * FROM "FiberSplice" WHERE "fiberA"='.$fiber.' OR "fiberB"='.$fiber;
 	$res = PQuery($query);
@@ -175,7 +189,7 @@ function FiberInfo($fiber)
 
 function GetCableLineInfo($NodeId)
 {
-	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking" FROM "NetworkNode"
+	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode" FROM "NetworkNode"
 		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
 		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
 		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$NodeId;

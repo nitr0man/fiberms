@@ -27,11 +27,22 @@ li {
 	position:relative;
 	top: 5px;
  }
-#content td {
+/*#content tr {
 background: #F0F0F0;}
 #content th {
-/*background: #989898;*/
 background: #E3E3E3}
+
+tr.header {
+background: #E3E3E3}*/
+#content tr {
+    background: none repeat scroll 0 0 #F0F0F0;
+}
+#content th {
+    background: none repeat scroll 0 0 #E3E3E3;
+}
+#content tr.header {
+    background: none repeat scroll 0 0 #E3E3E3;
+}
 
 ul,ol { list-style: none; }
 h1,h2,h3,h4,h5,h6,pre,code,p { font-size: 1em; }
@@ -72,3 +83,8 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
 #contable {
   margin: 20px;
   border: 1px solid #686868; }
+#fibersplice {
+  margin: 20px;
+  border: 1px solid #686868;
+  text-align: center;
+  }

@@ -1,12 +1,7 @@
-<form name="cabletype" onsubmit="return false">
+<form name="fibersplice" onsubmit="return false">
 <div>
-	<table>
-		<tr>
-			<td>
-			{html_table loop=$data cols=$cols table_attr="border=2" caption="Таблица сварок для узла"}
-			</td>
-		<br />
-		</tr>
-	</table>
+
+			{html_table loop=$data cols=$cols tr_attr=$tr_attr table_attr='id="fibersplice"' caption="Таблица сварок для узла"}
+
 </div>
 </form>

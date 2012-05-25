@@ -155,46 +155,49 @@ else
     	$NetworkNodeId = $_GET['networknodeid'];
 		$res = GetFiberTable($NetworkNodeId);
 //		print_r($res);
-//		print('ff '.$res['cl_array']['rows'][0]['fiber']);
-/*		if ($NPrint != 1)
-		{
-			$linksD = ' <a href="#">[x]</a>';
-			$linksN = '<a href="#">[+]</a>';
-		} */
-/*		$cols[] = "Кабель";
-		$cols[] = "Маркировка";
-		$cols[] = "Имя";*/
-
-		$cols[] = "Волокна";
+		$cols[] = "Имя";
 		for ($i = 0; $i < count($res['CableLinePoints']); $i++) {
-			$cols[] = "Кабель:&nbsp;<u>".($i+1)."</u><br>Маркировка:&nbsp;<u>".$res['cl_array']['rows'][$i]['marking']."</u><br>Имя:&nbsp;<u>".$res['cl_array']['rows'][$i]['name']."</u>";
-/*			$table[] = "<u>".($i+1)."</u>";
-			$table[] = "<u>".$res['cl_array']['rows'][$i]['marking']."</u>";
-			$table[] = "<u>".$res['cl_array']['rows'][$i]['name']."</u>"; */
+			//$cols[] = "Кабель:&nbsp;<u>".($i+1)."</u><br>Маркировка:&nbsp;<u>".$res['cl_array']['rows'][$i]['marking']."</u><br>Имя:&nbsp;<u>".$res['cl_array']['rows'][$i]['name']."</u>";
+			$cols[] = "<u>".$res['cl_array']['rows'][$i]['name']."</u>";
+			$tr_arr['marking'][$i] = "<u>".$res['cl_array']['rows'][$i]['marking']."</u>";
+			$tr_arr['fiber_count'][$i] = $res['cl_array']['rows'][$i]['fiber'];
+			$tr_arr['direction'][$i] = GetDirection($res['cl_array']['rows'][$i]['clpid'],$NetworkNodeId);
+			$tr_arr['number'][$i] = "<u>".($i+1)."</u>";
+			$tr_attr = array("class=header","class=header","class=header","class=header");
 		}
-
+		$table = array_merge(array("Маркировка"),$tr_arr['marking'],array("Количество волокон"),$tr_arr['fiber_count'],array("Направление"),$tr_arr['direction'],array(""),$tr_arr['number']);
 		for ($i = 1; $i <= $res['maxfiber']; $i++) {
-            $table[] = $i;        	for ($j = 0; $j < count($res['CableLinePoints']); $j++)
+            $table[] = $i;
+            for ($j = 0; $j < count($res['CableLinePoints']); $j++)
         	{
             	$arr = $res['SpliceArray'][$j][$i];
-            	$clpid1 = $res['cl_array']['rows'][$j][1];
-            	$clpid2 = $res['cl_array']['rows'][$arr[1]][1];
+            	$clpid1 = $res['cl_array']['rows'][$j]['clpid'];
+            	$clpid2 = $res['cl_array']['rows'][$arr[1]]['clpid'];
             	$fiber1 = $i;
             	$fiber2 = $arr[2];
             	$is_a = $arr[3];
             	$splice_id = $arr[0];
             	if (isset($arr))
 				{
-					$linksD = '<a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'">[x]</a>';
-					$table[] = $arr[1]+1 . ' - ' . $arr[2].' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">[E]</a> '.$linksD;
+					$linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'">[x]</a>';
+//					$table[] = $arr[1]+1 . ' - ' . $arr[2].' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">[E]</a> '.$linksD;
+					//$table[] = ' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">'.$arr[1]+1 . ' - ' . $arr[2].'</a> [E]'.$linksD;
+					$table[] = ' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">'.(string)($arr[1]+1) . ' - ' . $arr[2].'</a> '.$linksD;
 				}
 				else
 				{
-					$linksN = '<a href="FiberSplice.php?mode=add&clpid1='.$clpid1.'&fiber1='.$fiber1.'&networknodeid='.$NetworkNodeId.'">[+]</a>';
+					if ($i > $res['cl_array']['rows'][$j]['fiber']) {
+						$linksN = ' ';
+					}
+					else {						$linksN = '<a href="FiberSplice.php?mode=add&clpid1='.$clpid1.'&fiber1='.$fiber1.'&networknodeid='.$NetworkNodeId.'">[+]</a>';
+					}
 					$table[] = $linksN;
 				}
+				$tr_attr[] = "";
 			}
 		}
+		//print_r($table);
+		$smarty->assign("tr_attr",$tr_attr);
 		$smarty->assign("cols",$cols);
 		$smarty->assign("data",$table);
 
