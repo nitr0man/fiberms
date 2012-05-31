@@ -1,20 +1,12 @@
 <form name="cablelineinfo" action="CableLine.php" method="post">
 <div>
 <input type="hidden" value="1" name="mode" />
-	<table>
-		<tr>
-		<td> <input type="hidden" value="{$id}" name="id"></td>
-		<br />
-		</tr>		
+	<center><table id="contable">
 		<tr>
 		<td><label class="events_anonce">OpenGIS</label></td><td> <label>{$OpenGIS}</label></td>
-		<br />
 		</tr>
 		<tr>
-		<td><label class="events_anonce">CableType</label></td><td> <select name="cabletypes" readonly>
-			{html_options values=$combobox_cabletype_values selected=$combobox_cabletype_selected output=$combobox_cabletype_text}
-			</select></td>
-		<br />
+		<td><label class="events_anonce">CableType</label></td><td> <label>{$CableType}</label></td>
 		</tr>
 		<td><label class="events_anonce">length</label></td><td> <label>{$length}</label></td>
 		</tr>
@@ -24,22 +16,13 @@
 		<!--tr>
 		<td><input value="Изменить" type="submit" name="ChangeButton" /></td>
 		</tr-->
-	</table>
+	</table></center>
 
-	<table>
-		<tr>
-			<td>
-			{html_table loop=$data cols="ID,OpenGIS,CableLine,meterSign,NetworkNode,note,Apartment,Building,SettlementGeoSpatial,Change,Delete"}
-			</td>			
-		<br />
-		</tr>
-		<tr>
-		<td>
-			<a href="CableLinePoint.php?mode=add">Добавить точку</a>
-		</td>
-		<br />
-		</tr>
-	</table>
+	<div>
+			{html_table loop=$data table_attr='id="contable"' cols="ID,OpenGIS,CableLine,meterSign,NetworkNode,note,Apartment,Building,SettlementGeoSpatial,Change,Delete"}
+			{$AddPoint}
+	</div>
+	
 
 </div>
 </form>

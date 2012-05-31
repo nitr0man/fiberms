@@ -1,7 +1,7 @@
 <form name="NetworkNode" id="NetworkNode" action="NetworkNodes.php" method="post">
 <div>
 <input type="hidden" value="1" name="mode" />
-	<table>
+	<table id="contable">
 		<tr>
 			<td><label></label>Идентификатор:</td><td><input name="id" type="text" value="{$id}"/></td>
 		</tr>

@@ -5,5 +5,6 @@ $(".menu").corner("30px");
 </td>
 </tr>
 </table>
+{$Queries}
 </body>
 </html>

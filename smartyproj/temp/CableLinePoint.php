@@ -1,77 +1,82 @@
 <?php
 require_once("auth.php");
 require_once("smarty.php");
-require_once("func/CableType_func.php");
+require_once("/func/CableType.php");
+require_once("design_func.php");
 
-if ($_SERVER["REQUEST_METHOD"] == 'POST')
-	{
-		require_once("functions.php");
-		if ($_POST['mode'] == 1)
-			{
-				$id = $_POST['id'];
-				$OpenGIS = "'".$_POST['OpenGIS']."'";
-				$CableLine = $_POST['cablelines'];
-				$meterSign = $_POST['meterSign'];
-				$NetworkNode = $_POST['networknodes'];
-				$note = $_POST['note'];
-				$Apartment = $_POST['Apartment'];
-				$Building = $_POST['Building'];
-				$SettlementGeoSpatial = $_POST['SettlementGeoSpatial'];
-				$upd['OpenGIS'] = "$OpenGIS";
-				$upd['CableLine'] = "$CableLine";
-				$upd['meterSign'] = "$meterSign";
-				$upd['NetworkNode'] = "$NetworkNode";
-				$upd['note'] = "'$note'";
-				$upd['Apartment'] = "NULL";
-				$upd['Building'] = "NULL";
-				$upd['SettlementGeoSpatial'] = "NULL";
-	    		$wr['id'] = $id;
-			   	CableLinePoint_UPDATE($upd,$wr);
-            	header("Refresh: 2; url=CableLinePoint.php");
-            	print('CableLinePoint изменен!');
-			}
-		else
-		if ($_POST['mode'] == 2)
-			{
-				$OpenGIS = $_POST['OpenGIS'];
-				$CableLine = $_POST['cablelines'];
-				$meterSign = $_POST['meterSign'];
-				$NetworkNode = $_POST['networknodes'];
-				$note = $_POST['note'];
-				$Apartment = $_POST['Apartment'];
-				$Building = $_POST['Building'];
-				$SettlementGeoSpatial = $_POST['SettlementGeoSpatial'];
-				$ins['OpenGIS'] = "'$OpenGIS'";
-				$ins['CableLine'] = "$CableLine";
-				$ins['meterSign'] = "$meterSign";
-				$ins['NetworkNode'] = "$NetworkNode";
-				$ins['note'] = "'$note'";
-				$ins['Apartment'] = "NULL";
-				$ins['Building'] = "NULL";
-				$ins['SettlementGeoSpatial'] = "NULL";
-	    		CableLinePoint_INSERT($ins);
-				header("Refresh: 2; url=CableLinePoint.php");
-				print("CableLinePoint добавлен!");
-			}
+if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	if ($_POST['mode'] == 1) {
+		$id = $_POST['id'];
+		$OpenGIS = "'".$_POST['OpenGIS']."'";
+		$CableLine = $_POST['cablelines'];
+		$meterSign = $_POST['meterSign'];
+		$NetworkNode = $_POST['networknodes'];
+		$note = $_POST['note'];
+		$Apartment = $_POST['Apartment'];
+		$Building = $_POST['Building'];
+		$SettlementGeoSpatial = $_POST['SettlementGeoSpatial'];
+		/*$upd['OpenGIS'] = "$OpenGIS";
+		$upd['CableLine'] = "$CableLine";
+		$upd['meterSign'] = "$meterSign";
+		$upd['NetworkNode'] = "$NetworkNode";
+		$upd['note'] = "'$note'";
+		$upd['Apartment'] = "NULL";
+		$upd['Building'] = "NULL";
+		$upd['SettlementGeoSpatial'] = "NULL";
+	    $wr['id'] = $id;
+		CableLinePoint_UPDATE($upd,$wr);  */
+		$res = CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial);
+		if (isset($res['error'])) {
+           	$message = $res['error'];
+			$error = 1;
+        } elseif ($res == 1) {
+			header("Refresh: 3; url=CableLine.php");
+	        $message = 'CableLinePoint изменен!';
+			$error = 0;
+        } else {
+    	   	$message = 'Неверно заполнены поля!';
+			$error = 1;
+    	}
+	} elseif ($_POST['mode'] == 2) {
+		$OpenGIS = $_POST['OpenGIS'];
+		$CableLine = $_POST['cablelines'];
+		$meterSign = $_POST['meterSign'];
+		$NetworkNode = $_POST['networknodes'];
+		$note = $_POST['note'];
+		$Apartment = $_POST['Apartment'];
+		$Building = $_POST['Building'];
+		$SettlementGeoSpatial = $_POST['SettlementGeoSpatial'];
+/*		$ins['OpenGIS'] = "'$OpenGIS'";
+		$ins['CableLine'] = "$CableLine";
+		$ins['meterSign'] = "$meterSign";
+		$ins['NetworkNode'] = "$NetworkNode";
+		$ins['note'] = "'$note'";
+		$ins['Apartment'] = "NULL";
+		$ins['Building'] = "NULL";
+		$ins['SettlementGeoSpatial'] = "NULL";
+	    CableLinePoint_INSERT($ins);*/
+		$res = CableLinePoint_Add($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial);
+		if (isset($res['error'])) {
+           	$message = $res['error'];
+			$error = 1;
+        } elseif ($res == 1) {
+			header("Refresh: 3; url=CableLine.php");
+	        $message = 'CableLinePoint добавлен!';
+			$error = 0;
+        } else {
+    	   	$message = 'Неверно заполнены поля!';
+			$error = 1;
+    	}
 	}
-else
-{
-/*	if (isset($_GET['boxid']))
-	{
-		$smarty->assign("body",'<body onload="javascript: GetBoxInfo('.$_GET['boxid'].',1);">');
-	}
-	else
-	{		$smarty->assign("body",'<body onload="javascript: GetBoxInfo(0,1);">');
-	}  */
-    if (!isset($_GET['mode']))
-    {
-		require_once("functions.php");
+	ShowMessage($message,$error)
+} else {
+    if (!isset($_GET['mode'])) {
+    	die();
 		$typeid = $_GET['typeid'];
 		$res = CableLinePoint_SELECT('','');
 		$rows = $res['rows'];
 	  	$i = -1;
-	  	while (++$i<$res['count'])
-	  	{	  		$cableline_arr[] = $rows[$i]['id'];
+	  	while (++$i<$res['count']) {	  		$cableline_arr[] = $rows[$i]['id'];
 	  		$cableline_arr[] = $rows[$i]['OpenGIS'];
 	  		$cableline_arr[] = $rows[$i]['CableLine'];
 	  		$cableline_arr[] = $rows[$i]['meterSign'];
@@ -84,24 +89,21 @@ else
 			$cableline_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}
 		$smarty->assign("data",$cableline_arr);
-	}
-	elseif (($_GET['mode'] == 'change') and (isset($_GET['cablelinepointid'])))
-	{
-		if ($_SESSION['class'] > 1)
-		{
-			die("!!!");
+	} elseif (($_GET['mode'] == 'change') and (isset($_GET['cablelinepointid']))) {
+		if ($_SESSION['class'] > 1) {
+			$message = '!!!';
+			ShowMessage($message,0);
 		}
-		require_once("func/NetworkBoxType_func.php");
-		require_once("func/NetworkNodes_func.php");
+//		require_once("backend/NetworkBoxType.php");
+		require_once("backend/NetworkNodes.php");
     	$smarty->assign("mode","change");
 
 		$wr['id'] = $_GET['cablelinepointid'];
-    	$res = CableLinePoint_SELECT('',$wr);
-    	if ($res['count'] < 1)
-		{
-			print('CableLinePoint с таким ID не существует!<br />
-			<a href="CableLinePoint.php">Назад</a>');
-			die();
+    	$res = CableLinePoint_SELECT($wr);
+    	if ($res['count'] < 1) {
+			$message = 'CableLinePoint с таким ID не существует!<br />
+			<a href="CableLinePoint.php">Назад</a>';
+			ShowMessage($message,0);
 		}
     	$rows = $res['rows'];
 		$smarty->assign("id",$rows[0]['id']);
@@ -117,8 +119,7 @@ else
 		$res = CableLine_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
-		while (++$i<$res['count'])
-		{
+		while (++$i<$res['count']) {
 			$combobox_cableline_values[] = $rows[$i]['id'];
 			$combobox_cableline_text[] = $rows[$i]['length'];
 		}
@@ -129,8 +130,7 @@ else
 		$res = NetworkNode_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
-		while (++$i<$res['count'])
-		{
+		while (++$i<$res['count']) {
 			$combobox_networknode_values[] = $rows[$i]['id'];
 			$combobox_networknode_text[] = $rows[$i]['note'];
 		}
@@ -138,19 +138,17 @@ else
 		$smarty->assign("combobox_networknode_text",$combobox_networknode_text);
 		$smarty->assign("combobox_networknode_selected",$NetworkNodeId);
 	}
-	elseif ($_GET['mode'] == 'add')
-	{
-		if ($_SESSION['class'] > 1)
-		{
-			die("!!!");
+	elseif ($_GET['mode'] == 'add') {
+		if ($_SESSION['class'] > 1) {
+			$message = '!!!';
+			ShowMessage($message,0);
 		}
-		require_once("func/NetworkNodes_func.php");		$smarty->assign("mode","add");
+		require_once("backend/NetworkNodes_func.php");		$smarty->assign("mode","add");
 
 		$res = CableLine_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
-		while (++$i<$res['count'])
-		{
+		while (++$i<$res['count']) {
 			$combobox_cableline_values[] = $rows[$i]['id'];
 			$combobox_cableline_text[] = $rows[$i]['length'];
 		}
@@ -161,25 +159,22 @@ else
 		$res = NetworkNode_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
-		while (++$i<$res['count'])
-		{
+		while (++$i<$res['count']) {
 			$combobox_networknode_values[] = $rows[$i]['id'];
 			$combobox_networknode_text[] = $rows[$i]['name'];
 		}
 		$smarty->assign("combobox_networknode_values",$combobox_networknode_values);
 		$smarty->assign("combobox_networknode_text",$combobox_networknode_text);
 		$smarty->assign("combobox_networknode_selected",$NetworkNodeId);
-	}
-	elseif (($_GET['mode'] == 'delete') and (isset($_GET['cablelinepointid'])))
-	{
-		if ($_SESSION['class'] > 1)
-		{			die("!!!");
+	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['cablelinepointid']))) {
+		if ($_SESSION['class'] > 1)	{
+			$message = '!!!';			ShowMessage($message,0);
 		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
 		$wr['id'] = $_GET['cablelinepointid'];
 		CableLine_DELETE($wr);
     	header("Refresh: 2; url=CableLinePoint.php");
-		print("Точка удалена!");
-		die();
+		$message = "Точка удалена!";
+		ShowMessage($message,0);
  	}
 
 	$smarty->display('CableLinePoint.tpl');

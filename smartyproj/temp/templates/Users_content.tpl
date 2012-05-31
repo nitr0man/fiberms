@@ -23,18 +23,15 @@
 
 <form name="users" onSubmit="return false">
 <!--	<div id="addnewboxtype">-->
-		<table>
+		<table id="contable">
 		<tr>
 		<td><label class="events_anonce">ID:</label></td><td> <input type="text" value="{$id}" name="id"></td>
-		<br />
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Логин:</label></td><td> <input type="text" value="{$login}" name="login"></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
-		<br />
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Пароль:</label></td><td> <input type="text" value="{$password}" name="password"></td><!--<input type="text" checked name="boxtype" size="30" /></td>--><!--<td><input type="text" name="invmun" size="30" /></td>-->
-		<br />
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Права:</label></td><td>

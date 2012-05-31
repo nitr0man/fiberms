@@ -1,12 +1,5 @@
-<form name="cabletype" onsubmit="return false">
+<form name="fsot" onsubmit="return false">
 <div>
-	<table>
-		<tr>
-			<td>
-			{html_table loop=$data cols="ID,<a href=\"#\">marking</a>,manufacturer,note,Change,Delete" caption="Список типов волокон"}
-			</td>
-		<br />
-		</tr>
-	</table>
+	{html_table table_attr='id="contable"' loop=$data cols="ID,marking,manufacturer,note,FSOCount,Change,Delete" caption="FSOTs list"}
 </div>
 </form>

@@ -1,3 +1,8 @@
 <form name="cabletype" onsubmit="return false">
-			{html_table table_attr='id="contable"' loop=$data cols="<a href=\"#\">ID</a>,marking,manufacturer,tubeQuanity,fiberPerTube,tensileStrength,diameter,comment,CableCount,Delete" caption="Список типов кабелей"}
+			{if ($smarty.get.sort == 1)}
+			{$sort = 0}
+			{else}
+			{$sort = 1}
+			{/if}
+			{html_table table_attr='id="contable"' loop=$data cols="ID,<a href=\"CableType.php?sort=$sort\">marking</a>,manufacturer,tubeQuanity,fiberPerTube,tensileStrength,diameter,comment,CableCount,Delete" caption="Список типов кабелей"}
 </form>
