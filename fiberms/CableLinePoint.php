@@ -15,16 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$Apartment = $_POST['Apartment'];
 		$Building = $_POST['Building'];
 		$SettlementGeoSpatial = $_POST['SettlementGeoSpatial'];
-		/*$upd['OpenGIS'] = "$OpenGIS";
-		$upd['CableLine'] = "$CableLine";
-		$upd['meterSign'] = "$meterSign";
-		$upd['NetworkNode'] = "$NetworkNode";
-		$upd['note'] = "'$note'";
-		$upd['Apartment'] = "NULL";
-		$upd['Building'] = "NULL";
-		$upd['SettlementGeoSpatial'] = "NULL";
-	    $wr['id'] = $id;
-		CableLinePoint_UPDATE($upd,$wr);  */
 		$res = CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -46,15 +36,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$Apartment = $_POST['Apartment'];
 		$Building = $_POST['Building'];
 		$SettlementGeoSpatial = $_POST['SettlementGeoSpatial'];
-/*		$ins['OpenGIS'] = "'$OpenGIS'";
-		$ins['CableLine'] = "$CableLine";
-		$ins['meterSign'] = "$meterSign";
-		$ins['NetworkNode'] = "$NetworkNode";
-		$ins['note'] = "'$note'";
-		$ins['Apartment'] = "NULL";
-		$ins['Building'] = "NULL";
-		$ins['SettlementGeoSpatial'] = "NULL";
-	    CableLinePoint_INSERT($ins);*/
 		$res = CableLinePoint_Add($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -94,7 +75,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$message = '!!!';
 			ShowMessage($message,0);
 		}
-//		require_once("backend/NetworkBoxType.php");
 		require_once("backend/NetworkNodes.php");
     	$smarty->assign("mode","change");
 
@@ -169,8 +149,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['cablelinepointid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';			ShowMessage($message,0);
-		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
-		$wr['id'] = $_GET['cablelinepointid'];
+		}		$wr['id'] = $_GET['cablelinepointid'];
 		CableLine_DELETE($wr);
     	header("Refresh: 2; url=CableLinePoint.php");
 		$message = "Точка удалена!";

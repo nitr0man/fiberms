@@ -25,7 +25,6 @@ if ($_POST['login'] == 'login')
 		setcookie('token', $token, time() + 60 * 60 * 24 * 14);
 	}
 	PQuery('UPDATE "Users" SET "token"=\''.$token.'\' WHERE "username"=\''.$login.'\'');
-//	session_start();
     $_SESSION['user'] = $login;
     $_SESSION['class'] = $res['rows'][0]['class']; //pg_result($res, 0, 1);
 	header("Location: NetworkBoxType.php");

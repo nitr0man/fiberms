@@ -39,11 +39,6 @@ function NetworkNode_UPDATE($upd,$wr)
 
 function NetworkNode_DELETE($wr)
 {
-/*	foreach ($wr as $field => $value)
-	{
-    	if (strlen($where) > 0) $where .= ' AND ';
-    	$where .= ' "'.$field.'"='.$value;
-	}                           */
 	$query = 'DELETE FROM "NetworkNode"';
 	$query .= GenWhere($wr);
 	$result = PQuery($query);

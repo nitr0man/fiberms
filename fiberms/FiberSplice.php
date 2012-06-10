@@ -13,21 +13,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 	   		$FiberSpliceOrganizer = $_POST['FibersSpliceOrganizer'];
 			$CableLinePointB = '';
 			$fiberB = '';
-	   		/*$upd['CableLinePointA'] = $_POST['CableLinePoint'];
-	   		$upd['fiberA'] = $_POST['Fibers'];
-	   		$upd['FiberSpliceOrganizer'] = $_POST['FibersSpliceOrganizer'];*/
 	   	} else {
 			$CableLinePointB = $_POST['CableLinePoint'];
 			$fiberB = $_POST['Fibers'];
 			$FiberSpliceOrganizer = $_POST['FibersSpliceOrganizer'];
 			$CableLinePointA = '';
 			$fiberA = '';
-			/*$upd['CableLinePointB'] = $_POST['CableLinePoint'];
-			$upd['fiberB'] = $_POST['Fibers'];
-			$upd['FiberSpliceOrganizer'] = $_POST['FibersSpliceOrganizer'];*/
 		}
-        /*$wr['id'] = $SpliceId;
-        FiberSplice_UPDATE($upd,$wr);*/
 		$res = FiberSplice_Mod($SpliceId,$CableLinePointA,$fiberA,$CableLinePointB,$fiberB,$FiberSpliceOrganizer,$IsA);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -41,13 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 			$error = 1;
     	}
 	} elseif ($_POST['mode'] == 2) {
-	    /*$ins['CableLinePointA'] = $_POST['clpid1'];
-	    $ins['fiberA'] = $_POST['fiber'];
-	    $ins['CableLinePointB'] = $_POST['CableLinePoint'];
-	    $ins['fiberB'] = $_POST['Fibers'];
-	    $ins['FiberSpliceOrganizer'] = $_POST['FibersSpliceOrganizer'];
-	    FiberSplice_INSERT($ins);*/
-
 	    $CableLinePointA = $_POST['CableLinePoint'];
 		$fiberA = $_POST['Fibers'];
 		$CableLinePointB = $_POST['CableLinePoint'];
@@ -67,8 +52,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
     	}
 	} elseif ($_POST['mode'] == 3) {
 		$CurrFiber = $_POST['CurrFiber'];
-//		print($_POST['CableLinePoint']);
-//		print_r(GetFiberTable($_POST['NetworkNodeId']));
 		if ((!isset($CurrFiber)) or ($CurrFiber == '')){			$CurrFiber = -1;
 		}
 		$fibers = GetFibers($_POST['CableLinePoint'],$_POST['NetworkNodeId'],$CurrFiber);
@@ -86,19 +69,9 @@ else
 		}
 
 	    $smarty->assign("mode","change");
-        //require_once('backend/CableType_func.php');
 
         $NetworkNodeId = $_GET['networknodeid'];
         $res = GetFiberTable($NetworkNodeId);
-        /*$j = (int)$res['CableLinePoins'][$_GET['clpid1']];
-        for ($i = 1; $i<=$res['cl_array']['rows'][$j]['fiber']; $i++)
-		{
-			$arr = $res['SpliceArray'][$j][$i];
-			if ((!isset($arr)) or ($i == $_GET['fiber2']))
-			{
-				$fibers[] = $i;
-			}
-		}  */
 		$fibers = GetFibers($_GET['clpid1'],$NetworkNodeId,$_GET['fiber1']);
 
 		$cl_array = $res['cl_array'];
@@ -137,15 +110,6 @@ else
 
 		$NetworkNodeId = $_GET['networknodeid'];
         $res = GetFiberTable($NetworkNodeId);
-        /*$j = (int)$res['CableLinePoins'][$_GET['clpid1']];
-        for ($i = 1; $i<=$res['cl_array']['rows'][$j]['fiber']; $i++)
-		{
-			$arr = $res['SpliceArray'][$j][$i];
-			if ((!isset($arr)) or ($i == $_GET['fiber2']))
-			{
-				$fibers[] = $i;
-			}
-		} */
 		$fibers = GetFibers($_GET['clpid1'],$NetworkNodeId,$_GET['fiber2']);
 
 		$cl_array = $res['cl_array'];
@@ -175,10 +139,8 @@ else
 	} elseif (isset($_GET['networknodeid'])) {
     	$NetworkNodeId = $_GET['networknodeid'];
 		$res = GetFiberTable($NetworkNodeId);
-//		print_r($res);
 		$cols[] = "Имя";
 		for ($i = 0; $i < count($res['CableLinePoints']); $i++) {
-			//$cols[] = "Кабель:&nbsp;<u>".($i+1)."</u><br>Маркировка:&nbsp;<u>".$res['cl_array']['rows'][$i]['marking']."</u><br>Имя:&nbsp;<u>".$res['cl_array']['rows'][$i]['name']."</u>";
 			$cols[] = "<u>".$res['cl_array']['rows'][$i]['name']."</u>";
 			$tr_arr['marking'][$i] = "<u>".$res['cl_array']['rows'][$i]['marking']."</u>";
 			$tr_arr['fiber_count'][$i] = $res['cl_array']['rows'][$i]['fiber'];
@@ -199,8 +161,6 @@ else
             	$splice_id = $arr[0];
             	if (isset($arr)) {
 					$linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'">[x]</a>';
-//					$table[] = $arr[1]+1 . ' - ' . $arr[2].' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">[E]</a> '.$linksD;
-					//$table[] = ' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">'.$arr[1]+1 . ' - ' . $arr[2].'</a> [E]'.$linksD;
 					$table[] = ' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">'.(string)($arr[1]+1) . ' - ' . $arr[2].'</a> '.$linksD;
 				} else {
 					if ($i > $res['cl_array']['rows'][$j]['fiber']) {
@@ -213,7 +173,6 @@ else
 				$tr_attr[] = "";
 			}
 		}
-		//print_r($table);
 		$smarty->assign("tr_attr",$tr_attr);
 		$smarty->assign("cols",$cols);
 		$smarty->assign("data",$table);

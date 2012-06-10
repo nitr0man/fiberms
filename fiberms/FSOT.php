@@ -10,11 +10,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$marking = $_POST['marking'];
 		$manufacturer = $_POST['manufacturer'];
 		$note = $_POST['note'];
-		/*$upd['marking'] = "'$marking'";
-	    $upd['manufacturer'] = "'$manufacturer'";
-	    $upd['note'] = "'$note'";
-	    $wr['id'] = $id;
-		FSOT_UPDATE($upd,$wr);*/
 		$res = FSOT_Mod($id,$marking,$manufacturer,$note);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -31,10 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$marking = $_POST['marking'];
 		$manufacturer = $_POST['manufacturer'];
 		$note = $_POST['note'];
-		/*$ins['marking'] = "'$marking'";
-	    $ins['manufacturer'] = "'$manufacturer'";
-	    $ins['note'] = "'$note'";
-	    FSOT_INSERT($ins); */
 		$res = FSOT_Add($marking,$manufacturer,$note);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -53,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     if (!isset($_GET['mode'])) {
 		$TypeId = $_GET['typeid'];
 		$res = GetFSOTsInfo($_GET['sort']);
-//		print_r($res);
 
 		$rows = $res['FSOTs']['rows'];
 	  	$i = -1;
@@ -70,57 +60,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	  	}
 		$smarty->assign("data",$cableline_arr);
 	}
-/*	elseif (($_GET['mode'] == 'charac') and (isset($_GET['cablelineid'])))
-	{
-	    $smarty->assign("mode","charac");
-    	$wr['id'] = $_GET['cablelineid'];
-    	$res = CableLine_SELECT('',$wr);
-    	if ($res['count'] < 1)
-		{
-			print('Кабеля с таким ID не существует!<br />
-			<a href="CableType.php">Назад</a>');
-			die();
-		}
-    	$rows = $res['rows'];
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
-		$cabletypeid = $rows[0]['CableType'];
-		$smarty->assign("length",$rows[0]['length']);
-		$smarty->assign("comment",$rows[0]['comment']);
-
-		$res = CableType_SELECT('','');
-		$rows = $res['rows'];
-		$i = -1;
-		while (++$i<$res['count'])
-		{
-			$combobox_cabletype_values[] = $rows[$i]['id'];
-			$combobox_cabletype_text[] = $rows[$i]['marking'];
-		}
-		$smarty->assign("combobox_cabletype_values",$combobox_cabletype_values);
-		$smarty->assign("combobox_cabletype_text",$combobox_cabletype_text);
-		$smarty->assign("combobox_cabletype_selected",$cabletypeid);
-
-		unset($wr);
-		$wr['CableLine'] = $_GET['cablelineid'];
-		$res = CableLinePoint_SELECT('',$wr);
-        $rows = $res['rows'];
-	  	$i = -1;
-	  	while (++$i<$res['count'])
-	  	{
-	  		$cableline_arr[] = $rows[$i]['id'];
-	  		$cableline_arr[] = $rows[$i]['OpenGIS'];
-			$cableline_arr[] = $rows[$i]['CableLine'];
-			$cableline_arr[] = $rows[$i]['meterSign'];
-			$cableline_arr[] = '<a href="NetworkNode?mode=charac&nodeid='.$rows[$i]['NetworkNode'].'">'.$rows[$i]['NetworkNode'].'</a>';
-			$cableline_arr[] = $rows[$i]['note'];
-			$cableline_arr[] = $rows[$i]['Apartment'];
-			$cableline_arr[] = $rows[$i]['Building'];
-			$cableline_arr[] = $rows[$i]['SettlementGeoSpatial'];
-			$cableline_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
-			$cableline_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[$i]['id'].'">Удалить</a>';
-	  	}
-		$smarty->assign("data",$cableline_arr);
-	} */
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
@@ -149,8 +88,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			ShowMessage($message,0);
-		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
-		$wr['id'] = $_GET['fsotid'];
+		}		$wr['id'] = $_GET['fsotid'];
 		FSOT_DELETE($wr);
     	header("Refresh: 2; url=FSOT.php");
 		$message = "FSOT удален!";

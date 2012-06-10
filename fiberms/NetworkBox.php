@@ -50,14 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			ShowMessage($message,0);
 		}
 		$rows = $res['rows'];
-/*		while ($boxrow = pg_fetch_array($res))
-  		{
-			$box_arr[] = $boxrow['id'];
-			$box_arr[] = $boxrow['NetworkBoxType'];
-			$box_arr[] = $boxrow['inventoryNumber'];
-			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$boxrow['id'].'">Изменить</a>';
-			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$boxrow['id'].'">Удалить</a>';
-	  	} */
 	  	$i = -1;
 	  	while (++$i < $res['count']) {	  		$box_arr[] = $rows[$i]['id'];
 	  		$box_arr[] = $rows[$i]['NetworkBoxType'];
@@ -86,37 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("invNum",$rows['inventoryNumber']);
 		$smarty->assign("boxtype",$rows['NetworkBoxType']['marking']);
 		$smarty->assign("nodename",$NetworkNodeName);
-
-    	/*$res = NetworkBox_SELECT('',$wr);
-    	if ($res['count'] < 1)
-		{
-			print('Ящика с таким ID не существует!<br />
-			<a href="NetworkBox.php">Назад</a>');
-			die();
-		}
-    	$rows = $res['rows'];
-//		$smarty->assign("id",$rows[0]['id']);
-//		$boxtypeid = $rows[0]['NetworkBoxType'];
-		$smarty->assign("invNum",$rows[0]['inventoryNumber']);
-		unset($wr);
-		$wr['id'] = $rows[0]['NetworkBoxType'];
-		$res = NetworkBoxType_SELECT('',$wr);
-		$smarty->assign("boxtype",$res['rows'][0]['marking']);
-		unset($wr);
-		$wr['NetworkBox'] = $_GET['boxid'];
-		$res = NetworkNode_SELECT('',$wr);
-		$smarty->assign("nodename",$res['rows'][0]['name']);*/
-
-/*		$rows = $res['rows'];
-		$i = -1;
-		while (++$i<$res['count'])
-		{
-			$combobox_boxtype_values[] = $rows[$i]['id'];
-			$combobox_boxtype_text[] = $rows[$i]['marking'];
-		}
-		$smarty->assign("combobox_boxtype_values",$combobox_boxtype_values);
-		$smarty->assign("combobox_boxtype_text",$combobox_boxtype_text);
-		$smarty->assign("combobox_boxtype_selected",$boxtypeid);*/
+    	
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['boxid']))) {
 		if ($_SESSION['class'] > 1) {
 			$message = '!!!';
@@ -164,8 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['boxid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			ShowMessage($message,0);
-		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
-		$wr['id'] = $_GET['boxid'];
+		}		$wr['id'] = $_GET['boxid'];
 		NetworkBox_DELETE($wr);
     	header("Refresh: 2; url=NetworkBox.php");
 		$message = "Ящик удален!";

@@ -14,15 +14,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	   	$height = $_POST['height'];
 	   	$length = $_POST['length'];
 	   	$diameter = $_POST['diameter'];
-		/*$upd['marking'] = "'$marking'";
-		$upd['manufacturer'] = "'$manufacturer'";
-		$upd['units'] = "$units";
-		$upd['width'] = "$width";
-		$upd['height'] = "$height";
-		$upd['length'] = "$length";
-		$upd['diameter'] = "$diameter";
-		$wr['id'] = $id;
-	   	NetworkBoxType_UPDATE($upd,$wr);*/
 		$res = NetworkBoxType_Mod($id,$marking,$manufacturer,$units,$width,$height,$length,$diameter);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -43,14 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$height = $_POST['height'];
 		$length = $_POST['length'];
 		$diameter = $_POST['diameter'];
-		/*$ins['marking'] = "'$marking'";
-	    $ins['manufacturer'] = "'$manufacturer'";
-	    $ins['units'] = "$units";
-	    $ins['width'] = "$width";
-	    $ins['height'] = "$height";
-	    $ins['length'] = "$length";
-	    $ins['diameter'] = "$diameter";
-	    NetworkBoxType_INSERT($ins);*/
 		$res = NetworkBoxType_Add($marking,$manufacturer,$units,$width,$height,$length,$diameter);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -108,28 +91,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$smarty->assign("DeleteEdit",'<a href="NetworkBoxType.php?mode=change&boxtypeid='.$rows[0]['id'].'">Изменить</a><br>
 										 <a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[0]['id'].'">Удалить</a>');
 		}
-
-		/*$wr['id'] = $_GET['boxtypeid'];
-    	$res = NetworkBoxType_SELECT('',$wr);
-    	if ($res['count'] < 1) {
-			print('Типа с таким ID не существует!<br />
-			<a href="NetworkBoxType.php">Назад</a>');
-			die();
-		}
-    	$rows = $res['rows'];
-
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("marking",$rows[0]['marking']);
-		$smarty->assign("manufacturer",$rows[0]['manufacturer']);
-		$smarty->assign("units",$rows[0]['units']);
-		$smarty->assign("width",$rows[0]['width']);
-		$smarty->assign("height",$rows[0]['height']);
-		$smarty->assign("length",$rows[0]['length']);
-		$smarty->assign("diameter",$rows[0]['diameter']);
-		unset($wr);
-		$wr['NetworkBoxType'] = $rows[0]['id'];
-		$res = NetworkBox_SELECT('',$wr);
-		$smarty->assign("count",$res['count']);*/
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['boxtypeid']))) {
 		if ($_SESSION['class'] > 1) {
 			$message = '!!!';
@@ -145,12 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			ShowMessage($message,0);
 		}
     	$rows = $res['rows'];
-/*		while ($boxinfo = pg_fetch_array($res))
-		{
-			$smarty->assign("id",$boxinfo['id']);
-			$boxtypeid = $boxinfo['NetworkBoxType'];
-			$smarty->assign("invNum",$boxinfo['inventoryNumber']);
-		}   */
 		$smarty->assign("id",$rows[0]['id']);
 		$smarty->assign("marking",$rows[0]['marking']);
 		$smarty->assign("manufacturer",$rows[0]['manufacturer']);
@@ -167,8 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("mode","add");
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['boxtypeid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
-		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
-		$wr['id'] = $_GET['boxtypeid'];
+		}		$wr['id'] = $_GET['boxtypeid'];
 		NetworkBoxType_DELETE($wr);
     	header("Refresh: 2; url=NetworkBoxType.php");
 		$message = "Тип удален!";

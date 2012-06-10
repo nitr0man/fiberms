@@ -1,5 +1,4 @@
-{config_load file="test.conf" section="setup"}
-{include file="header.tpl" title=foo}
+{include file="header.tpl"}
 {include file="menu.tpl"}
 <script type="text/javascript" src="js/coloriser.js" ></script>
 <script type="text/javascript" src="http://simonwillison.net/static/2003/getElementsBySelector.js"></script>

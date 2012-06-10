@@ -15,15 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	    $tensileStrength = $_POST['tensileStrength'];
 	    $diameter = $_POST['diameter'];
 	    $comment = $_POST['comment'];
-	   	/*$upd['marking'] = "'$marking'";
-	   	$upd['manufacturer'] = "'$manufacturer'";
-	   	$upd['tubeQuantity'] = "$tubeQuantity";
-	   	$upd['fiberPerTube'] = "$fiberPerTube";
-	   	$upd['tensileStrength'] = "$tensileStrength";
-	   	$upd['diameter'] = "$diameter";
-	   	$upd['comment'] = "'$comment'";
-	   	$wr['id'] = $id;
-		CableType_UPDATE($upd,$wr); */
 		$res = CableType_Mod($id,$marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment);
 		if (isset($res['error'])) {           	
 			$message = $res['error'];
@@ -44,14 +35,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$tensileStrength = $_POST['tensileStrength'];
 		$diameter = $_POST['diameter'];
 		$comment = $_POST['comment'];
-		/*$ins['marking'] = "'$marking'";
-	    $ins['manufacturer'] = "'$manufacturer'";
-	    $ins['tubeQuantity'] = "$tubeQuantity";
-	    $ins['fiberPerTube'] = "$fiberPerTube";
-	    $ins['tensileStrength'] = "$tensileStrength";
-	    $ins['diameter'] = "$diameter";
-	    $ins['comment'] = "'$comment'";
-	    CableType_INSERT($ins); */
 		$res = CableType_Add($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment);
 		if (isset($res['error'])) {
             $message = $res['error'];
@@ -66,8 +49,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     	}
 	}
 	ShowMessage($message,$error);
-	/*$smarty->assign("message",$message);
-	$smarty->display("message.tpl");*/
 } else {
     if (!isset($_GET['mode'])) {
 		$res = CableType_SELECT($_GET['sort'],'');
@@ -86,7 +67,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$CableType_arr[] = $res2['count'];//'0';
 			$CableType_arr[] = '<a href="CableType.php?mode=delete&cabletypeid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}
-//	  	$CableType_arr = CableType_Logic_List();
 		$smarty->assign("data",$CableType_arr);
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['cabletypeid']))) {
 		if ($_SESSION['class'] > 1)	{
@@ -102,12 +82,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			ShowMessage($message,0);
 		}
     	$rows = $res['rows'];
-/*		while ($boxinfo = pg_fetch_array($res))
-		{
-			$smarty->assign("id",$boxinfo['id']);
-			$boxtypeid = $boxinfo['NetworkBoxType'];
-			$smarty->assign("invNum",$boxinfo['inventoryNumber']);
-		}   */
+		
 		$smarty->assign("id",$rows[0]['id']);
 		$smarty->assign("marking",$rows[0]['marking']);
 		$smarty->assign("manufacturer",$rows[0]['manufacturer']);
@@ -126,10 +101,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['cabletypeid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			ShowMessage($message,0);
-		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
-/*		$wr['id'] = $_GET['cabletypeid'];
-		CableType_DELETE($wr);  */
-		$wr['id'] = $_GET['cabletypeid'];
+		}		$wr['id'] = $_GET['cabletypeid'];
 		CableType_Delete($wr);
     	header("Refresh: 2; url=CableType.php");
 		$message = 'Тип удален!';

@@ -18,15 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	   	if ($_POST['Apartment'] == '') { $apartment = 'NULL'; }
 	   	if ($_POST['Apartment'] != '') { $apartment = $_POST['Apartment']; }
 
-        /*$upd['name'] = "'$name'";
-        $upd['NetworkBox'] = "'$NetworkBox'";
-        $upd['note'] = "'$note'";
-        $upd['OpenGIS'] = "'$opengis'";
-        $upd['SettlementGeoSpatial'] = "$geospartial";
-        $upd['Building'] = "$building";
-        $upd['Apartment'] = "$apartment";
-        $wr['id'] = $nodeid;
-       	NetworkNode_UPDATE($upd,$wr);*/
 		$res = NetworkNode_Mod($id,$name,$NetworkBox,$note,$OpenGIS,$SettlementGeoSpatial,$building,$apartment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -50,14 +41,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		if ($_POST['Building'] != '') { $building = $_POST['Building']; }
 		if ($_POST['Apartment'] == '') { $apartment = 'NULL'; }
 		if ($_POST['Apartment'] != '') { $apartment = $_POST['Apartment']; }
-/*		$ins['name'] = "'$name'";
-        $ins['NetworkBox'] = "'$networkbox'";
-        $ins['note'] = "'$note'";
-        $ins['OpenGIS'] = "'$opengis'";
-        $ins['SettlementGeoSpatial'] = "$geospartial";
-        $ins['Building'] = "$building";
-        $ins['Apartment'] = "$apartment";
-        NetworkNode_INSERT($ins);*/
 		$res = NetworkNode_Add($name,$NetworkBox,$note,$OpenGIS,$SettlementGeoSpatial,$building,$apartment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -133,7 +116,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     	$smarty->assign("SettlementGeoSpatial",$rows['SettlementGeoSpatial']);
     	$smarty->assign("Building",$rows['Building']);
     	$smarty->assign("Apartment",$rows['Apartment']);
-		//print_r($res);
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['nodeid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
@@ -170,16 +152,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("combobox_box_values",$combobox_box_values);
 		$smarty->assign("combobox_box_text",$combobox_box_text);
 		$smarty->assign("combobox_boxtype_selected",$NetworkBox);
-		/*while ($boxtype = pg_fetch_array($res))
-		{
-			$combobox_netnode_values[] = $boxtype['id'];
-			$combobox_netnode_name[] = $boxtype['name'];
-			//$combobox_netbox_text[] = $boxtype['marking'];
-		}
-
-		$smarty->assign("combobox_netnode_values",$combobox_netnode_values);
-		$smarty->assign("combobox_netnode_name",$combobox_netnode_name);
-		$smarty->assign("combobox_netnode_selected",$nodeinfo['id']);*/
 	} elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1)
 		{

@@ -104,11 +104,6 @@ function FiberSplice_DELETE($wr)
 
 function GetDirection($CableLinePoint,$NetworkNodeId) {	$query = 'SELECT * FROM "CableLinePoint" WHERE id='.$CableLinePoint;
 	$res = PQuery($query);
-	/*print_r($res);
-	die();
- 	while ($row = pg_fetch_array($res)) {
-		$CableLine = $row['CableLine'];
-	}*/
 	$CableLine = $res['rows'][0]['CableLine'];
 	$query = 'SELECT * FROM "CableLinePoint" WHERE "CableLine"='.$CableLine.'AND "NetworkNode"!=NULL AND "NetworkNode"!='.$NetworkNodeId;
 	$res = PQuery($query);
@@ -118,25 +113,11 @@ function GetDirection($CableLinePoint,$NetworkNodeId) {	$query = 'SELECT * FROM
 	else {
 		return '-';
 	}
-	/*if (pg_num_rows($res) == 1) {		while ($row = pg_fetch_array($res)) {			return $row['NetworkNode'];
-		}
-	}
-	else {		return '-';
-	}*/
 }
 
 function FiberInfo($fiber)
 {	$query = 'SELECT * FROM "FiberSplice" WHERE "fiberA"='.$fiber.' OR "fiberB"='.$fiber;
 	$result = PQuery($query);
-	/*$result['count'] = pg_num_rows($res);
-	if (pg_num_rows($res) > 0)
-	{
-	 	while ($row = pg_fetch_array($res))
-		{
-			$rowarr[] = $row;
-		}
-		$result['rows'] = $rowarr;
-	}*/
     return $result;
 }
 
@@ -147,13 +128,6 @@ function GetCableLineInfo($NodeId)
 		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
 		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$NodeId;
 	$result = PQuery($query);
-	/*$result['count'] = pg_num_rows($res);
-	while ($row = pg_fetch_array($res))
-	{
-		$rowarr[] = $row;
-	}
-	$result['rows'] = $rowarr;
-	pg_free_result($res);*/
 	return $result;
 }
 
@@ -163,97 +137,6 @@ function GetNodeFibers($NodeId)
 		"CableLinePointA" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeId.')
 		OR "CableLinePointB" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$NodeId.')';
 	$result = PQuery($query);
-	/*$result['count'] = pg_num_rows($res);
-	while ($row = pg_fetch_array($res))
-	{
-		$rowarr[] = $row;
-	}
-	$result['rows'] = $rowarr;
-	pg_free_result($res);*/
 	return $result;
 }
-
-/*function GetFSOTInfo($FSOTId) {
-	$query = 
-}*/
-
-/*function CableLinePoint_SELECT($ob,$wr)
-{
-	$query = 'SELECT * FROM "CableLinePoint"';
-	if ($ob != '')
-		{
-			$query .= ' ORDER BY '.$ob;
-		}
- 	if ($wr != '')
- 		{
- 			foreach ($wr as $field => $value)
-			 {
-			 	if (strlen($where) > 0) $where .= ' AND ';
-			 	$where .= ' "'.$field.'"='.$value;
-			 }
-			 $query .= ' WHERE '.$where;
- 		}
- 	$res = PQuery($query);
- 	$result['count'] = pg_num_rows($res);
- 	$i = 0;
- 	while ($row = pg_fetch_array($res))
-	{
-		$rowarr[$i++] = $row;
-	}
-	pg_free_result($res);
-	$result['rows'] = $rowarr;
- 	return $result;
-}
-
-function CableLinePoint_INSERT($ins)
-{
-	$query = 'INSERT INTO "CableLinePoint" (';
-	foreach ($ins as $field => $value)
-	{
-		if (strlen($fields) > 0) $fields .= ', ';
-		if (strlen($values) > 0) $values .= ', ';
-		$fields .= '"'.$field.'"';
-		$values .= $value;
-	}
-	unset($field,$value);
-	$query .= $fields.') VALUES ('.$values.')';
-	$result = PQuery($query);
-	return $result;
-}
-
-function CableLinePoint_UPDATE($upd,$wr)
-{
-	$query = 'UPDATE "CableLinePoint" SET ';
-    foreach ($upd as $field => $value)
-    {
-    	if (strlen($set) > 0) $set .= ', ';
-    	$set .= ' "'.$field.'"='.$value;
-    }
-    $query .= $set;
-    unset($field,$value);
-	if ($wr != '')
-	{
-		foreach ($wr as $field => $value)
-	    {
-    		if (strlen($where) > 0) $where .= ' AND ';
-    		$where .= ' "'.$field.'"='.$value;
-	    }
-		$query .= ' WHERE '.$where;
-	}
-	unset($field,$value);
-	$result = PQuery($query);
-	return $result;
-}
-
-function CableLinePoint_DELETE($wr)
-{
-	foreach ($wr as $field => $value)
-	{
-    	if (strlen($where) > 0) $where .= ' AND ';
-    	$where .= ' "'.$field.'"='.$value;
-	}
-	$query = 'DELETE FROM "CableLinePoint" WHERE '.$where;
-	$result = PQuery($query);
-	return $result;
-} */
 ?>

@@ -1,12 +1,15 @@
 <?php
+function PConnect($host,$db,$user,$pass) {
+	$connection = pg_connect("host='".$host."' dbname='".$db."' user='".$user."' password='".$pass."'");
+	return $connection;
+}
+
 function PQuery($query) {	
 	require "config.php";	
 	error_log($query);
 	$res = pg_query($connection, $query) or $error = 1;
 	if ($error == 1) {
-		//$err = pg_get_result($connection);
 		$result['error'] = pg_last_error($connection);/*pg_result_error_field($err, PGSQL_DIAG_SQLSTATE);*/
-		//die($result['error']);
 		return $result;
 	}
 	$result['count'] = pg_num_rows($res);

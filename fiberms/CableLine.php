@@ -11,12 +11,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	    $CableTypes = $_POST['cabletypes'];
 		$length = $_POST['length'];
 		$comment = $_POST['comment'];
-/*		$upd['OpenGIS'] = "NULL";
-	    $upd['CableType'] = "$cabletypes";
-	    $upd['length'] = "$length";
-	    $upd['comment'] = "'$comment'";
-	    $wr['id'] = $id;
-		CableLine_UPDATE($upd,$wr); */
 		$res = CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$comment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -35,11 +29,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$CableTypes = $_POST['cabletypes'];
 		$length = $_POST['length'];
 		$comment = $_POST['comment'];
-/*		$ins['OpenGIS'] = "NULL";
-	    $ins['CableType'] = "$cabletypes";
-	    $ins['length'] = "$length";
-	    $ins['comment'] = "'$comment'";
-	    CableLine_INSERT($ins);*/
 		$res = CableLine_Add($OpenGIS,$CableTypes,$length,$comment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
@@ -88,7 +77,7 @@ else {
 		$rows = $res['CableLine']['rows'];
 		if ($res['CableLine']['count'] < 1) {			$message = 'Кабеля с таким ID не существует!<br />
 			<a href="CableType.php">Назад</a>';
-			ShowMessage($message,0)
+			ShowMessage($message,0);
 		}
 		$smarty->assign("id",$rows[0]['id']);
 		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
@@ -111,57 +100,10 @@ else {
 			$smarty->assign("data",$CableLine_arr);
 			$smarty->assign("AddPoint",'<a href="CableLinePoint.php?mode=add">Добавить точку</a>');
 		}
-//        print_r($res);    	/*$wr['id'] = $_GET['cablelineid'];
-    	$res = CableLine_SELECT('',$wr);
-    	if ($res['count'] < 1)
-		{
-			print('Кабеля с таким ID не существует!<br />
-			<a href="CableType.php">Назад</a>');
-			die();
-		}
-    	$rows = $res['rows'];
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
-		$cabletypeid = $rows[0]['CableType'];
-		$smarty->assign("length",$rows[0]['length']);
-		$smarty->assign("comment",$rows[0]['comment']);
-
-		$res = CableType_SELECT('','');
-		$rows = $res['rows'];
-		$i = -1;
-		while (++$i<$res['count'])
-		{
-			$combobox_cabletype_values[] = $rows[$i]['id'];
-			$combobox_cabletype_text[] = $rows[$i]['marking'];
-		}
-		$smarty->assign("combobox_cabletype_values",$combobox_cabletype_values);
-		$smarty->assign("combobox_cabletype_text",$combobox_cabletype_text);
-		$smarty->assign("combobox_cabletype_selected",$cabletypeid);
-
-		unset($wr);
-		$wr['CableLine'] = $_GET['cablelineid'];
-		$res = CableLinePoint_SELECT('',$wr);
-        $rows = $res['rows'];
-	  	$i = -1;
-	  	while (++$i<$res['count'])
-	  	{
-	  		$cableline_arr[] = $rows[$i]['id'];
-	  		$cableline_arr[] = $rows[$i]['OpenGIS'];
-			$cableline_arr[] = $rows[$i]['CableLine'];
-			$cableline_arr[] = $rows[$i]['meterSign'];
-			$cableline_arr[] = '<a href="NetworkNode?mode=charac&nodeid='.$rows[$i]['NetworkNode'].'">'.$rows[$i]['NetworkNode'].'</a>';
-			$cableline_arr[] = $rows[$i]['note'];
-			$cableline_arr[] = $rows[$i]['Apartment'];
-			$cableline_arr[] = $rows[$i]['Building'];
-			$cableline_arr[] = $rows[$i]['SettlementGeoSpatial'];
-			$cableline_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
-			$cableline_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[$i]['id'].'">Удалить</a>';
-	  	}
-		$smarty->assign("data",$cableline_arr); */
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['cablelineid']))) {
 		if ($_SESSION['class'] > 1) {
 			$message = '!!!';
-			ShowMessage($message,0)
+			ShowMessage($message,0);
 		}
     	$smarty->assign("mode","change");
 
@@ -170,7 +112,7 @@ else {
     	if ($res['count'] < 1) {
 			$message = 'Кабеля с таким ID не существует!<br />
 			<a href="CableType.php">Назад</a>';
-			ShowMessage($message,0)
+			ShowMessage($message,0);
 		}
     	$rows = $res['rows'];
 		$smarty->assign("id",$rows[0]['id']);
@@ -192,7 +134,7 @@ else {
 	} elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			ShowMessage($message,0)
+			ShowMessage($message,0);
 		}
 		$smarty->assign("mode","add");
 
@@ -209,8 +151,7 @@ else {
 	}
 	elseif (($_GET['mode'] == 'delete') and (isset($_GET['cablelineid']))) {
 		if ($_SESSION['class'] > 1)	{			die("!!!");
-		}//    	NetworkBox_DELETE('id='.$_GET['boxid']);
-		$wr['id'] = $_GET['cablelineid'];
+		}		$wr['id'] = $_GET['cablelineid'];
 		CableLine_DELETE($wr);
     	header("Refresh: 2; url=CableLine.php");
 		$message = "Тип удален!";

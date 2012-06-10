@@ -1,5 +1,4 @@
-{config_load file="test.conf" section="setup"}
-{include file="header.tpl" title=foo}
+{include file="header.tpl"}
 {include file="menu.tpl"}
 <!--<div id="boxinv">-->
 <body onload="javascript: GetUserInfo(0,1);">

@@ -64,7 +64,6 @@ function GetFiberTable($NodeID)
 
 function GetFibers($CableLinePoint, $NetworkNodeId, $fiber)
 {
-	//$NetworkNodeId = $_GET['networknodeid'];
     $res = GetFiberTable($NetworkNodeId);
     $j = $res['CableLinePoints'][$CableLinePoint];
     for ($i = 1; $i <= $res['cl_array']['rows'][$j]['fiber']; $i++)

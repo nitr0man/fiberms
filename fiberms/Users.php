@@ -8,9 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$userid = $_POST['userid'];
 		if ($userid == 0) {
 			$res = Users_SELECT('id LIMIT 1','');
-			$userid = $res['rows'][0]['id'];/*  		while ($row = pg_fetch_array($res)) {  			$userid = $row['id'];
-  			}*/
-		}
+			$userid = $res['rows'][0]['id'];		}
 		$wr['id'] = $userid;
 		$res = Users_SELECT('',$wr);
 		$rows = $res['rows'];
@@ -18,7 +16,6 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("id",$rows[0]['id']);
 		$smarty->assign("login",$rows[0]['username']);
 		$class = $rows[0]['class'];
-/*		$res = PQuery('SELECT id, "marking" FROM "NetworkBoxType"');*/
 		$res = Users_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;

@@ -1,5 +1,4 @@
-{config_load file="test.conf" section="setup"}
-{include file="header.tpl" title=foo}
+{include file="header.tpl"}
 {$warning}
 <form action="index.php" method="post">
 <div style="text-align:center;">

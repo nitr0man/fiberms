@@ -30,12 +30,6 @@ function NetworkBox_UPDATE($upd,$wr)
     $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-/*		foreach ($wr as $field => $value)
-	    {
-    		if (strlen($where) > 0) $where .= ' AND ';
-    		$where .= ' "'.$field.'"='.$value;
-	    }
-		$query .= ' WHERE '.$where;*/
 		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
@@ -45,11 +39,6 @@ function NetworkBox_UPDATE($upd,$wr)
 
 function NetworkBox_DELETE($wr)
 {
-/*	foreach ($wr as $field => $value)
-	{
-    	if (strlen($where) > 0) $where .= ' AND ';
-    	$where .= ' "'.$field.'"='.$value;
-	}          */
 	$query = 'DELETE FROM "NetworkBox"';
 	$query .= GenWhere($wr);
 	$result = PQuery($query);
@@ -65,12 +54,6 @@ function NetworkBoxType_SELECT($ob,$wr)
 		}
  	if ($wr != '')
  		{
- 			/*foreach ($wr as $field => $value)
-			 {
-			 	if (strlen($where) > 0) $where .= ' AND ';
-			 	$where .= ' "'.$field.'"='.$value;
-			 }
-			 $query .= ' WHERE '.$where; */
 			$query .= GenWhere($wr);
  		}
  	unset($field,$value);
@@ -92,12 +75,6 @@ function NetworkBoxType_UPDATE($upd,$wr)
     $query .= GenUpdate($upd);
 	if ($wr != '')
 	{
-/*		foreach ($wr as $field => $value)
-	    {
-    		if (strlen($where) > 0) $where .= ' AND ';
-    		$where .= ' "'.$field.'"='.$value;
-	    }
-		$query .= ' WHERE '.$where;*/
 		$query .= GenWhere($wr);
 	}
 	unset($field,$value);
@@ -107,11 +84,6 @@ function NetworkBoxType_UPDATE($upd,$wr)
 
 function NetworkBoxType_DELETE($wr)
 {
-/*	foreach ($wr as $field => $value)
-	{
-    	if (strlen($where) > 0) $where .= ' AND ';
-    	$where .= ' "'.$field.'"='.$value;
-	}                    */
 	$query = 'DELETE FROM "NetworkBoxType"';
 	$query .= GenWhere($wr);
 	$result = PQuery($query);

@@ -1,4 +1,3 @@
-{config_load file="test.conf" section="setup"}
 {include file="header.tpl"}
 {include file="menu.tpl"}
 <div id="content">
