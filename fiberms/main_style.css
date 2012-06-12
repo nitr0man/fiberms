@@ -82,7 +82,14 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
 }
 #contable {
   margin: 20px;
-  border: 1px solid #686868; }
+  border: 1px solid #686868; 
+//  caption: medium;
+}
+caption {
+	font-weight: bold;
+	font-size: medium;
+	padding-bottom: 5px;
+}
 #fibersplice {
   margin: 20px;
   border: 1px solid #686868;

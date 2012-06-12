@@ -59,11 +59,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     if (!isset($_GET['mode'])) {
 		$NodeId = $_GET['nodeid'];
 		if (!isset($_GET['nodeid'])) {
-			$res = NetworkNode_SELECT($_GET['sort'],$_GET['FSort'],'');
+			//$res = NetworkNode_SELECT($_GET['sort'],$_GET['FSort'],'');
+			$res = GetNetworkNodeList_NetworkBoxName($_GET['sort'],$_GET['FSort'],'');
 		}
 		else {
     		$wr['id'] = $NodeId;
-    		$res = NetworkNode_SELECT($_GET['sort'],$_GET['FSort'],$wr);
+    		//$res = NetworkNode_SELECT($_GET['sort'],$_GET['FSort'],$wr);
+			$res = GetNetworkNodeList_NetworkBoxName($_GET['sort'],$_GET['FSort'],$wr);
 		}
 		if ($res['count'] < 1) {
 			$message = 'Узла с таким ID не существует!<br />
@@ -75,7 +77,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		while (++$i < $res['count']) {
 			$node_arr[] = $rows[$i]['id'];
 			$node_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';
-		    $node_arr[] = $rows[$i]['NetworkBox'];
+		    //$node_arr[] = $rows[$i]['NetworkBox'];
+			$node_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['NetworkBox'].'">'.$rows[$i]['inventoryNumber'].'</a>';
 		    $node_arr[] = $rows[$i]['note'];
 		    $node_arr[] = $rows[$i]['OpenGIS'];
 		    $node_arr[] = $rows[$i]['SettlementGeoSpatial'];

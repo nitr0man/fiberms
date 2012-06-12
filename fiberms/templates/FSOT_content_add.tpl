@@ -15,7 +15,6 @@
 			<td>
 			<input value="Добавить" type="submit" name="AddButton" /><br />
 			</td>
-			<br />
 		</tr>
 </div>
 </form>

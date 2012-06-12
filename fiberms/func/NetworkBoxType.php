@@ -75,7 +75,7 @@ function GetNetworkBoxInfo($NetworkBoxId) {	$wr['id'] = $NetworkBoxId;
 	$result['NetworkBox']['rows'][0]['NetworkBoxType'] = $res2['rows'][0];
 	unset($wr);
 	$wr['NetworkBox'] = $NetworkBoxId;
-	$res3 = NetworkNode_SELECT('',$wr);
+	$res3 = NetworkNode_SELECT('','',$wr);
 	$result['NetworkBox']['rows'][0]['NetworkNode'] = $res3['rows'][0];
 	return $result;
 }

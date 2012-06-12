@@ -41,9 +41,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 } else {
     if (!isset($_GET['mode'])) {
 		$TypeId = $_GET['boxtypeid'];
-		if (!isset($TypeId)) {			$res = NetworkBox_SELECT($_GET['sort'],'');
+		if (!isset($TypeId)) {			//$res = NetworkBox_SELECT($_GET['sort'],'');
+			$res = GetNetworkBoxList($_GET['sort'],'');
 		} else {			$wr['NetworkBoxType'] = $TypeId;
-			$res = NetworkBox_SELECT($_GET['sort'],$wr);
+			//$res = NetworkBox_SELECT($_GET['sort'],$wr);
+			$res = GetNetworkBoxList($_GET['sort'],$wr);
 		}
 		if ($res['count'] < 1) {			$message = 'Ящиков с таким ID/Типом не существует!<br />
 						<a href="NetworkBox.php">Назад</a>';
@@ -52,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$rows = $res['rows'];
 	  	$i = -1;
 	  	while (++$i < $res['count']) {	  		$box_arr[] = $rows[$i]['id'];
-	  		$box_arr[] = $rows[$i]['NetworkBoxType'];
+	  		$box_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['marking'].' ('.$rows[$i]['NetworkBoxType'].')</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['id'].'">'.$rows[$i]['inventoryNumber'].'</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$rows[$i]['id'].'">Изменить</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$rows[$i]['id'].'">Удалить</a>';

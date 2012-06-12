@@ -10,6 +10,9 @@
 		</tr>
 		<td><label class="events_anonce">length</label></td><td> <label>{$length}</label></td>
 		</tr>
+		</tr>
+		<td><label class="events_anonce">name</label></td><td> <label>{$name}</label></td>
+		</tr>
 		<tr>
 		<td><label class="events_anonce">comment</label></td><td> <textarea name="comment">{$comment}</textarea></td>
 		</tr>
@@ -20,7 +23,7 @@
 
 	<div>
 			{html_table loop=$data table_attr='id="contable"' cols="ID,OpenGIS,CableLine,meterSign,NetworkNode,note,Apartment,Building,SettlementGeoSpatial,Change,Delete"}
-			{$AddPoint}
+			<p style="margin: 20px;">{$AddPoint}</a>
 	</div>
 	
 

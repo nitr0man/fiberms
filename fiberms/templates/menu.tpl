@@ -32,10 +32,11 @@
 			  <li id="li4"><a href="FSOT.php?mode=add">Добавить тип волокна</a></li>
 			</ul>
 		  </li>
-		  <li id="li4"><a href="#">Сварки</a>
+		  <!--li id="li4"><a href="#">Сварки</a>
 			<ul>
 			  <li id="li4"><a href="FiberSplice.php?networknodeid=8">Таблица сварок (Node=8)</a></li>
-			</ul>
+			</ul-->
+		  <li><a href="LoggingIs.php">Журнал</a></li>
 		  <li><a href="Users.php">Пользователи</a></li>
 		  <li><a href="logout.php">Выйти</a></li>
 		</ul>

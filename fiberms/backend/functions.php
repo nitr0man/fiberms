@@ -1,4 +1,5 @@
 <?php
+require_once('config.php');
 function PConnect($host,$db,$user,$pass) {
 	$connection = pg_connect("host='".$host."' dbname='".$db."' user='".$user."' password='".$pass."'");
 	return $connection;
@@ -24,7 +25,11 @@ function PQuery($query) {
 
 function GenWhere($wr) {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) $where .= ' AND ';
-	 	$where .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
+		if ($value != 'NULL') {
+			$where .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
+		} else {
+			$where .= ' "'.$field.'" IS '.pg_escape_string($value).'';
+		}
 	}
 	$result = ' WHERE '.$where;
 	return $result;
@@ -35,7 +40,11 @@ function GenInsert($ins) {	foreach ($ins as $field => $value)
 		if (strlen($fields) > 0) $fields .= ', ';
 		if (strlen($values) > 0) $values .= ', ';
 		$fields .= '"'.$field.'"';
-		$values .= "'".pg_escape_string($value)."'";
+		if ($value != 'NULL') {
+			$values .= "'".pg_escape_string($value)."'";
+		} else {
+			$values .= "".pg_escape_string($value)."";
+		}
 	}
 	$result = ' ('.$fields.') VALUES ('.$values.')';
 	return $result;
@@ -61,6 +70,14 @@ function GenWhereAndOr($wr,$OrAnd) {	foreach ($wr as $field => $value) {
 	 	$where .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
 	}
 	$result = ' WHERE '.$where;
+	return $result;
+}
+
+function GetCurrUserInfo() {
+	global $_SESSION;
+	$login = $_SESSION['user'];
+	$query = 'SELECT * FROM "Users" WHERE "username"=\''.$login.'\'';
+	$result = PQuery($query);
 	return $result;
 }
 ?>

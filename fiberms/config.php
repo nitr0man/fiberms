@@ -1,11 +1,12 @@
 <?php
 require_once("backend/functions.php");
 
-$host = "nitr0.homelinux.net";
-$user = "development";
-$pass = "devpass12";
-$db = "dev";
-$connection = PConnect($host,$db,$user,$pass);
+$config['host'] = "nitr0.homelinux.net";
+$config['user'] = "development";
+$config['pass'] = "devpass12";
+$config['db'] = "dev";
+$config['LinesPerPage'] = 10;
+$connection = PConnect($config['host'],$config['db'],$config['user'],$config['pass']);
 if (!$connection) {
 	die("Could not open connection to database server");
 }

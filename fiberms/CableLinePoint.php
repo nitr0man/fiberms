@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$error = 1;
     	}
 	}
-	ShowMessage($message,$error)
+	ShowMessage($message,$error);
 } else {
     if (!isset($_GET['mode'])) {
     	die();
@@ -117,6 +117,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("combobox_networknode_values",$combobox_networknode_values);
 		$smarty->assign("combobox_networknode_text",$combobox_networknode_text);
 		$smarty->assign("combobox_networknode_selected",$NetworkNodeId);
+	} elseif ($_GET['mode'] == 'charac') {
+		
 	}
 	elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1) {

@@ -141,8 +141,8 @@ else
 		$res = GetFiberTable($NetworkNodeId);
 		$cols[] = "Имя";
 		for ($i = 0; $i < count($res['CableLinePoints']); $i++) {
-			$cols[] = "<u>".$res['cl_array']['rows'][$i]['name']."</u>";
-			$tr_arr['marking'][$i] = "<u>".$res['cl_array']['rows'][$i]['marking']."</u>";
+			$cols[] = '<a href="CableLine.php?mode=charac&cablelineid='.$res['cl_array']['rows'][$i]['clid'].'">'.$res['cl_array']['rows'][$i]['name'].'</a>';
+			$tr_arr['marking'][$i] = '<a href="CableType.php?mode=charac&cabletypeid='.$res['cl_array']['rows'][$i]['ctid'].'">'.$res['cl_array']['rows'][$i]['marking'].'</a>';
 			$tr_arr['fiber_count'][$i] = $res['cl_array']['rows'][$i]['fiber'];
 			$tr_arr['direction'][$i] = GetDirection($res['cl_array']['rows'][$i]['clpid'],$NetworkNodeId);
 			$tr_arr['number'][$i] = "<u>".($i+1)."</u>";

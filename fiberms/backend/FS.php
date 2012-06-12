@@ -1,5 +1,6 @@
 <?php
 require_once("functions.php");
+require_once("backend/LoggingIs.php");
 
 function FSO_SELECT($ob,$wr)
 {
@@ -36,6 +37,7 @@ function FSOT_INSERT($ins)
 	$query = 'INSERT INTO "FiberSpliceOrganizerType"';
 	$query .= GenInsert($ins);
 	$result = PQuery($query);
+	LoggingIs(2,'FiberSpliceOrganizerType',$ins,'');
 	return $result;
 }
 
@@ -49,6 +51,7 @@ function FSOT_UPDATE($upd,$wr)
 	}
 	unset($field,$value);
 	$result = PQuery($query);
+	LoggingIs(1,'FiberSpliceOrganizerType',$upd,$wr['id']);
 	return $result;
 }
 
@@ -57,6 +60,7 @@ function FSOT_DELETE($wr)
 	$query = 'DELETE FROM "FiberSpliceOrganizerType"';
 	$query .= GenWhere($wr);
 	$result = PQuery($query);
+	LoggingIs(3,'FiberSpliceOrganizerType','',$wr['id']);
 	return $result;
 }
 
@@ -78,6 +82,7 @@ function FiberSplice_INSERT($ins)
 	$query = 'INSERT INTO "FiberSplice"';
 	$query .= GenInsert($ins);
 	$result = PQuery($query);
+	LoggingIs(2,'FiberSplice',$ins,'');
 	return $result;
 }
 
@@ -91,6 +96,7 @@ function FiberSplice_UPDATE($upd,$wr)
 	}
 	unset($field,$value);
 	$result = PQuery($query);
+	LoggingIs(1,'FiberSplice',$upd,$wr['id']);
 	return $result;
 }
 
@@ -99,6 +105,7 @@ function FiberSplice_DELETE($wr)
 	$query = 'DELETE FROM "FiberSplice"';
 	$query .= GenWhere($wr);
 	$result = PQuery($query);
+	LoggingIs(2,'FiberSplice','',$wr['id']);
 	return $result;
 }
 
@@ -123,7 +130,7 @@ function FiberInfo($fiber)
 
 function GetCableLineInfo($NodeId)
 {
-	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode" FROM "NetworkNode"
+	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode", "CableType".id AS "ctid", "CableLine".id AS "clid" FROM "NetworkNode"
 		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
 		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
 		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$NodeId;

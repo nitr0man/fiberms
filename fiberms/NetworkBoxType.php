@@ -63,7 +63,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$boxtype_arr[] = $rows[$i]['diameter'];
 			$wr['NetworkBoxType'] = $rows[$i]['id'];
 			$res2 = NetworkBox_SELECT('',$wr);
-			$boxtype_arr[] = $res2['count'];
+			if ($res2['count'] > 0) {
+				$boxtype_arr[] = '<a href="NetworkBox.php?boxtypeid='.$rows[$i]['id'].'">'.$res2['count'].'</a>';
+			} else {
+				$boxtype_arr[] = $res2['count'];
+			}
 			$boxtype_arr[] = '<a href="NetworkBoxType.php?mode=change&boxtypeid='.$rows[$i]['id'].'">Изменить</a>';
 			$boxtype_arr[] = '<a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}

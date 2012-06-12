@@ -10,8 +10,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$OpenGIS = $_POST['OpenGIS'];
 	    $CableTypes = $_POST['cabletypes'];
 		$length = $_POST['length'];
+		$name = $_POST['name'];
 		$comment = $_POST['comment'];
-		$res = CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$comment);
+		$res = CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$name,$comment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -28,8 +29,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$OpenGIS = $_POST['OpenGIS'];
 		$CableTypes = $_POST['cabletypes'];
 		$length = $_POST['length'];
+		$name = $_POST['name'];
 		$comment = $_POST['comment'];
-		$res = CableLine_Add($OpenGIS,$CableTypes,$length,$comment);
+		$res = CableLine_Add($OpenGIS,$CableTypes,$length,$name,$comment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -48,10 +50,12 @@ else {
     if (!isset($_GET['mode'])) {
 		$typeid = $_GET['typeid'];
 		if (!isset($_GET['typeid'])) {
-			$res = CableLine_SELECT('','');
+			//$res = CableLine_SELECT('','');
+			$res = GetCableLineList('','');
 		} else {
 			$wr['CableType'] = $typeid;
-			$res = CableLine_SELECT('',$wr);
+			//$res = CableLine_SELECT('',$wr);
+			$res = GetCableLineList('',$wr);
     		if ($res['count'] < 1) {
 				$message = 'Кабелей с таким типом ID не существует!<br />
 				<a href="CableLine.php">Назад</a>';
@@ -60,9 +64,9 @@ else {
 		}
 		$rows = $res['rows'];
 	  	$i = -1;
-	  	while (++$i < $res['count']) {	  		$cableline_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['id'].'</a>';
+	  	while (++$i < $res['count']) {	  		$cableline_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';
 	  		$cableline_arr[] = $rows[$i]['OpenGIS'];
-			$cableline_arr[] = $rows[$i]['CableType'];
+			$cableline_arr[] = '<a href="CableType.php?mode=change&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].' ('.$rows[$i]['CableType'].')</a>';
 			$cableline_arr[] = $rows[$i]['length'];
 			$cableline_arr[] = $rows[$i]['comment'];
 			$cableline_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
@@ -83,6 +87,7 @@ else {
 		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
 		$smarty->assign("CableType",$rows[0]['CableTypeMarking']);
 		$smarty->assign("length",$rows[0]['length']);
+		$smarty->assign("name",$rows[0]['name']);
 		$smarty->assign("comment",$rows[0]['comment']);
 		if ($res['CableLinePoints']['count'] > 0) {			$rows2 = $res['CableLinePoints']['rows'];			$i = -1;
 		  	while (++$i < $res['CableLinePoints']['count']) {		  		$CableLine_arr[] = $rows2[$i]['id'];
@@ -120,6 +125,7 @@ else {
 		$cabletypeid = $rows[0]['CableType'];
 		$smarty->assign("length",$rows[0]['length']);
 		$smarty->assign("comment",$rows[0]['comment']);
+		$smarty->assign("name",$rows[0]['name']);
 
 		$res = CableType_SELECT('','');
 		$rows = $res['rows'];

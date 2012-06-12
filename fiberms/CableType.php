@@ -64,7 +64,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$CableType_arr[] = $rows[$i]['comment'];
 			$wr['CableType'] = $rows[$i]['id'];
 			$res2 = CableLine_SELECT('',$wr);
-			$CableType_arr[] = $res2['count'];//'0';
+			if ($res2['count'] > 0) {
+				$CableType_arr[] = '<a href="CableLine.php?typeid='.$rows[$i]['id'].'">'.$res2['count'].'</a>';
+			} else {
+				$CableType_arr[] = $res2['count'];
+			}
 			$CableType_arr[] = '<a href="CableType.php?mode=delete&cabletypeid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}
 		$smarty->assign("data",$CableType_arr);
@@ -73,6 +77,30 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$message = '!!!';
 			ShowMessage($message,0);
 		}    	$smarty->assign("mode","change");
+
+    	$wr['id'] = $_GET['cabletypeid'];
+    	$res = CableType_SELECT(0,$wr);
+    	if ($res['count'] < 1) {
+			$message = 'Типа с таким ID не существует!<br />
+			<a href="CableType.php">Назад</a>';
+			ShowMessage($message,0);
+		}
+    	$rows = $res['rows'];
+		
+		$smarty->assign("id",$rows[0]['id']);
+		$smarty->assign("marking",$rows[0]['marking']);
+		$smarty->assign("manufacturer",$rows[0]['manufacturer']);
+		$smarty->assign("tubeQuantity",$rows[0]['tubeQuantity']);
+		$smarty->assign("fiberPerTube",$rows[0]['fiberPerTube']);
+		$smarty->assign("tensileStrength",$rows[0]['tensileStrength']);
+		$smarty->assign("diameter",$rows[0]['diameter']);
+		$smarty->assign("comment",$rows[0]['comment']);
+	} elseif (($_GET['mode'] == 'charac') and (isset($_GET['cabletypeid']))) {
+		if ($_SESSION['class'] > 1)	{
+			$message = '!!!';
+			ShowMessage($message,0);
+		}
+    	$smarty->assign("mode","charac");
 
     	$wr['id'] = $_GET['cabletypeid'];
     	$res = CableType_SELECT(0,$wr);

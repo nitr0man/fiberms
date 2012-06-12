@@ -36,12 +36,12 @@ function CableType_Add($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensi
 	return 1;
 }
 
-function CableLine_Check($OpenGIS,$CableTypes,$length,$comment) {	$result = 1;
+function CableLine_Check($OpenGIS,$CableTypes,$length,$name,$comment) {	$result = 1;
 	/* здесь проверка */
 	return $result;
 }
 
-function CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$comment) {	if (CableLine_Check($OpenGIS,$CableTypes,$length,$comment) == 0) {		return 0;
+function CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$name,$comment) {	if (CableLine_Check($OpenGIS,$CableTypes,$length,$name,$comment) == 0) {		return 0;
 	}
 	$upd['OpenGIS'] = "NULL";
 	$upd['CableType'] = $CableTypes;
@@ -52,7 +52,7 @@ function CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$comment) {	if (CableLi
 	return 1;
 }
 
-function CableLine_Add($OpenGIS,$CableTypes,$length,$comment) {	if (CableLine_Check($OpenGIS,$CableTypes,$length,$comment) == 0) {
+function CableLine_Add($OpenGIS,$CableTypes,$length,$name,$comment) {	if (CableLine_Check($OpenGIS,$CableTypes,$length,$name,$comment) == 0) {
 		return 0;
 	}	$ins['OpenGIS'] = "NULL";
 	$ins['CableType'] = $CableTypes;

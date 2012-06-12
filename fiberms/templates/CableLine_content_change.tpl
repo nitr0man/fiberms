@@ -15,6 +15,9 @@
 		</tr>
 		<td><label class="events_anonce">length</label></td><td> <input type="text" value="{$length}" name="length"></td>
 		</tr>
+		</tr>
+		<td><label class="events_anonce">name</label></td><td> <input type="text" value="{$name}" name="name"></td>
+		</tr>
 		<tr>
 		<td><label class="events_anonce">comment</label></td><td> <textarea name="comment">{$comment}</textarea></td>
 		</tr>
