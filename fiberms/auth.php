@@ -1,27 +1,20 @@
 <?php
 session_start();
-require_once("/backend/functions.php");
+require_once("backend/functions.php");
 require_once("smarty.php");
-$smarty->assign("Queries",$Queries);
-if (isset($_COOKIE['token']) && !isset($_SESSION['user']))
-{
+if (isset($_COOKIE['token']) && !isset($_SESSION['user'])) {
 	$token = htmlspecialchars($_COOKIE['token']);
 	$res = PQuery('SELECT "username","class" FROM "Users" WHERE "token"=\''.$token.'\'');
-	if ($res['count'] < 1)
-	{
+	if ($res['count'] < 1) {
 		setcookie('token', '');
 	}
-	else
-	{
-		$_SESSION['user'] = /*pg_result($res, 0)*/ $res['rows'][0]['username'];
-		$_SESSION['class'] = /*pg_result($res, 0, 1)*/ $res['rows'][0]['class'];
+	else {
+		$_SESSION['user'] = $res['rows'][0]['username'];
+		$_SESSION['class'] = $res['rows'][0]['class'];
 	}
-	$smarty->assign("Queries",$Queries);
 }
-if (!isset($_SESSION['user']))
-{	$smarty->assign("Queries",$Queries);
-	$smarty->assign('warning","<center><font color="red"><b>Нужно авторизоватся!</b></font></center>');
-	$smarty->display('index.tpl');
+if (!isset($_SESSION['user'])) {	$smarty->assign('warning","<center><font color="red"><b>Нужно авторизоватся!</b></font></center>');
+	$smarty->display('login.tpl');
 	die();
 }
 

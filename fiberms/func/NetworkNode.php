@@ -1,8 +1,8 @@
 <?php
-require_once("/backend/NetworkNode.php");
-require_once("/backend/NetworkBoxType.php");
-require_once("/backend/CableType.php");
-require_once("/backend/FS.php");
+require_once("backend/NetworkNode.php");
+require_once("backend/NetworkBoxType.php");
+require_once("backend/CableType.php");
+require_once("backend/FS.php");
 
 function NetworkNode_Check($name,$NetworkBox,$note,$OpenGIS,$SettlementGeoSpatial,$building,$apartment) {	$result = 1;
 	/* здесь проверка */

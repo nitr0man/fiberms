@@ -1,7 +1,7 @@
 <?php
 require_once("auth.php");
 require_once("smarty.php");
-require "/backend/Users.php";
+require "backend/Users.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	if ($_POST['mode'] == 1) {

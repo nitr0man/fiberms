@@ -1,7 +1,7 @@
 <?php
 require_once("auth.php");
 require_once("smarty.php");
-require_once("/func/NetworkBoxType.php");
+require_once("func/NetworkBoxType.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$error = 1;
         } elseif ($res == 1) {
 			header("Refresh: 3; url=FiberSplice.php");
-	        $message = 'Ящик изменен!';
+	        $message = 'Ящик добавлен!';
 			$error = 0;
         } else {
     	   	$message = 'Неверно заполнены поля!';

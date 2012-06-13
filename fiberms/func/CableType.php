@@ -1,5 +1,5 @@
 <?php
-require_once("/backend/CableType.php");
+require_once("backend/CableType.php");
 
 function CableType_Check($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment) {	$result = 1;
 	/* здесь проверка */

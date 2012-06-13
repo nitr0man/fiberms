@@ -1,28 +1,28 @@
 {include file="header.tpl"}
-{$warning}
-<form action="index.php" method="post">
-<div style="text-align:center;">
-
-
-<table align='center' width='400'  cellspacing='0' cellpadding='0' border='0' style='padding-top:20%;'><TR><TD bgcolor='#88AAAA'>
-<table width='100%' cellspacing='1' cellpadding='0' border='0'><TR><TD bgcolor='#eeeee3'>
-<table width='100%' cellspacing='0' cellpadding='0' border='0'>
-<tr><td colspan=2>&nbsp;</td></tr>
-<input type="hidden" name="login" value="login" />
-<tr><td align=right>&nbsp;Логин: &nbsp;</TD><TD><input type="text" name="user" value="" /><br /></TD></TR>
-<TR><TD align=right>&nbsp;Пароль: &nbsp;</TD><TD><input type="password" name="password" value="" class="text req" /><br /></TD></TR>
-<tr><td></td></td><td align=center><label>&nbsp;&nbsp;<input type="checkbox" name="remember" checked="true"> Запомнить</label><br /></td></tr>
-<tr><th colspan='2'><input type='submit' name='logined' value=' Войти '></th></TR>
-<tr><td colspan=2>&nbsp;</td></tr>
-</table>
-</td></tr></table>
-</td></tr></table>
-
-
- <!--input type="hidden" name="login" value="login" />
- Логин: <input type="text" name="user" value="" /><br />
- Пароль: <input type="password" name="password" value="" class="text req" /><br />
- <label><input type="checkbox" name="remember" checked="true"> Запомнить</label>
- <p><input type="submit" name="logined" value="Логин" /></p -->
+{include file="menu.tpl"}
+<body>
+<div id="content">
+<form name="index">
+<div>
+<input type="hidden" value="1" name="mode" />
+	<table id="contable">
+		<tr>
+		<td><label class="events_anonce">Версия:</label></td><td> <label>{$version}</label></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Пользователей:</label></td><td> <label>{$users_all} (из них {$users_admin} админов)</label></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Сварки:</label></td><td> <label>{$FiberSplice_FiberSpliceCount} в {$FiberSplice_NetworkNodesCount} узлах</label></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Кабельных линий:</label></td><td> <label>{$CableLinePointCount}</label></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Установлено ящиков:</label></td><td> <label>{$NetworkNodesCount} из {$NetworkBoxesCount}</label></td>
+		</tr>
+	</table>
 </div>
 </form>
+</div>
+{include file="footer.tpl"}

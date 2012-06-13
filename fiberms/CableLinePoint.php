@@ -1,7 +1,7 @@
 <?php
 require_once("auth.php");
 require_once("smarty.php");
-require_once("/func/CableType.php");
+require_once("func/CableType.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {

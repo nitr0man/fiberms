@@ -1,6 +1,6 @@
 <?php
-require_once("/backend/FS.php");
-require_once("/backend/CableType.php");
+require_once("backend/FS.php");
+require_once("backend/CableType.php");
 
 /*function FiberSplice_Check() {
 }*/

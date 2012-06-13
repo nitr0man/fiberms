@@ -1,6 +1,6 @@
 <?php
-require_once("/backend/NetworkBoxType.php");
-require_once("/backend/NetworkNode.php");
+require_once("backend/NetworkBoxType.php");
+require_once("backend/NetworkNode.php");
 
 function NetworkBoxType_Check($marking,$manufacturer,$units,$width,$height,$length,$diameter) {	$result = 1;
 	/* здесь проверка */
