@@ -10,7 +10,7 @@ function PQuery($query) {
 	//error_log($query);
 	$res = pg_query($connection, $query) or $error = 1;
 	if ($error == 1) {
-		$result['error'] = pg_last_error($connection);/*pg_result_error_field($err, PGSQL_DIAG_SQLSTATE);*/
+		$result['error'] = pg_last_error($connection);
 		return $result;
 	}
 	$result['count'] = pg_num_rows($res);
@@ -52,7 +52,11 @@ function GenInsert($ins) {	foreach ($ins as $field => $value)
 
 function GenUpdate($upd) {	foreach ($upd as $field => $value) {
     	if (strlen($set) > 0) $set .= ', ';
-    	$set .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
+		if ($value != 'NULL') {
+			$set .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
+		} else {
+			$set .= ' "'.$field.'"='.pg_escape_string($value);
+		}
     }
     return $set;
 }

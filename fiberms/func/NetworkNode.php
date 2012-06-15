@@ -19,7 +19,10 @@ function NetworkNode_Mod($id,$name,$NetworkBox,$note,$OpenGIS,$SettlementGeoSpat
     $upd['Building'] = $building;
     $upd['Apartment'] = $apartment;
     $wr['id'] = $id;
-   	NetworkNode_UPDATE($upd,$wr);
+   	$res = NetworkNode_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
    	return 1;
 }
 
@@ -33,7 +36,10 @@ function NetworkNode_Add($name,$NetworkBox,$note,$OpenGIS,$SettlementGeoSpatial,
     $ins['SettlementGeoSpatial'] = $SettlementGeoSpatial;
     $ins['Building'] = $building;
     $ins['Apartment'] = $apartment;
-    NetworkNode_INSERT($ins);
+    $res = NetworkNode_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
     return 1;
 }
 

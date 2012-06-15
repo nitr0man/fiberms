@@ -17,7 +17,10 @@ function NetworkBoxType_Mod($id,$marking,$manufacturer,$units,$width,$height,$le
 	$upd['length'] = $length;
 	$upd['diameter'] = $diameter;
 	$wr['id'] = $id;
-  	NetworkBoxType_UPDATE($upd,$wr);
+  	$res = NetworkBoxType_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
   	return 1;
 }
 
@@ -30,7 +33,10 @@ function NetworkBoxType_Add($marking,$manufacturer,$units,$width,$height,$length
 	$ins['height'] = $height;
 	$ins['length'] = $length;
 	$ins['diameter'] = $diameter;
-	NetworkBoxType_INSERT($ins);
+	$res = NetworkBoxType_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 

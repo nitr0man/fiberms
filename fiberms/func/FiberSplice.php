@@ -14,6 +14,9 @@ function FiberSplice_Mod($id,$CableLinePointA,$fiberA,$CableLinePointB,$fiberB,$
 	$upd['FiberSpliceOrganizer'] = $FiberSpliceOrganizer;
 	$wr['id'] = $id;
 	$res = FiberSplice_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
@@ -23,6 +26,9 @@ function FiberSplice_Add($CableLinePointA,$fiberA,$CableLinePointB,$fiberB,$Fibe
 	$ins['fiberB'] = $fiberB;
 	$ins['FiberSpliceOrganizer'] = $FiberSpliceOrganizer;
 	$res = FiberSplice_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
