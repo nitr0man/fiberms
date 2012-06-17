@@ -2,13 +2,11 @@
 require_once("functions.php");
 require_once("backend/LoggingIs.php");
 
-function Users_SELECT($ob,$wr)
-{
+function Users_SELECT($ob,$wr) {
 	$query = 'SELECT * FROM "Users"';
-	if ($ob != '')
-		{
-			$query .= ' ORDER BY '.$ob;
-		}
+	if ($ob != '') {
+		$query .= ' ORDER BY '.$ob;
+	}
  	if ($wr != '') {
 		$query .= GenWhere($wr);
  	}
@@ -16,16 +14,14 @@ function Users_SELECT($ob,$wr)
  	return $result;
 }
 
-function Users_INSERT($ins)
-{
+function Users_INSERT($ins) {
 	$query = 'INSERT INTO "Users"';
 	$query .= GenInsert($ins);
 	$result = PQuery($query);
 	return $result;
 }
 
-function Users_UPDATE($upd,$wr)
-{
+function Users_UPDATE($upd,$wr) {
 	$query = 'UPDATE "Users" SET ';
     $query .= GenUpdate($upd);
 	if ($wr != ''){
@@ -36,8 +32,7 @@ function Users_UPDATE($upd,$wr)
 	return $result;
 }
 
-function Users_DELETE($wr)
-{
+function Users_DELETE($wr) {
 	$query = 'DELETE FROM "Users"';
 	$query .= GenWhere($wr);
 	$result = PQuery($query);

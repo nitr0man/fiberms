@@ -50,7 +50,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	ShowMessage($message,$error);
 } else {
     if (!isset($_GET['mode'])) {
-		$res = NetworkBoxType_SELECT('','');
+		if (!isset($_GET['page'])) {
+			$page = 1;
+		} else {
+			$page = $_GET['page'];
+		}
+		$res = NetworkBoxType_SELECT('','',$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
+		$pages = GenPages('NetworkBoxType.php?',ceil($res['AllPages']/$config['LinesPerPage']),$page);
 		$rows = $res['rows'];
 	  	$i = -1;
 	  	while (++$i<$res['count']) {	  		$boxtype_arr[] = $rows[$i]['id'];
@@ -69,18 +75,27 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 				$boxtype_arr[] = $res2['count'];
 			}
 			$boxtype_arr[] = '<a href="NetworkBoxType.php?mode=change&boxtypeid='.$rows[$i]['id'].'">Изменить</a>';
-			$boxtype_arr[] = '<a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[$i]['id'].'">Удалить</a>';
+			if ($res2['count'] == 0) {
+				$boxtype_arr[] = '<a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[$i]['id'].'">Удалить</a>';
+			} else {
+				$boxtype_arr[] = '';
+			}
 	  	}
 		$smarty->assign("data",$boxtype_arr);
+		$smarty->assign("pages",$pages);
 	} elseif (($_GET['mode'] == 'charac') and (isset($_GET['boxtypeid']))) {		$smarty->assign("mode","charac");
 
 		$res = GetNetworkBoxTypeInfo($_GET['boxtypeid']);
-		if ($res['NetworkBoxType']['count'] < 1) {			$message = 'Типа с таким ID не существует!<br />
+		if ($res['NetworkBoxType']['count'] < 1) {			$message = 'Типа ящика с таким ID не существует!<br />
 						<a href="NetworkBoxType.php">Назад</a>';
 			ShowMessage($message,0);
 		}
 		$rows = $res['NetworkBoxType']['rows'];
 		$NetworkBoxCount = $res['NetworkBoxType']['NetworkBoxCount'];
+		$ChangeDelete = '<a href="NetworkBoxType.php?mode=change&boxtypeid='.$rows[0]['id'].'">Изменить</a>';
+		if ($NetworkBoxCount == 0) {
+			$ChangeDelete .= '<br><a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[0]['id'].'">Удалить</a>';
+		}
 
 		$smarty->assign("id",$rows[0]['id']);
 		$smarty->assign("marking",$rows[0]['marking']);
@@ -91,21 +106,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("length",$rows[0]['length']);
 		$smarty->assign("diameter",$rows[0]['diameter']);
 		$smarty->assign("count",'<a href="NetworkBox.php?boxtypeid='.$_GET['boxtypeid'].'">'.$NetworkBoxCount.'</a>');
-        if ($NetworkBoxCount == 0) {
-			$smarty->assign("DeleteEdit",'<a href="NetworkBoxType.php?mode=change&boxtypeid='.$rows[0]['id'].'">Изменить</a><br>
-										 <a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[0]['id'].'">Удалить</a>');
-		}
+		$smarty->assign("ChangeDelete",$ChangeDelete);
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['boxtypeid']))) {
 		if ($_SESSION['class'] > 1) {
 			$message = '!!!';
 			ShowMessage($message,0);
 		}
-    	$smarty->assign("mode","change");
+    	$smarty->assign("mode","add_change");
+		$smarty->assign("mod","1");
 
 		$wr['id'] = $_GET['boxtypeid'];
     	$res = NetworkBoxType_SELECT('',$wr);
     	if ($res['count'] < 1) {
-			$message = 'Типа с таким ID не существует!<br />
+			$message = 'Типа ящика с таким ID не существует!<br />
 						<a href="NetworkBoxType.php">Назад</a>';
 			ShowMessage($message,0);
 		}
@@ -123,13 +136,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$message = '!!!';
 			ShowMessage($message,0);
 		}
-		$smarty->assign("mode","add");
+		$smarty->assign("mode","add_change");
+		$smarty->assign("mod","2");
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['boxtypeid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 		}		$wr['id'] = $_GET['boxtypeid'];
 		NetworkBoxType_DELETE($wr);
     	header("Refresh: 2; url=NetworkBoxType.php");
-		$message = "Тип удален!";
+		$message = "Тип ящика удален!";
 		ShowMessage($message,0);
  	}
 

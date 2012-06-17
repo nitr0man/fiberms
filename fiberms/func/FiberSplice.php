@@ -51,13 +51,17 @@ function GetFiberTable($NodeID)
 	}
 	// Buiding array of fiber splices
 	$fs_array = GetNodeFibers($NodeID);
-	foreach ($fs_array['rows'] as $elem) {
-		$ColA = $CableLinePoints[$elem['CableLinePointA']];
-		$ColB = $CableLinePoints[$elem['CableLinePointB']];
-		$RowA = $elem['fiberA'];
-		$RowB = $elem['fiberB'];
-		$SpliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0);
-		$SpliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1);
+	if ($fs_array['count'] > 0) {
+		foreach ($fs_array['rows'] as $elem) {
+			$ColA = $CableLinePoints[$elem['CableLinePointA']];
+			$ColB = $CableLinePoints[$elem['CableLinePointB']];
+			$RowA = $elem['fiberA'];
+			$RowB = $elem['fiberB'];
+			$SpliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0);
+			$SpliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1);
+		}
+	} else {
+		$SpliceArray = array();
 	}
 	$res['maxfiber'] = $maxfiber;
 	$res['CableLinePoints'] = $CableLinePoints;
@@ -94,7 +98,10 @@ function FSOT_Mod($id,$marking,$manufacturer,$note) {	if (FSOT_Check($marking,$
 	$upd['manufacturer'] = $manufacturer;
 	$upd['note'] = $note;
 	$wr['id'] = $id;
-	FSOT_UPDATE($upd,$wr);
+	$res = FSOT_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
@@ -104,17 +111,51 @@ function FSOT_Add($marking,$manufacturer,$note) {	if (FSOT_Check($marking,$manu
 	$ins['marking'] = $marking;
 	$ins['manufacturer'] = $manufacturer;
 	$ins['note'] = $note;
-	FSOT_INSERT($ins);
+	$res = FSOT_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
-function GetFSOTsInfo($sort) {	$res = FSOT_SELECT($sort,'');
+function FSO_Check($FSOT) {
+	$result = 1;
+	/* здесь проверка */
+	return 1;
+}
+
+function FSO_Mod($id,$FSOT) {
+	if (FSO_Check($FSOT) == 0) {
+		return 0;
+	}
+	$upd['FiberSpliceOrganizationType'] = $FSOT;
+	$wr['id'] = $id;
+	$res = FSO_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
+	return 1;
+}
+
+function FSO_Add($FSOT) {
+	if (FSO_Check($FSOT) == 0) {
+		return 0;
+	}
+	$ins['FiberSpliceOrganizationType'] = $FSOT;
+	$res = FSO_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
+	return 1;
+}
+
+function GetFSOTsInfo($sort,$LinesPerPage = -1,$skip = -1) {	$res = FSOT_SELECT($sort,'',$LinesPerPage,$skip);
 	$result['FSOTs'] = $res;
 	unset($wr);
 	for ($i = 0; $i < $res['count']; $i++) {		$wr['FiberSpliceOrganizationType'] = $res['rows'][$i]['id'];
 		$res2 = FSO_SELECT('',$wr);
 		$result['FSOTs']['rows'][$i]['FSOCount'] = $res2['count'];
-	}
+	}	
 	return $result;
 }
 ?>

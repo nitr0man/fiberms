@@ -5,7 +5,7 @@
 		<td><label class="events_anonce">OpenGIS</label></td><td> <input type="text" value="{$OpenGIS}" name="OpenGIS"></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">CableLine</label></td><td> <select name="cabletypes">
+		<td><label class="events_anonce">Кабель</label></td><td> <select name="cabletypes">
 			{html_options values=$combobox_cableline_values selected=$combobox_cableline_selected output=$combobox_cableline_text}
 			</select></td>
 		</tr>
@@ -13,18 +13,18 @@
 		<td><label class="events_anonce">meterSign</label></td><td> <input type="text" value="{$meterSign}" name="meterSign"></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">NetworkNode</label></td><td> <select name="networknodes">
+		<td><label class="events_anonce">Узел</label></td><td> <select name="networknodes">
 			{html_options values=$combobox_networknode_values selected=$combobox_networknode_selected output=$combobox_networknode_text}
 			</select></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">note</label></td><td> <textarea name="note"></textarea></td></td>
+		<td><label class="events_anonce">Примечание</label></td><td> <textarea name="note"></textarea></td></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Apartment</label></td><td> <input type="text" value="{$Apartment}" name="Apartment"></td>
+		<td><label class="events_anonce">Квартира</label></td><td> <input type="text" value="{$Apartment}" name="Apartment"></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Building</label></td><td> <input type="text" value="{$Building}" name="Building"></td>
+		<td><label class="events_anonce">Здание</label></td><td> <input type="text" value="{$Building}" name="Building"></td>
 		</tr>
 		<tr>
 		<td><label class="events_anonce">SettlementGeoSpatial</label></td><td> <input type="text" value="{$SettlementGeoSpatial}" name="SettlementGeoSpatial"></td>

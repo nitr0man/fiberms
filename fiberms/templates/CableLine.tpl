@@ -2,8 +2,8 @@
 {include file="menu.tpl"}
 <body>
 <div id="content">
-{if $mode == 'change'}
-	{include file="CableLine_content_change.tpl"}
+{if $mode == 'add_change'}
+	{include file="CableLine_content_add_change.tpl"}
 {elseif $mode == 'add'}
 	{include file="CableLine_content_add.tpl"}
 {elseif $mode == 'charac'}

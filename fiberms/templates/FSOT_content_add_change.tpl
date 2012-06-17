@@ -1,6 +1,6 @@
 <form name="fsot" action="FSOT.php" method="post">
 <div>
-<input type="hidden" value="1" name="mode" />
+<input type="hidden" value="{$mod}" name="mode" />
 	<table id="contable">
 		<tr>
 		<td> <input type="hidden" value="{$id}" name="id"></td>
@@ -15,7 +15,7 @@
 		<td><label class="events_anonce">Примечание</label></td><td> <textarea name="note">{$note}</textarea></td>
 		</tr>
 		<tr>
-		<td><input value="Изменить" type="submit" name="ChangeButton" /></td>
+		<td><input value="OK" type="submit" name="ChangeButton" /></td>
 		</tr>
 	</table>
 </div>

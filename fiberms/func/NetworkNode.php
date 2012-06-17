@@ -46,7 +46,9 @@ function NetworkNode_Add($name,$NetworkBox,$note,$OpenGIS,$SettlementGeoSpatial,
 function GetNetworkNodeInfo($NetworkNodeId) {	$res = GetNetworkNode_NetworkBoxName($NetworkNodeId);
 	$result['NetworkNode'] = $res;
 	$wr['NetworkNode'] = $NetworkNodeId;
-    $res2 = CableLinePoint_SELECT($wr);
+    //$res2 = CableLinePoint_SELECT($wr);
+	$query = 'SELECT "clp".id,"clp"."OpenGIS","clp"."CableLine","clp"."meterSign","clp"."NetworkNode","clp"."note","clp"."Apartment","clp"."Building","clp"."SettlementGeoSpatial","cl"."name" AS "clname" FROM "CableLinePoint" AS "clp" LEFT JOIN "CableLine" AS "cl" ON "cl".id="clp"."CableLine"';
+	$res2 = PQuery($query);
     $result['NetworkNode']['CableLinePoints'] = $res2;
     unset($wr);
     $ClpRows = $result['NetworkNode']['CableLinePoints']['rows'];
@@ -57,5 +59,23 @@ function GetNetworkNodeInfo($NetworkNodeId) {	$res = GetNetworkNode_NetworkBoxN
     }
 	return $result;
 }
+
+/*function GetFreeNetworkBoxs($NetworkBox) {
+	$res = NetworkBox_SELECT('','');
+	$rows = $res['rows'];
+	$i2 = 0;
+	for ($i = 0; $i < $rows['count']; $i++) {
+		$wr['NetworkNode'] = $rows[$i]['id'];
+		$res2 = NetworkNode_SELECT(0,'',$wr);
+		if (($res2['count'] == 0) or ($NetworkBox == $rows[$i]['id'])) {
+			$result['rows'][$i2]['id'] = $rows[$i]['id'];
+			$result['rows'][$i2]['NetworkBoxType'] = $rows[$i]['NetworkBoxType'];
+			$result['rows'][$i2]['inventoryNumber'] = $rows[$i]['inventoryNumber'];
+			$i2++;
+		}
+	}
+	$result['count'] = count($result['rows']);
+	return $result;
+}*/
 
 ?>

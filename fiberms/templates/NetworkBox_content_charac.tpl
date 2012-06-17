@@ -4,17 +4,17 @@
 	<table id="contable">		
 		<tr>
 			<td>
-			<label class="events_anonce">Type: </label></td><td><label>{$boxtype}</label>
+			<label class="events_anonce">Тип</label></td><td><label>{$boxtype}</label>
 			</td>
 		</tr>
 		<tr>
 			<td>
-			<label class="events_anonce">InvNum: </label></td><td> <label>{$invNum}</label>
+			<label class="events_anonce">Инв. номер</label></td><td> <label>{$invNum}</label>
 			</td>
 		</tr>
 		<tr>
 		<td>
-			<label>Node name: </label>
+			<label>Имя узла: </label>
 		</td>
 		<td>
 			<label>{$nodename}</label>

@@ -7,8 +7,8 @@ require_once("design_func.php");
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];
-		$OpenGIS = "'".$_POST['OpenGIS']."'";
-		$CableLine = $_POST['cablelines'];
+		$OpenGIS = $_POST['OpenGIS'];
+		$CableLine = /*$_POST['cablelines']*/'';
 		$meterSign = $_POST['meterSign'];
 		$NetworkNode = $_POST['networknodes'];
 		$note = $_POST['note'];
@@ -20,8 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableLine.php");
-	        $message = 'CableLinePoint изменен!';
+			header("Refresh: 3; url=CableLine.php?mode=charac&cablelineid=".$_POST['cablelineid']);
+	        $message = 'Точка изменена!';
 			$error = 0;
         } else {
     	   	$message = 'Неверно заполнены поля!';
@@ -29,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     	}
 	} elseif ($_POST['mode'] == 2) {
 		$OpenGIS = $_POST['OpenGIS'];
-		$CableLine = $_POST['cablelines'];
+		$CableLine = $_POST['cablelineid'];
 		$meterSign = $_POST['meterSign'];
 		$NetworkNode = $_POST['networknodes'];
 		$note = $_POST['note'];
@@ -41,8 +41,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableLine.php");
-	        $message = 'CableLinePoint добавлен!';
+			header("Refresh: 3; url=CableLine.php?mode=charac&cablelineid=".$_POST['cablelineid']);
+	        $message = 'Точка добавлена!';
 			$error = 0;
         } else {
     	   	$message = 'Неверно заполнены поля!';
@@ -75,13 +75,16 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$message = '!!!';
 			ShowMessage($message,0);
 		}
-		require_once("backend/NetworkNodes.php");
-    	$smarty->assign("mode","change");
+		require_once("backend/NetworkNode.php");
+    	$smarty->assign("mode","add_change");
+		$smarty->assign("disabled","disabled");
+		$smarty->assign("mod","1");
+		$smarty->assign("cablelineid",$_GET['cablelineid']);
 
 		$wr['id'] = $_GET['cablelinepointid'];
     	$res = CableLinePoint_SELECT($wr);
     	if ($res['count'] < 1) {
-			$message = 'CableLinePoint с таким ID не существует!<br />
+			$message = 'Точки с таким ID не существует!<br />
 			<a href="CableLinePoint.php">Назад</a>';
 			ShowMessage($message,0);
 		}
@@ -107,13 +110,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("combobox_cableline_text",$combobox_cableline_text);
 		$smarty->assign("combobox_cableline_selected",$CableLineId);
 
-		$res = NetworkNode_SELECT('','');
+		$res = NetworkNode_SELECT(0,'','');
 		$rows = $res['rows'];
 		$i = -1;
 		while (++$i<$res['count']) {
 			$combobox_networknode_values[] = $rows[$i]['id'];
 			$combobox_networknode_text[] = $rows[$i]['note'];
 		}
+		$combobox_networknode_values[] = 'NULL';
+		$combobox_networknode_text[] = 'Нет';
 		$smarty->assign("combobox_networknode_values",$combobox_networknode_values);
 		$smarty->assign("combobox_networknode_text",$combobox_networknode_text);
 		$smarty->assign("combobox_networknode_selected",$NetworkNodeId);
@@ -125,9 +130,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$message = '!!!';
 			ShowMessage($message,0);
 		}
-		require_once("backend/NetworkNodes_func.php");		$smarty->assign("mode","add");
+		require_once("backend/NetworkNode.php");
+				$smarty->assign("mode","add_change");
+		$smarty->assign("mod","2");
+		$smarty->assign("cablelineid",$_GET['cablelineid']);
 
-		$res = CableLine_SELECT('','');
+		/*$res = CableLine_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
 		while (++$i<$res['count']) {
@@ -136,9 +144,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$smarty->assign("combobox_cableline_values",$combobox_cableline_values);
 		$smarty->assign("combobox_cableline_text",$combobox_cableline_text);
-		$smarty->assign("combobox_cableline_selected",$CableLineId);
+		$smarty->assign("combobox_cableline_selected",$CableLineId);*/
 
-		$res = NetworkNode_SELECT('','');
+		$res = NetworkNode_SELECT(0,'','');
 		$rows = $res['rows'];
 		$i = -1;
 		while (++$i<$res['count']) {

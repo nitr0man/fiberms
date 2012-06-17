@@ -15,8 +15,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkNodes.php");
-	        $message = 'FSOT изменен!';
+			header("Refresh: 3; url=FSOT.php");
+	        $message = 'Тип кассеты изменен!';
 			$error = 0;
         } else {
     	   	$message = 'Неверно заполнены поля!';
@@ -31,8 +31,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkNodes.php");
-	        $message = 'FSOT добавлен!';
+			header("Refresh: 3; url=FSOT.php");
+	        $message = 'Тип кассеты добавлен!';
 			$error = 0;
         } else {
     	   	$message = 'Неверно заполнены поля!';
@@ -42,15 +42,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	ShowMessage($message,$error);
 } else {
     if (!isset($_GET['mode'])) {
-		$TypeId = $_GET['typeid'];
-		$res = GetFSOTsInfo($_GET['sort']);
+		if (isset($_GET['sort'])) {
+			$sort = $_GET['sort'];
+		} else {
+			$sort = 0;
+		}
+		if (!isset($_GET['page'])) {
+			$page = 1;
+		} else {
+			$page = $_GET['page'];
+		}
+		$res = GetFSOTsInfo($sort,$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
+		$pages = GenPages('FSOT.php?sort='.$sort.'&',ceil($res['FSOTs']['AllPages']/$config['LinesPerPage']),$page);
 
 		$rows = $res['FSOTs']['rows'];
 	  	$i = -1;
 	  	while (++$i < $res['FSOTs']['count']) {	  		$cableline_arr[] = $rows[$i]['id'];
 	  		$cableline_arr[] = $rows[$i]['marking'];
 			$cableline_arr[] = $rows[$i]['manufacturer'];
-			$cableline_arr[] = $rows[$i]['note'];
 			$cableline_arr[] = $rows[$i]['FSOCount'];
 			$cableline_arr[] = '<a href="FSOT.php?mode=change&fsotid='.$rows[$i]['id'].'">Изменить</a>';
 			if ($rows[$i]['FSOCount'] == 0) {
@@ -59,18 +68,20 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			}
 	  	}
 		$smarty->assign("data",$cableline_arr);
+		$smarty->assign("pages",$pages);
 	}
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
 			ShowMessage($message,0);
 		}
-    	$smarty->assign("mode","change");
+    	$smarty->assign("mode","add_change");
+		$smarty->assign("mod","1");
 
 		$wr['id'] = $_GET['fsotid'];
     	$res = FSOT_SELECT('',$wr);
     	if ($res['count'] < 1) {
-			$message = 'FSOT с таким ID не существует!<br />
+			$message = 'Типа кассеты с таким ID не существует!<br />
 						<a href="FSOT.php">Назад</a>';
 			ShowMessage($message,0);
 		}
@@ -84,14 +95,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$message = '!!!';
 			ShowMessage($message,0);
 		}
-		$smarty->assign("mode","add");
+		$smarty->assign("mode","add_change");
+		$smarty->assign("mod","2");
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			ShowMessage($message,0);
 		}		$wr['id'] = $_GET['fsotid'];
 		FSOT_DELETE($wr);
     	header("Refresh: 2; url=FSOT.php");
-		$message = "FSOT удален!";
+		$message = "Тип кассеты удален!";
 		ShowMessage($message,0);
  	}
 

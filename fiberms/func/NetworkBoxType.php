@@ -59,7 +59,10 @@ function NetworkBox_Mod($id,$BoxTypeId,$InvNum) {	if (NetworkBox_Check($BoxType
 	}	$upd['inventoryNumber'] = $InvNum;
    	$upd['NetworkBoxType'] = $BoxTypeId;
    	$wr['id'] = $id;
-   	NetworkBox_UPDATE($upd,$wr);
+   	$res = NetworkBox_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
    	return 1;
 }
 
@@ -68,7 +71,10 @@ function NetworkBox_Add($BoxTypeId,$InvNum) {	if (NetworkBox_Check($BoxTypeId,$
 	}
 	$ins['NetworkBoxType'] = $BoxTypeId;
 	$ins['inventoryNumber'] = $InvNum;
-	NetworkBox_INSERT($ins);
+	$res = NetworkBox_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 

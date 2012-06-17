@@ -1,9 +1,9 @@
 <form name="boxtypeinfo" action="NetworkBoxType.php" method="post">
 <div>
-<input type="hidden" value="1" name="mode" />
+<input type="hidden" value="{$mod}" name="mode" />
 	<table id="contable">
 		<tr>
-		<td><label class="events_anonce">ID</label></td><td> <input type="hidden" value="{$id}" name="id"></td>
+		<td> <input type="hidden" value="{$id}" name="id"></td>
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Маркировка</label></td><td> <input type="text" value="{$marking}" name="marking"></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
@@ -25,7 +25,7 @@
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Диаметр (мм)</label></td><td> <input type="text" value="{$diameter}" name="diameter"></td>
-		</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" /></td><td><input value="Изменить" type="submit" name="ChangeButton" /></td>
+		</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" /></td><td><input value="OK" type="submit" name="ChangeButton" /></td>
 		</tr>
 	</table>
 </div>

@@ -4,14 +4,13 @@ require_once("smarty.php");
 require_once("backend/LoggingIs.php");
 require_once("design_func.php");
 
-//global $config;
 if (!isset($_GET['page'])) {
 	$page = 1;
 } else {
 	$page = $_GET['page'];
 }		
 $res = LoggingIs_SELECT($config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
-$pages = GenPages('LoggingIs.php?',ceil($res['all']/$config['LinesPerPage']),$page);
+$pages = GenPages('LoggingIs.php?',ceil($res['AllPages']/$config['LinesPerPage']),$page);
 $rows = $res['rows'];
 for ($i = 0; $i < $res['count']; $i++) {
 	$log_arr[] = $rows[$i]['id'];

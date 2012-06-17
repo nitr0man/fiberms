@@ -32,7 +32,10 @@ function CableType_Add($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensi
 	$ins['tensileStrength'] = $tensileStrength;
 	$ins['diameter'] = $diameter;
 	$ins['comment'] = $comment;
-	CableType_INSERT($ins);
+	$res = CableType_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
@@ -47,8 +50,12 @@ function CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$name,$comment) {	if (C
 	$upd['CableType'] = $CableTypes;
 	$upd['length'] = $length;
 	$upd['comment'] = $comment;
+	$upd['name'] = $name;
 	$wr['id'] = $id;
-	CableLine_UPDATE($upd,$wr);
+	$res = CableLine_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
@@ -58,7 +65,11 @@ function CableLine_Add($OpenGIS,$CableTypes,$length,$name,$comment) {	if (Cable
 	$ins['CableType'] = $CableTypes;
 	$ins['length'] = $length;
 	$ins['comment'] = $comment;
-	CableLine_INSERT($ins);
+	$ins['name'] = $name;
+	$res = CableLine_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
@@ -81,15 +92,18 @@ function CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$NetworkNode,$not
 		return 0;
 	}
 	$upd['OpenGIS'] = $OpenGIS;
-	$upd['CableLine'] = $CableLine;
+	//$upd['CableLine'] = $CableLine;
 	$upd['meterSign'] = $meterSign;
-	$upd['NetworkNode'] = $NetworkNode;
+	//$upd['NetworkNode'] = $NetworkNode;
 	$upd['note'] = $note;
 	$upd['Apartment'] = "NULL";
 	$upd['Building'] = "NULL";
 	$upd['SettlementGeoSpatial'] = "NULL";
 	$wr['id'] = $id;
-	CableLinePoint_UPDATE($upd,$wr);
+	$res = CableLinePoint_UPDATE($upd,$wr);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 
@@ -104,7 +118,10 @@ function CableLinePoint_Add($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$A
 	$ins['Apartment'] = "NULL";
 	$ins['Building'] = "NULL";
 	$ins['SettlementGeoSpatial'] = "NULL";
-	CableLinePoint_INSERT($ins);
+	$res = CableLinePoint_INSERT($ins);
+	if (isset($res['error'])) {
+  		return $res;
+  	}
 	return 1;
 }
 

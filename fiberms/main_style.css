@@ -7,7 +7,7 @@ body {
 	height:100%;
 }
 li { 
-	background: #e3e3e3 url("pic/bull.gif") no-repeat 4px;
+	background: #e3e3e3 url("pic/bull.png") no-repeat 4px;
 	}
 #main {
 	margin: 0 auto;
@@ -60,9 +60,9 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
 
 .left_col .menu { padding:20px; background-color: #E3E3E3; margin: 5%; float: left; }
 .left_col .menu h3 { font: 14px Tahoma, Arial; color: #7A7A7A; margin:0 0 20px 0; text-transform: uppercase; font-weight: bold; }
-.left_col .menu ul li { padding:0 0 0 20px; background:#e3e3e3 url('http://seti.kr.ua/i/bull.gif') no-repeat 0 4px; margin:0 0 0 0; list-style:none; }
+.left_col .menu ul li { padding:0 0 0 20px; background:#e3e3e3 url('pic/bull.png') no-repeat 0 4px; margin:0 0 0 0; list-style:none; }
 .left_col .menu ul li li { border-bottom: 1px solid gray; border-left: 1px solid gray; }
-.left_col .menu ul li:hover { padding:0 0 0 20px; background: #e3e3e3 url('http://seti.kr.ua/i/bull_on.gif') no-repeat 0 4px; margin:0px 0 0 0; list-style:none; }
+.left_col .menu ul li:hover { padding:0 0 0 20px; background: #e3e3e3 url('pic/bull_on.gif') no-repeat 0 4px; margin:0px 0 0 0; list-style:none; }
 .menu ul li a, .menu ul li a:visited { font: 11px Tahoma, Arial; color:#BC2417; text-decoration:none; font-weight: bold; }
 .menu ul li a:hover { font: 11px Tahoma, Arial; color:#df4336; text-decoration:none; font-weight: bold; }
 

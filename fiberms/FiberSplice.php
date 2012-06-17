@@ -1,7 +1,7 @@
 <?php
 require_once("auth.php");
 require_once("smarty.php");
-require_once("/func/FiberSplice.php");
+require_once("func/FiberSplice.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST'){
@@ -25,7 +25,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=FiberSplice.php");
+			header("Refresh: 3; url=FiberSplice.php?networknodeid=".$_POST['NetworkNodeId']);
 	        $message = 'Сварка изменена!';
 			$error = 0;
         } else {
@@ -33,8 +33,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 			$error = 1;
     	}
 	} elseif ($_POST['mode'] == 2) {
-	    $CableLinePointA = $_POST['CableLinePoint'];
-		$fiberA = $_POST['Fibers'];
+	    $CableLinePointA = $_POST['clpid1'];
+		$fiberA = $_POST['fiber'];
 		$CableLinePointB = $_POST['CableLinePoint'];
 		$fiberB = $_POST['Fibers'];
 		$FiberSpliceOrganizer = $_POST['FibersSpliceOrganizer'];
@@ -43,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=FiberSplice.php");
+			header("Refresh: 3; url=FiberSplice.php?networknodeid=".$_POST['NetworkNodeId']);
 	        $message = 'Сварка добавлена!';
 			$error = 0;
         } else {
@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 	  	$smarty->assign("ComboBox_Fibers_values",$fibers);
 		$smarty->assign("ComboBox_Fibers_text",$fibers);
 		$smarty->display("FiberSplice_content_Fibers.tpl");
+		die();
 	}
 	ShowMessage($message,$error);
 }
@@ -68,7 +69,8 @@ else
 			ShowMessage($message,0);
 		}
 
-	    $smarty->assign("mode","change");
+	    $smarty->assign("mode","add_change");
+		$smarty->assign("mod","1");
 
         $NetworkNodeId = $_GET['networknodeid'];
         $res = GetFiberTable($NetworkNodeId);
@@ -106,8 +108,9 @@ else
 			ShowMessage($message,0);
 		}
 
-		$smarty->assign("mode","add");
-
+		$smarty->assign("mode","add_change");
+		$smarty->assign("mod","2");
+		
 		$NetworkNodeId = $_GET['networknodeid'];
         $res = GetFiberTable($NetworkNodeId);
 		$fibers = GetFibers($_GET['clpid1'],$NetworkNodeId,$_GET['fiber2']);
@@ -136,9 +139,15 @@ else
 		$smarty->assign("ComboBox_CableLinePoint_selected",$_GET['clpid1']);
 		$smarty->assign("clpid1",$_GET['clpid1']);
 		$smarty->assign("NetworkNodeId",$NetworkNodeId);
+		$smarty->assign("curr_fiber",'-1');
 	} elseif (isset($_GET['networknodeid'])) {
-    	$NetworkNodeId = $_GET['networknodeid'];
+    	$NetworkNodeId = $_GET['networknodeid'];		
 		$res = GetFiberTable($NetworkNodeId);
+		if ($res['cl_array']['count'] < 1) {
+			$message = 'Узлу должно принадлежать минимум 1 кабель!';
+			ShowMessage($message,0);
+		}
+		
 		$cols[] = "Имя";
 		for ($i = 0; $i < count($res['CableLinePoints']); $i++) {
 			$cols[] = '<a href="CableLine.php?mode=charac&cablelineid='.$res['cl_array']['rows'][$i]['clid'].'">'.$res['cl_array']['rows'][$i]['name'].'</a>';
@@ -160,7 +169,7 @@ else
             	$is_a = $arr[3];
             	$splice_id = $arr[0];
             	if (isset($arr)) {
-					$linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'">[x]</a>';
+					$linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$NetworkNodeId.'>[x]</a>';
 					$table[] = ' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$NetworkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">'.(string)($arr[1]+1) . ' - ' . $arr[2].'</a> '.$linksD;
 				} else {
 					if ($i > $res['cl_array']['rows'][$j]['fiber']) {
@@ -182,9 +191,9 @@ else
 			ShowMessage($message,0);
 		}		$wr['id'] = $_GET['spliceid'];
 		FiberSplice_DELETE($wr);
-    	header("Refresh: 2; url=FiberSplice.php");
+    	header("Refresh: 2; url=FiberSplice.php?networknodeid=".$_GET['networknodeid']);
 		$message = "Сварка удалена!";
-		ShowMessage($message,0);		
+		ShowMessage($message,0);
  	}
 
 	$smarty->display('FiberSplice.tpl');

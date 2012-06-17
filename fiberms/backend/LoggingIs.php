@@ -25,13 +25,13 @@ function LoggingIs($type,$TableName,$values,$record) {
 	return 1;
 }
 
-function LoggingIs_SELECT($LinesPerPage,$skip) {
+function LoggingIs_SELECT($LinesPerPage = -1,$skip = -1) {
 	$query = 'SELECT "laa".id,"laa"."table","laa"."record",to_char("laa"."time", \'yyyy-mm-dd HH24:MI:SS\') AS "time","laa"."action","laa"."description","laa"."admin","u"."username" FROM "LogAdminActions" AS "laa" LEFT JOIN "Users" AS "u" ON "u".id="laa"."admin" ORDER BY "time" DESC';
-	$query .= ' LIMIT '.$LinesPerPage.' OFFSET '.$skip.'';
+	$query .= ' LIMIT '.$LinesPerPage.' OFFSET '.$skip;
  	$result = PQuery($query);
 	$query = 'SELECT COUNT(*) AS "count" FROM "LogAdminActions"';
 	$res = PQuery($query);
-	$result['all'] = $res['rows'][0]['count'];
+	$result['AllPages'] = $res['rows'][0]['count'];
  	return $result;
 }
 ?>
