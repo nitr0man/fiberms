@@ -1,5 +1,5 @@
 <?php
-function ShowMessage($message,$error) {
+function showMessage($message,$error) {
 	global $smarty;
 	if ($error == 1) {
 		$result = '<font color="red"><u>Ошибка</u>: <b>'.$message.'</b></font>';
@@ -11,7 +11,7 @@ function ShowMessage($message,$error) {
 	die();
 }
 
-function GenPages($link,$PagesCount,$page) {
+function genPages($link,$pagesCount,$page) {
 	if ($page == 1) {
 		$pages = '1';
 	} else {
@@ -24,8 +24,8 @@ function GenPages($link,$PagesCount,$page) {
 		$pages .= ' .. ';
 	}
 	$count = $page+5;
-	if ($count >= $PagesCount-1) {
-		$count = $PagesCount-1;
+	if ($count >= $pagesCount-1) {
+		$count = $pagesCount-1;
 	} else {
 		$End = '..';
 	}
@@ -36,11 +36,11 @@ function GenPages($link,$PagesCount,$page) {
 			$pages .= ' <a href="'.$link.'page='.$i.'">'.$i.'</a> ';
 		}
 	}
-	if ($page != $PagesCount) {
-		$pages .= $End.' <a href="'.$link.'page='.$PagesCount.'">'.$PagesCount.'</a>';
+	if ($page != $pagesCount) {
+		$pages .= $End.' <a href="'.$link.'page='.$pagesCount.'">'.$pagesCount.'</a>';
 	} else {
 		if ($page != 1) {
-			$pages .= $End.''.$PagesCount.'';
+			$pages .= $End.''.$pagesCount.'';
 		}
 	}
 	return $pages;

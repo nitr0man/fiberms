@@ -40,24 +40,24 @@ function NetworkBoxType_Add($marking,$manufacturer,$units,$width,$height,$length
 	return 1;
 }
 
-function GetNetworkBoxTypeInfo($NetworkBoxTypeId) {	$wr['id'] = $_GET['boxtypeid'];
+function getNetworkBoxTypeInfo($networkBoxTypeId) {	$wr['id'] = $_GET['boxtypeid'];
     $res = NetworkBoxType_SELECT('',$wr);
     $result['NetworkBoxType'] = $res;
     unset($wr);
-    $wr['NetworkBoxType'] = $NetworkBoxTypeId;
+    $wr['NetworkBoxType'] = $networkBoxTypeId;
     $res2 = NetworkBox_SELECT('',$wr);
     $result['NetworkBoxType']['NetworkBoxCount'] = $res2['count'];
     return $result;
 }
 
-function NetworkBox_Check($BoxTypeId,$InvNum) {	$result = 1;
+function NetworkBox_Check($boxTypeId,$invNum) {	$result = 1;
 	/* здесь проверка */
 	return $result;
 }
 
-function NetworkBox_Mod($id,$BoxTypeId,$InvNum) {	if (NetworkBox_Check($BoxTypeId,$InvNum) == 0) {		return 0;
-	}	$upd['inventoryNumber'] = $InvNum;
-   	$upd['NetworkBoxType'] = $BoxTypeId;
+function NetworkBox_Mod($id,$boxTypeId,$invNum) {	if (NetworkBox_Check($boxTypeId,$invNum) == 0) {		return 0;
+	}	$upd['inventoryNumber'] = $invNum;
+   	$upd['NetworkBoxType'] = $boxTypeId;
    	$wr['id'] = $id;
    	$res = NetworkBox_UPDATE($upd,$wr);
 	if (isset($res['error'])) {
@@ -66,11 +66,11 @@ function NetworkBox_Mod($id,$BoxTypeId,$InvNum) {	if (NetworkBox_Check($BoxType
    	return 1;
 }
 
-function NetworkBox_Add($BoxTypeId,$InvNum) {	if (NetworkBox_Check($BoxTypeId,$InvNum) == 0) {
+function NetworkBox_Add($boxTypeId,$invNum) {	if (NetworkBox_Check($boxTypeId,$invNum) == 0) {
 		return 0;
 	}
-	$ins['NetworkBoxType'] = $BoxTypeId;
-	$ins['inventoryNumber'] = $InvNum;
+	$ins['NetworkBoxType'] = $boxTypeId;
+	$ins['inventoryNumber'] = $invNum;
 	$res = NetworkBox_INSERT($ins);
 	if (isset($res['error'])) {
   		return $res;
@@ -78,7 +78,7 @@ function NetworkBox_Add($BoxTypeId,$InvNum) {	if (NetworkBox_Check($BoxTypeId,$
 	return 1;
 }
 
-function GetNetworkBoxInfo($NetworkBoxId) {	$wr['id'] = $NetworkBoxId;
+function getNetworkBoxInfo($networkBoxId) {	$wr['id'] = $networkBoxId;
    	$res = NetworkBox_SELECT(0,$wr);
    	$result['NetworkBox'] = $res;
    	unset($wr);
@@ -86,7 +86,7 @@ function GetNetworkBoxInfo($NetworkBoxId) {	$wr['id'] = $NetworkBoxId;
 	$res2 = NetworkBoxType_SELECT('',$wr);
 	$result['NetworkBox']['rows'][0]['NetworkBoxType'] = $res2['rows'][0];
 	unset($wr);
-	$wr['NetworkBox'] = $NetworkBoxId;
+	$wr['NetworkBox'] = $networkBoxId;
 	$res3 = NetworkNode_SELECT('','',$wr);
 	$result['NetworkBox']['rows'][0]['NetworkNode'] = $res3['rows'][0];
 	return $result;

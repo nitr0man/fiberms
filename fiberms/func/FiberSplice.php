@@ -33,9 +33,9 @@ function FiberSplice_Add($CableLinePointA,$fiberA,$CableLinePointB,$fiberB,$Fibe
 }
 
 /*---------------*/
-function GetFiberTable($NodeID)
+function getFiberTable($nodeID)
 {
-	$cl_array = GetCableLineInfo($NodeID);
+	$cl_array = getCableLineInfo($nodeID);
 	$i = 0;
 	$maxfiber = 0;
 	if ($cl_array['count'] == 0)
@@ -50,31 +50,31 @@ function GetFiberTable($NodeID)
 		$CableLinePoints[$elem['clpid']] = $i++;
 	}
 	// Buiding array of fiber splices
-	$fs_array = GetNodeFibers($NodeID);
+	$fs_array = getNodeFibers($nodeID);
 	if ($fs_array['count'] > 0) {
 		foreach ($fs_array['rows'] as $elem) {
 			$ColA = $CableLinePoints[$elem['CableLinePointA']];
 			$ColB = $CableLinePoints[$elem['CableLinePointB']];
 			$RowA = $elem['fiberA'];
 			$RowB = $elem['fiberB'];
-			$SpliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0);
-			$SpliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1);
+			$spliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0);
+			$spliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1);
 		}
 	} else {
-		$SpliceArray = array();
+		$spliceArray = array();
 	}
 	$res['maxfiber'] = $maxfiber;
 	$res['CableLinePoints'] = $CableLinePoints;
-	$res['SpliceArray'] = $SpliceArray;
+	$res['SpliceArray'] = $spliceArray;
 	$res['cl_array'] = $cl_array;
 	return $res;
 }
 
 /*---------------*/
 
-function GetFibers($CableLinePoint, $NetworkNodeId, $fiber)
+function getFibers($CableLinePoint, $networkNodeId, $fiber)
 {
-    $res = GetFiberTable($NetworkNodeId);
+    $res = getFiberTable($networkNodeId);
     $j = $res['CableLinePoints'][$CableLinePoint];
     for ($i = 1; $i <= $res['cl_array']['rows'][$j]['fiber']; $i++)
 	{
@@ -149,7 +149,7 @@ function FSO_Add($FSOT) {
 	return 1;
 }
 
-function GetFSOTsInfo($sort,$LinesPerPage = -1,$skip = -1) {	$res = FSOT_SELECT($sort,'',$LinesPerPage,$skip);
+function getFSOTsInfo($sort,$linesPerPage = -1,$skip = -1) {	$res = FSOT_SELECT($sort,'',$linesPerPage,$skip);
 	$result['FSOTs'] = $res;
 	unset($wr);
 	for ($i = 0; $i < $res['count']; $i++) {		$wr['FiberSpliceOrganizationType'] = $res['rows'][$i]['id'];

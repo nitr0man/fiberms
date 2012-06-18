@@ -73,7 +73,7 @@ function CableLine_Add($OpenGIS,$CableTypes,$length,$name,$comment) {	if (Cable
 	return 1;
 }
 
-function CableLine_Info($CableLineId) {	$wr['id'] = $CableLineId;	$res = CableLine_SELECT(0,$wr);
+function CableLine_Info($cableLineId) {	$wr['id'] = $cableLineId;	$res = CableLine_SELECT(0,$wr);
 	$result['CableLine'] = $res;
 	$CableType = $result['CableLine']['rows'][0]['CableType'];
 	$wr['id'] = $CableType;
@@ -81,16 +81,16 @@ function CableLine_Info($CableLineId) {	$wr['id'] = $CableLineId;	$res = Cable
 	$result['CableLine']['rows'][0]['CableTypeMarking'] = $res['rows'][0]['marking'];
 	$result['CableLine']['rows'][0]['CableTypeManufacturer'] = $res['rows'][0]['manufacturer'];
 	$result['CableLine']['rows'][0]['CableTypeId'] = $res['rows'][0]['id'];
-	$result['CableLinePoints'] = GetCableLinePoint_NetworkNodeName($CableLineId);
+	$result['CableLinePoints'] = getCableLinePoint_NetworkNodeName($cableLineId);
 	return $result;
 }
 
-function CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	$result = 1;
+function CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	$result = 1;
 	/* здесь проверка */
 	return $result;
 }
 
-function CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) == 0) {
+function CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) == 0) {
 		return 0;
 	}
 	if ($OpenGIS == '') {
@@ -99,7 +99,7 @@ function CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$NetworkNode,$not
 	$upd['OpenGIS'] = $OpenGIS;
 	//$upd['CableLine'] = $CableLine;
 	$upd['meterSign'] = $meterSign;
-	//$upd['NetworkNode'] = $NetworkNode;
+	//$upd['NetworkNode'] = $networkNode;
 	$upd['note'] = $note;
 	$upd['Apartment'] = "NULL";
 	$upd['Building'] = "NULL";
@@ -112,7 +112,7 @@ function CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$NetworkNode,$not
 	return 1;
 }
 
-function CableLinePoint_Add($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) == 0) {
+function CableLinePoint_Add($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) == 0) {
 		return 0;
 	}
 	if ($OpenGIS == '') {
@@ -121,7 +121,7 @@ function CableLinePoint_Add($OpenGIS,$CableLine,$meterSign,$NetworkNode,$note,$A
 	$ins['OpenGIS'] = $OpenGIS;
 	$ins['CableLine'] = $CableLine;
 	$ins['meterSign'] = $meterSign;
-	$ins['NetworkNode'] = $NetworkNode;
+	$ins['NetworkNode'] = $networkNode;
 	$ins['note'] = $note;
 	$ins['Apartment'] = "NULL";
 	$ins['Building'] = "NULL";

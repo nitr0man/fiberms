@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$error = 1;
     	}
 	}
-	ShowMessage($message,$error);
+	showMessage($message,$error);
 }
 else {
     if (!isset($_GET['mode'])) {
@@ -60,50 +60,50 @@ else {
 			$page = $_GET['page'];
 		}
 		if (!isset($_GET['typeid'])) {
-			$res = GetCableLineList($sort,'',$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
+			$res = getCableLineList($sort,'',$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
 		} else {
 			$wr['CableType'] = $_GET['typeid'];
-			$res = GetCableLineList($sort,$wr,$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
+			$res = getCableLineList($sort,$wr,$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
     		if ($res['count'] < 1) {
 				$message = 'Кабелей с таким типом ID не существует!<br />
 				<a href="CableLine.php">Назад</a>';
-				ShowMessage($message,0);
+				showMessage($message,0);
 			}
 		}
-		$pages = GenPages('CableLine.php?sort='.$sort.'&',ceil($res['AllPages']/$config['LinesPerPage']),$page);
+		$pages = genPages('CableLine.php?sort='.$sort.'&',ceil($res['allPages']/$config['LinesPerPage']),$page);
 		$rows = $res['rows'];
 	  	$i = -1;
-	  	while (++$i < $res['count']) {	  		$cableline_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';	  		
-			$cableline_arr[] = '<a href="CableType.php?mode=change&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].'</a>';
-			$cableline_arr[] = $rows[$i]['manufacturer'];
-			$cableline_arr[] = $rows[$i]['length'];
-			$cableline_arr[] = $rows[$i]['OpenGIS'];
-			$cableline_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
+	  	while (++$i < $res['count']) {	  		$cableLine_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';	  		
+			$cableLine_arr[] = '<a href="CableType.php?mode=change&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].'</a>';
+			$cableLine_arr[] = $rows[$i]['manufacturer'];
+			$cableLine_arr[] = $rows[$i]['length'];
+			$cableLine_arr[] = $rows[$i]['OpenGIS'];
+			$cableLine_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
 			$wr['CableLine'] = $rows[$i]['id'];
 			$res2 = CableLinePoint_SELECT($wr);
 			if ($res2['count'] == 0) {
-				$cableline_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[$i]['id'].'">Удалить</a>';
+				$cableLine_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[$i]['id'].'">Удалить</a>';
 			} else {
-				$cableline_arr[] = '';
+				$cableLine_arr[] = '';
 			}
 	  	}
-		$smarty->assign("data",$cableline_arr);
+		$smarty->assign("data",$cableLine_arr);
 		$smarty->assign("pages",$pages);
 	} elseif (($_GET['mode'] == 'charac') and (isset($_GET['cablelineid']))) {
 	    $smarty->assign("mode","charac");
 
-		$CableLineId = $_GET['cablelineid'];
-		$res = CableLine_Info($CableLineId);
+		$cableLineId = $_GET['cablelineid'];
+		$res = CableLine_Info($cableLineId);
 		$rows = $res['CableLine']['rows'];
 		if ($res['CableLine']['count'] < 1) {			$message = 'Кабеля с таким ID не существует!<br />
 			<a href="CableType.php">Назад</a>';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
-		$ChangeDelete = '<a href="CableLine.php?mode=change&cablelineid='.$CableLineId.'">Изменить</a>';
-		$wr['CableLine'] = $CableLineId;
+		$changeDelete = '<a href="CableLine.php?mode=change&cablelineid='.$cableLineId.'">Изменить</a>';
+		$wr['CableLine'] = $cableLineId;
 		$res2 = CableLinePoint_SELECT($wr);
 		if ($res2['count'] == 0) {
-			$ChangeDelete .= '<br><a href="CableLine.php?mode=change&cablelineid='.$CableLineId.'">Удалить</a>';
+			$changeDelete .= '<br><a href="CableLine.php?mode=change&cablelineid='.$cableLineId.'">Удалить</a>';
 		}
 		
 		$smarty->assign("id",$rows[0]['id']);
@@ -113,26 +113,26 @@ else {
 		$smarty->assign("length",$rows[0]['length']);
 		$smarty->assign("name",$rows[0]['name']);
 		$smarty->assign("comment",nl2br($rows[0]['comment']));
-		$smarty->assign("ChangeDelete",$ChangeDelete);
-		$smarty->assign("AddPoint",'<a href="CableLinePoint.php?mode=add&cablelineid='.$CableLineId.'">Добавить точку</a>');			
+		$smarty->assign("ChangeDelete",$changeDelete);
+		$smarty->assign("AddPoint",'<a href="CableLinePoint.php?mode=add&cablelineid='.$cableLineId.'">Добавить точку</a>');			
 		
 		if ($res['CableLinePoints']['count'] > 0) {			$rows2 = $res['CableLinePoints']['rows'];			$i = -1;
-		  	while (++$i < $res['CableLinePoints']['count']) {		  		$CableLine_arr[] = $rows2[$i]['id'];
-		  		$CableLine_arr[] = $rows2[$i]['OpenGIS'];
-	  			$CableLine_arr[] = $rows2[$i]['meterSign'];
-				$CableLine_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>';
-				$CableLine_arr[] = $rows2[$i]['Apartment'];
-				$CableLine_arr[] = $rows2[$i]['Building'];
-				$CableLine_arr[] = $rows2[$i]['SettlementGeoSpatial'];
-				$CableLine_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows2[$i]['id'].'&cablelineid='.$CableLineId.'">Изменить</a>';
-				$CableLine_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows2[$i]['id'].'">Удалить</a>';
+		  	while (++$i < $res['CableLinePoints']['count']) {		  		$cableLine_arr[] = $rows2[$i]['id'];
+		  		$cableLine_arr[] = $rows2[$i]['OpenGIS'];
+	  			$cableLine_arr[] = $rows2[$i]['meterSign'];
+				$cableLine_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>';
+				$cableLine_arr[] = $rows2[$i]['Apartment'];
+				$cableLine_arr[] = $rows2[$i]['Building'];
+				$cableLine_arr[] = $rows2[$i]['SettlementGeoSpatial'];
+				$cableLine_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows2[$i]['id'].'&cablelineid='.$cableLineId.'">Изменить</a>';
+				$cableLine_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows2[$i]['id'].'">Удалить</a>';
 		  	}
-			$smarty->assign("data",$CableLine_arr);			
+			$smarty->assign("data",$cableLine_arr);			
 		}
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['cablelineid']))) {
 		if ($_SESSION['class'] > 1) {
 			$message = '!!!';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
     	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
@@ -143,12 +143,12 @@ else {
     	if ($res['count'] < 1) {
 			$message = 'Кабеля с таким ID не существует!<br />
 			<a href="CableType.php">Назад</a>';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
     	$rows = $res['rows'];
 		$smarty->assign("id",$rows[0]['id']);
 		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
-		$cabletypeid = $rows[0]['CableType'];
+		$cableTypeId = $rows[0]['CableType'];
 		$smarty->assign("length",$rows[0]['length']);
 		$smarty->assign("comment",$rows[0]['comment']);
 		$smarty->assign("name",$rows[0]['name']);
@@ -156,17 +156,17 @@ else {
 		$res = CableType_SELECT('','');
 		$rows = $res['rows'];
 		$i = -1;
-		while (++$i<$res['count']) {
-			$combobox_cabletype_values[] = $rows[$i]['id'];
-			$combobox_cabletype_text[] = $rows[$i]['marking'];
+		while (++$i < $res['count']) {
+			$comboBox_CableType_Values[] = $rows[$i]['id'];
+			$comboBox_CableType_Text[] = $rows[$i]['marking'];
 		}
-		$smarty->assign("combobox_cabletype_values",$combobox_cabletype_values);
-		$smarty->assign("combobox_cabletype_text",$combobox_cabletype_text);
-		$smarty->assign("combobox_cabletype_selected",$cabletypeid);
+		$smarty->assign("combobox_cabletype_values",$comboBox_CableType_Values);
+		$smarty->assign("combobox_cabletype_text",$comboBox_CableType_Text);
+		$smarty->assign("combobox_cabletype_selected",$cableTypeId);
 	} elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
@@ -176,12 +176,12 @@ else {
 		$rows = $res['rows'];
 		$i = -1;
 		while (++$i<$res['count']) {
-			$combobox_cabletype_values[] = $rows[$i]['id'];
-			$combobox_cabletype_text[] = $rows[$i]['marking'];
+			$comboBox_CableType_Values[] = $rows[$i]['id'];
+			$comboBox_CableType_Text[] = $rows[$i]['marking'];
 		}
-		$smarty->assign("combobox_cabletype_values",$combobox_cabletype_values);
-		$smarty->assign("combobox_cabletype_text",$combobox_cabletype_text);
-		$smarty->assign("combobox_cabletype_selected",$cabletypeid);
+		$smarty->assign("combobox_cabletype_values",$comboBox_CableType_Values);
+		$smarty->assign("combobox_cabletype_text",$comboBox_CableType_Text);
+		$smarty->assign("combobox_cabletype_selected",$cableTypeId);
 	}
 	elseif (($_GET['mode'] == 'delete') and (isset($_GET['cablelineid']))) {
 		if ($_SESSION['class'] > 1)	{			die("!!!");
@@ -189,7 +189,7 @@ else {
 		CableLine_DELETE($wr);
     	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Кабель удален!";
-		ShowMessage($message,0);
+		showMessage($message,0);
  	}
 
 	$smarty->display('CableLine.tpl');

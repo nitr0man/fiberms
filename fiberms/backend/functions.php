@@ -1,5 +1,6 @@
 <?php
 require_once('config.php');
+
 function PConnect($host,$db,$user,$pass) {
 	$connection = pg_connect("host='".$host."' dbname='".$db."' user='".$user."' password='".$pass."'");
 	return $connection;
@@ -23,7 +24,7 @@ function PQuery($query) {
 	return $result;
 }
 
-function GenWhere($wr) {	foreach ($wr as $field => $value) {
+function genWhere($wr) {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) $where .= ' AND ';
 		if ($value != 'NULL') {
 			if (preg_match('/^\(\s*([0-9.]+[,\s]+)+[0-9.]+\s*\)$/',$value)) {
@@ -39,7 +40,7 @@ function GenWhere($wr) {	foreach ($wr as $field => $value) {
 	return $result;
 }
 
-function GenInsert($ins) {	foreach ($ins as $field => $value) {
+function genInsert($ins) {	foreach ($ins as $field => $value) {
 		if (strlen($fields) > 0) $fields .= ', ';
 		if (strlen($values) > 0) $values .= ', ';
 		$fields .= '"'.$field.'"';
@@ -53,7 +54,7 @@ function GenInsert($ins) {	foreach ($ins as $field => $value) {
 	return $result;
 }
 
-function GenUpdate($upd) {	foreach ($upd as $field => $value) {
+function genUpdate($upd) {	foreach ($upd as $field => $value) {
     	if (strlen($set) > 0) $set .= ', ';
 		if ($value != 'NULL') {
 			$set .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
@@ -64,7 +65,7 @@ function GenUpdate($upd) {	foreach ($upd as $field => $value) {
     return $set;
 }
 
-function GenWhereAndOr($wr,$OrAnd) {	foreach ($wr as $field => $value) {
+function genWhereAndOr($wr,$OrAnd) {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) {
 	 		if ($OrAnd==0) {
 	 	  		$sl = 'AND';
@@ -80,7 +81,7 @@ function GenWhereAndOr($wr,$OrAnd) {	foreach ($wr as $field => $value) {
 	return $result;
 }
 
-function GetCurrUserInfo() {
+function getCurrUserInfo() {
 	global $_SESSION;
 	$login = $_SESSION['user'];
 	$query = 'SELECT * FROM "Users" WHERE "username"=\''.$login.'\'';
@@ -88,7 +89,7 @@ function GetCurrUserInfo() {
 	return $result;
 }
 
-function GetStat() {
+function getStat() {
 	require_once('FS.php');
 
 	$query = 'SELECT COUNT(*) AS "count" FROM "Users"';
@@ -101,20 +102,8 @@ function GetStat() {
 	$res_nodes = PQuery($query);
 	$res_nodes_rows = $res_nodes['rows'];
 	$result['FiberSplice']['NetworkNodesCount'] = $res_nodes['count'];
-	$FiberSpliceCount = GetFiberSpliceCount_NetworkNode();
-	/*for($i = 0; $i < $res_nodes['count']; $i++) {
-		$query = 'SELECT id FROM "CableLinePoint" WHERE "NetworkNode"='.$res_nodes_rows[$i]['id'];
-		$res_clp = PQuery($query);
-		$res_clp_rows = $res_clp['rows'];
-		for ($j = 0; $j < $res_clp['count']; $j++) {
-			$query = 'SELECT COUNT(*) AS "count" FROM "FiberSplice" WHERE "CableLinePointA"='.$res_clp_rows[$j]['id'].' OR "CableLinePointB"='.$res_clp_rows[$j]['id'];
-			$res_fs = PQuery($query);
-			if ($res_fs['rows'][0]['count'] > 0) {
-				$FiberSpliceCount += $res_fs['rows'][0]['count'];
-			}			
-		}
-	}*/
-	$result['FiberSplice']['FiberSpliceCount'] = $FiberSpliceCount;
+	$fiberSpliceCount = getFiberSpliceCount_NetworkNode();
+	$result['FiberSplice']['FiberSpliceCount'] = $fiberSpliceCount;
 	$query = 'SELECT COUNT(*) AS "count" FROM "CableLinePoint"';
 	$res = PQuery($query);
 	$result['CableLinePoint']['Count'] = $res['rows'][0]['count'];

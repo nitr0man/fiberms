@@ -2,6 +2,7 @@
 session_start();
 require_once("backend/functions.php");
 require_once("smarty.php");
+
 if (isset($_COOKIE['token']) && !isset($_SESSION['user'])) {
 	$token = htmlspecialchars($_COOKIE['token']);
 	$res = PQuery('SELECT "username","class" FROM "Users" WHERE "token"=\''.$token.'\'');

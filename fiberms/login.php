@@ -14,7 +14,7 @@ if ($_POST['login'] == 'login')
 	if ($res['count'] < 1) {
 		$message = 'Такого пользователя не существует!';
 		$error = 1;
-		ShowMessage($message,$error);
+		showMessage($message,$error);
 	}
 	session_start();
 	$token = md5(time().$login);
@@ -24,7 +24,7 @@ if ($_POST['login'] == 'login')
 	PQuery('UPDATE "Users" SET "token"=\''.$token.'\' WHERE "username"=\''.$login.'\'');
     $_SESSION['user'] = $login;
     $_SESSION['class'] = $res['rows'][0]['class'];
-	header("Location: index.php");
+	header("Location: ".getenv("HTTP_REFERER"));
 }
 else
 {

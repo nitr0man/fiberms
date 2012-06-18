@@ -3,7 +3,7 @@ require_once("auth.php");
 require_once("smarty.php");
 require_once("backend/functions.php");
 
-$stat = GetStat();
+$stat = getStat();
 
 $smarty->assign("version",$config['version']);
 $smarty->assign("users_all",$stat['Users']['All']);

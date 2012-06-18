@@ -18,10 +18,10 @@
 			  <li><a href="NetworkNodes.php?mode=add">Добавить узел</a></li>
 		    </ul>
 		  </li>
-		  <li id="li4"><a href="#">Кабели</a>
+		  <li id="li4"><a href="#">Линии</a>
 			<ul>
-			  <li id="li4"><a href="CableLine.php">Список кабелей</a></li>
-			  <li id="li4"><a href="CableLine.php?mode=add">Добавить кабель</a></li>
+			  <li id="li4"><a href="CableLine.php">Список линий</a></li>
+			  <li id="li4"><a href="CableLine.php?mode=add">Добавить линию</a></li>
 			  <li id="li4"><a href="CableType.php">Список типов кабелей</a></li>
 			  <li id="li4"><a href="CableType.php?mode=add">Добавить тип кабеля</a></li>
 			</ul>

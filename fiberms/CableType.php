@@ -49,7 +49,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$error = 1;
     	}
 	}
-	ShowMessage($message,$error);
+	showMessage($message,$error);
 } else {
     if (!isset($_GET['mode'])) {
 		if (!isset($_GET['page'])) {
@@ -63,7 +63,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$sort = 0;
 		}
 		$res = CableType_SELECT($_GET['sort'],'',$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
-		$pages = GenPages('CableType.php?sort='.$sort.'&',ceil($res['AllPages']/$config['LinesPerPage']),$page);
+		$pages = genPages('CableType.php?sort='.$sort.'&',ceil($res['allPages']/$config['LinesPerPage']),$page);
 		$rows = $res['rows'];
 	  	$i = -1;
 	  	while (++$i<$res['count']) {	  		$CableType_arr[] = $rows[$i]['id'];
@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['cabletypeid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}    	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
 		$smarty->assign("back",getenv("HTTP_REFERER"));
@@ -100,7 +100,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     	if ($res['count'] < 1) {
 			$message = 'Типа кабеля с таким ID не существует!<br />
 			<a href="CableType.php">Назад</a>';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
     	$rows = $res['rows'];
 		
@@ -115,7 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	} elseif (($_GET['mode'] == 'charac') and (isset($_GET['cabletypeid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
     	$smarty->assign("mode","charac");
 
@@ -124,15 +124,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     	if ($res['count'] < 1) {
 			$message = 'Типа кабеля с таким ID не существует!<br />
 			<a href="CableType.php">Назад</a>';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
     	$rows = $res['rows'];
-		$ChangeDelete = '<a href="CableType.php?mode=change&cabletypeid='.$_GET['cabletypeid'].'">Изменить</a>';
+		$changeDelete = '<a href="CableType.php?mode=change&cabletypeid='.$_GET['cabletypeid'].'">Изменить</a>';
 		unset($wr);
 		$wr['CableType'] = $_GET['cabletypeid'];
 		$res2 = CableLine_SELECT('',$wr,'','');
 		if ($res2['count'] == 0) {
-			$ChangeDelete .= '<a href="CableType.php?mode=delete&cabletypeid='.$_GET['cabletypeid'].'">Удалить</a>';
+			$changeDelete .= '<a href="CableType.php?mode=delete&cabletypeid='.$_GET['cabletypeid'].'">Удалить</a>';
 		}
 		
 		$smarty->assign("id",$rows[0]['id']);
@@ -143,24 +143,24 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("tensileStrength",$rows[0]['tensileStrength']);
 		$smarty->assign("diameter",$rows[0]['diameter']);
 		$smarty->assign("comment",nl2br($rows[0]['comment']));
-		$smarty->assign("ChangeDelete",$ChangeDelete);
+		$smarty->assign("ChangeDelete",$changeDelete);
 	} elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1)
 		{
 			$message = '!!!';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
 		$smarty->assign("back",getenv("HTTP_REFERER"));
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['cabletypeid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
-			ShowMessage($message,0);
+			showMessage($message,0);
 		}		$wr['id'] = $_GET['cabletypeid'];
 		CableType_Delete($wr);
     	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = 'Тип кабеля удален!';
-		ShowMessage($message,0);		
+		showMessage($message,0);		
  	}
 
 	$smarty->display('CableType.tpl');
