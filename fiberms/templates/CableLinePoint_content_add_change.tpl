@@ -2,6 +2,7 @@
 <div>
 <input type="hidden" value="{$mod}" name="mode" />
 <input type="hidden" value="{$cablelineid}" name="cablelineid" />
+<input type="hidden" value="{$back}" name="back" />
 	<table id="contable">
 		<tr>
 		<td> <input type="hidden" value="{$id}" name="id"></td>
@@ -17,7 +18,7 @@
 			</select></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">meterSign</label></td><td> <input type="text" value="{$meterSign}" name="meterSign"></td>
+		<td><label class="events_anonce">Отметка (м)</label></td><td> <input type="text" value="{$meterSign}" name="meterSign"></td>
 		<br />
 		</tr>	
 		
@@ -37,7 +38,7 @@
 		<td><label class="events_anonce">Примечание</label></td><td> <textarea name="note">{$note}</textarea></td>
 		</tr>
 		<tr>
-		<td><input value="OK" type="submit" name="ChangeButton" /></td>
+		<th colspan="2"><input value="OK" type="submit" name="OkButton" /></th>
 		</tr>
 	</table>
 </div>

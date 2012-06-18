@@ -5,6 +5,7 @@ require_once("func/NetworkBoxType.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];
 		$marking = $_POST['marking'];
@@ -19,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkBoxType.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Тип ящика изменен!';
 			$error = 0;
         } else {
@@ -39,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkBoxType.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Тип ящика добавлен!';
 			$error = 0;
         } else {
@@ -114,6 +115,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
     	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['boxtypeid'];
     	$res = NetworkBoxType_SELECT('',$wr);
@@ -138,11 +140,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['boxtypeid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 		}		$wr['id'] = $_GET['boxtypeid'];
 		NetworkBoxType_DELETE($wr);
-    	header("Refresh: 2; url=NetworkBoxType.php");
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Тип ящика удален!";
 		ShowMessage($message,0);
  	}

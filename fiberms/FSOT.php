@@ -5,6 +5,7 @@ require_once("func/FiberSplice.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {		
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];
 		$marking = $_POST['marking'];
@@ -15,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=FSOT.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Тип кассеты изменен!';
 			$error = 0;
         } else {
@@ -31,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=FSOT.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Тип кассеты добавлен!';
 			$error = 0;
         } else {
@@ -77,6 +78,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
     	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['fsotid'];
     	$res = FSOT_SELECT('',$wr);
@@ -97,12 +99,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			ShowMessage($message,0);
 		}		$wr['id'] = $_GET['fsotid'];
 		FSOT_DELETE($wr);
-    	header("Refresh: 2; url=FSOT.php");
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Тип кассеты удален!";
 		ShowMessage($message,0);
  	}

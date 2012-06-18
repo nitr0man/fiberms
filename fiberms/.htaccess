@@ -1,2 +1,2 @@
- php_value error_reporting 7
-#php_value error_reporting 1
+#php_value error_reporting 7
+php_value error_reporting 1

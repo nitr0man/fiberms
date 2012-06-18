@@ -5,6 +5,7 @@ require_once("func/NetworkNode.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];
 		$name = $_POST['name'];
@@ -23,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkNodes.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Узел изменен!';
 			$error = 0;
         } else {
@@ -42,12 +43,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		if ($_POST['Building'] != '') { $building = $_POST['Building']; }
 		if ($_POST['Apartment'] == '') { $apartment = 'NULL'; }
 		if ($_POST['Apartment'] != '') { $apartment = $_POST['Apartment']; }
+		
 		$res = NetworkNode_Add($name,$NetworkBox,$note,$OpenGIS,$SettlementGeoSpatial,$building,$apartment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkNodes.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Узел добавлен!';
 			$error = 0;
         } else {
@@ -83,13 +85,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			<a href="NetworkBox.php">Назад</a>';
 			ShowMessage($message,0);
 		}
-		$pages = GenPages('NetworkNodes.php?sort='.$sort.'&',ceil($res['AllPages']/$config['LinesPerPage']),$page);
+		$pages = GenPages('NetworkNodes.php?sort='.$sort.'&',ceil($res['AllPages']/$config['LinesPerPage']),$page);		
 		$rows = $res['rows'];
 		$i = -1;
 		while (++$i < $res['count']) {
 			$node_arr[] = $rows[$i]['id'];
 			$node_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';
 			$node_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['NetworkBox'].'">'.$rows[$i]['inventoryNumber'].'</a>';
+			$node_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['NBTmarking'].'</a>';
+			$node_arr[] = GetFiberSpliceCount_NetworkNode($rows[$i]['id']);
 		    $node_arr[] = $rows[$i]['OpenGIS'];
 		    $node_arr[] = $rows[$i]['SettlementGeoSpatial'];
 		    $node_arr[] = $rows[$i]['Building'];
@@ -128,11 +132,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			}
 	  	}
 		$FiberSpliceCount = GetFiberSpliceCount_NetworkNode($NodeId);
-		$ChangeDelete = '<br><a href="NetworkNodes.php?mode=change&nodeid='.$NodeId.'">Изменить</a>';
+		if ($res['NetworkNode']['CableLinePoints']['count'] > 0) {
+			$ChangeDeleteFiberSplice = '<a href="FiberSplice.php?networknodeid='.$NodeId.'">Отобразить сварки</a>';
+		}
+		$ChangeDeleteFiberSplice .= '<br><a href="NetworkNodes.php?mode=change&nodeid='.$NodeId.'">Изменить</a>';
 		$wr['NetworkNode'] = $NodeId;
 		$res2 = CableLinePoint_SELECT($wr);
 		if ($res2['count'] == 0) {
-			$ChangeDelete .= '<br><a href="NetworkNodes.php?mode=delete&nodeid='.$NodeId.'">Удалить</a>';
+			$ChangeDeleteFiberSplice .= '<br><a href="NetworkNodes.php?mode=delete&nodeid='.$NodeId.'">Удалить</a>';
 		}
 		
 		$smarty->assign("data",$cableline_arr);
@@ -145,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     	$smarty->assign("SettlementGeoSpatial",$rows['SettlementGeoSpatial']);
     	$smarty->assign("Building",$rows['Building']);
     	$smarty->assign("Apartment",$rows['Apartment']);
-		$smarty->assign("ChangeDelete",$ChangeDelete);
+		$smarty->assign("ChangeDeleteFiberSplice",$ChangeDeleteFiberSplice);
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['nodeid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
@@ -154,6 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
     	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['nodeid'];
     	$res = NetworkNode_SELECT(0,'',$wr);
@@ -192,6 +200,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$res = GetFreeNetworkBoxes(-1);
 		$rows = $res['rows'];
@@ -209,7 +218,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$wr['id'] = $_GET['nodeid'];
     	NetworkNode_DELETE($wr);
-    	header("Refresh: 2; url=NetworkNodes.php");
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Узел удален!";
 		ShowMessage($message,0);		
  	}

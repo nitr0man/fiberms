@@ -1,6 +1,7 @@
 <form name="NetworkNode" id="NetworkNode" action="NetworkNodes.php" method="post">
 <div>
 <input type="hidden" value="{$mod}" name="mode" />
+<input type="hidden" value="{$back}" name="back" />
 	<table id="contable">
 		<tr>
 			<td><input name="id" type="hidden" value="{$id}"/></td>
@@ -30,8 +31,8 @@
 			<td><label>Примечание</label></td><td><textarea name="note" form="NetworkNode">{$note}</textarea></td>
 		</tr>
 		<tr>
-			<td>
-			<input value="OK" type="submit" name="ChangeButton" /><br />
-			</td>
+			<th colspan="2">
+			<input value="OK" type="submit" name="OkButton" /><br />
+			</th>
 		</tr>	</table>
 </form>

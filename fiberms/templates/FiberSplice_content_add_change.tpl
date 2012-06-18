@@ -1,11 +1,11 @@
 <form name="fibersplice" action="FiberSplice.php" method="post">
-<div>
 <input type="hidden" value="{$clpid1}" name="clpid1">
 <input type="hidden" value="{$IsA}" name="IsA">
 <input type="hidden" value="{$SpliceId}" name="SpliceId">
 <input type="hidden" value="{$mod}" name="mode">
 <input type="hidden" value="{$NetworkNodeId}" name="NetworkNodeId">
 <input type="hidden" value="{$curr_fiber}" name="curr_fiber">
+<input type="hidden" value="{$back}" name="back">
 	<table id="contable">
 		<tr>
 		<td>
@@ -27,8 +27,7 @@
 		<td><label class="events_anonce">Кассета</label></td><td> <select name="FibersSpliceOrganizer"> {html_options values=$ComboBox_FibersSpliceOrganizer_values selected=$Combobox_FibersSpliceOrganizer_selected output=$ComboBox_FibersSpliceOrganizer_text}</select></td>
 		</tr>
 		<tr>
-		<td><input value="OK" type="submit" name="ChangeButton" /></td>
+		<th colspan="2">input value="OK" type="submit" name="ChangeButton" /></th>
 		</tr>
 	</table>
-</div>
 </form>

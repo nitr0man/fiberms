@@ -30,7 +30,8 @@
 			<td><label>Примечание</label></td><td><label>{$note}</label></td>
 		</tr>
 	</table> </center>
-	{html_table table_attr='id="contable"' loop=$data cols="ID,OpenGIS,Кабельная линия,meterSign,Изм.,Удал."}
-	<td><a href="FiberSplice.php?networknodeid={$smarty.get.nodeid}">Отобразить сварки</a>
-		{$ChangeDelete}</td>
+	{html_table table_attr='id="contable"' loop=$data cols="ID,OpenGIS,Кабельная линия,Отметка (м),Изм.,Удал."}
+	<td>
+		{$ChangeDeleteFiberSplice}
+	</td>
 </form>

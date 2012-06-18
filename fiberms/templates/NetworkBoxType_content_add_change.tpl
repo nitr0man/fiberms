@@ -1,6 +1,8 @@
 <form name="boxtypeinfo" action="NetworkBoxType.php" method="post">
 <div>
 <input type="hidden" value="{$mod}" name="mode" />
+<input type="hidden" value="{$back}" name="back" />
+<input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" />
 	<table id="contable">
 		<tr>
 		<td> <input type="hidden" value="{$id}" name="id"></td>
@@ -25,7 +27,8 @@
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Диаметр (мм)</label></td><td> <input type="text" value="{$diameter}" name="diameter"></td>
-		</tr><td><input type="hidden" name="whichadded" id="whichadded" value="networkboxtype" /></td><td><input value="OK" type="submit" name="ChangeButton" /></td>
+		</tr>
+		<tr><th colspan="2"><input value="OK" type="submit" name="OkButton" /></th></tr>
 		</tr>
 	</table>
 </div>

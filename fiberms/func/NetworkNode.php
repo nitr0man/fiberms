@@ -47,7 +47,7 @@ function GetNetworkNodeInfo($NetworkNodeId) {	$res = GetNetworkNode_NetworkBoxN
 	$result['NetworkNode'] = $res;
 	$wr['NetworkNode'] = $NetworkNodeId;
     //$res2 = CableLinePoint_SELECT($wr);
-	$query = 'SELECT "clp".id,"clp"."OpenGIS","clp"."CableLine","clp"."meterSign","clp"."NetworkNode","clp"."note","clp"."Apartment","clp"."Building","clp"."SettlementGeoSpatial","cl"."name" AS "clname" FROM "CableLinePoint" AS "clp" LEFT JOIN "CableLine" AS "cl" ON "cl".id="clp"."CableLine"';
+	$query = 'SELECT "clp".id,"clp"."OpenGIS","clp"."CableLine","clp"."meterSign","clp"."NetworkNode","clp"."note","clp"."Apartment","clp"."Building","clp"."SettlementGeoSpatial","cl"."name" AS "clname" FROM "CableLinePoint" AS "clp" LEFT JOIN "CableLine" AS "cl" ON "cl".id="clp"."CableLine" WHERE "clp"."NetworkNode"='.$NetworkNodeId;
 	$res2 = PQuery($query);
     $result['NetworkNode']['CableLinePoints'] = $res2;
     unset($wr);

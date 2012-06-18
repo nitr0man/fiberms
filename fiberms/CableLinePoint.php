@@ -5,6 +5,7 @@ require_once("func/CableType.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];
 		$OpenGIS = $_POST['OpenGIS'];
@@ -20,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableLine.php?mode=charac&cablelineid=".$_POST['cablelineid']);
+			header("Refresh: 3; url=".$back);
 	        $message = 'Точка изменена!';
 			$error = 0;
         } else {
@@ -41,7 +42,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableLine.php?mode=charac&cablelineid=".$_POST['cablelineid']);
+			header("Refresh: 3; url=".$back);
 	        $message = 'Точка добавлена!';
 			$error = 0;
         } else {
@@ -80,6 +81,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("disabled","disabled");
 		$smarty->assign("mod","1");
 		$smarty->assign("cablelineid",$_GET['cablelineid']);
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['cablelinepointid'];
     	$res = CableLinePoint_SELECT($wr);
@@ -93,6 +95,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
 		$CableLineId = $rows[0]['CableLine'];
 		$NetworkNodeId = $rows[0]['NetworkNode'];
+		if ($NetworkNodeId == '') {
+			$NetworkNodeId = 'NULL';
+		}
 		$smarty->assign("meterSign",$rows[0]['meterSign']);
 		$smarty->assign("note",$rows[0]['note']);
 		$smarty->assign("Apartment",$rows[0]['Apartment']);
@@ -115,7 +120,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$i = -1;
 		while (++$i<$res['count']) {
 			$combobox_networknode_values[] = $rows[$i]['id'];
-			$combobox_networknode_text[] = $rows[$i]['note'];
+			$combobox_networknode_text[] = $rows[$i]['name'];
 		}
 		$combobox_networknode_values[] = 'NULL';
 		$combobox_networknode_text[] = 'Нет';
@@ -134,6 +139,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 				$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
 		$smarty->assign("cablelineid",$_GET['cablelineid']);
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		/*$res = CableLine_SELECT('','');
 		$rows = $res['rows'];
@@ -153,6 +159,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$combobox_networknode_values[] = $rows[$i]['id'];
 			$combobox_networknode_text[] = $rows[$i]['name'];
 		}
+		$combobox_networknode_values[] = 'NULL';
+		$combobox_networknode_text[] = 'Нет';
 		$smarty->assign("combobox_networknode_values",$combobox_networknode_values);
 		$smarty->assign("combobox_networknode_text",$combobox_networknode_text);
 		$smarty->assign("combobox_networknode_selected",$NetworkNodeId);
@@ -160,8 +168,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';			ShowMessage($message,0);
 		}		$wr['id'] = $_GET['cablelinepointid'];
-		CableLine_DELETE($wr);
-    	header("Refresh: 2; url=CableLinePoint.php");
+		CableLinePoint_DELETE($wr);
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Точка удалена!";
 		ShowMessage($message,0);
  	}

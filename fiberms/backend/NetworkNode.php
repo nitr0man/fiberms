@@ -54,9 +54,10 @@ function GetNetworkNode_NetworkBoxName($NetworkNodeId) {	$query = 'SELECT "NN".
 }
 function GetNetworkNodeList_NetworkBoxName($sort,$FSort,$wr,$LinesPerPage = -1,$skip = -1) {
 	$query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial",
-        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber"
+        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking"
   		FROM "NetworkNode" AS "NN"';
 	$query .= ' LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox"';
+	$query .= ' LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"';
 	if ($wr != '') {
 		$query .= GenWhere($wr);
  	}

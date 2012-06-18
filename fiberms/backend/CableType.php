@@ -133,13 +133,13 @@ function CableLinePoint_DELETE($wr) {
 
 function GetCableLinePoint_NetworkNodeName($CableLineId) {	$query = 'SELECT "clp".id, "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign", "clp"."NetworkNode", "clp"."note",
        "clp"."Apartment", "clp"."Building", "clp"."SettlementGeoSpatial", "NN"."name"
-	FROM "CableLinePoint" AS "clp"  LEFT JOIN "NetworkNode" AS "NN" ON "NN".id = "clp"."NetworkNode" WHERE "CableLine"='.$CableLineId;
+	FROM "CableLinePoint" AS "clp"  LEFT JOIN "NetworkNode" AS "NN" ON "NN".id = "clp"."NetworkNode" WHERE "CableLine"='.$CableLineId.' ORDER BY "clp"."meterSign"';
   	$result = PQuery($query);
   	return $result;
 }
 
 function GetCableLineList($sort,$wr,$LinesPerPage = -1,$skip = -1) {
-	$query = 'SELECT "cl".id,"cl"."OpenGIS","cl"."CableType","cl"."length","cl"."comment","cl"."name","ct"."marking" FROM "CableLine" AS "cl"';
+	$query = 'SELECT "cl".id,"cl"."OpenGIS","cl"."CableType","cl"."length","cl"."comment","cl"."name","ct"."marking","ct"."manufacturer" FROM "CableLine" AS "cl"';
 	$query .= ' LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"';
 	if ($wr != '') {
 		$query .= GenWhere($wr);

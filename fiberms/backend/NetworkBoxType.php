@@ -99,8 +99,10 @@ function NetworkBoxType_DELETE($wr) {
 }
 
 function GetNetworkBoxList($sort,$wr,$LinesPerPage = -1,$skip = -1) {
-	$query = 'SELECT "NB".id,"NB"."NetworkBoxType","NB"."inventoryNumber","NBT"."marking" FROM "NetworkBox" AS "NB"';
+	$query = 'SELECT "NB".id,"NB"."NetworkBoxType","NB"."inventoryNumber","NBT"."marking","NN"."name" AS "NNname","NN".id AS "NNid" FROM "NetworkBox" AS "NB"';
 	$query .= ' LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"';
+	$query .= ' LEFT JOIN "NetworkNode" AS "NN" ON "NN"."NetworkBox"="NB".id';
+	$query .= ' ORDER BY "inventoryNumber"';
 	if ($wr != '') {
 		$query .= GenWhere($wr);
  	}

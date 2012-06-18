@@ -5,6 +5,7 @@ require_once("func/CableType.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];
 		$OpenGIS = $_POST['OpenGIS'];
@@ -17,7 +18,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableLine.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Кабель изменен!';
 			$error = 0;
         } else {
@@ -36,7 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableLine.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Кабель добавлен!';
 			$error = 0;
         } else {
@@ -72,10 +73,11 @@ else {
 		$pages = GenPages('CableLine.php?sort='.$sort.'&',ceil($res['AllPages']/$config['LinesPerPage']),$page);
 		$rows = $res['rows'];
 	  	$i = -1;
-	  	while (++$i < $res['count']) {	  		$cableline_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';
-	  		$cableline_arr[] = $rows[$i]['OpenGIS'];
-			$cableline_arr[] = '<a href="CableType.php?mode=change&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].' ('.$rows[$i]['CableType'].')</a>';
+	  	while (++$i < $res['count']) {	  		$cableline_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';	  		
+			$cableline_arr[] = '<a href="CableType.php?mode=change&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].'</a>';
+			$cableline_arr[] = $rows[$i]['manufacturer'];
 			$cableline_arr[] = $rows[$i]['length'];
+			$cableline_arr[] = $rows[$i]['OpenGIS'];
 			$cableline_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
 			$wr['CableLine'] = $rows[$i]['id'];
 			$res2 = CableLinePoint_SELECT($wr);
@@ -106,7 +108,8 @@ else {
 		
 		$smarty->assign("id",$rows[0]['id']);
 		$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
-		$smarty->assign("CableType",$rows[0]['CableTypeMarking']);
+		$smarty->assign("CableType",'<a href="CableType.php?mode=charac&cabletypeid='.$rows[0]['CableTypeId'].'">'.$rows[0]['CableTypeMarking'].'</a>');
+		$smarty->assign("manufacturer",$rows[0]['CableTypeManufacturer']);
 		$smarty->assign("length",$rows[0]['length']);
 		$smarty->assign("name",$rows[0]['name']);
 		$smarty->assign("comment",nl2br($rows[0]['comment']));
@@ -133,6 +136,7 @@ else {
 		}
     	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['cablelineid'];
     	$res = CableLine_SELECT('',$wr);
@@ -166,6 +170,7 @@ else {
 		}
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$res = CableType_SELECT('','');
 		$rows = $res['rows'];
@@ -182,7 +187,7 @@ else {
 		if ($_SESSION['class'] > 1)	{			die("!!!");
 		}		$wr['id'] = $_GET['cablelineid'];
 		CableLine_DELETE($wr);
-    	header("Refresh: 2; url=CableLine.php");
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Кабель удален!";
 		ShowMessage($message,0);
  	}

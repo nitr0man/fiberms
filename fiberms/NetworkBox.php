@@ -5,6 +5,7 @@ require_once("func/NetworkBoxType.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 		$BoxTypeId = $_POST['networkboxtypes'];
         $id = $_POST['boxid'];
@@ -14,7 +15,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkBox.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Ящик изменен!';
 			$error = 0;
         } else {
@@ -29,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=NetworkBox.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Ящик добавлен!';
 			$error = 0;
         } else {
@@ -62,9 +63,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$pages = GenPages('NetworkBox.php?sort='.$sort.'&',ceil($res['AllPages']/$config['LinesPerPage']),$page);
 		$rows = $res['rows'];
 	  	$i = -1;
-	  	while (++$i < $res['count']) {	  		$box_arr[] = $rows[$i]['id'];
-	  		$box_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['marking'].' ('.$rows[$i]['NetworkBoxType'].')</a>';
-			$box_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['id'].'">'.$rows[$i]['inventoryNumber'].'</a>';
+	  	while (++$i < $res['count']) {	  		$box_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['id'].'">'.$rows[$i]['inventoryNumber'].'</a>';
+	  		$box_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['marking'].' ('.$rows[$i]['NetworkBoxType'].')</a>';			
+			$box_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[$i]['NNid'].'">'.$rows[$i]['NNname'].'</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$rows[$i]['id'].'">Изменить</a>';
 			$box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$rows[$i]['id'].'">Удалить</a>';
 	  	}
@@ -94,7 +95,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 
 		$smarty->assign("invNum",$rows['inventoryNumber']);
-		$smarty->assign("boxtype",$rows['NetworkBoxType']['marking']);
+		$smarty->assign("boxtype",'<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows['NetworkBoxType']['id'].'">'.$rows['NetworkBoxType']['marking'].'</a>');
 		$smarty->assign("nodename",$NetworkNodeName);
 		$smarty->assign("ChangeDelete",$ChangeDelete);
     	
@@ -105,6 +106,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
     	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['boxid'];
     	$res = NetworkBox_SELECT('',$wr);
@@ -134,6 +136,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
 		$res = NetworkBoxType_SELECT('','');
 		$rows = $res['rows'];
@@ -149,7 +152,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			ShowMessage($message,0);
 		}		$wr['id'] = $_GET['boxid'];
 		NetworkBox_DELETE($wr);
-    	header("Refresh: 2; url=NetworkBox.php");
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Ящик удален!";
 		ShowMessage($message,0);
  	}

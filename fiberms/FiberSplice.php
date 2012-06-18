@@ -5,6 +5,7 @@ require_once("func/FiberSplice.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST'){
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 	   	$SpliceId = $_POST['SpliceId'];
 	   	$IsA = $_POST['IsA'];
@@ -25,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=FiberSplice.php?networknodeid=".$_POST['NetworkNodeId']);
+			header("Refresh: 3; url=".$back);
 	        $message = 'Сварка изменена!';
 			$error = 0;
         } else {
@@ -43,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
            	$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=FiberSplice.php?networknodeid=".$_POST['NetworkNodeId']);
+			header("Refresh: 3; url=".$back);
 	        $message = 'Сварка добавлена!';
 			$error = 0;
         } else {
@@ -71,6 +72,7 @@ else
 
 	    $smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
         $NetworkNodeId = $_GET['networknodeid'];
         $res = GetFiberTable($NetworkNodeId);
@@ -88,10 +90,11 @@ else
   		$smarty->assign("ComboBox_Fibers_values",$fibers);
 		$smarty->assign("ComboBox_Fibers_text",$fibers);
 
-		$res = FSO_Select('','');
+		//$res = FSO_Select('','');
+		$res = GetFiberSpliceOrganizerInfo(-1,-1,$NetworkNodeId);
   		for ($i = 0; $i < $res['count']; $i++) {
   			$ComboBox_FibersSpliceOrganizer_values[] = $res['rows'][$i]['id'];
-  			$ComboBox_FibersSpliceOrganizer_text[] = $res['rows'][$i]['id']." (".$res['rows'][$i]['FiberSpliceOrganizationType'].")";
+  			$ComboBox_FibersSpliceOrganizer_text[] = $res['rows'][$i]['id']." (".$res['rows'][$i]['FiberSpliceOrganizationTypeId'].")";
   		}
   		$smarty->assign("ComboBox_FibersSpliceOrganizer_values",$ComboBox_FibersSpliceOrganizer_values);
 		$smarty->assign("ComboBox_FibersSpliceOrganizer_text",$ComboBox_FibersSpliceOrganizer_text);
@@ -110,6 +113,7 @@ else
 
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 		
 		$NetworkNodeId = $_GET['networknodeid'];
         $res = GetFiberTable($NetworkNodeId);
@@ -122,10 +126,11 @@ else
 		}
 		$cable1 = $cl_array['rows'][$res['CableLinePoints'][$_GET['clpid1']]]['name'];
 
-		$res = FSO_Select('','');
+		//$res = FSO_Select('','');
+		$res = GetFiberSpliceOrganizerInfo(-1,-1,$NetworkNodeId);
   		for ($i = 0; $i < $res['count']; $i++) {
   			$ComboBox_FibersSpliceOrganizer_values[] = $res['rows'][$i]['id'];
-  			$ComboBox_FibersSpliceOrganizer_text[] = $res['rows'][$i]['id']." (".$res['rows'][$i]['FiberSpliceOrganizationType'].")";
+  			$ComboBox_FibersSpliceOrganizer_text[] = $res['rows'][$i]['id']." (".$res['rows'][$i]['FiberSpliceOrganizationTypeId'].")";
   		}
 
   		$smarty->assign("cable1",$cable1);
@@ -143,7 +148,7 @@ else
 	} elseif (isset($_GET['networknodeid'])) {
     	$NetworkNodeId = $_GET['networknodeid'];		
 		$res = GetFiberTable($NetworkNodeId);
-		if ($res['cl_array']['count'] < 1) {
+		if ($res['maxfiber'] < 1) {
 			$message = 'Узлу должно принадлежать минимум 1 кабель!';
 			ShowMessage($message,0);
 		}
@@ -151,9 +156,14 @@ else
 		$cols[] = "Имя";
 		for ($i = 0; $i < count($res['CableLinePoints']); $i++) {
 			$cols[] = '<a href="CableLine.php?mode=charac&cablelineid='.$res['cl_array']['rows'][$i]['clid'].'">'.$res['cl_array']['rows'][$i]['name'].'</a>';
-			$tr_arr['marking'][$i] = '<a href="CableType.php?mode=charac&cabletypeid='.$res['cl_array']['rows'][$i]['ctid'].'">'.$res['cl_array']['rows'][$i]['marking'].'</a>';
+			$tr_arr['marking'][$i] = '<a href="CableType.php?mode=charac&cabletypeid='.$res['cl_array']['rows'][$i]['ctid'].'">'.$res['cl_array']['rows'][$i]['manufacturer'].'<br>'.$res['cl_array']['rows'][$i]['marking'].'</a>';
 			$tr_arr['fiber_count'][$i] = $res['cl_array']['rows'][$i]['fiber'];
-			$tr_arr['direction'][$i] = GetDirection($res['cl_array']['rows'][$i]['clpid'],$NetworkNodeId);
+			$direction = GetDirection($res['cl_array']['rows'][$i]['clpid'],$NetworkNodeId);
+			if ($direction['name'] == '-') {
+				$tr_arr['direction'][$i] = '-';
+			} else {
+				$tr_arr['direction'][$i] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$direction['NetworkNode'].'">'.$direction['name'].'</a>';
+			}
 			$tr_arr['number'][$i] = "<u>".($i+1)."</u>";
 			$tr_attr = array("class=header","class=header","class=header","class=header");
 		}
@@ -191,7 +201,7 @@ else
 			ShowMessage($message,0);
 		}		$wr['id'] = $_GET['spliceid'];
 		FiberSplice_DELETE($wr);
-    	header("Refresh: 2; url=FiberSplice.php?networknodeid=".$_GET['networknodeid']);
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Сварка удалена!";
 		ShowMessage($message,0);
  	}

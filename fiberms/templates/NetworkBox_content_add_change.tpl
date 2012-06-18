@@ -1,6 +1,8 @@
 <form name="boxinfo" action="NetworkBox.php" method="post">
 <div>
 <input type="hidden" value="{$mod}" name="mode" />
+<input type="hidden" value="{$back}" name="back" />
+<input type="hidden" value="{$back}" name="back" />
 	<table id="contable">
 		<tr>
 			<td>
@@ -20,9 +22,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td>
-			<input value="ОК" type="submit" name="ChangeButton" /><td></td>
-			<!--<input value="Удалить" type="submit" name="DeleteButton" /> -->
+			<th colspan="2">
+				<input value="ОК" type="submit" name="OkButton" />
+			</th>
 		</tr>
 </div>
 </form>

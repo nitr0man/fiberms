@@ -5,6 +5,7 @@ require_once("func/CableType.php");
 require_once("design_func.php");
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
+	$back = $_POST['back'];
 	if ($_POST['mode'] == 1)
 		{
 		$id = $_POST['id'];
@@ -20,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableType.php");
+			header("Refresh: 3; url=".$back);
 	        $message = 'Тип кабеля изменен!';
 			$error = 0;
         } else {    	   	
@@ -40,7 +41,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
             $message = $res['error'];
 			$error = 1;
         } elseif ($res == 1) {
-			header("Refresh: 3; url=CableType.php");
+			header("Refresh: 3; url=".$back);
 	       	$message = 'Тип кабеля добавлен!';
 			$error = 0;
         } else {
@@ -92,6 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			ShowMessage($message,0);
 		}    	$smarty->assign("mode","add_change");
 		$smarty->assign("mod","1");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 
     	$wr['id'] = $_GET['cabletypeid'];
     	$res = CableType_SELECT(0,$wr);
@@ -150,12 +152,13 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$smarty->assign("mode","add_change");
 		$smarty->assign("mod","2");
+		$smarty->assign("back",getenv("HTTP_REFERER"));
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['cabletypeid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			ShowMessage($message,0);
 		}		$wr['id'] = $_GET['cabletypeid'];
 		CableType_Delete($wr);
-    	header("Refresh: 2; url=CableType.php");
+    	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = 'Тип кабеля удален!';
 		ShowMessage($message,0);		
  	}
