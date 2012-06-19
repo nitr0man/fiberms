@@ -6,6 +6,9 @@ require_once("backend/FS.php");
 
 function NetworkNode_Check($name, $networkBox, $note, $OpenGIS, $SettlementGeoSpatial, $building, $apartment) {	$result = 1;
 	/* здесь проверка */
+	if (($name == '')) {
+		$result = 0;
+	}
 	return $result;
 }
 

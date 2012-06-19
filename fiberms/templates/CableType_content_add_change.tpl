@@ -2,10 +2,8 @@
 <div>
 <input type="hidden" value="{$mod}" name="mode" />
 <input type="hidden" value="{$back}" name="back" />
+<input type="hidden" value="{$id}" name="id">
 	<table id="contable">
-		<tr>
-		<td><input type="hidden" value="{$id}" name="id"></td>
-		</tr>		
 		<tr>
 		<td><label class="events_anonce">Маркировка</label></td><td> <input type="text" value="{$marking}" name="marking"></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
 		</tr>

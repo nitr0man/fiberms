@@ -2,10 +2,8 @@
 <div>
 <input type="hidden" value="{$mod}" name="mode" />
 <input type="hidden" value="{$back}" name="back" />
+<input name="id" type="hidden" value="{$id}"/>
 	<table id="contable">
-		<tr>
-			<td><input name="id" type="hidden" value="{$id}"/></td>
-		</tr>
 		<tr>
 			<td><label class="events_anonce">Имя</label></td><td><input name="name" type="text" value="{$name}"/></td>
 		</tr>

@@ -89,7 +89,10 @@ function getFibers($CableLinePoint, $networkNodeId, $fiber)
 
 function FSOT_Check($marking, $manufacturer, $note) {	$result = 1;
 	/* здесь проверка */
-	return 1;
+	if ($marking == '') {
+		$result = 0;
+	}
+	return $result;
 }
 
 function FSOT_Mod($id, $marking, $manufacturer, $note) {	if (FSOT_Check($marking, $manufacturer, $note) == 0) {		return 0;
@@ -121,7 +124,7 @@ function FSOT_Add($marking, $manufacturer, $note) {	if (FSOT_Check($marking, $m
 function FSO_Check($FSOT) {
 	$result = 1;
 	/* здесь проверка */
-	return 1;
+	return $result;
 }
 
 function FSO_Mod($id, $FSOT) {

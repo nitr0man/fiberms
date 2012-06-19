@@ -103,7 +103,7 @@ else {
 		$wr['CableLine'] = $cableLineId;
 		$res2 = CableLinePoint_SELECT($wr);
 		if ($res2['count'] == 0) {
-			$changeDelete .= '<br><a href="CableLine.php?mode=change&cablelineid='.$cableLineId.'">Удалить</a>';
+			$changeDelete .= '<br><a href="CableLine.php?mode=delete&cablelineid='.$cableLineId.'">Удалить</a>';
 		}
 		
 		$smarty->assign("id", $rows[0]['id']);

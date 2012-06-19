@@ -83,6 +83,7 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
 #contable {
   margin: 20px;
   border: 1px solid #686868;
+  border-radius: 7px;
   /*text-align: center;*/  
 }
 
@@ -99,8 +100,10 @@ caption {
 	font-size: medium;
 	padding-bottom: 5px;
 }
+
 #fibersplice {
   margin: 20px;
   border: 1px solid #686868;
   text-align: center;
-  }
+  border-radius: 7px;
+}

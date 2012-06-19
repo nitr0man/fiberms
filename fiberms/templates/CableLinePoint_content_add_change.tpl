@@ -3,10 +3,8 @@
 <input type="hidden" value="{$mod}" name="mode" />
 <input type="hidden" value="{$cablelineid}" name="cablelineid" />
 <input type="hidden" value="{$back}" name="back" />
+<input type="hidden" value="{$id}" name="id">
 	<table id="contable">
-		<tr>
-		<td> <input type="hidden" value="{$id}" name="id"></td>
-		</tr>				
 		<!--tr>
 		<!--td><label class="events_anonce">Кабель</label></td><td> <select name="cablelines" {$disabled}>
 			{html_options values=$combobox_cableline_values selected=$combobox_cableline_selected output=$combobox_cableline_text}

@@ -4,6 +4,9 @@ require_once("backend/NetworkNode.php");
 
 function NetworkBoxType_Check($marking, $manufacturer, $units, $width, $height, $length, $diameter) {	$result = 1;
 	/* здесь проверка */
+	if (($marking == '') or (is_numeric($units) == false) or (is_numeric($width) == false) or (is_numeric($height) == false) or (is_numeric($length) == false) or (is_numeric($diameter) == false)) {
+		$result = 0;
+	}
 	return $result;
 }
 
@@ -52,6 +55,9 @@ function getNetworkBoxTypeInfo($networkBoxTypeId) {	$wr['id'] = $_GET['boxtypei
 
 function NetworkBox_Check($boxTypeId, $invNum) {	$result = 1;
 	/* здесь проверка */
+	if (is_numeric($invNum) == false) {
+		$result = 0;
+	}
 	return $result;
 }
 

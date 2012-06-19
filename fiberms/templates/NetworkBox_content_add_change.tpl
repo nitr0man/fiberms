@@ -3,12 +3,8 @@
 <input type="hidden" value="{$mod}" name="mode" />
 <input type="hidden" value="{$back}" name="back" />
 <input type="hidden" value="{$back}" name="back" />
+<input type="hidden" value="{$id}" name="boxid">
 	<table id="contable">
-		<tr>
-			<td>
-			<td> <input type="hidden" value="{$id}" name="boxid">
-			</td>
-		</tr>
 		<tr>
 			<td>
 			<label class="events_anonce">Тип</label></td><td> <select name="networkboxtypes">

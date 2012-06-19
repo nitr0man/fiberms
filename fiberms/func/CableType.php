@@ -3,6 +3,9 @@ require_once("backend/CableType.php");
 
 function CableType_Check($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $tensileStrength, $diameter, $comment) {	$result = 1;
 	/* здесь проверка */
+	if (($marking == '') or (is_numeric($tubeQuantity) == false) or (is_numeric($fiberPerTube) == false) or (is_numeric($tensileStrength) == false) or (is_numeric($diameter) == false)) {
+		$result = 0;
+	}
 	return $result;
 }
 
@@ -41,6 +44,9 @@ function CableType_Add($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $t
 
 function CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) {	$result = 1;
 	/* здесь проверка */
+	if (is_numeric($length) == false) {
+		$result = 0;
+	}
 	return $result;
 }
 
@@ -87,6 +93,9 @@ function CableLine_Info($cableLineId) {	$wr['id'] = $cableLineId;	$res = Cable
 
 function CableLinePoint_Check($OpenGIS, $CableLine, $meterSign, $networkNode, $note, $Apartment, $Building, $SettlementGeoSpatial) {	$result = 1;
 	/* здесь проверка */
+	if ((is_numeric($meterSign) == false)) {
+		$result = 0;
+	}
 	return $result;
 }
 
