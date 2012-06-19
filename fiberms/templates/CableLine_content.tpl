@@ -4,6 +4,6 @@
 	{else}
 		{$sort = 1}
 	{/if}
-	{html_table table_attr='id="contable"' loop=$data cols="<a href=\"CableLine.php?sort=$sort\">Имя</a>,Тип кабеля,Производитель,Длина,OpenGIS,Изм.,Удал." caption="Список кабелей"}
+	{html_table table_attr='id="contable"' loop=$data cols="<a href=\"CableLine.php?sort=$sort\">Имя</a>,Тип кабеля,Производитель,Длина,OpenGIS,Изм.,Удал." caption="Список линий"}
 	<p style="margin: 20px;">Страницы: {$pages}</p>
 </form>

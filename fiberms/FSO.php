@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];
 		$FSOT = $_POST['FSOT'];
-		$res = FSO_Mod($id,$FSOT);
+		$res = FSO_Mod($id, $FSOT);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -36,7 +36,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$error = 1;
     	}
 	}
-	showMessage($message,$error);
+	showMessage($message, $error);
 } else {
     if (!isset($_GET['mode'])) {
 		if (!isset($_GET['page'])) {
@@ -44,8 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		} else {
 			$page = $_GET['page'];
 		}
-		$res = getFiberSpliceOrganizerInfo($config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
-		$pages = genPages('FSO.php?',ceil($res['allPages']/$config['LinesPerPage']),$page);
+		$res = getFiberSpliceOrganizerInfo($config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
+		$pages = genPages('FSO.php?', ceil($res['allPages']/$config['LinesPerPage']), $page);
 
 		$rows = $res['rows'];
 	  	$i = -1;
@@ -61,63 +61,63 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 				$FSO[] = '';
 			}
 	  	}
-		$smarty->assign("data",$FSO);
-		$smarty->assign("pages",$pages);
+		$smarty->assign("data", $FSO);
+		$smarty->assign("pages", $pages);
 	}
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['fsoid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
-    	$smarty->assign("mode","add_change");
-		$smarty->assign("mod","1");
-		$smarty->assign("back",getenv("HTTP_REFERER"));
+    	$smarty->assign("mode", "add_change");
+		$smarty->assign("mod", "1");
+		$smarty->assign("back", getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['fsoid'];
-    	$res = FSO_SELECT('',$wr);
+    	$res = FSO_SELECT('', $wr);
     	if ($res['count'] < 1) {
 			$message = 'Кассеты с таким ID не существует!<br />
 						<a href="FSO.php">Назад</a>';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
     	$rows = $res['rows'];
-		$res = FSOT_SELECT('','');
+		$res = FSOT_SELECT('', '');
 		$rows2 = $res['rows'];
 		$i = -1;
 		while (++$i < $res['count']) {
 			$FSOT_Values[] = $rows2[$i]['id'];
 			$FSOT_Text[] = $rows2[$i]['marking'];
 		}
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("FSOT_values",$FSOT_Values);
-		$smarty->assign("FSOT_text",$FSOT_Text);
-		$smarty->assign("FSOT_selected",$rows[0]['FiberSpliceOrganizationType']);
+		$smarty->assign("id", $rows[0]['id']);
+		$smarty->assign("FSOT_values", $FSOT_Values);
+		$smarty->assign("FSOT_text", $FSOT_Text);
+		$smarty->assign("FSOT_selected", $rows[0]['FiberSpliceOrganizationType']);
 	} elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1) {
 			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
-		$smarty->assign("mode","add_change");
-		$smarty->assign("mod","2");
-		$smarty->assign("back",getenv("HTTP_REFERER"));
+		$smarty->assign("mode", "add_change");
+		$smarty->assign("mod", "2");
+		$smarty->assign("back", getenv("HTTP_REFERER"));
 		
-		$res = FSOT_SELECT('','');
+		$res = FSOT_SELECT('', '');
 		$rows2 = $res['rows'];
 		$i = -1;
 		while (++$i < $res['count']) {
 			$FSOT_Values[] = $rows2[$i]['id'];
 			$FSOT_Text[] = $rows2[$i]['marking'];
 		}
-		$smarty->assign("FSOT_values",$FSOT_Values);
-		$smarty->assign("FSOT_text",$FSOT_Text);
+		$smarty->assign("FSOT_values", $FSOT_Values);
+		$smarty->assign("FSOT_text", $FSOT_Text);
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}		$wr['id'] = $_GET['fsotid'];
 		FSO_DELETE($wr);
     	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Кассета удалена!";
-		showMessage($message,0);
+		showMessage($message, 0);
  	}
 
 	$smarty->display('FSO.tpl');

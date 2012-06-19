@@ -2,7 +2,7 @@
 require_once("functions.php");
 require_once("backend/LoggingIs.php");
 
-function Users_SELECT($ob,$wr) {
+function Users_SELECT($ob, $wr) {
 	$query = 'SELECT * FROM "Users"';
 	if ($ob != '') {
 		$query .= ' ORDER BY '.$ob;
@@ -21,13 +21,13 @@ function Users_INSERT($ins) {
 	return $result;
 }
 
-function Users_UPDATE($upd,$wr) {
+function Users_UPDATE($upd, $wr) {
 	$query = 'UPDATE "Users" SET ';
     $query .= genUpdate($upd);
 	if ($wr != ''){
 		$query .= genWhere($wr);
 	}
-	unset($field,$value);
+	unset($field, $value);
 	$result = PQuery($query);
 	return $result;
 }

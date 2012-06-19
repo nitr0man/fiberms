@@ -5,7 +5,7 @@ require_once("backend/CableType.php");
 /*function FiberSplice_Check() {
 }*/
 
-function FiberSplice_Mod($id,$CableLinePointA,$fiberA,$CableLinePointB,$fiberB,$FiberSpliceOrganizer,$IsA) {	if ($IsA == 0) {		$upd['CableLinePointA'] = $CableLinePointA;
+function FiberSplice_Mod($id, $CableLinePointA, $fiberA, $CableLinePointB, $fiberB, $FiberSpliceOrganizer, $IsA) {	if ($IsA == 0) {		$upd['CableLinePointA'] = $CableLinePointA;
    		$upd['fiberA'] = $fiberA;
 	}
 	else {		$upd['CableLinePointB'] = $CableLinePointB;
@@ -13,14 +13,14 @@ function FiberSplice_Mod($id,$CableLinePointA,$fiberA,$CableLinePointB,$fiberB,$
 	}
 	$upd['FiberSpliceOrganizer'] = $FiberSpliceOrganizer;
 	$wr['id'] = $id;
-	$res = FiberSplice_UPDATE($upd,$wr);
+	$res = FiberSplice_UPDATE($upd, $wr);
 	if (isset($res['error'])) {
   		return $res;
   	}
 	return 1;
 }
 
-function FiberSplice_Add($CableLinePointA,$fiberA,$CableLinePointB,$fiberB,$FiberSpliceOrganizer) {	$ins['CableLinePointA'] = $CableLinePointA;
+function FiberSplice_Add($CableLinePointA, $fiberA, $CableLinePointB, $fiberB, $FiberSpliceOrganizer) {	$ins['CableLinePointA'] = $CableLinePointA;
 	$ins['fiberA'] = $fiberA;
 	$ins['CableLinePointB'] = $CableLinePointB;
 	$ins['fiberB'] = $fiberB;
@@ -87,25 +87,25 @@ function getFibers($CableLinePoint, $networkNodeId, $fiber)
     return $fibers;
 }
 
-function FSOT_Check($marking,$manufacturer,$note) {	$result = 1;
+function FSOT_Check($marking, $manufacturer, $note) {	$result = 1;
 	/* здесь проверка */
 	return 1;
 }
 
-function FSOT_Mod($id,$marking,$manufacturer,$note) {	if (FSOT_Check($marking,$manufacturer,$note) == 0) {		return 0;
+function FSOT_Mod($id, $marking, $manufacturer, $note) {	if (FSOT_Check($marking, $manufacturer, $note) == 0) {		return 0;
 	}
 	$upd['marking'] = $marking;
 	$upd['manufacturer'] = $manufacturer;
 	$upd['note'] = $note;
 	$wr['id'] = $id;
-	$res = FSOT_UPDATE($upd,$wr);
+	$res = FSOT_UPDATE($upd, $wr);
 	if (isset($res['error'])) {
   		return $res;
   	}
 	return 1;
 }
 
-function FSOT_Add($marking,$manufacturer,$note) {	if (FSOT_Check($marking,$manufacturer,$note) == 0) {
+function FSOT_Add($marking, $manufacturer, $note) {	if (FSOT_Check($marking, $manufacturer, $note) == 0) {
 		return 0;
 	}
 	$ins['marking'] = $marking;
@@ -124,13 +124,13 @@ function FSO_Check($FSOT) {
 	return 1;
 }
 
-function FSO_Mod($id,$FSOT) {
+function FSO_Mod($id, $FSOT) {
 	if (FSO_Check($FSOT) == 0) {
 		return 0;
 	}
 	$upd['FiberSpliceOrganizationType'] = $FSOT;
 	$wr['id'] = $id;
-	$res = FSO_UPDATE($upd,$wr);
+	$res = FSO_UPDATE($upd, $wr);
 	if (isset($res['error'])) {
   		return $res;
   	}
@@ -149,11 +149,11 @@ function FSO_Add($FSOT) {
 	return 1;
 }
 
-function getFSOTsInfo($sort,$linesPerPage = -1,$skip = -1) {	$res = FSOT_SELECT($sort,'',$linesPerPage,$skip);
+function getFSOTsInfo($sort, $linesPerPage = -1, $skip = -1) {	$res = FSOT_SELECT($sort, '', $linesPerPage, $skip);
 	$result['FSOTs'] = $res;
 	unset($wr);
 	for ($i = 0; $i < $res['count']; $i++) {		$wr['FiberSpliceOrganizationType'] = $res['rows'][$i]['id'];
-		$res2 = FSO_SELECT('',$wr);
+		$res2 = FSO_SELECT('', $wr);
 		$result['FSOTs']['rows'][$i]['FSOCount'] = $res2['count'];
 	}	
 	return $result;

@@ -9,8 +9,8 @@ if (!isset($_GET['page'])) {
 } else {
 	$page = $_GET['page'];
 }		
-$res = loggingIs_SELECT($config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
-$pages = genPages('LoggingIs.php?',ceil($res['allPages']/$config['LinesPerPage']),$page);
+$res = loggingIs_SELECT($config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
+$pages = genPages('LoggingIs.php?', ceil($res['allPages']/$config['LinesPerPage']), $page);
 $rows = $res['rows'];
 for ($i = 0; $i < $res['count']; $i++) {
 	$log_arr[] = $rows[$i]['id'];
@@ -21,7 +21,7 @@ for ($i = 0; $i < $res['count']; $i++) {
 	$log_arr[] = $rows[$i]['description'];
 	$log_arr[] = $rows[$i]['username'].' ('.$rows[$i]['admin'].')';
 	}
-$smarty->assign('data',$log_arr);
-$smarty->assign('pages',$pages);
+$smarty->assign('data', $log_arr);
+$smarty->assign('pages', $pages);
 $smarty->display('Log.tpl');
 ?>

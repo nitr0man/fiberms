@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	   	if ($_POST['Apartment'] == '') { $apartment = 'NULL'; }
 	   	if ($_POST['Apartment'] != '') { $apartment = $_POST['Apartment']; }
 
-		$res = NetworkNode_Mod($id,$name,$networkBox,$note,$OpenGIS,$SettlementGeoSpatial,$building,$apartment);
+		$res = NetworkNode_Mod($id, $name, $networkBox, $note, $OpenGIS, $SettlementGeoSpatial, $building, $apartment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -44,7 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		if ($_POST['Apartment'] == '') { $apartment = 'NULL'; }
 		if ($_POST['Apartment'] != '') { $apartment = $_POST['Apartment']; }
 		
-		$res = NetworkNode_Add($name,$networkBox,$note,$OpenGIS,$SettlementGeoSpatial,$building,$apartment);
+		$res = NetworkNode_Add($name, $networkBox, $note, $OpenGIS, $SettlementGeoSpatial, $building, $apartment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -57,7 +57,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$error = 1;
     	}
 	}
-	showMessage($message,$error);
+	showMessage($message, $error);
 } else {
     if (!isset($_GET['mode'])) {
 		require_once('backend/CableType.php');
@@ -74,18 +74,18 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$nodeId = $_GET['nodeid'];
 		if (!isset($_GET['nodeid'])) {
-			$res = getNetworkNodeList_NetworkBoxName($sort,$_GET['FSort'],'',$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
+			$res = getNetworkNodeList_NetworkBoxName($sort, $_GET['FSort'], '', $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
 		}
 		else {
     		$wr['id'] = $nodeId;
-			$res = getNetworkNodeList_NetworkBoxName($sort,$_GET['FSort'],$wr,$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
+			$res = getNetworkNodeList_NetworkBoxName($sort, $_GET['FSort'], $wr, $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
 		}
 		if ($res['count'] < 1) {
 			$message = 'Узла с таким ID не существует!<br />
 			<a href="NetworkBox.php">Назад</a>';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
-		$pages = genPages('NetworkNodes.php?sort='.$sort.'&',ceil($res['allPages']/$config['LinesPerPage']),$page);		
+		$pages = genPages('NetworkNodes.php?sort='.$sort.'&', ceil($res['allPages']/$config['LinesPerPage']), $page);		
 		$rows = $res['rows'];
 		$i = -1;
 		while (++$i < $res['count']) {
@@ -108,9 +108,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			}
 
 	  	}
-		$smarty->assign("data",$node_arr);
-		$smarty->assign("pages",$pages);
-	} elseif (($_GET['mode'] == 'charac') and (isset($_GET['nodeid']))) {		$smarty->assign("mode","charac");
+		$smarty->assign("data", $node_arr);
+		$smarty->assign("pages", $pages);
+	} elseif (($_GET['mode'] == 'charac') and (isset($_GET['nodeid']))) {		$smarty->assign("mode", "charac");
 		require_once("backend/FS.php");
 		$nodeId = $_GET['nodeid'];
 		$res = getNetworkNodeInfo($nodeId);
@@ -142,43 +142,43 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$changeDeleteFiberSplice .= '<br><a href="NetworkNodes.php?mode=delete&nodeid='.$nodeId.'">Удалить</a>';
 		}
 		
-		$smarty->assign("data",$cableLine_arr);
-		$smarty->assign("id",$rows['id']);
-		$smarty->assign("name",$rows['name']);
-    	$smarty->assign("NetworkBox",$rows['inventoryNumber']);
-		$smarty->assign("FiberSpliceCount",$fiberSpliceCount);
-    	$smarty->assign("note",nl2br($rows['note']));
-    	$smarty->assign("OpenGIS",$rows['OpenGIS']);
-    	$smarty->assign("SettlementGeoSpatial",$rows['SettlementGeoSpatial']);
-    	$smarty->assign("Building",$rows['Building']);
-    	$smarty->assign("Apartment",$rows['Apartment']);
-		$smarty->assign("ChangeDeleteFiberSplice",$changeDeleteFiberSplice);
+		$smarty->assign("data", $cableLine_arr);
+		$smarty->assign("id", $rows['id']);
+		$smarty->assign("name", $rows['name']);
+    	$smarty->assign("NetworkBox", $rows['inventoryNumber']);
+		$smarty->assign("FiberSpliceCount", $fiberSpliceCount);
+    	$smarty->assign("note", nl2br($rows['note']));
+    	$smarty->assign("OpenGIS", $rows['OpenGIS']);
+    	$smarty->assign("SettlementGeoSpatial", $rows['SettlementGeoSpatial']);
+    	$smarty->assign("Building", $rows['Building']);
+    	$smarty->assign("Apartment", $rows['Apartment']);
+		$smarty->assign("ChangeDeleteFiberSplice", $changeDeleteFiberSplice);
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['nodeid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
 
-    	$smarty->assign("mode","add_change");
-		$smarty->assign("mod","1");
-		$smarty->assign("back",getenv("HTTP_REFERER"));
+    	$smarty->assign("mode", "add_change");
+		$smarty->assign("mod", "1");
+		$smarty->assign("back", getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['nodeid'];
-    	$res = NetworkNode_SELECT(0,'',$wr);
+    	$res = NetworkNode_SELECT(0, '', $wr);
     	if ($res['count'] < 1) {
 			$message = 'Узла с таким ID не существует!<br />
 						<a href="NetworkNodes.php">Назад</a>';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
     	$rows = $res['rows'];
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("name",$rows[0]['name']);
-    	$smarty->assign("NetworkBox",$rows[0]['NetworkBox']);
-    	$smarty->assign("note",$rows[0]['note']);
-    	$smarty->assign("OpenGIS",$rows[0]['OpenGIS']);
-    	$smarty->assign("SettlementGeoSpatial",$rows[0]['SettlementGeoSpatial']);
-    	$smarty->assign("Building",$rows[0]['Building']);
-    	$smarty->assign("Apartment",$rows[0]['Apartment']);
+		$smarty->assign("id", $rows[0]['id']);
+		$smarty->assign("name", $rows[0]['name']);
+    	$smarty->assign("NetworkBox", $rows[0]['NetworkBox']);
+    	$smarty->assign("note", $rows[0]['note']);
+    	$smarty->assign("OpenGIS", $rows[0]['OpenGIS']);
+    	$smarty->assign("SettlementGeoSpatial", $rows[0]['SettlementGeoSpatial']);
+    	$smarty->assign("Building", $rows[0]['Building']);
+    	$smarty->assign("Apartment", $rows[0]['Apartment']);
     	$networkBox = $rows[0]['NetworkBox'];
 
 		$res = getFreeNetworkBoxes($rows[0]['NetworkBox']);
@@ -188,19 +188,19 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$comboBox_Box_Values[] = $rows[$i]['id'];
 			$comboBox_Box_Text[] = $rows[$i]['inventoryNumber'];
 		}
-		$smarty->assign("combobox_box_values",$comboBox_Box_Values);
-		$smarty->assign("combobox_box_text",$comboBox_Box_Text);
-		$smarty->assign("combobox_boxtype_selected",$networkBox);
+		$smarty->assign("combobox_box_values", $comboBox_Box_Values);
+		$smarty->assign("combobox_box_text", $comboBox_Box_Text);
+		$smarty->assign("combobox_boxtype_selected", $networkBox);
 	} elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1)
 		{
 			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
 
-		$smarty->assign("mode","add_change");
-		$smarty->assign("mod","2");
-		$smarty->assign("back",getenv("HTTP_REFERER"));
+		$smarty->assign("mode", "add_change");
+		$smarty->assign("mod", "2");
+		$smarty->assign("back", getenv("HTTP_REFERER"));
 
 		$res = getFreeNetworkBoxes(-1);
 		$rows = $res['rows'];
@@ -209,18 +209,18 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$comboBox_Box_Values[] = $rows[$i]['id'];
 			$comboBox_Box_Text[] = $rows[$i]['inventoryNumber'];
 		}
-		$smarty->assign("combobox_box_values",$comboBox_Box_Values);
-		$smarty->assign("combobox_box_text",$comboBox_Box_Text);
+		$smarty->assign("combobox_box_values", $comboBox_Box_Values);
+		$smarty->assign("combobox_box_text", $comboBox_Box_Text);
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['nodeid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
 		$wr['id'] = $_GET['nodeid'];
     	NetworkNode_DELETE($wr);
     	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Узел удален!";
-		showMessage($message,0);		
+		showMessage($message, 0);		
  	}
 
 	$smarty->display('NetworkNodes.tpl');

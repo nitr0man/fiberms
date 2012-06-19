@@ -1,5 +1,5 @@
 <?php
-function loggingIs($type,$tableName,$values,$record) {
+function loggingIs($type, $tableName, $values, $record) {
 	if ($type != 3) {
 		foreach ($values as $field => $value) {
 			$action .= pg_escape_string(' "'.$field.'"=>\''.$value.'\'');
@@ -20,13 +20,13 @@ function loggingIs($type,$tableName,$values,$record) {
 	} elseif ($type == 3) { //delete
 		$action = 'DELETED';
 	}
-	$query = 'INSERT INTO "LogAdminActions" ("table","record","time","action","admin") VALUES ('.pg_escape_string($tableId).','.pg_escape_string($record).',NOW(),\''.$action.'\','.pg_escape_string($user).')';
+	$query = 'INSERT INTO "LogAdminActions" ("table", "record", "time", "action", "admin") VALUES ('.pg_escape_string($tableId).', '.pg_escape_string($record).', NOW(), \''.$action.'\', '.pg_escape_string($user).')';
 	$res = PQuery($query);
 	return 1;
 }
 
-function loggingIs_SELECT($linesPerPage = -1,$skip = -1) {
-	$query = 'SELECT "laa".id,"laa"."table","laa"."record",to_char("laa"."time", \'yyyy-mm-dd HH24:MI:SS\') AS "time","laa"."action","laa"."description","laa"."admin","u"."username","ltl"."name" FROM "LogAdminActions" AS "laa" LEFT JOIN "Users" AS "u" ON "u".id="laa"."admin" LEFT JOIN "LogTableList" AS "ltl" ON "ltl".id="laa"."table" ORDER BY "time" DESC';
+function loggingIs_SELECT($linesPerPage = -1, $skip = -1) {
+	$query = 'SELECT "laa".id, "laa"."table", "laa"."record", to_char("laa"."time", \'yyyy-mm-dd HH24:MI:SS\') AS "time", "laa"."action", "laa"."description", "laa"."admin", "u"."username", "ltl"."name" FROM "LogAdminActions" AS "laa" LEFT JOIN "Users" AS "u" ON "u".id="laa"."admin" LEFT JOIN "LogTableList" AS "ltl" ON "ltl".id="laa"."table" ORDER BY "time" DESC';
 	$query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
  	$result = PQuery($query);
 	$query = 'SELECT COUNT(*) AS "count" FROM "LogAdminActions"';

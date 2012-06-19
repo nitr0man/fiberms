@@ -7,14 +7,14 @@ if ($_POST['login'] == 'login')
 	
 	$passwordHash = md5($_POST['password']);
 	$login = $_POST['user'];
-	if (!preg_match("/^\w{3,}$/", $login)) {
+	if (!preg_match("/^\w{3, }$/", $login)) {
 		die('Неверный логин!');
 	}
-	$res = PQuery('SELECT id,"class" FROM "Users" WHERE "username"=\''.$login.'\' AND "password"=\''.$passwordHash.'\'');
+	$res = PQuery('SELECT id, "class" FROM "Users" WHERE "username"=\''.$login.'\' AND "password"=\''.$passwordHash.'\'');
 	if ($res['count'] < 1) {
 		$message = 'Такого пользователя не существует!';
 		$error = 1;
-		showMessage($message,$error);
+		showMessage($message, $error);
 	}
 	session_start();
 	$token = md5(time().$login);

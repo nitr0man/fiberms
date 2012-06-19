@@ -1,12 +1,12 @@
 <?php
 require_once("backend/CableType.php");
 
-function CableType_Check($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment) {	$result = 1;
+function CableType_Check($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $tensileStrength, $diameter, $comment) {	$result = 1;
 	/* здесь проверка */
 	return $result;
 }
 
-function CableType_Mod($id,$marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment) {	if (CableType_Check($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment) == 0) {		return 0;
+function CableType_Mod($id, $marking, $manufacturer, $tubeQuantity, $fiberPerTube, $tensileStrength, $diameter, $comment) {	if (CableType_Check($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $tensileStrength, $diameter, $comment) == 0) {		return 0;
 	}
 	$upd['marking'] = $marking;
 	$upd['manufacturer'] = $manufacturer;
@@ -16,13 +16,13 @@ function CableType_Mod($id,$marking,$manufacturer,$tubeQuantity,$fiberPerTube,$t
 	$upd['diameter'] = $diameter;
 	$upd['comment'] = $comment;
 	$wr['id'] = $id;
-  	$res = CableType_UPDATE($upd,$wr);
+  	$res = CableType_UPDATE($upd, $wr);
   	if (isset($res['error'])) {  		return $res;
   	}
   	return 1;
 }
 
-function CableType_Add($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment) {	if (CableType_Check($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensileStrength,$diameter,$comment) == 0) {
+function CableType_Add($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $tensileStrength, $diameter, $comment) {	if (CableType_Check($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $tensileStrength, $diameter, $comment) == 0) {
 		return 0;
 	}
 	$ins['marking'] = $marking;
@@ -39,12 +39,12 @@ function CableType_Add($marking,$manufacturer,$tubeQuantity,$fiberPerTube,$tensi
 	return 1;
 }
 
-function CableLine_Check($OpenGIS,$CableTypes,$length,$name,$comment) {	$result = 1;
+function CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) {	$result = 1;
 	/* здесь проверка */
 	return $result;
 }
 
-function CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$name,$comment) {	if (CableLine_Check($OpenGIS,$CableTypes,$length,$name,$comment) == 0) {		return 0;
+function CableLine_Mod($id, $OpenGIS, $CableTypes, $length, $name, $comment) {	if (CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) == 0) {		return 0;
 	}
 	$upd['OpenGIS'] = "NULL";
 	$upd['CableType'] = $CableTypes;
@@ -52,14 +52,14 @@ function CableLine_Mod($id,$OpenGIS,$CableTypes,$length,$name,$comment) {	if (C
 	$upd['comment'] = $comment;
 	$upd['name'] = $name;
 	$wr['id'] = $id;
-	$res = CableLine_UPDATE($upd,$wr);
+	$res = CableLine_UPDATE($upd, $wr);
 	if (isset($res['error'])) {
   		return $res;
   	}
 	return 1;
 }
 
-function CableLine_Add($OpenGIS,$CableTypes,$length,$name,$comment) {	if (CableLine_Check($OpenGIS,$CableTypes,$length,$name,$comment) == 0) {
+function CableLine_Add($OpenGIS, $CableTypes, $length, $name, $comment) {	if (CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) == 0) {
 		return 0;
 	}	$ins['OpenGIS'] = "NULL";
 	$ins['CableType'] = $CableTypes;
@@ -73,11 +73,11 @@ function CableLine_Add($OpenGIS,$CableTypes,$length,$name,$comment) {	if (Cable
 	return 1;
 }
 
-function CableLine_Info($cableLineId) {	$wr['id'] = $cableLineId;	$res = CableLine_SELECT(0,$wr);
+function CableLine_Info($cableLineId) {	$wr['id'] = $cableLineId;	$res = CableLine_SELECT(0, $wr);
 	$result['CableLine'] = $res;
 	$CableType = $result['CableLine']['rows'][0]['CableType'];
 	$wr['id'] = $CableType;
-	$res = CableType_SELECT(0,$wr);
+	$res = CableType_SELECT(0, $wr);
 	$result['CableLine']['rows'][0]['CableTypeMarking'] = $res['rows'][0]['marking'];
 	$result['CableLine']['rows'][0]['CableTypeManufacturer'] = $res['rows'][0]['manufacturer'];
 	$result['CableLine']['rows'][0]['CableTypeId'] = $res['rows'][0]['id'];
@@ -85,12 +85,12 @@ function CableLine_Info($cableLineId) {	$wr['id'] = $cableLineId;	$res = Cable
 	return $result;
 }
 
-function CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	$result = 1;
+function CableLinePoint_Check($OpenGIS, $CableLine, $meterSign, $networkNode, $note, $Apartment, $Building, $SettlementGeoSpatial) {	$result = 1;
 	/* здесь проверка */
 	return $result;
 }
 
-function CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) == 0) {
+function CableLinePoint_Mod($id, $OpenGIS, $CableLine, $meterSign, $networkNode, $note, $Apartment, $Building, $SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS, $CableLine, $meterSign, $networkNode, $note, $Apartment, $Building, $SettlementGeoSpatial) == 0) {
 		return 0;
 	}
 	if ($OpenGIS == '') {
@@ -105,14 +105,14 @@ function CableLinePoint_Mod($id,$OpenGIS,$CableLine,$meterSign,$networkNode,$not
 	$upd['Building'] = "NULL";
 	$upd['SettlementGeoSpatial'] = "NULL";
 	$wr['id'] = $id;
-	$res = CableLinePoint_UPDATE($upd,$wr);
+	$res = CableLinePoint_UPDATE($upd, $wr);
 	if (isset($res['error'])) {
   		return $res;
   	}
 	return 1;
 }
 
-function CableLinePoint_Add($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS,$CableLine,$meterSign,$networkNode,$note,$Apartment,$Building,$SettlementGeoSpatial) == 0) {
+function CableLinePoint_Add($OpenGIS, $CableLine, $meterSign, $networkNode, $note, $Apartment, $Building, $SettlementGeoSpatial) {	if (CableLinePoint_Check($OpenGIS, $CableLine, $meterSign, $networkNode, $note, $Apartment, $Building, $SettlementGeoSpatial) == 0) {
 		return 0;
 	}
 	if ($OpenGIS == '') {

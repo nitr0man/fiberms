@@ -1,17 +1,17 @@
 <?php
-function showMessage($message,$error) {
+function showMessage($message, $error) {
 	global $smarty;
 	if ($error == 1) {
 		$result = '<font color="red"><u>Ошибка</u>: <b>'.$message.'</b></font>';
 	} else {
 		$result = $message;
 	}
-	$smarty->assign("message",$result);
+	$smarty->assign("message", $result);
 	$smarty->display("message.tpl");
 	die();
 }
 
-function genPages($link,$pagesCount,$page) {
+function genPages($link, $pagesCount, $page) {
 	if ($page == 1) {
 		$pages = '1';
 	} else {

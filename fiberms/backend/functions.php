@@ -1,13 +1,14 @@
 <?php
 require_once('config.php');
 
-function PConnect($host,$db,$user,$pass) {
+function PConnect($host, $db, $user, $pass) {
 	$connection = pg_connect("host='".$host."' dbname='".$db."' user='".$user."' password='".$pass."'");
 	return $connection;
 }
 
 function PQuery($query) {	
-	require "config.php";	
+	require "config.php";
+	
 	//error_log($query);
 	$res = pg_query($connection, $query) or $error = 1;
 	if ($error == 1) {
@@ -27,7 +28,7 @@ function PQuery($query) {
 function genWhere($wr) {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) $where .= ' AND ';
 		if ($value != 'NULL') {
-			if (preg_match('/^\(\s*([0-9.]+[,\s]+)+[0-9.]+\s*\)$/',$value)) {
+			if (preg_match('/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value)) {
 				$where .= ' "'.$field.'"~=\''.pg_escape_string($value).'\'';
 			} else {
 				$where .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
@@ -65,7 +66,7 @@ function genUpdate($upd) {	foreach ($upd as $field => $value) {
     return $set;
 }
 
-function genWhereAndOr($wr,$OrAnd) {	foreach ($wr as $field => $value) {
+function genWhereAndOr($wr, $OrAnd) {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) {
 	 		if ($OrAnd==0) {
 	 	  		$sl = 'AND';

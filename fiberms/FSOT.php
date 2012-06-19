@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$marking = $_POST['marking'];
 		$manufacturer = $_POST['manufacturer'];
 		$note = $_POST['note'];
-		$res = FSOT_Mod($id,$marking,$manufacturer,$note);
+		$res = FSOT_Mod($id, $marking, $manufacturer, $note);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$marking = $_POST['marking'];
 		$manufacturer = $_POST['manufacturer'];
 		$note = $_POST['note'];
-		$res = FSOT_Add($marking,$manufacturer,$note);
+		$res = FSOT_Add($marking, $manufacturer, $note);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -40,7 +40,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$error = 1;
     	}
 	}
-	showMessage($message,$error);
+	showMessage($message, $error);
 } else {
     if (!isset($_GET['mode'])) {
 		if (isset($_GET['sort'])) {
@@ -53,8 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		} else {
 			$page = $_GET['page'];
 		}
-		$res = getFSOTsInfo($sort,$config['LinesPerPage'],($page-1)*$config['LinesPerPage']);
-		$pages = genPages('FSOT.php?sort='.$sort.'&',ceil($res['FSOTs']['allPages']/$config['LinesPerPage']),$page);
+		$res = getFSOTsInfo($sort, $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
+		$pages = genPages('FSOT.php?sort='.$sort.'&', ceil($res['FSOTs']['allPages']/$config['LinesPerPage']), $page);
 
 		$rows = $res['FSOTs']['rows'];
 	  	$i = -1;
@@ -68,46 +68,46 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			} else {				$cableLine_arr[] = ' ';
 			}
 	  	}
-		$smarty->assign("data",$cableLine_arr);
-		$smarty->assign("pages",$pages);
+		$smarty->assign("data", $cableLine_arr);
+		$smarty->assign("pages", $pages);
 	}
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
-    	$smarty->assign("mode","add_change");
-		$smarty->assign("mod","1");
-		$smarty->assign("back",getenv("HTTP_REFERER"));
+    	$smarty->assign("mode", "add_change");
+		$smarty->assign("mod", "1");
+		$smarty->assign("back", getenv("HTTP_REFERER"));
 
 		$wr['id'] = $_GET['fsotid'];
-    	$res = FSOT_SELECT('',$wr);
+    	$res = FSOT_SELECT('', $wr);
     	if ($res['count'] < 1) {
 			$message = 'Типа кассеты с таким ID не существует!<br />
 						<a href="FSOT.php">Назад</a>';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
     	$rows = $res['rows'];
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("marking",$rows[0]['marking']);
-		$smarty->assign("manufacturer",$rows[0]['manufacturer']);
-		$smarty->assign("note",$rows[0]['note']);
+		$smarty->assign("id", $rows[0]['id']);
+		$smarty->assign("marking", $rows[0]['marking']);
+		$smarty->assign("manufacturer", $rows[0]['manufacturer']);
+		$smarty->assign("note", $rows[0]['note']);
 	} elseif ($_GET['mode'] == 'add') {
 		if ($_SESSION['class'] > 1) {
 			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}
-		$smarty->assign("mode","add_change");
-		$smarty->assign("mod","2");
-		$smarty->assign("back",getenv("HTTP_REFERER"));
+		$smarty->assign("mode", "add_change");
+		$smarty->assign("mod", "2");
+		$smarty->assign("back", getenv("HTTP_REFERER"));
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
-			showMessage($message,0);
+			showMessage($message, 0);
 		}		$wr['id'] = $_GET['fsotid'];
 		FSOT_DELETE($wr);
     	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Тип кассеты удален!";
-		showMessage($message,0);
+		showMessage($message, 0);
  	}
 
 	$smarty->display('FSOT.tpl');
