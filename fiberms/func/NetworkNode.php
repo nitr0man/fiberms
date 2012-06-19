@@ -56,6 +56,8 @@ function getNetworkNodeInfo($networkNodeId) {	$res = getNetworkNode_NetworkBoxN
     	$res3 = FiberSplice_SELECT('', $wr, 1);
     	$result['NetworkNode']['CableLinePoints']['rows'][$i]['FiberSpliceCount'] = $res3['count'];
     }
+	$res = getFiberSpliceOrganizerInfo(-1,-1,$networkNodeId,0);
+	$result['NetworkNode']['FSO'] = $res;
 	return $result;
 }
 

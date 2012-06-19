@@ -31,13 +31,13 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 		<th>Заголовок</th><th>Значение</th><th>Заголовок</th><th>Значение</th>
 			<tr>
 				<td>
-					<label>Цвет текста страницы</label>
+					<label class="events_anonce">Цвет текста страницы</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="" name="bodycolor"></td>
 				</td>
 				<td>
-					<label>Фон страницы</label>
+					<label class="events_anonce">Фон страницы</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$bodybackground}" name="bodybackground"></td>
@@ -45,13 +45,13 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 			</tr>
 			<tr>
 				<td>
-					<label>Элемент списка</label>
+					<label class="events_anonce">Элемент списка</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$libackground}" name="libackground"></td>
 				</td>
 				<td>
-					<label>Фон блока #content</label>
+					<label class="events_anonce">Фон блока #content</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$contentbackground}" name="contentbackground"></td>
@@ -59,13 +59,13 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 			</tr>
 			<tr>
 				<td>
-					<label>Цвет заголовка таблицы</label>
+					<label class="events_anonce">Цвет заголовка таблицы</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$contentth}" name="contentth"></td>
 				</td>
 				<td>
-					<label>Цвет ячейки таблицы</label>
+					<label class="events_anonce">Цвет ячейки таблицы</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$contenttd}" name="contenttd"></td>
@@ -73,13 +73,13 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 			</tr>
 			<tr>
 				<td>
-					<label>Цвет ссылки</label>
+					<label class="events_anonce">Цвет ссылки</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$alinkcolor}" name="alinkcolor"></td>
 				</td>
 				<td>
-					<label>Цвет посещенной ссылки</label>
+					<label class="events_anonce">Цвет посещенной ссылки</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$avisitedcolor}" name="avisitedcolor"></td>
@@ -87,13 +87,13 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 			</tr>
 			<tr>
 				<td>
-					<label>Цвет активной ссылки</label>
+					<label class="events_anonce">Цвет активной ссылки</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$aavtivecolor}" name="aactivecolor"></td>
 				</td>
 				<td>
-					<label>Фон меню</label>
+					<label class="events_anonce">Фон меню</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$leftcolmenu}" name="leftcolmenu"></td>
@@ -101,13 +101,13 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 			</tr>
 			<tr>
 				<td>
-					<label>Цвет заголовка меню</label>
+					<label class="events_anonce">Цвет заголовка меню</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$leftcolmenuh3}" name="leftcolmenuh3"></td>
 				</td>
 				<td>
-					<label>Фон элементов списка в меню</label>
+					<label class="events_anonce">Фон элементов списка в меню</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$leftcolmenuulli}" name="leftcolmenuulli"></td>
@@ -115,13 +115,13 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 			</tr>
 			<tr>
 				<td>
-					<label>Цвет рамки меню</label>
+					<label class="events_anonce">Цвет рамки меню</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$leftcolmenuullili}" name="leftcolmenuullili"></td>
 				</td>
 				<td>
-					<label>Выбранный элемент меню</label>
+					<label class="events_anonce">Выбранный элемент меню</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$leftcolmenuullihover}" name="leftcolmenuullihover"></td>
@@ -129,7 +129,7 @@ document.colors.contable.value = getstyle(document.getElementsBySelector('#conta
 			</tr>
 			<tr>
 				<td>
-					<label>Рамка центральной таблицы</label>
+					<label class="events_anonce">Рамка центральной таблицы</label>
 				</td>
 				<td>
 					<input size="35" type="text" value="{$contable}" name="contable"></td>

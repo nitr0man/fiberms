@@ -105,6 +105,8 @@ function getStat() {
 	$result['FiberSplice']['NetworkNodesCount'] = $res_nodes['count'];
 	$fiberSpliceCount = getFiberSpliceCount_NetworkNode();
 	$result['FiberSplice']['FiberSpliceCount'] = $fiberSpliceCount;
+	$NetworkNodeCountInFiberSplice = getNetworkNodeCountInFiberSplice();
+	$result['FiberSplice']['NetworkNodeCountInFiberSplice'] = $NetworkNodeCountInFiberSplice;
 	$query = 'SELECT COUNT(*) AS "count" FROM "CableLinePoint"';
 	$res = PQuery($query);
 	$result['CableLinePoint']['Count'] = $res['rows'][0]['count'];

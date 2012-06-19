@@ -3,34 +3,36 @@
 <input type="hidden" value="1" name="mode" />
 	<center> <table id="contable">
 		<tr>
-			<td><label>ID</label></td><td> <label>{$id}</label> </td>
+			<td><label class="events_anonce">ID</label></td><td> <label class="events_anonce">{$id}</label> </td>
 		</tr>
 		<tr>
-			<td><label>Имя</label></td><td> <label>{$name}</label> </td>
+			<td><label class="events_anonce">Имя</label></td><td> <label class="events_anonce">{$name}</label> </td>
 		</tr>
 		<tr>
-			<td><label>Ящик</label></td><td> <label>{$NetworkBox}</label> </td>
+			<td><label class="events_anonce">Ящик</label></td><td> <label class="events_anonce">{$NetworkBox}</label> </td>
 		</tr>
 		<tr>
-			<td><label>К-во сварок</label></td><td> <label>{$FiberSpliceCount}</label> </td>
+			<td><label class="events_anonce">К-во сварок</label></td><td> <label class="events_anonce">{$FiberSpliceCount}</label> </td>
 		</tr>		
 		<tr>
-			<td><label>OpenGIS</label></td><td> <label>{$OpenGIS}</label> </td>
+			<td><label class="events_anonce">OpenGIS</label></td><td> <label class="events_anonce">{$OpenGIS}</label> </td>
 		</tr>
 		<tr>
-			<td><label>SettlementGeoSpatial</label></td><td> {$SettlementGeoSpatial} </td>
+			<td><label class="events_anonce">SettlementGeoSpatial</label></td><td> {$SettlementGeoSpatial} </td>
 		</tr>
 		<tr>
-			<td><label>Здание</label></td><td> <label>{$Building}</label> </td>
+			<td><label class="events_anonce">Здание</label></td><td> <label class="events_anonce">{$Building}</label> </td>
 		</tr>
 		<tr>
-			<td><label>Квартира</label></td><td> <label>{$Apartment}</label> </td>
+			<td><label class="events_anonce">Квартира</label></td><td> <label class="events_anonce">{$Apartment}</label> </td>
 		</tr>
 		<tr>
-			<td><label>Примечание</label></td><td><label>{$note}</label></td>
+			<td><label class="events_anonce">Примечание</label></td><td><label class="events_anonce">{$note}</label></td>
 		</tr>
-	</table> </center>
-	{html_table table_attr='id="contable"' loop=$data cols="ID,OpenGIS,Кабельная линия,Отметка (м),Изм.,Удал."}
+	</table>
+	{html_table table_attr='id="contable"' loop=$CableLinePoints cols="ID,Кабельная линия,Отметка (м),Изм.,Удал." caption="Список точек на линии"}
+	{html_table table_attr='id="contable"' loop=$FSO cols="ID,Тип кассеты,Производитель,К-во сварок,Изм.,Удал." caption="Список кассет"}
+	</center>
 	<td>
 		{$ChangeDeleteFiberSplice}
 	</td>

@@ -7,8 +7,10 @@ if ($_POST['login'] == 'login')
 	
 	$passwordHash = md5($_POST['password']);
 	$login = $_POST['user'];
-	if (!preg_match("/^\w{3, }$/", $login)) {
-		die('Неверный логин!');
+	if (!preg_match("/^\w{3,}$/", $login)) {
+		$message = 'Неверный логин!';
+		$error = 1;
+		showMessage($message,$error);
 	}
 	$res = PQuery('SELECT id, "class" FROM "Users" WHERE "username"=\''.$login.'\' AND "password"=\''.$passwordHash.'\'');
 	if ($res['count'] < 1) {

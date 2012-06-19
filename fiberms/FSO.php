@@ -52,8 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	  	while (++$i < $res['count']) {	
 			$FSO[] = $rows[$i]['id'];
 	  		$FSO[] = $rows[$i]['FiberSpliceOrganizationTypeMarking'];
-			$FSO[] = $rows[$i]['FiberSpliceOrganizationTypeManufacturer'];
+			$FSO[] = $rows[$i]['FiberSpliceOrganizationTypeManufacturer'];			
 			$FSO[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[$i]['NetworkNodeId'].'">'.$rows[$i]['NetworkNodeName'].'</a>';
+			$FSO[] = $rows[$i]['FiberSpliceCount'];
 			$FSO[] = '<a href="FSO.php?mode=change&fsoid='.$rows[$i]['id'].'">Изменить</a>';
 			if ($rows[$i]['NetworkNodeName'] == '') {
 				$FSO[] = '<a href="FSO.php?mode=delete&fsoid='.$rows[$i]['id'].'">Удалить</a>';
@@ -110,10 +111,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		}
 		$smarty->assign("FSOT_values", $FSOT_Values);
 		$smarty->assign("FSOT_text", $FSOT_Text);
-	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsotid']))) {
+	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsoid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			showMessage($message, 0);
-		}		$wr['id'] = $_GET['fsotid'];
+		}		$wr['id'] = $_GET['fsoid'];
 		FSO_DELETE($wr);
     	header("Refresh: 2; url=".getenv("HTTP_REFERER"));
 		$message = "Кассета удалена!";

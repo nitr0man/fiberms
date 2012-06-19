@@ -41,6 +41,14 @@ function FSO_UPDATE($upd, $wr) {
 	return $result;
 }
 
+function FSO_DELETE($wr) {
+	$query = 'DELETE FROM "FiberSpliceOrganizer"';
+	$query .= genWhere($wr);
+	$result = PQuery($query);
+	loggingIs(3, 'FiberSpliceOrganizer', '', $wr['id']);
+	return $result;
+}
+
 function FSOT_SELECT($sort, $wr, $linesPerPage = -1, $skip = -1) {
 	$query = 'SELECT * FROM "FiberSpliceOrganizerType"';
 	if ($wr != '') {
@@ -181,16 +189,21 @@ function getFiberSpliceCount_NetworkNode($networkNode = -1) {
 	return $result;
 }
 
-function getFiberSpliceOrganizerInfo($linesPerPage = -1, $skip = -1, $networkNode = -1) {
-	$query = 'SELECT DISTINCT "fso".id, "fso"."FiberSpliceOrganizationType" AS "FiberSpliceOrganizationTypeId", "fsot"."marking" AS "FiberSpliceOrganizationTypeMarking", "fsot"."manufacturer" AS "FiberSpliceOrganizationTypeManufacturer", "nn".id AS "NetworkNodeId", "nn"."name" AS "NetworkNodeName" ';
+function getFiberSpliceOrganizerInfo($linesPerPage = -1, $skip = -1, $networkNode = -1, $free = 1) {
+	$query  = 'SELECT DISTINCT "fso".id, "fso"."FiberSpliceOrganizationType" AS "FiberSpliceOrganizationTypeId", "fsot"."marking" AS "FiberSpliceOrganizationTypeMarking", "fsot"."manufacturer" AS "FiberSpliceOrganizationTypeManufacturer", "nn".id AS "NetworkNodeId", "nn"."name" AS "NetworkNodeName", COUNT(DISTINCT "fs".id) AS "FiberSpliceCount" ';
 	$query .= 'FROM "FiberSpliceOrganizer" AS "fso" ';
 	$query .= 'LEFT JOIN "FiberSplice" AS "fs" ON "fs"."FiberSpliceOrganizer"="fso".id ';
 	$query .= 'LEFT JOIN "CableLinePoint" AS "clp" ON "clp".id="fs"."CableLinePointA" OR "clp".id="fs"."CableLinePointB" ';
-	$query .= 'LEFT JOIN "NetworkNode" AS "nn" ON "nn".id="clp"."NetworkNode"';
-	$query .= 'LEFT JOIN "FiberSpliceOrganizerType" AS "fsot" ON "fsot".id="fso"."FiberSpliceOrganizationType"';
+	$query .= 'LEFT JOIN "NetworkNode" AS "nn" ON "nn".id="clp"."NetworkNode" ';
+	$query .= 'LEFT JOIN "FiberSpliceOrganizerType" AS "fsot" ON "fsot".id="fso"."FiberSpliceOrganizationType" ';
+	$query .= 'WHERE "fs"."FiberSpliceOrganizer"="fso".id ';
 	if ($networkNode != -1) {
-		$query .= ' WHERE "nn".id='.$networkNode.' OR "nn".id IS NULL';
+		$query .= ' AND "nn".id='.$networkNode;
 	}
+	if ($free == 1) {
+		$query .= ' OR "nn".id IS NULL';
+	}
+	$query .= ' GROUP BY "fso".id, "fsot"."marking", "fsot"."manufacturer", "nn".id';
 	if (($linesPerPage != -1) and ($skip != -1)) {
 		$query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
 		$query2 = 'SELECT COUNT(*) AS "count" FROM "FiberSpliceOrganizer"';
@@ -199,6 +212,16 @@ function getFiberSpliceOrganizerInfo($linesPerPage = -1, $skip = -1, $networkNod
 	}
  	$result = PQuery($query);
 	$result['allPages'] = $allPages;
+	return $result;
+}
+
+function getNetworkNodeCountInFiberSplice() {
+	$query  = 'SELECT COUNT(DISTINCT "nn".id) AS "NetworkNodeCountInFiberSplice" ';
+	$query .= 'FROM "FiberSplice" AS "fs" ';
+	$query .= 'LEFT JOIN "CableLinePoint" AS "clp" ON "clp".id="fs"."CableLinePointA" OR "clp".id="fs"."CableLinePointB" ';
+	$query .= 'LEFT JOIN "NetworkNode" AS "nn" ON "nn".id="clp"."NetworkNode"';
+	$res = PQuery($query);
+	$result = $res['rows'][0]['NetworkNodeCountInFiberSplice'];
 	return $result;
 }
 ?>

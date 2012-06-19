@@ -27,7 +27,7 @@
 		<td><label class="events_anonce">Кассета</label></td><td> <select name="FibersSpliceOrganizer"> {html_options values=$ComboBox_FibersSpliceOrganizer_values selected=$Combobox_FibersSpliceOrganizer_selected output=$ComboBox_FibersSpliceOrganizer_text}</select></td>
 		</tr>
 		<tr>
-		<th colspan="2">input value="OK" type="submit" name="ChangeButton" /></th>
+		<th colspan="2"><input value="OK" type="submit" name="ChangeButton" /></th>
 		</tr>
 	</table>
 </form>

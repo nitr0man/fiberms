@@ -119,18 +119,33 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 
 		$i = -1;
 	  	while (++$i < $res['NetworkNode']['CableLinePoints']['count']) {
-	  		$cableLine_arr[] = $clpRows[$i]['id'];
-	  		$cableLine_arr[] = $clpRows[$i]['OpenGIS'];
-	  		$cableLine_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$clpRows[$i]['CableLine'].'">'.$clpRows[$i]['clname'].'</a>';
-	  		$cableLine_arr[] = $clpRows[$i]['meterSign'];
-			$cableLine_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$clpRows[$i]['id'].'">Изменить</a>';
+	  		$CableLinePoints_arr[] = $clpRows[$i]['id'];
+	  		$CableLinePoints_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$clpRows[$i]['CableLine'].'">'.$clpRows[$i]['clname'].'</a>';
+	  		$CableLinePoints_arr[] = $clpRows[$i]['meterSign'];
+			$CableLinePoints_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$clpRows[$i]['id'].'">Изменить</a>';
 			$fiberSpliceCount = getFiberSpliceCount($clpRows[$i]['id']);
 			if ($fiberSpliceCount == 0) {
-				$cableLine_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$clpRows[$i]['id'].'">Удалить</a>';
+				$CableLinePoints_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$clpRows[$i]['id'].'">Удалить</a>';
 			} else {
-				$cableLine_arr[] = '';
+				$CableLinePoints_arr[] = '';
 			}
 	  	}
+		
+		$fsoRows = $res['NetworkNode']['FSO']['rows'];
+		$i = -1;
+	  	while (++$i < $res['NetworkNode']['FSO']['count']) {	
+			$FSO_arr[] = $fsoRows[$i]['id'];
+	  		$FSO_arr[] = $fsoRows[$i]['FiberSpliceOrganizationTypeMarking'];
+			$FSO_arr[] = $fsoRows[$i]['FiberSpliceOrganizationTypeManufacturer'];
+			$FSO_arr[] = $fsoRows[$i]['FiberSpliceCount'];
+			$FSO_arr[] = '<a href="FSO.php?mode=change&fsoid='.$fsoRows[$i]['id'].'">Изменить</a>';
+			if ($fsoRows[$i]['NetworkNodeName'] == '') {
+				$FSO_arr[] = '<a href="FSO.php?mode=delete&fsoid='.$fsoRows[$i]['id'].'">Удалить</a>';
+			} else {
+				$FSO_arr[] = '';
+			}
+	  	}
+		
 		$fiberSpliceCount = getFiberSpliceCount_NetworkNode($nodeId);
 		if ($res['NetworkNode']['CableLinePoints']['count'] > 0) {
 			$changeDeleteFiberSplice = '<a href="FiberSplice.php?networknodeid='.$nodeId.'">Отобразить сварки</a>';
@@ -142,7 +157,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$changeDeleteFiberSplice .= '<br><a href="NetworkNodes.php?mode=delete&nodeid='.$nodeId.'">Удалить</a>';
 		}
 		
-		$smarty->assign("data", $cableLine_arr);
+		$smarty->assign("CableLinePoints", $CableLinePoints_arr);
+		$smarty->assign("FSO", $FSO_arr);
 		$smarty->assign("id", $rows['id']);
 		$smarty->assign("name", $rows['name']);
     	$smarty->assign("NetworkBox", $rows['inventoryNumber']);
