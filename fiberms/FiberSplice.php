@@ -198,7 +198,7 @@ else
 		}
 		
 		//$table = array_merge(array("Маркировка"), $tr_arr['marking'], array("Количество волокон"), $tr_arr['fiber_count'], array("Направление"), $tr_arr['direction'], array("Имя"), $tr_arr['number']);
-		$table = array_merge(array("Имя"), $tr_arr['CableLineNames'], array("Маркировка"), $tr_arr['marking'], array("Количество волокон"), $tr_arr['fiber_count'], array("Направление"), $tr_arr['direction']);
+		$table = array_merge(array("Имя"), $tr_arr['CableLineNames'], array("Направление"), $tr_arr['direction'], array("Маркировка"), $tr_arr['marking'], array("Количество волокон"), $tr_arr['fiber_count']);
 		for ($i = 1; $i <= $res['maxfiber']; $i++) {
 			if (isset($_GET['print'])) {
 				$table[] = '<b>'.$i.'</b>';
