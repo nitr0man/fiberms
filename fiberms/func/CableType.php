@@ -51,14 +51,11 @@ function CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) {	$re
 }
 
 function CableLine_Mod($id, $OpenGIS, $CableTypes, $length, $name, $comment) {	if (CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) == 0) {		return 0;
-<<<<<<< HEAD
 	}
 	if ($OpenGIS == '') {
 		$upd['OpenGIS'] = "NULL";
 	} else {
 		$upd['OpenGIS'] = $OpenGIS;
-=======
->>>>>>> ee883030f9528400cb5f81530d52c452930fb06b
 	}
 	$upd['CableType'] = $CableTypes;
 	$upd['length'] = $length;

@@ -85,21 +85,12 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
   border: 1px solid #686868;
   border-radius: 7px;
   /*text-align: center;*/  
-<<<<<<< HEAD
 }
 
 select {
 	width: 100%;
 }
 
-=======
-}
-
-select {
-	width: 100%;
-}
-
->>>>>>> ee883030f9528400cb5f81530d52c452930fb06b
 input {
 	width: 100%;
 }
@@ -110,16 +101,6 @@ caption {
 	padding-bottom: 5px;
 }
 
-<<<<<<< HEAD
-#fibersplice {
-  margin: 20px;
-  border: 1px solid #686868;
-  text-align: center;
-  border-radius: 7px;
-}
-
-=======
->>>>>>> ee883030f9528400cb5f81530d52c452930fb06b
 #fibersplice {
   margin: 20px;
   border: 1px solid #686868;

@@ -1,7 +1,2 @@
-<<<<<<< HEAD
-php_value error_reporting 7
-#php_value error_reporting 1
-=======
 #php_value error_reporting 7
 php_value error_reporting 1
->>>>>>> ee883030f9528400cb5f81530d52c452930fb06b

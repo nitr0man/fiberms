@@ -164,11 +164,7 @@ function getCableLineInfo($nodeId) {
 	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode", "CableType".id AS "ctid", "CableLine".id AS "clid", "CableType"."manufacturer" FROM "NetworkNode"
 		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
 		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
-<<<<<<< HEAD
 		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$nodeId.'  AND "CableType"."tubeQuantity"*"CableType"."fiberPerTube" != 0';
-=======
-		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$nodeId;
->>>>>>> ee883030f9528400cb5f81530d52c452930fb06b
 	$result = PQuery($query);
 	return $result;
 }
