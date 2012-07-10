@@ -162,6 +162,7 @@ function getFiberSpliceCount($CableLinePoint) {
 	$query = 'SELECT COUNT(*) AS "count" FROM "FiberSplice" WHERE "CableLinePointA"='.$CableLinePoint.' OR "CableLinePointB"='.$CableLinePoint;
 	$res = PQuery($query);
 	$result = $res['rows'][0]['count'];
+<<<<<<< HEAD
 	return $result;
 }
 
@@ -180,6 +181,8 @@ function getNormalCableLines() {
 			  LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
 			  WHERE "ct"."fiberPerTube"!=0 AND "OpenGIS" IS NOT NULL';
 	$result = PQuery($query);
+=======
+>>>>>>> ee883030f9528400cb5f81530d52c452930fb06b
 	return $result;
 }
 ?>
