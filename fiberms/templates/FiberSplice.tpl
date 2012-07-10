@@ -1,9 +1,11 @@
 {include file="header.tpl"}
-{include file="menu.tpl"}
+{if (!isset($smarty.get.print))}
+	{include file="menu.tpl"}
+{/if}
 <body>
 <div id="content">
-{if $mode == 'change'}
-	{include file="FiberSplice_content_change.tpl"}
+{if $mode == 'add_change'}
+	{include file="FiberSplice_content_add_change.tpl"}
 {elseif $mode == 'add'}
 	{include file="FiberSplice_content_add.tpl"}
 {elseif $mode == 'charac'}

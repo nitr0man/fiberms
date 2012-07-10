@@ -55,10 +55,10 @@ background: ".$content["tdcolor"].";}
 #content th {
 background: ".$content["thcolor"].";}
 
-ul,ol { list-style: none; }
-h1,h2,h3,h4,h5,h6,pre,code,p { font-size: 1em; }
-ul,ol,dl,li,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input { margin: 0; padding: 0; }
-a img,:link img,:visited img { border: none; }
+ul, ol { list-style: none; }
+h1, h2, h3, h4, h5, h6, pre, code, p { font-size: 1em; }
+ul, ol, dl, li, dt, dd, h1, h2, h3, h4, h5, h6, pre, form, body, html, p, blockquote, fieldset, input { margin: 0; padding: 0; }
+a img, :link img, :visited img { border: none; }
 
 a:link { color: ".$a["link-color"]."; text-decoration: underline; }
 a:visited { color: ".$a["visited-color"]."; text-decoration: underline; }
@@ -94,7 +94,7 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
 #contable {
   margin: 20px;
   border: ".$menu["contable"]."; }";
-  $handle = fopen("tempcss.css","w");
+  $handle = fopen("tempcss.css", "w");
   ftruncate($handle, "1000000");
   fwrite($handle, $css);
   fclose($handle);

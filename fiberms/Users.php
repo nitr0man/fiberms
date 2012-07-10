@@ -5,30 +5,30 @@ require "backend/Users.php";
 
 if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	if ($_POST['mode'] == 1) {
-		$userid = $_POST['userid'];
-		if ($userid == 0) {
-			$res = Users_SELECT('id LIMIT 1','');
-			$userid = $res['rows'][0]['id'];		}
-		$wr['id'] = $userid;
-		$res = Users_SELECT('',$wr);
+		$userId = $_POST['userid'];
+		if ($userId == 0) {
+			$res = Users_SELECT('id LIMIT 1', '');
+			$userId = $res['rows'][0]['id'];		}
+		$wr['id'] = $userId;
+		$res = Users_SELECT('', $wr);
 		$rows = $res['rows'];
 
-		$smarty->assign("id",$rows[0]['id']);
-		$smarty->assign("login",$rows[0]['username']);
+		$smarty->assign("id", $rows[0]['id']);
+		$smarty->assign("login", $rows[0]['username']);
 		$class = $rows[0]['class'];
-		$res = Users_SELECT('','');
+		$res = Users_SELECT('', '');
 		$rows = $res['rows'];
 		$i = -1;
-		while (++$i<$res['count']) {
-			$combobox_users_values[] = $rows[$i]['id'];
-			$combobox_users_text[] = $rows[$i]['username'];
+		while (++$i < $res['count']) {
+			$comboBox_Users_Values[] = $rows[$i]['id'];
+			$comboBox_Users_Text[] = $rows[$i]['username'];
 		}
-		$smarty->assign("combobox_users_values",$combobox_users_values);
-		$smarty->assign("combobox_users_text",$combobox_users_text);
-		$smarty->assign("combobox_users_selected",$userid);
-		$smarty->assign("combobox_usergroup_values",array("1","2"));
-		$smarty->assign("combobox_usergroup_text",array("Админ","ReadOnly"));
-		$smarty->assign("combobox_usergroup_selected",$class);
+		$smarty->assign("combobox_users_values", $comboBox_Users_Values);
+		$smarty->assign("combobox_users_text", $comboBox_Users_Text);
+		$smarty->assign("combobox_users_selected", $userId);
+		$smarty->assign("combobox_usergroup_values", array("1", "2"));
+		$smarty->assign("combobox_usergroup_text", array("Админ", "ReadOnly"));
+		$smarty->assign("combobox_usergroup_selected", $class);
 		$smarty->display('Users_content.tpl');
 	} elseif ($_POST['mode'] == 2) {
 		$id = $_POST['userid'];		$login = $_POST['login'];
@@ -40,12 +40,12 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		    $upd['class'] = "'$group'";
 		    if ($password != '') {
 		    	$upd['password'] = "'".md5($password)."'";		    }
-			Users_UPDATE($upd,$wr);
+			Users_UPDATE($upd, $wr);
 			print("Пользователь изменен!<br />
 				<a href=\"Users.php\">Назад</a>");
 		} else {
 			$wr['username'] = "'$login'";
-			$res = Users_SELECT('',$wr);
+			$res = Users_SELECT('', $wr);
 			if ($res['count'] > 0) {
 				print("Пользователь с такими логином существует!<br />
 				      <a href=\"Users.php\">Назад</a>");
