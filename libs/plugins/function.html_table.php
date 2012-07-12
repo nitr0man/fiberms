@@ -150,9 +150,11 @@ function smarty_function_html_table($params, $template)
             }
 
             if ($x < $loop_count) {
-                $output .= "<td" . smarty_function_html_table_cycle('td', $td_attr, $c) . ">" . $loop[$x] . "</td>\n";
+                //$output .= "<td" . smarty_function_html_table_cycle('td', $td_attr, $c) . ">" . $loop[$x] . "</td>\n";
+				$output .= "<td" . smarty_function_html_table_cycle('td', $td_attr, $cols_count*$r+$c) . ">" . $loop[$x] . "</td>\n";
             } else {
-                $output .= "<td" . smarty_function_html_table_cycle('td', $td_attr, $c) . ">$trailpad</td>\n";
+                //$output .= "<td" . smarty_function_html_table_cycle('td', $td_attr, $c) . ">$trailpad</td>\n";
+				$output .= "<td" . smarty_function_html_table_cycle('td', $td_attr, $cols_count*$r+$c) . ">" . $loop[$x] . "</td>\n";
             }
         }
         $output .= "</tr>\n";

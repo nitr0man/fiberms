@@ -75,6 +75,9 @@ else
 		$smarty->assign("mod", "1");
 		$smarty->assign("back", getenv("HTTP_REFERER"));
 
+		$wr['id'] = $_GET['spliceid'];
+		$fso = FiberSplice_SELECT('', $wr, 1);
+		$fso = $fso['rows'][0]['FiberSpliceOrganizer'];
         $networkNodeId = $_GET['networknodeid'];
         $res = getFiberTable($networkNodeId);
 		$fibers = getFibers($_GET['clpid1'], $networkNodeId, $_GET['fiber1']);
@@ -91,7 +94,6 @@ else
   		$smarty->assign("ComboBox_Fibers_values", $fibers);
 		$smarty->assign("ComboBox_Fibers_text", $fibers);
 
-		//$res = FSO_Select('', '');
 		$res = getFiberSpliceOrganizerInfo(-1, -1, $networkNodeId);
   		for ($i = 0; $i < $res['count']; $i++) {
   			$ComboBox_FibersSpliceOrganizer_Values[] = $res['rows'][$i]['id'];
@@ -99,6 +101,7 @@ else
   		}
   		$smarty->assign("ComboBox_FibersSpliceOrganizer_values", $ComboBox_FibersSpliceOrganizer_Values);
 		$smarty->assign("ComboBox_FibersSpliceOrganizer_text", $ComboBox_FibersSpliceOrganizer_Text);
+		$smarty->assign("Combobox_FibersSpliceOrganizer_selected", $fso);
 		$smarty->assign("ComboBox_CableLinePoint_values", $ComboBox_CableLinePoint_Values);
 		$smarty->assign("ComboBox_CableLinePoint_text", $ComboBox_CableLinePoint_Text);
 		$smarty->assign("ComboBox_CableLinePoint_selected", $_GET['clpid2']);
@@ -107,6 +110,7 @@ else
 		$smarty->assign("NetworkNodeId", $networkNodeId);
 		$smarty->assign("curr_fiber", $_GET['fiber1']);
 	} elseif ($_GET['mode'] == 'add') {
+	
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
 			showMessage($message, 0);
@@ -127,7 +131,6 @@ else
 		}
 		$cable1 = $cl_array['rows'][$res['CableLinePoints'][$_GET['clpid1']]]['name'];
 
-		//$res = FSO_Select('', '');
 		$res = getFiberSpliceOrganizerInfo(-1, -1, $networkNodeId);
   		for ($i = 0; $i < $res['count']; $i++) {
   			$ComboBox_FibersSpliceOrganizer_Values[] = $res['rows'][$i]['id'];
@@ -147,6 +150,7 @@ else
 		$smarty->assign("NetworkNodeId", $networkNodeId);
 		$smarty->assign("curr_fiber", '-1');
 	} elseif (isset($_GET['networknodeid'])) {
+	
     	$networkNodeId = $_GET['networknodeid'];
 		$wr['id'] = $networkNodeId;
 		$res = NetworkNode_SELECT('', '', $wr);
@@ -157,51 +161,39 @@ else
 			showMessage($message, 0);
 		}
 		
-		$cols[] = "№";
+		$table_text_cols = '<th>№</th>';
 		for ($i = 0; $i < count($res['CableLinePoints']); $i++) {
-			/*if (isset($_GET['print'])) {
-				//$cols[] = $res['cl_array']['rows'][$i]['name'];
-				$cols[] = ($i+1);
-			} else {
-				//$cols[] = '<a href="CableLine.php?mode=charac&cablelineid='.$res['cl_array']['rows'][$i]['clid'].'">'.$res['cl_array']['rows'][$i]['name'].'</a>';
-			}*/
-			$cols[] = ($i+1);
+			$table_text_cols .= '<th colspan=3>'.($i+1).'</th>';			
 			if (isset($_GET['print'])) {
-				$tr_arr['marking'][$i] = $res['cl_array']['rows'][$i]['manufacturer'].'<br>'.$res['cl_array']['rows'][$i]['marking'];
+				$table_text_marking .= '<td colspan=3>'.$res['cl_array']['rows'][$i]['manufacturer'].'<br>'.$res['cl_array']['rows'][$i]['marking'].'</td>';
 			} else {
-				$tr_arr['marking'][$i] = '<a href="CableType.php?mode=charac&cabletypeid='.$res['cl_array']['rows'][$i]['ctid'].'">'.$res['cl_array']['rows'][$i]['manufacturer'].'<br>'.$res['cl_array']['rows'][$i]['marking'].'</a>';
-			}
-			$tr_arr['fiber_count'][$i] = $res['cl_array']['rows'][$i]['fiber'];
+				$table_text_marking .= '<td colspan=3><a href="CableType.php?mode=charac&cabletypeid='.$res['cl_array']['rows'][$i]['ctid'].'">'.$res['cl_array']['rows'][$i]['manufacturer'].'<br>'.$res['cl_array']['rows'][$i]['marking'].'</a></td>';
+			}	
+			$table_text_fiber_count .= '<td colspan=3>'.$res['cl_array']['rows'][$i]['fiber'].'</td>';
+			
 			$direction = getDirection($res['cl_array']['rows'][$i]['clpid'], $networkNodeId);
 			if ($direction['name'] == '-') {
-				$tr_arr['direction'][$i] = '-';
+				$table_text_direction .= '<td colspan=3>'.'-'.'</td>';				
 			} else {
 				if (isset($_GET['print'])) {
-					$tr_arr['direction'][$i] = $direction['name'];
+					$table_text_direction .= '<td colspan=3>'.$direction['name'].'</td>';
 				} else {
-					$tr_arr['direction'][$i] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$direction['NetworkNode'].'">'.$direction['name'].'</a>';
+					$table_text_direction .= '<td colspan=3>'.'<a href="NetworkNodes.php?mode=charac&nodeid='.$direction['NetworkNode'].'">'.$direction['name'].'</a>'.'</td>';
 				}
-			}
+			}			
 			if (isset($_GET['print'])) {
-				$tr_arr['CableLineNames'][$i] = $res['cl_array']['rows'][$i]['name'];
+				$table_text_CableLineNames .= '<td colspan=3>'.$res['cl_array']['rows'][$i]['name'].'</td>';
 			} else {
-				$tr_arr['CableLineNames'][$i] = '<a href="CableLine.php?mode=charac&cablelineid='.$res['cl_array']['rows'][$i]['clid'].'">'.$res['cl_array']['rows'][$i]['name'].'</a>';
-			}
-			
-			//$tr_attr = array("class=header", "class=header", "class=header", 'class=header class="bottomborder"');
-			if (isset($_GET['print'])) {
-				$tr_attr = array("class=cp", "class=cp", "class=cp", 'class="bottomborder"');
-			} else {
-				$tr_attr = array("class=header", "class=header", "class=header", 'class=header class="bottomborder"');
-			}
+				$table_text_CableLineNames .= '<td colspan=3>'.'<a href="CableLine.php?mode=charac&cablelineid='.$res['cl_array']['rows'][$i]['clid'].'">'.$res['cl_array']['rows'][$i]['name'].'</a>'.'</td>';
+			}	
+			$table_text_info .= '<td>Соед.</td><td>К</td><td>М</td>';
 		}
 		
-		$table = array_merge(array("Имя"), $tr_arr['CableLineNames'], array("Направление"), $tr_arr['direction'], array("Маркировка"), $tr_arr['marking'], array("Количество волокон"), $tr_arr['fiber_count']);
 		for ($i = 1; $i <= $res['maxfiber']; $i++) {
 			if (isset($_GET['print'])) {
-				$table[] = '<b>'.$i.'</b>';
+				$table_text_fibers .= '<tr><td><b>'.$i.'</b></td>';
 			} else {
-				$table[] = $i;
+				$table_text_fibers .= '<tr><td>'.$i.'</td>';
 			}
             for ($j = 0; $j < count($res['CableLinePoints']); $j++)	{
             	$arr = $res['SpliceArray'][$j][$i];
@@ -211,6 +203,11 @@ else
             	$fiber2 = $arr[2];
             	$is_a = $arr[3];
             	$splice_id = $arr[0];
+				$fso = $arr[4];
+				$fiberPerTube = $res['cl_array']['rows'][$j]['fiberPerTube'];
+				$module = (int)(($i-1) / $fiberPerTube + 1);
+				$rowspan_fso = 1;
+				$rowspan_module = 1;
             	if (isset($arr)) {
 					if (isset($_GET['print'])) {
 						$linksD = ' ';
@@ -218,32 +215,76 @@ else
 						$linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.'>[x]</a>';
 					}
 					if (isset($_GET['print'])) {
-						$table[] = (string)($arr[1]+1) . ' - ' . $arr[2];
+						$table_text_fibers .= '<td>'.(string)($arr[1]+1) . ' - ' . $arr[2].'</td>';
 					} else {
-						$table[] = ' <a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$networkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">'.(string)($arr[1]+1) . ' - ' . $arr[2].'</a> '.$linksD;
+						$table_text_fibers .= '<td>'.'<a href="FiberSplice.php?mode=change&clpid1='.$clpid1.'&clpid2='.$clpid2.'&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$networkNodeId.'&spliceid='.$splice_id.'&isa='.$is_a.'">'.(string)($arr[1]+1) . ' - ' . $arr[2].'</a> '.$linksD.'</td>';
+					}
+					if ( ($i == 1) or ($i % $fiberPerTube == 1 ) ) {
+						$table_text_module = '<td rowspan="'.$fiberPerTube.'">'.$module.'</td>';
 					}
 				} else {
-					if (($i > $res['cl_array']['rows'][$j]['fiber']) or (isset($_GET['print']))) {
-						$linksN = ' &nbsp;';
+					if (($i > $res['cl_array']['rows'][$j]['fiber'])) {
+						$linksN = '&nbsp;';
+						$table_text_module = '<td> &nbsp;</td>';
 					}
-					else {						$linksN = '<a href="FiberSplice.php?mode=add&clpid1='.$clpid1.'&fiber1='.$fiber1.'&networknodeid='.$networkNodeId.'">[+]</a>';
-					}
-					$table[] = $linksN;
+					else {
+						if ( (isset($_GET['print'])) ) {
+							$linksN = '&nbsp;';
+						} else {							$linksN = '<a href="FiberSplice.php?mode=add&clpid1='.$clpid1.'&fiber1='.$fiber1.'&networknodeid='.$networkNodeId.'">[+]</a>';
+						}
+						if ( ($i == 1) or ($i % $fiberPerTube == 1 ) ) {
+							$table_text_module = '<td rowspan="'.$fiberPerTube.'">'.$module.'</td>';
+						}
+					}			
+					$table_text_fibers .= '<td>'.$linksN.'</td>';					
 				}
-				$tr_attr[] = "";
+				for ($k = $i+1; $k <= $res['cl_array']['rows'][$j]['fiber']; $k++) {
+					$arr2 = $res['SpliceArray'][$j][$k];
+					$fso2 = $arr2[4];
+					if ( ($fso == $fso2) and ($fso != -1) and (!empty($fso)) and (!empty($fso2)) ){
+						$res['SpliceArray'][$j][$k][4] = -1;
+						$rowspan_fso++;
+					} else {
+						break;
+					}
+				}
+				if ($fso != -1) {
+					$table_text_fibers .= '<td rowspan="'.$rowspan_fso.'">'.$fso.'</td>';
+				}
+				if ( !empty($table_text_module) ) {
+					$table_text_fibers .= $table_text_module;
+					$table_text_module = '';
+				}
 			}
+			$table_text_fibers .= '</tr>';
 		}
 		if (isset($_GET['print'])) {
 			$printLink = '';
 		} else {
 			$printLink = '[<a href="FiberSplice.php?networknodeid='.$networkNodeId.'&print">Версия для печати</a>]';
-		}
+		}		
 		
-		$smarty->assign("tr_attr", $tr_attr);
-		$smarty->assign("cols", $cols);
-		$smarty->assign("data", $table);
+		$table_text  = '<thead><tr>'.$table_text_cols.'</tr></thead>';
+		$table_text .= '<tbody>';
+		if ( isset($_GET['print']) ) {
+			$table_text .= '<tr class=cp><td>Имя</td>'.$table_text_CableLineNames.'</tr>';
+			$table_text .= '<tr class=cp><td>Направление</td>'.$table_text_direction.'</tr>';
+			$table_text .= '<tr class=cp><td>Маркировка</td>'.$table_text_marking.'</tr>';
+			$table_text .= '<tr class=cp><td>Количество волокон</td>'.$table_text_fiber_count.'</tr>';
+			$table_text .= '<tr class=bottomborder><td>Нумерация</td>'.$table_text_info.'</tr>';
+		} else {
+			$table_text .= '<tr class=header><td>Имя</td>'.$table_text_CableLineNames.'</tr>';
+			$table_text .= '<tr class=header><td>Направление</td>'.$table_text_direction.'</tr>';
+			$table_text .= '<tr class=header><td>Маркировка</td>'.$table_text_marking.'</tr>';
+			$table_text .= '<tr class=header><td>Количество волокон</td>'.$table_text_fiber_count.'</tr>';
+			$table_text .= '<tr class=header><td>Нумерация</td>'.$table_text_info.'</tr>';
+		}
+		$table_text .= $table_text_fibers;
+		$table_text .= '</tbody>';
+		$smarty->assign("table", $table_text);
+		
 		$smarty->assign("nodeName", $networkNodeName);
-		$smarty->assign("printLink", $printLink);
+		$smarty->assign("printLink", $printLink);				
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['spliceid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			showMessage($message, 0);

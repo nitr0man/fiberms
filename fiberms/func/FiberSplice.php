@@ -57,8 +57,9 @@ function getFiberTable($nodeID)
 			$ColB = $CableLinePoints[$elem['CableLinePointB']];
 			$RowA = $elem['fiberA'];
 			$RowB = $elem['fiberB'];
-			$spliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0);
-			$spliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1);
+			$FSO = $elem['FiberSpliceOrganizer'];
+			$spliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0, $FSO);
+			$spliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1, $FSO);
 		}
 	} else {
 		$spliceArray = array();

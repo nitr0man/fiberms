@@ -68,10 +68,10 @@ function genUpdate($upd) {	foreach ($upd as $field => $value) {
 
 function genWhereAndOr($wr, $OrAnd) {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) {
-	 		if ($OrAnd==0) {
+	 		if ($OrAnd == 0) {
 	 	  		$sl = 'AND';
 			}
-			elseif ($OrAnd==1) {
+			elseif ($OrAnd == 1) {
 				$sl = 'OR';
 			}
 			$where .= ' '.$sl.' ';

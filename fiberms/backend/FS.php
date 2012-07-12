@@ -161,7 +161,7 @@ function giberInfo($fiber) {	$query = 'SELECT * FROM "FiberSplice" WHERE "fiber
 }
 
 function getCableLineInfo($nodeId) {
-	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode", "CableType".id AS "ctid", "CableLine".id AS "clid", "CableType"."manufacturer" FROM "NetworkNode"
+	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode", "CableType".id AS "ctid", "CableLine".id AS "clid", "CableType"."manufacturer", "CableType"."fiberPerTube" FROM "NetworkNode"
 		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
 		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
 		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$nodeId.'  AND "CableType"."tubeQuantity"*"CableType"."fiberPerTube" != 0';
