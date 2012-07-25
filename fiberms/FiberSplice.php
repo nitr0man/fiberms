@@ -171,7 +171,15 @@ else
 			}	
 			$table_text_fiber_count .= '<td colspan=3>'.$res['cl_array']['rows'][$i]['fiber'].'</td>';
 			
-			$direction = getDirection($res['cl_array']['rows'][$i]['clpid'], $networkNodeId);
+			//$direction = getCableLineDirection($res['cl_array']['rows'][$i]['clpid'], $networkNodeId);
+			$direction_rows = getCableLineDirection(-1, $res['cl_array']['rows'][$i]['clpid'], $networkNodeId);			
+			if ($direction_rows[0]['NetworkNode'] == $networkNodeId) {
+				$direction['name']        = $direction_rows[1]['name'];
+				$direction['NetworkNode'] = $direction_rows[1]['NetworkNode'];
+			} else {
+				$direction['name']        = $direction_rows[0]['name'];
+				$direction['NetworkNode'] = $direction_rows[0]['NetworkNode'];
+			}
 			if ($direction['name'] == '-') {
 				$table_text_direction .= '<td colspan=3>'.'-'.'</td>';				
 			} else {

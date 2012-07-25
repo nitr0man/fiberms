@@ -60,7 +60,7 @@ else {
 			$page = $_GET['page'];
 		}
 		if (!isset($_GET['typeid'])) {
-			$res = getCableLineList($sort, '', $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
+			$res = getCableLineList($sort, $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
 		} else {
 			$wr['CableType'] = $_GET['typeid'];
 			$res = getCableLineList($sort, $wr, $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
@@ -74,7 +74,7 @@ else {
 		$rows = $res['rows'];
 	  	$i = -1;
 	  	while (++$i < $res['count']) {	  		$cableLine_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';	  		
-			$cableLine_arr[] = '<a href="CableType.php?mode=change&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].'</a>';
+			$cableLine_arr[] = '<a href="CableType.php?mode=charac&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].'</a>';
 			$cableLine_arr[] = $rows[$i]['manufacturer'];
 			$cableLine_arr[] = $rows[$i]['length'];
 			$cableLine_arr[] = $rows[$i]['OpenGIS'];

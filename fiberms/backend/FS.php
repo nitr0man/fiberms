@@ -138,19 +138,25 @@ function FiberSplice_DELETE($wr) {
 	return $result;
 }
 
-function getDirection($cableLinePoint, $networkNodeId) {	$query = 'SELECT * FROM "CableLinePoint" WHERE id='.$cableLinePoint;
-	$res = PQuery($query);
-	$cableLine = $res['rows'][0]['CableLine'];
+function getCableLineDirection($cableLine = -1, $cableLinePoint, $networkNodeId) {
+	if ($cableLine == -1) {		$query = 'SELECT * FROM "CableLinePoint" WHERE id='.$cableLinePoint;
+		$res = PQuery($query);
+		$cableLine = $res['rows'][0]['CableLine'];
+	}
 	$query = 'SELECT * FROM "CableLinePoint" AS "clp" ';
 	$query .= 'LEFT JOIN "NetworkNode" AS "NN" ON "NN".id="clp"."NetworkNode" ';
-	$query .= 'WHERE "clp"."CableLine"='.$cableLine.'AND "clp"."NetworkNode" IS NOT NULL AND "clp"."NetworkNode"!='.$networkNodeId;
+	$query .= 'WHERE "clp"."CableLine"='.$cableLine.'AND "clp"."NetworkNode" IS NOT NULL';
+	if ($networkNodeId != -1) {
+		$query .= ' AND "clp"."NetworkNode"!='.$networkNodeId;
+	}
 	$res = PQuery($query);
-	if ($res['count'] == 1) {
-		$result['name'] = $res['rows'][0]['name'];
-		$result['NetworkNode'] = $res['rows'][0]['NetworkNode'];
+	if ( ($res['count'] >= 1) and ($res['count'] <= 2) ) {
+		/*$result['name'] = $res['rows'][0]['name'];
+		$result['NetworkNode'] = $res['rows'][0]['NetworkNode'];*/
+		$result = $res['rows'];
 	}
 	else {
-		$result['name'] = '-';
+		$result[0]['name'] = '-';
 	}
 	return $result;
 }
@@ -160,11 +166,14 @@ function giberInfo($fiber) {	$query = 'SELECT * FROM "FiberSplice" WHERE "fiber
     return $result;
 }
 
-function getCableLineInfo($nodeId) {
+function getCableLineInfo($nodeId, $zeroFibers = -1) {
 	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode", "CableType".id AS "ctid", "CableLine".id AS "clid", "CableType"."manufacturer", "CableType"."fiberPerTube" FROM "NetworkNode"
 		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
 		LEFT JOIN "CableLine" ON "CableLine".id="CableLinePoint"."CableLine"
-		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$nodeId.'  AND "CableType"."tubeQuantity"*"CableType"."fiberPerTube" != 0';
+		LEFT JOIN "CableType" ON "CableType".id="CableLine"."CableType" WHERE "NetworkNode".id='.$nodeId;
+	if ($zeroFibers == -1) {
+		$query .= ' AND "CableType"."tubeQuantity"*"CableType"."fiberPerTube" != 0';
+	}
 	$result = PQuery($query);
 	return $result;
 }

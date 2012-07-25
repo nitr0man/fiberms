@@ -21,13 +21,22 @@ function PQuery($query) {
 		$rowarr[$i++] = $row;
 	}
 	pg_free_result($res);
-	$result['rows']=$rowarr;
+	$result['rows'] = $rowarr;
 	return $result;
 }
 
 function genWhere($wr) {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) $where .= ' AND ';
-		if ($value != 'NULL') {
+		if (preg_match('/^(NOT\s)?NULL$/', $value)) {
+			$where .= ' "'.$field.'" IS '.pg_escape_string($value).'';
+		} else {
+			if (preg_match('/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value)) {
+				$where .= ' "'.$field.'"~=\''.pg_escape_string($value).'\'';
+			} else {
+				$where .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
+			}
+		}
+		/*if ($value != 'NULL') {
 			if (preg_match('/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value)) {
 				$where .= ' "'.$field.'"~=\''.pg_escape_string($value).'\'';
 			} else {
@@ -35,7 +44,7 @@ function genWhere($wr) {	foreach ($wr as $field => $value) {
 			}
 		} else {
 			$where .= ' "'.$field.'" IS '.pg_escape_string($value).'';
-		}
+		}*/
 	}
 	$result = ' WHERE '.$where;
 	return $result;
