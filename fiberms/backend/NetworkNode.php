@@ -62,11 +62,11 @@ function getNetworkNodeList_NetworkBoxName($sort, $FSort, $wr, $linesPerPage = -
 		$query .= genWhere($wr);
  	}
 	if ($sort == 1)	{
-		$query .= ' ORDER BY "NN"."'.$FSort.'"';
+		$query .= ' ORDER BY "NN"."'.$FSort.'" LIMIT 0,2';
 	}
 	if (($linesPerPage != -1) and ($skip != -1)) {
 		$query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-		$query2 = 'SELECT COUNT(*) AS "count" FROM "CableType"';
+		$query2 = 'SELECT COUNT(*) AS "count" FROM "NetworkNode"';
 		$res = PQuery($query2);
 		$allPages = $res['rows'][0]['count'];
 	}

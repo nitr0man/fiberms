@@ -43,19 +43,34 @@
 			$name = $name->appendChild($dom->createTextNode($rows[$i]['name']));	
 			
 			$cableTypeId = $cableLine->appendChild($dom->createElement('cableTypeId'));
-			$cableTypeId = $cableTypeId->appendChild($dom->createTextNode($rows[$i]['CableType']));	
+			if ( isset($rows[$i]['CableType']) ) {
+				$cableTypeId = $cableTypeId->appendChild($dom->createTextNode($rows[$i]['CableType']));
+			} else {
+				$cableTypeId = $cableTypeId->appendChild($dom->createTextNode('NULL'));
+			}
 			
 			$cableTypeId = $cableLine->appendChild($dom->createElement('cableTypeMarking'));
-			$cableTypeId = $cableTypeId->appendChild($dom->createTextNode($rows[$i]['marking']));
-			
+			if ( isset($rows[$i]['marking']) ) {
+				$cableTypeId = $cableTypeId->appendChild($dom->createTextNode($rows[$i]['marking']));
+			} else {
+				$cableTypeId = $cableTypeId->appendChild($dom->createTextNode('NULL'));
+			}			 
 			$direction = $cableLine->appendChild($dom->createElement('direction'));
 			$direction = $direction->appendChild($dom->createTextNode($direction_href));
 			
 			$modules = $cableLine->appendChild($dom->createElement('modules'));
-			$modules = $modules->appendChild($dom->createTextNode( (int)( ($rows[$i]['fibers'] - 1) / $rows[$i]['fiberPerTube'] + 1 ) ));
+			if ($rows[$i]['fiberPerTube'] != 0) {
+				$modules = $modules->appendChild($dom->createTextNode( (int)( ($rows[$i]['fibers'] - 1) / $rows[$i]['fiberPerTube'] + 1 ) ));
+			} else {
+				$modules = $modules->appendChild($dom->createTextNode('NULL'));
+			}
 			
 			$fibers = $cableLine->appendChild($dom->createElement('fibers'));
-			$fibers = $fibers->appendChild($dom->createTextNode($rows[$i]['fibers']));		
+			if ( isset($rows[$i]['fibers']) ) {
+				$fibers = $fibers->appendChild($dom->createTextNode($rows[$i]['fibers']));
+			} else {
+				$fibers = $fibers->appendChild($dom->createTextNode('NULL'));
+			}
 			
 			$free_fibers = $cableLine->appendChild($dom->createElement('free_fibers'));
 			$free_fibers = $free_fibers->appendChild($dom->createTextNode( (int)($rows[$i]['fibers'] - $rows[$i]['FiberSpliceCount']) ));	
@@ -88,24 +103,26 @@
 				$lat         = $matches['y'][0];
 				$lon         = $matches['x'][0];
 				$title       = '<a target="_blank" href="NetworkNodes.php?mode=charac&nodeid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';
-				$description = 'Ящик: <a target="_blank" href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['NetworkBox'].'">'.$rows[$i]['inventoryNumber'].'</a><br>'.
+				/*$description = 'Ящик: <a target="_blank" href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['NetworkBox'].'">'.$rows[$i]['inventoryNumber'].'</a><br>'.
 								'Тип ящика: <a target="_blank" href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['NBTmarking'].'</a><br>'.
-								'Примечание: '.nl2br($rows[$i]['note']).'<br>'.
+								//'Примечание: './*nl2br($rows[$i]['note'])str_replace(array("\r\n", "\n", "\r"), "<br>", $rows[$i]['note']).'<br>'.
+								'fff<br>'.
 								'Входящие линии: <ul>'.
 								'<li>Всего: '.(string)($cableLinesZeroFibers + $cableLinesNotZeroFibers).'</li>'.
 								'<li>0 волокон: '.$cableLinesZeroFibers.'</li>'.
 								'<li>1+ волокон: '.$cableLinesNotZeroFibers.'</li>'.
 								'</ul>'.
 								'К-во сварок: '.$fiberSpliceCount.'<br>'.
-								'[<a target="_blank" href="FiberSplice.php?networknodeid='.$rows[$i]['id'].'">Таблица сварок</a>]';
+								'[<a target="_blank" href="FiberSplice.php?networknodeid='.$rows[$i]['id'].'">Таблица сварок</a>]';*/
 				//$icon        = "pic/Ol_icon_blue_example.png";
+				$description = $i;
 				$icon        = "pic/node_pic.png";
 				$iconSize    = "10,10";
 				$iconOffset  = "-3,-3";
 				
 				$pois_text .= $lat."\t".$lon."\t".$title."\t".$description."\t".$icon."\t".$iconSize."\t".$iconOffset."\n";
 			}
-		}		
+		}
 		print($pois_text);
 	
 	} elseif ($_GET['mode'] == 'GetNodesLabels') {
@@ -168,6 +185,51 @@
 			}
 		}
 		print($pois_text);
+	} elseif ($_GET['mode'] == 'GetNetworkNodesDescription') {
+		$res = getNetworkNodeList_NetworkBoxName('', '', '');
+		$rows = $res['rows'];
+		
+		$dom = new DomDocument('1.0', 'UTF-8');
+		$nodesDescriptions = $dom->appendChild($dom->createElement('nodesDescriptions'));
+		for ($i = 0; $i < $res['count']; $i++) {
+			$nodeDescription = $nodesDescriptions->appendChild($dom->createElement('nodeDescription'));
+			
+			$OpenGIS = $rows[$i]['OpenGIS'];
+			if (preg_match_all('/(?<x>[0-9.]+),(?<y>[0-9.]+)/', $OpenGIS, $matches)) {
+				$fiberSpliceCount = getFiberSpliceCount_NetworkNode($rows[$i]['id']);
+				$cableLines_row = getCableLineInfo($rows[$i]['id'], 1);
+				$cableLinesZeroFibers = 0;
+				$cableLinesNotZeroFibers = 0;
+				for ($j = 0; $j < $cableLines_row['count']; $j++) {
+					if ($cableLines_row['rows'][$j]['fiber'] > 0) {
+						$cableLinesNotZeroFibers++;
+					} else {
+						$cableLinesZeroFibers++;
+					}
+				}
+				$desc  = 'Ящик: <a target="_blank" href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['NetworkBox'].'">'.$rows[$i]['inventoryNumber'].'</a><br>'.
+							'Тип ящика: <a target="_blank" href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['NBTmarking'].'</a><br>'.
+							'Примечание: './*nl2br($rows[$i]['note'])*/str_replace(array("\r\n", "\n", "\r"), "<br>", $rows[$i]['note']).'<br>'.
+							'Входящие линии: <ul>'.
+							'<li>Всего: '.(string)($cableLinesZeroFibers + $cableLinesNotZeroFibers).'</li>'.
+							'<li>0 волокон: '.$cableLinesZeroFibers.'</li>'.
+							'<li>1+ волокон: '.$cableLinesNotZeroFibers.'</li>'.
+							'</ul>'.
+							'К-во сварок: '.$fiberSpliceCount.'<br>'.
+							'[<a target="_blank" href="FiberSplice.php?networknodeid='.$rows[$i]['id'].'">Таблица сварок</a>]';
+
+				$index = $nodeDescription->appendChild($dom->createElement('index'));
+				$index = $index->appendChild($dom->createTextNode($i));
+				
+				$description = $nodeDescription->appendChild($dom->createElement('description'));
+				$description = $description->appendChild($dom->createTextNode($desc));
+			}
+		}
+		$dom->formatOutput = true;
+		$res = $dom->saveXML();
+		
+		header ("content-type: text/xml");
+		print($res);
 	}
 
 ?>

@@ -32,6 +32,7 @@
 			var CableLine_Points_count = Array();
 			var nodesLabels_Count = 0;
 			var nodesLabels_arr = Array();
+			var nodeDescription_arr = Array();
 			var style_arr = Array({
 			// Стиль линии (0 волокон)
 				strokeColor: 'blue',
@@ -112,20 +113,36 @@
                                           new OpenLayers.Size(100,100),
                                           "<h2>"+feature.attributes.title + "</h2>" +
                                           feature.attributes.description,
+										  //test_arr[0],
                                           null, true, onPopupClose2);
                  feature.popup = popup;
                  popup.feature = feature;
                  map.addPopup(popup);
-              }
-              function onFeatureUnselect2(evt) {
+            }
+			
+			function onFeatureSelect3(evt) {
                  feature = evt.feature;
-                 if (feature.popup) {
-                     popup.feature = null;
-                     map.removePopup(feature.popup);
-                     feature.popup.destroy();
-                     feature.popup = null;
-                 }
-              }
+                 popup = new OpenLayers.Popup.FramedCloud("featurePopup",
+                                          feature.geometry.getBounds().getCenterLonLat(),
+                                          new OpenLayers.Size(100,100),
+                                          "<h2>"+feature.attributes.title + "</h2>" +
+                                          //feature.attributes.description,
+										  nodeDescription_arr[feature.attributes.description],
+                                          null, true, onPopupClose2);
+                 feature.popup = popup;
+                 popup.feature = feature;
+                 map.addPopup(popup);
+            }
+			  
+            function onFeatureUnselect2(evt) {
+                feature = evt.feature;
+                if (feature.popup) {
+                    popup.feature = null;
+                    map.removePopup(feature.popup);
+                    feature.popup.destroy();
+                    feature.popup = null;
+                }
+            }
 			function init() {	
 				map = new OpenLayers.Map({
 					div: "map",
@@ -188,6 +205,7 @@
 				}	
 			}
 			// рисуем типо гало :)
+			
 	
 			lineLayer = new OpenLayers.Layer.Vector("Кабельные линии");
 			map.addLayer(lineLayer);
@@ -203,6 +221,7 @@
 				var line = new OpenLayers.Geometry.LineString(points);
 				line.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
 				var lineFeature = new OpenLayers.Feature.Vector(line, null, style_arr[CableLine_arr[k]['style']]);
+				var line_halo = lineFeature.clone();
 				lineLayer.addFeatures([lineFeature]);
 				CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' +CableLine_arr[k]['cableLineId'] +'">' +CableLine_arr[k]['name'] + '</a></h2>'
 				+'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' +CableLine_arr[k]['cableTypeId'] +'">' +CableLine_arr[k]['cableTypeMarking'] +'</a><br>'
@@ -218,10 +237,10 @@
 			var styleMarkersLabels = new OpenLayers.Style( // стили для надписей узлов
 				{ 
 					strokeWidth: 2,
-					labelYOffset: 14,
+					labelYOffset: 10,
 					label: "${label}",
 					fontColor: 'red',
-					fontSize: 16,
+					fontSize: 9,
 					fontWeight: "bold",
 					labelOutlineColor: "black",
 					labelOutlineWidth: 1
@@ -278,10 +297,6 @@
             });
 			
             map.addLayer(layerCableLinePoints);
-			selectControl = new OpenLayers.Control.SelectFeature([layerNodes, lineLayer, lineLayer_halo, layerCableLinePoints]);
-            map.addControl(selectControl);
-            selectControl.activate();
-			 
 			lineLayer.events.on({
                 'featureselected'   : onFeatureSelect,
                 'featureunselected' : onFeatureUnselect
@@ -291,15 +306,21 @@
                 'featureselected'   : onFeatureSelect,
                 'featureunselected' : onFeatureUnselect
             });
-                 
+
             layerNodes.events.on({
-                'featureselected'   : onFeatureSelect2,
+                'featureselected'   : onFeatureSelect3,
                 'featureunselected' : onFeatureUnselect2
             });
+			
 			layerCableLinePoints.events.on({
                 'featureselected'   : onFeatureSelect2,
                 'featureunselected' : onFeatureUnselect2
             });
+			selectControl = new OpenLayers.Control.SelectFeature([layerNodes, lineLayer, lineLayer_halo, layerCableLinePoints]);
+            map.addControl(selectControl);
+            selectControl.activate();
+			 
+			
 			map.addControls(
 				[
 					new OpenLayers.Control.LayerSwitcher(),
@@ -359,17 +380,21 @@
 					}
 					f_child = f_child.nextSibling;
 				}
-				if ( (CableLine_arr[i]['fibers'] >= 1) && (CableLine_arr[i]['fibers'] <= 8) ) {
-					CableLine_arr[i]['style'] = 1;
+				if ( (CableLine_arr[i]['cableTypeId'] == 'NULL') || (CableLine_arr[i]['fibers'] == '-1') ) {
+					CableLine_arr[i]['style'] = 4;
 				} else {
-					if ( (CableLine_arr[i]['fibers'] >= 9) && (CableLine_arr[i]['fibers'] <= 24) ) {
-						CableLine_arr[i]['style'] = 2;
+					if ( (CableLine_arr[i]['fibers'] >= 1) && (CableLine_arr[i]['fibers'] <= 8) ) {
+						CableLine_arr[i]['style'] = 1;
 					} else {
-						if ( (CableLine_arr[i]['fibers'] >= 25) ) {
-							CableLine_arr[i]['style'] = 3;
+						if ( (CableLine_arr[i]['fibers'] >= 9) && (CableLine_arr[i]['fibers'] <= 24) ) {
+							CableLine_arr[i]['style'] = 2;
 						} else {
-							if ( (CableLine_arr[i]['fibers'] == 0) ) {
-								CableLine_arr[i]['style'] = 0;
+							if ( (CableLine_arr[i]['fibers'] >= 25) ) {
+								CableLine_arr[i]['style'] = 3;
+							} else {
+								if ( (CableLine_arr[i]['fibers'] == 0) ) {
+									CableLine_arr[i]['style'] = 0;
+								}
 							}
 						}
 					}
@@ -377,6 +402,36 @@
 				CableLine_Points_count[i] = j2;
 				j++;
 			}
+			//init();
+			//GetXMLFile("get_layers.php?mode=GetNodesLabels", parseNodesLabelsXML); // получаем надписи для узлов
+			GetXMLFile("get_layers.php?mode=GetNetworkNodesDescription", parseNetworkNodesDescriptionXML); // получаем описание для узлов
+		}
+		
+		function parseNetworkNodesDescriptionXML(Response) {
+			var doc = Response.responseXML.documentElement;
+			var nodeDescription = doc.getElementsByTagName("nodeDescription");
+			
+			var txt_index = 0;
+			for (var i = 0; i < nodeDescription.length; i++) {
+				var f_child = nodeDescription[i].firstChild;
+				j2 = 0;
+				//nodeDescription_arr[i] = {};
+				//nodeDescription_arr[i]["points"] = Array();
+					
+				while (f_child.nextSibling)	{
+					switch (f_child.nodeName) {
+						case "index":
+							//nodeDescription_arr[i]['title'] = f_child.firstChild.nodeValue;
+							txt_index = f_child.firstChild.nodeValue;
+							break;
+						case "description":
+							nodeDescription_arr[txt_index] = f_child.firstChild.nodeValue;
+							break;
+					}
+					f_child = f_child.nextSibling;
+				}
+			}
+			
 			//init();
 			GetXMLFile("get_layers.php?mode=GetNodesLabels", parseNodesLabelsXML); // получаем надписи для узлов
 		}
@@ -412,9 +467,13 @@
 			}
 			
 			init();
-		}
+			//GetXMLFile("get_layers.php?mode=GetNetworkNodesDescription", parseNetworkNodesDescriptionXML); // получаем описание для узлов
+		}	
 		
-		GetXMLFile("get_layers.php?mode=GetCableLines", parseCableLineXML); // получаем кабельные линии        
+		
+		GetXMLFile("get_layers.php?mode=GetCableLines", parseCableLineXML); // получаем кабельные линии
+		//GetXMLFile("get_layers.php?mode=GetNodesLabels", parseNodesLabelsXML); // получаем надписи для узлов
+		//GetXMLFile("get_layers.php?mode=GetNetworkNodesDescription", parseNetworkNodesDescriptionXML); // получаем описание для узлов
 	</script>	
     </head>
     <body>
