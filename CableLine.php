@@ -60,7 +60,7 @@ else {
 			$page = $_GET['page'];
 		}
 		if (!isset($_GET['typeid'])) {
-			$res = getCableLineList($sort, $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
+			$res = getCableLineList($sort, '', $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
 		} else {
 			$wr['CableType'] = $_GET['typeid'];
 			$res = getCableLineList($sort, $wr, $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
@@ -69,8 +69,11 @@ else {
 				<a href="CableLine.php">Назад</a>';
 				showMessage($message, 0);
 			}
+			$pagesLink = 'typeid='.$_GET['typeid'];
 		}
-		$pages = genPages('CableLine.php?sort='.$sort.'&', ceil($res['allPages']/$config['LinesPerPage']), $page);
+		$pagesLink = 'CableLine.php?sort='.$sort.'&'.$pagesLink.'&';
+		//$pages = genPages('CableLine.php?sort='.$sort.'&', ceil($res['allPages'] / $config['LinesPerPage']), $page);
+		$pages = genPages($pagesLink, ceil($res['allPages'] / $config['LinesPerPage']), $page);
 		$rows = $res['rows'];
 	  	$i = -1;
 	  	while (++$i < $res['count']) {	  		$cableLine_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';	  		
@@ -79,6 +82,7 @@ else {
 			$cableLine_arr[] = $rows[$i]['length'];
 			$cableLine_arr[] = $rows[$i]['OpenGIS'];
 			$cableLine_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
+			unset($wr);
 			$wr['CableLine'] = $rows[$i]['id'];
 			$res2 = CableLinePoint_SELECT($wr);
 			if ($res2['count'] == 0) {

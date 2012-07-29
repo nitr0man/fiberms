@@ -107,3 +107,11 @@ caption {
   text-align: center;
   border-radius: 7px;
 }
+
+.smallmap {
+    border: 0px solid #CCCCCC;
+    /*height: 800px;
+    width: 1000px;*/
+	height: 100%;
+    width: 82%;
+}

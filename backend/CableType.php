@@ -138,23 +138,19 @@ function getCableLinePoint_NetworkNodeName($cableLineId) {	$query = 'SELECT "cl
   	return $result;
 }
 
-function getCableLineList($sort, $linesPerPage = -1, $skip = -1, $fibers_from = -1, $fibers_to = -1, $openGIS = -1) {
+function getCableLineList($sort, $wr, $linesPerPage = -1, $skip = -1, $openGIS = -1) {
 	/*$query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment", "cl"."name", "ct"."marking", "ct"."manufacturer" FROM "CableLine" AS "cl"';
 	$query .= ' LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"';*/
 	$query  = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment", "cl"."name", "ct"."marking", "ct"."manufacturer", "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube", "ct"."tubeQuantity", COUNT(DISTINCT fiber) AS "FiberSpliceCount" FROM "CableLine" AS "cl"';
 	$query .= 'LEFT JOIN "CableLinePoint" AS "clp" ON "clp"."CableLine" = "cl"."id" ';
 	$query .= 'LEFT JOIN (SELECT "CableLinePointA" AS "point", "fiberA" AS "fiber" from "FiberSplice" UNION SELECT "CableLinePointB" AS "point", "fiberB" AS "fiber" from "FiberSplice") AS "sel" ON "clp"."id" = "point"';
 	$query .= 'LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"';
-	if ( ($fibers_from != -1) and ($fibers_to != -1) ) {
-		$query .= ' WHERE "ct"."fiberPerTube"*"ct"."tubeQuantity" >= '.$fibers_from.' AND "ct"."fiberPerTube"*"ct"."tubeQuantity" <= '.$fibers_to;		
+	if ($wr != '') {
+		$query .= genWhere($wr);
 		if ($openGIS != -1) {
-			$query .= '"cl"."OpenGIS" IS NOT NULL';
+			$query .= 'AND "cl"."OpenGIS" IS NOT NULL';
 		}
-	} else {
-		if ($openGIS != -1) {
-			$query .= 'WHERE "cl"."OpenGIS" IS NOT NULL';
-		}
-	}
+	}	
 	$query .= ' GROUP BY "cl"."id", "ct"."marking", "ct"."manufacturer", "ct"."fiberPerTube", "ct"."tubeQuantity"';	
 	$query .= ' ORDER BY "name"';
 	if ($sort == 1)	{
@@ -162,7 +158,10 @@ function getCableLineList($sort, $linesPerPage = -1, $skip = -1, $fibers_from = 
 	}
 	if (($linesPerPage != -1) and ($skip != -1)) {
 		$query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-		$query2 = 'SELECT COUNT(*) AS "count" FROM "CableLine"';
+		$query2 = 'SELECT COUNT(*) AS "count" FROM "CableLine" ';
+		if ($wr != '') {
+			$query2 .= genWhere($wr);
+		}
 		$res = PQuery($query2);
 		$allPages = $res['rows'][0]['count'];
 	}

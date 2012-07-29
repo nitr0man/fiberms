@@ -1,6 +1,3 @@
-<?php
-
-?>
 <html>
     <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -62,6 +59,21 @@
 			// Стиль линии (25+ волокон)
 			});
 			
+			function addPoint(lon, lat, title, ident, layr){
+				var ttt = new OpenLayers.LonLat(parseFloat(lon), parseFloat(lat));
+				ttt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+				for (var k = 0; k < layr.features.length; k++) {
+					if(layr.features[k].attributes.PointId==ident) {
+						layr.features[k].move(ttt);
+						layr.features[k].attributes.label=title;
+						return false;		
+					}
+				}
+				var point0 = new OpenLayers.Geometry.Point(parseFloat(lon), parseFloat(lat));
+				point0.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
+				layr.addFeatures(new OpenLayers.Feature.Vector(point0, { label: title, name: title, PointId: ident }));
+			}
+			
 			function toggleControl(element) {
 				alert(element);
 				for(key in drawControls) {
@@ -113,7 +125,6 @@
                                           new OpenLayers.Size(100,100),
                                           "<h2>"+feature.attributes.title + "</h2>" +
                                           feature.attributes.description,
-										  //test_arr[0],
                                           null, true, onPopupClose2);
                  feature.popup = popup;
                  popup.feature = feature;
@@ -157,11 +168,11 @@
 			// This is the layer that uses the locally stored tiles
             var localLayer = new OpenLayers.Layer.OSM("Локальна карта", "map/tiles/${z}/${x}/${y}.png", 
 				{numZoomLevels: 19, 
-				 alpha: true, 
+				 alpha: false,
 				 isBaseLayer: true,
 				 attribution: "",
 				});
-			localLayer.setOpacity(0.6);
+			//localLayer.setOpacity(0.6);
             map.addLayer(localLayer);
 			
 			var osm = new OpenLayers.Layer.OSM();
@@ -209,7 +220,6 @@
 	
 			lineLayer = new OpenLayers.Layer.Vector("Кабельные линии");
 			map.addLayer(lineLayer);
-			//map.addControl(new OpenLayers.Control.DrawFeature(lineLayer, OpenLayers.Handler.Path));	
 			
 			for (k = 0; k < j; k++) {
 				var points = Array();
@@ -245,39 +255,7 @@
 					labelOutlineColor: "black",
 					labelOutlineWidth: 1
 				});
-			var vectorPoint = new OpenLayers.Layer.Vector("Узлы (надписи)",
-			{
-				styleMap: new OpenLayers.StyleMap(
-				{ "default": styleMarkersLabels,
-				
-				"select": { pointRadius: 20}
-				})
-			});
-			map.addLayer(vectorPoint);
-	
-			function addPoint(lon, lat, title, ident, layr){
-				var ttt = new OpenLayers.LonLat(parseFloat(lon), parseFloat(lat));
-				ttt.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-				for (var k = 0; k < layr.features.length; k++) {
-					if(layr.features[k].attributes.PointId==ident) {
-						layr.features[k].move(ttt);
-						layr.features[k].attributes.label=title;
-						return false;		
-					}
-				}
-				var point0 = new OpenLayers.Geometry.Point(parseFloat(lon), parseFloat(lat));
-				point0.transform(new OpenLayers.Projection("EPSG:4326"), new OpenLayers.Projection("EPSG:900913"));
-				layr.addFeatures(new OpenLayers.Feature.Vector(point0, { label: title, name: title, PointId: ident }));
-			}
-			
-			var lat2, lon2, title, ident;
-			for (l = 0; l < nodesLabels_Count; l++) {
-				lat2 = nodesLabels_arr[l]["points"][0]["lat"];
-				lon2 = nodesLabels_arr[l]["points"][0]["lon"];
-				title = nodesLabels_arr[l]["title"];
-				ident = nodesLabels_arr[l]["ident"];
-				addPoint(lon2, lat2, title, ident, map.layers[4]);
-			}
+			//dddd
 						
 			var layerNodes = new OpenLayers.Layer.Vector("Узлы", {
                 strategies : [new OpenLayers.Strategy.BBOX({resFactor: 1.1})],
@@ -297,6 +275,26 @@
             });
 			
             map.addLayer(layerCableLinePoints);
+			
+			var vectorPoint = new OpenLayers.Layer.Vector("Узлы (надписи)",
+			{
+				styleMap: new OpenLayers.StyleMap(
+				{ "default": styleMarkersLabels,
+				
+				"select": { pointRadius: 20}
+				})
+			});
+			map.addLayer(vectorPoint);			
+			
+			var lat2, lon2, title, ident;
+			for (l = 0; l < nodesLabels_Count; l++) {
+				lat2 = nodesLabels_arr[l]["points"][0]["lat"];
+				lon2 = nodesLabels_arr[l]["points"][0]["lon"];
+				title = nodesLabels_arr[l]["title"];
+				ident = nodesLabels_arr[l]["ident"];
+				addPoint(lon2, lat2, title, ident, map.layers[6]);
+			}
+			
 			lineLayer.events.on({
                 'featureselected'   : onFeatureSelect,
                 'featureunselected' : onFeatureUnselect
@@ -316,10 +314,9 @@
                 'featureselected'   : onFeatureSelect2,
                 'featureunselected' : onFeatureUnselect2
             });
-			selectControl = new OpenLayers.Control.SelectFeature([layerNodes, lineLayer, lineLayer_halo, layerCableLinePoints]);
+			selectControl = new OpenLayers.Control.SelectFeature([layerNodes, lineLayer, lineLayer_halo, layerCableLinePoints, vectorPoint]);
             map.addControl(selectControl);
             selectControl.activate();
-			 
 			
 			map.addControls(
 				[
@@ -332,6 +329,7 @@
 			);
 			var lonLat = new OpenLayers.LonLat(lon, lat).transform(new OpenLayers.Projection("EPSG:4326"), map.getProjectionObject());
 			map.setCenter (lonLat, zoom);	
+			map.setLayerIndex(map.layers[6],7);
 		}		
 		
 		function parseCableLineXML(Response) {
@@ -402,8 +400,6 @@
 				CableLine_Points_count[i] = j2;
 				j++;
 			}
-			//init();
-			//GetXMLFile("get_layers.php?mode=GetNodesLabels", parseNodesLabelsXML); // получаем надписи для узлов
 			GetXMLFile("get_layers.php?mode=GetNetworkNodesDescription", parseNetworkNodesDescriptionXML); // получаем описание для узлов
 		}
 		
@@ -415,9 +411,7 @@
 			for (var i = 0; i < nodeDescription.length; i++) {
 				var f_child = nodeDescription[i].firstChild;
 				j2 = 0;
-				//nodeDescription_arr[i] = {};
-				//nodeDescription_arr[i]["points"] = Array();
-					
+
 				while (f_child.nextSibling)	{
 					switch (f_child.nodeName) {
 						case "index":
@@ -432,7 +426,6 @@
 				}
 			}
 			
-			//init();
 			GetXMLFile("get_layers.php?mode=GetNodesLabels", parseNodesLabelsXML); // получаем надписи для узлов
 		}
 		
@@ -467,20 +460,12 @@
 			}
 			
 			init();
-			//GetXMLFile("get_layers.php?mode=GetNetworkNodesDescription", parseNetworkNodesDescriptionXML); // получаем описание для узлов
-		}	
-		
-		
+		}
+
 		GetXMLFile("get_layers.php?mode=GetCableLines", parseCableLineXML); // получаем кабельные линии
-		//GetXMLFile("get_layers.php?mode=GetNodesLabels", parseNodesLabelsXML); // получаем надписи для узлов
-		//GetXMLFile("get_layers.php?mode=GetNetworkNodesDescription", parseNetworkNodesDescriptionXML); // получаем описание для узлов
 	</script>	
     </head>
     <body>
 		<div id="map"></div><br>
     </body>
 </html>
-
-<?php
-
-?>

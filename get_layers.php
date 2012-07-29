@@ -5,7 +5,7 @@
 	require_once('backend/FS.php');
 
 	if ($_GET['mode'] == 'GetCableLines') { // кабельные линии
-		$res = getCableLineList(0, -1, -1, -1, -1, 1);
+		$res = getCableLineList(0, '', -1, -1, -1);
 		if ($res['count'] == 0) {
 			die();
 		}

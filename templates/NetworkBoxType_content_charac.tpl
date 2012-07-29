@@ -26,8 +26,7 @@
 		<tr>
 		<td><label class="events_anonce">Диаметр (мм)</label></td><td> <label class="events_anonce">{$diameter}</label></td>
 		</tr>
-		</tr>
 	</table>
 	<td>{$ChangeDelete}</td>
-</div>
 </form>
+</div>

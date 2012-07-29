@@ -101,17 +101,20 @@ function NetworkBoxType_DELETE($wr) {
 function getNetworkBoxList($sort, $wr, $linesPerPage = -1, $skip = -1) {
 	$query = 'SELECT "NB".id, "NB"."NetworkBoxType", "NB"."inventoryNumber", "NBT"."marking", "NN"."name" AS "NNname", "NN".id AS "NNid" FROM "NetworkBox" AS "NB"';
 	$query .= ' LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"';
-	$query .= ' LEFT JOIN "NetworkNode" AS "NN" ON "NN"."NetworkBox"="NB".id';
-	$query .= ' ORDER BY "inventoryNumber"';
+	$query .= ' LEFT JOIN "NetworkNode" AS "NN" ON "NN"."NetworkBox"="NB".id';	
 	if ($wr != '') {
 		$query .= genWhere($wr);
  	}
+	$query .= ' ORDER BY "inventoryNumber"';
 	if ($sort == 1)	{
 		$query .= ' ORDER BY "NB"."inventoryNumber" ';
 	}
 	if (($linesPerPage != -1) and ($skip != -1)) {
 		$query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
 		$query2 = 'SELECT COUNT(*) AS "count" FROM "NetworkBox"';
+		if ($wr != '') {
+			$query2 .= genWhere($wr);
+		}
 		$res = PQuery($query2);
 		$allPages = $res['rows'][0]['count'];
 	}	
