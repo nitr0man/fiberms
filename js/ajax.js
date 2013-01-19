@@ -418,12 +418,12 @@ ajax.method = 'POST';
 ajax.element = 'content';
 ajax.sendAJAX(varsString);
 }
-function GetFiber(CableLinePoint,NetworkNodeId,CurrFiber,mode){
+function GetFiber(CableLine,NetworkNodeId,CurrFiber,mode){
 var ajax = new tbdev_ajax();
 ajax.onShow ('');
 var varsString = "";
 ajax.requestFile = "FiberSplice.php";
-ajax.setVar("CableLinePoint", CableLinePoint);
+ajax.setVar("CableLine", CableLine);
 ajax.setVar("NetworkNodeId", NetworkNodeId);
 ajax.setVar("CurrFiber", CurrFiber);
 ajax.setVar("mode", mode);

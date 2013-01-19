@@ -1,5 +1,6 @@
 <?php
 require_once("backend/CableType.php");
+require_once("backend/OpticalFiber.php");
 
 function CableType_Check($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $tensileStrength, $diameter, $comment) {	$result = 1;
 	/* здесь проверка */
@@ -57,6 +58,11 @@ function CableLine_Mod($id, $OpenGIS, $CableTypes, $length, $name, $comment) {	
 	} else {
 		$upd['OpenGIS'] = $OpenGIS;
 	}
+	$wr['id'] = $CableTypes;
+	$res = CableType_SELECT( 1, $wr );
+	$fibersCount = $res['rows'][0]['tubeQuantity'] * $res['rows'][0]['fiberPerTube'];
+	unset($wr);
+	CableLine_AddDeleteFibers( $fibersCount, $id );
 	$upd['CableType'] = $CableTypes;
 	$upd['length'] = $length;
 	$upd['comment'] = $comment;
@@ -76,6 +82,10 @@ function CableLine_Add($OpenGIS, $CableTypes, $length, $name, $comment) {	if (C
 	} else {
 		$upd['OpenGIS'] = $OpenGIS;
 	}
+	$res = CableType_SELECT( 1, $wr );
+	$fibersCount = $res['rows']['tubeQuantity'] * $res['rows']['fiberPerTube'];
+	unset($wr);
+	CableLine_AddDeleteFibers( $fibersCount, $id );
 	$ins['CableType'] = $CableTypes;
 	$ins['length'] = $length;
 	$ins['comment'] = $comment;
@@ -144,10 +154,37 @@ function CableLinePoint_Add($OpenGIS, $CableLine, $meterSign, $networkNode, $not
 	$ins['Building'] = "NULL";
 	$ins['SettlementGeoSpatial'] = "NULL";
 	$res = CableLinePoint_INSERT($ins);
-	if (isset($res['error'])) {
+	if ( isset($res['error']) ) {
   		return $res;
   	}
 	return 1;
 }
 
+function CableLine_AddDeleteFibers($fibersCount, $cableLine) {
+	$wr['CableLine'] = $cableLine;
+	$res = OpticalFiber_SELECT( 1, $wr );
+	unset($wr);
+	$rows = $res['rows'];
+	if ( $res['count'] != 0 ) {
+		$lastFiber = $rows[$res['count'] - 1]['fiber'];
+	} else {
+		$lastFiber = 0;
+	}
+	if ( $fibersCount > $lastFiber ) {
+		$i = 0;
+		for ( $fiber = 1; $fiber <= $fibersCount; $fiber++ ) {
+			if ($fiber != $rows[$i]['fiber']) {
+				$ins['fiber'] = $fiber;
+				$ins['CableLine'] = $cableLine;
+				$result = OpticalFiber_INSERT($ins);
+			} else {
+				$i++;
+			}
+		}
+	} else {
+		$wr['fiber'] = $fibersCount;
+		$result = OpticalFiber_DELETE($wr, '>');
+	}
+	return $result;
+}
 ?>

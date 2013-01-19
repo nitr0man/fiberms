@@ -98,46 +98,6 @@ function FSOT_DELETE($wr) {
 	return $result;
 }
 
-function FiberSplice_SELECT($ob, $wr, $orAnd) {
-	$query = 'SELECT * FROM "FiberSplice"';
-	if ($ob != '') {
-			$query .= ' ORDER BY '.$ob;
-	}
- 	if ($wr != '') {
-			$query .= genWhereAndOr($wr, $orAnd);
-	}
- 	$result = PQuery($query);
- 	return $result;
-}
-
-function FiberSplice_INSERT($ins) {
-	$query = 'INSERT INTO "FiberSplice"';
-	$query .= genInsert($ins);
-	$result = PQuery($query);
-	loggingIs(2, 'FiberSplice', $ins, '');
-	return $result;
-}
-
-function FiberSplice_UPDATE($upd, $wr) {
-	$query = 'UPDATE "FiberSplice" SET ';
-    $query .= genUpdate($upd);
-	if ($wr != '') {
-		$query .= genWhere($wr);
-	}
-	unset($field, $value);
-	$result = PQuery($query);
-	loggingIs(1, 'FiberSplice', $upd, $wr['id']);
-	return $result;
-}
-
-function FiberSplice_DELETE($wr) {
-	$query = 'DELETE FROM "FiberSplice"';
-	$query .= genWhere($wr);
-	$result = PQuery($query);
-	loggingIs(3, 'FiberSplice', '', $wr['id']);
-	return $result;
-}
-
 function getCableLineDirection($cableLine = -1, $cableLinePoint, $networkNodeId) {
 	if ($cableLine == -1) {		$query = 'SELECT * FROM "CableLinePoint" WHERE id='.$cableLinePoint;
 		$res = PQuery($query);
@@ -174,14 +134,6 @@ function getCableLineInfo($nodeId, $zeroFibers = -1) {
 	if ($zeroFibers == -1) {
 		$query .= ' AND "CableType"."tubeQuantity"*"CableType"."fiberPerTube" != 0';
 	}
-	$result = PQuery($query);
-	return $result;
-}
-
-function getNodeFibers($nodeId) {
-	$query = 'SELECT * FROM "FiberSplice" WHERE
-		"CableLinePointA" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$nodeId.')
-		OR "CableLinePointB" in (SELECT id FROM "CableLinePoint" WHERE "NetworkNode" = '.$nodeId.')';
 	$result = PQuery($query);
 	return $result;
 }

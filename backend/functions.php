@@ -25,7 +25,7 @@ function PQuery($query) {
 	return $result;
 }
 
-function genWhere($wr) {	foreach ($wr as $field => $value) {
+function genWhere($wr, $sign = '=') {	foreach ($wr as $field => $value) {
 	 	if (strlen($where) > 0) $where .= ' AND ';
 		if (preg_match('/^(NOT\s)?NULL$/', $value)) {
 			$where .= ' "'.$field.'" IS '.pg_escape_string($value).'';
@@ -33,7 +33,7 @@ function genWhere($wr) {	foreach ($wr as $field => $value) {
 			if (preg_match('/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value)) {
 				$where .= ' "'.$field.'"~=\''.pg_escape_string($value).'\'';
 			} else {
-				$where .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
+				$where .= ' "'.$field.'"'.$sign.'\''.pg_escape_string($value).'\'';
 			}
 		}
 		/*if ($value != 'NULL') {

@@ -1,31 +1,49 @@
 <?php
 require_once("backend/FS.php");
 require_once("backend/CableType.php");
+require_once("backend/OpticalFiberJoin.php");
+require_once("backend/OpticalFiber.php");
+require_once("backend/OpticalFiberSplice.php");
 
 /*function FiberSplice_Check() {
 }*/
 
-function FiberSplice_Mod($id, $CableLinePointA, $fiberA, $CableLinePointB, $fiberB, $FiberSpliceOrganizer, $IsA) {	if ($IsA == 0) {		$upd['CableLinePointA'] = $CableLinePointA;
-   		$upd['fiberA'] = $fiberA;
-	}
-	else {		$upd['CableLinePointB'] = $CableLinePointB;
-   		$upd['fiberB'] = $fiberB;
-	}
+function FiberSplice_Mod($OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer) {
+	$wr['id'] = $OFJ_id;
+	$res = OpticalFiberJoin_SELECT( 1, $wr );
+	$OpticalFiberSplice = $res['rows'][0]['OpticalFiberSplice'];
+	unset($wr);
+	$wr['fiber']     = $fiber;
+	$wr['CableLine'] = $CableLine;
+	$res = OpticalFiber_SELECT( 1, $wr );
+	unset($wr);
+	$upd['OpticalFiber'] = $res['rows'][0]['id'];
+	$wr['id']            = $OFJ_id;
+	$res = OpticalFiberJoin_UPDATE( $upd, $wr );
+	if (isset($res['error'])) {
+  		return $res;
+  	}
+	unset($wr);
+	unset($upd);
+	$wr['id']                    = $OpticalFiberSplice;
 	$upd['FiberSpliceOrganizer'] = $FiberSpliceOrganizer;
-	$wr['id'] = $id;
-	$res = FiberSplice_UPDATE($upd, $wr);
+	$res = OpticalFiberSplice_UPDATE( $upd, $wr );
 	if (isset($res['error'])) {
   		return $res;
   	}
 	return 1;
 }
 
-function FiberSplice_Add($CableLinePointA, $fiberA, $CableLinePointB, $fiberB, $FiberSpliceOrganizer) {	$ins['CableLinePointA'] = $CableLinePointA;
-	$ins['fiberA'] = $fiberA;
-	$ins['CableLinePointB'] = $CableLinePointB;
-	$ins['fiberB'] = $fiberB;
+function FiberSplice_Add($CableLineA, $fiberA, $CableLineB, $fiberB, $FiberSpliceOrganizer, $NetworkNodeId) {
+	$ins['NetworkNode']          = $NetworkNodeId;
 	$ins['FiberSpliceOrganizer'] = $FiberSpliceOrganizer;
-	$res = FiberSplice_INSERT($ins);
+	$res = OpticalFiberSplice_INSERT( $ins );
+	$OFS_id = $res['rows'][0]['id'];
+	$res = addOpticalFiberJoin( $CableLineA, $fiberA, $OFS_id );
+	if (isset($res['error'])) {
+  		return $res;
+  	}
+	$res = addOpticalFiberJoin( $CableLineB, $fiberB, $OFS_id );	
 	if (isset($res['error'])) {
   		return $res;
   	}
@@ -33,8 +51,7 @@ function FiberSplice_Add($CableLinePointA, $fiberA, $CableLinePointB, $fiberB, $
 }
 
 /*---------------*/
-function getFiberTable($nodeID)
-{
+function getFiberTable($nodeID) {
 	$cl_array = getCableLineInfo($nodeID);
 	$i = 0;
 	$maxfiber = 0;
@@ -47,25 +64,32 @@ function getFiberTable($nodeID)
 		if ($maxfiber < $elem['fiber']) {
 			$maxfiber = $elem['fiber'];
 		}
-		$CableLinePoints[$elem['clpid']] = $i++;
+		$CableLines[$elem['clid']] = $i++;
 	}
 	// Buiding array of fiber splices
 	$fs_array = getNodeFibers($nodeID);
-	if ($fs_array['count'] > 0) {
-		foreach ($fs_array['rows'] as $elem) {
-			$ColA = $CableLinePoints[$elem['CableLinePointA']];
-			$ColB = $CableLinePoints[$elem['CableLinePointB']];
-			$RowA = $elem['fiberA'];
-			$RowB = $elem['fiberB'];
-			$FSO = $elem['FiberSpliceOrganizer'];
-			$spliceArray[$ColA][$RowA] = array($elem['id'], $ColB, $RowB, 0, $FSO);
-			$spliceArray[$ColB][$RowB] = array($elem['id'], $ColA, $RowA, 1, $FSO);
+	if ( $fs_array['count'] > 0 ) {
+		$rows = $fs_array['rows'];
+		$i = 0;
+		while ( $i < count($rows) ) {
+			if ( $rows[$i]['OpticalFiberSplice'] == $rows[$i + 1]['OpticalFiberSplice'] ) {
+				$ClA = $CableLines[$rows[$i]['CableLine']];
+				$ClB = $CableLines[$rows[$i + 1]['CableLine']];
+				$fA = $rows[$i]['fiber'];
+				$fB = $rows[$i + 1]['fiber'];
+				$FSO = $rows[$i]['FiberSpliceOrganizer'];
+				$spliceArray[$ClA][$fA] = array($ClB, $fB, $rows[$i + 1]['OFJ_id'], $FSO);
+				$spliceArray[$ClB][$fB] = array($ClA, $fA, $rows[$i]['OFJ_id'], $FSO);
+				$i = $i + 2;
+			} else {
+				$i++;
+			}
 		}
 	} else {
 		$spliceArray = array();
 	}
 	$res['maxfiber'] = $maxfiber;
-	$res['CableLinePoints'] = $CableLinePoints;
+	$res['CableLines'] = $CableLines;
 	$res['SpliceArray'] = $spliceArray;
 	$res['cl_array'] = $cl_array;
 	return $res;
@@ -73,11 +97,10 @@ function getFiberTable($nodeID)
 
 /*---------------*/
 
-function getFibers($CableLinePoint, $networkNodeId, $fiber)
-{
-    $res = getFiberTable($networkNodeId);
-    $j = $res['CableLinePoints'][$CableLinePoint];
-    for ($i = 1; $i <= $res['cl_array']['rows'][$j]['fiber']; $i++) {
+function getFibers($networkNodeId, $CableLine, $fiber) {
+	$res = getFiberTable($networkNodeId);
+	$j = $res['CableLines'][$CableLine];
+	for ($i = 1; $i <= $res['cl_array']['rows'][$j]['fiber']; $i++) {
 		$arr = $res['SpliceArray'][$j][$i];
 		if ((!isset($arr)) or ($i == $fiber)) {
 			$fibers[] = $i;
@@ -159,5 +182,16 @@ function getFSOTsInfo($sort, $linesPerPage = -1, $skip = -1) {	$res = FSOT_SELE
 		$result['FSOTs']['rows'][$i]['FSOCount'] = $res2['count'];
 	}	
 	return $result;
+}
+
+function deleteSplice($OFJ_id) {
+	$wr['id'] = $OFJ_id;
+	$res = OpticalFiberJoin_SELECT( 1, $wr );
+	$OFS_id = $res['rows'][0]['OpticalFiberSplice'];
+	$query = 'DELETE FROM "OpticalFiberJoin" WHERE "OpticalFiberSplice"='.$OFS_id;
+	$res = PQuery( $query );
+	$query = 'DELETE FROM "OpticalFiberSplice" WHERE id='.$OFS_id;
+	$res = PQuery( $query );
+	return $res;
 }
 ?>
