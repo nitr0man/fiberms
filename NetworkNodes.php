@@ -93,7 +93,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			$node_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[$i]['id'].'">'.$rows[$i]['name'].'</a>';
 			$node_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['NetworkBox'].'">'.$rows[$i]['inventoryNumber'].'</a>';
 			$node_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['NBTmarking'].'</a>';
-			$node_arr[] = getFiberSpliceCount_NetworkNode($rows[$i]['id']);
+			$node_arr[] = $rows[$i]['fiberSpliceCount'];
 		    $node_arr[] = $rows[$i]['OpenGIS'];
 		    $node_arr[] = $rows[$i]['SettlementGeoSpatial'];
 		    $node_arr[] = $rows[$i]['Building'];
@@ -123,7 +123,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	  		$CableLinePoints_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$clpRows[$i]['CableLine'].'">'.$clpRows[$i]['clname'].'</a>';
 	  		$CableLinePoints_arr[] = $clpRows[$i]['meterSign'];
 			$CableLinePoints_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$clpRows[$i]['id'].'">Изменить</a>';
-			$fiberSpliceCount = getFiberSpliceCount($clpRows[$i]['id']);
+			$fiberSpliceCount = $clpRows[$i]['fiberSpliceCount'];
 			if ($fiberSpliceCount == 0) {
 				$CableLinePoints_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$clpRows[$i]['id'].'">Удалить</a>';
 			} else {
@@ -146,7 +146,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 			}
 	  	}
 		
-		$fiberSpliceCount = getFiberSpliceCount_NetworkNode($nodeId);
+		$fiberSpliceCount = $rows['fiberSpliceCount'];
 		if ($res['NetworkNode']['CableLinePoints']['count'] > 0) {
 			$changeDeleteFiberSplice = '<a href="FiberSplice.php?networknodeid='.$nodeId.'">Отобразить сварки</a>';
 		}

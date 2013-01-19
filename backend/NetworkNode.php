@@ -46,24 +46,29 @@ function NetworkNode_DELETE($wr) {
 }
 
 function getNetworkNode_NetworkBoxName($networkNodeId) {	$query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
-        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber"
+        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", COUNT("OFS".id) AS "fiberSpliceCount"
   		FROM "NetworkNode" AS "NN"
-		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox" WHERE "NN".id='.$networkNodeId;
+		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox" 
+		LEFT JOIN "OpticalFiberSplice" AS "OFS" ON "OFS"."NetworkNode" = "NN".id
+		WHERE "NN".id='.pg_escape_string( $networkNodeId ).'
+		GROUP BY "NN".id, "NB"."inventoryNumber"';
 	$result = PQuery($query);
 	return $result;
 }
 function getNetworkNodeList_NetworkBoxName($sort, $FSort, $wr, $linesPerPage = -1, $skip = -1) {
 	$query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
-        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking"
-  		FROM "NetworkNode" AS "NN"';
-	$query .= ' LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox"';
-	$query .= ' LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"';
+        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking", COUNT("OFS".id) AS "fiberSpliceCount"
+  		FROM "NetworkNode" AS "NN"
+  		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox"
+  		LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"
+  		LEFT JOIN "OpticalFiberSplice" AS "OFS" ON "OFS"."NetworkNode" = "NN".id';
 	if ($wr != '') {
 		$query .= genWhere($wr);
  	}
 	if ($sort == 1)	{
 		$query .= ' ORDER BY "NN"."'.$FSort.'" LIMIT 0,2';
 	}
+	$query .= ' GROUP BY "NN".id, "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking"';
 	if (($linesPerPage != -1) and ($skip != -1)) {
 		$query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
 		$query2 = 'SELECT COUNT(*) AS "count" FROM "NetworkNode"';

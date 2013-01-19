@@ -197,7 +197,8 @@
 			
 			$OpenGIS = $rows[$i]['OpenGIS'];
 			if (preg_match_all('/(?<x>[0-9.]+),(?<y>[0-9.]+)/', $OpenGIS, $matches)) {
-				$fiberSpliceCount = getFiberSpliceCount_NetworkNode($rows[$i]['id']);
+				//$fiberSpliceCount = getFiberSpliceCount_NetworkNode($rows[$i]['id']);
+				$fiberSpliceCount = $rows[$i]['fiberSpliceCount'];				
 				$cableLines_row = getCableLineInfo($rows[$i]['id'], 1);
 				$cableLinesZeroFibers = 0;
 				$cableLinesNotZeroFibers = 0;
