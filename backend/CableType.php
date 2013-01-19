@@ -138,18 +138,14 @@ function getCableLinePoint_NetworkNodeName($cableLineId) {	$query = 'SELECT "cl
   	return $result;
 }
 
-function getCableLineList($sort, $wr, $linesPerPage = -1, $skip = -1, $openGIS = -1) {
-	/*$query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment", "cl"."name", "ct"."marking", "ct"."manufacturer" FROM "CableLine" AS "cl"';
-	$query .= ' LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"';*/
-	$query  = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment", "cl"."name", "ct"."marking", "ct"."manufacturer", "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube", "ct"."tubeQuantity", COUNT(DISTINCT fiber) AS "FiberSpliceCount" FROM "CableLine" AS "cl"';
-	$query .= 'LEFT JOIN "CableLinePoint" AS "clp" ON "clp"."CableLine" = "cl"."id" ';
-	$query .= 'LEFT JOIN (SELECT "CableLinePointA" AS "point", "fiberA" AS "fiber" from "FiberSplice" UNION SELECT "CableLinePointB" AS "point", "fiberB" AS "fiber" from "FiberSplice") AS "sel" ON "clp"."id" = "point"';
-	$query .= 'LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"';
+function getCableLineList($sort, $wr, $linesPerPage = -1, $skip = -1) {
+	$query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment", "cl"."name", "ct"."marking", "ct"."manufacturer", 	"ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube", "ct"."tubeQuantity", COUNT(DISTINCT "OFJ"."OpticalFiberSplice") AS 	"FiberSpliceCount" FROM "CableLine" AS "cl"
+		LEFT JOIN "CableLinePoint" AS "clp" ON "clp"."CableLine" = "cl"."id" 
+		LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
+		LEFT JOIN "OpticalFiber" AS "OF" ON "OF"."CableLine" = "cl".id
+		LEFT JOIN "OpticalFiberJoin" AS "OFJ" ON "OFJ"."OpticalFiber" = "OF".id';	
 	if ($wr != '') {
 		$query .= genWhere($wr);
-		if ($openGIS != -1) {
-			$query .= 'AND "cl"."OpenGIS" IS NOT NULL';
-		}
 	}	
 	$query .= ' GROUP BY "cl"."id", "ct"."marking", "ct"."manufacturer", "ct"."fiberPerTube", "ct"."tubeQuantity"';	
 	$query .= ' ORDER BY "name"';
@@ -202,6 +198,13 @@ function getSingularCableLinePoints($OpenGIS = -1) {
 	if ($OpenGIS != -1) {
 		$query .= 'AND "clp"."OpenGIS" IS NOT NULL';
 	}	
+	$result = PQuery($query);
+	return $result;
+}
+
+function getCableLinePoints($cableLine) {
+	$wr['CableLine'] = $cableLine;
+	$query = 'SELECT "OpenGIS" FROM "CableLinePoint"'.genWhere($wr).' ORDER BY "sequence"';
 	$result = PQuery($query);
 	return $result;
 }

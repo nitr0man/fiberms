@@ -5,7 +5,7 @@
 	require_once('backend/FS.php');
 
 	if ($_GET['mode'] == 'GetCableLines') { // кабельные линии
-		$res = getCableLineList(0, '', -1, -1, -1);
+		$res = getCableLineList(0, '');
 		if ($res['count'] == 0) {
 			die();
 		}
@@ -14,18 +14,19 @@
 		$dom = new DomDocument('1.0', 'UTF-8');
 		$cableLines = $dom->appendChild($dom->createElement('cableLines'));
 		for ($i = 0; $i < $res['count']; $i++) {
-			$OpenGIS = $rows[$i]['OpenGIS'];
+			$cableLinePoints_res = getCableLinePoints($rows[$i]['id']);			
 			$cableLine = $cableLines->appendChild($dom->createElement('cableLine'));
-			if (preg_match_all('/(?<x>[0-9.]+),(?<y>[0-9.]+)/', $OpenGIS, $matches)) {
-				for ($j = 0; $j < count($matches[0]); $j++) {					
+			for ( $j = 0; $j < $cableLinePoints_res['count']; $j++ ) {
+				$OpenGIS = $cableLinePoints_res['rows'][$j]['OpenGIS'];
+				if ( preg_match_all( '/(?<x>[0-9.]+),(?<y>[0-9.]+)/', $OpenGIS, $matches ) ) {
 					$node = $cableLine->appendChild($dom->createElement('node'));
 
 					$node_attr = $dom->createAttribute('lat');
-					$node_attr->value = $matches['y'][$j];
+					$node_attr->value = $matches['y'][0];
 					$node->appendChild($node_attr);
 					
 					$node_attr = $dom->createAttribute('lon');
-					$node_attr->value = $matches['x'][$j];
+					$node_attr->value = $matches['x'][0];
 					$node->appendChild($node_attr);
 				}
 			}
