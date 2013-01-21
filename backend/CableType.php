@@ -166,13 +166,6 @@ function getCableLineList($sort, $wr, $linesPerPage = -1, $skip = -1) {
 	return $result;
 }
 
-function getFiberSpliceCount($CableLinePoint) {
-	$query = 'SELECT COUNT(*) AS "count" FROM "FiberSplice" WHERE "CableLinePointA"='.$CableLinePoint.' OR "CableLinePointB"='.$CableLinePoint;
-	$res = PQuery($query);
-	$result = $res['rows'][0]['count'];
-	return $result;
-}
-
 function getCopperCableLines() {
 	$query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl".length, "cl".comment, "cl".name, "ct"."fiberPerTube"
 			  FROM "CableLine" AS "cl"

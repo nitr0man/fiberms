@@ -121,11 +121,6 @@ function getCableLineDirection($cableLine = -1, $cableLinePoint, $networkNodeId)
 	return $result;
 }
 
-function giberInfo($fiber) {	$query = 'SELECT * FROM "FiberSplice" WHERE "fiberA"='.$fiber.' OR "fiberB"='.$fiber;
-	$result = PQuery($query);
-    return $result;
-}
-
 function getCableLineInfo($nodeId, $zeroFibers = -1) {
 	$query = 'SELECT "CableType"."tubeQuantity"*"CableType"."fiberPerTube" AS "fiber", "CableLinePoint".id AS "clpid", "CableLine"."name", "CableType"."marking", "CableLinePoint"."NetworkNode", "CableType".id AS "ctid", "CableLine".id AS "clid", "CableType"."manufacturer", "CableType"."fiberPerTube" FROM "NetworkNode"
 		LEFT JOIN "CableLinePoint" ON "CableLinePoint"."NetworkNode"="NetworkNode"."id"
@@ -138,26 +133,8 @@ function getCableLineInfo($nodeId, $zeroFibers = -1) {
 	return $result;
 }
 
-function getFiberSpliceCount_NetworkNode($networkNode = -1) {
-	if ($networkNode != -1) {
-		$wr = ' WHERE "NetworkNode"='.$networkNode;
-	} else {
-		$wr = '';
-	}	
-	$query = 'SELECT COUNT(id) AS "count" FROM "FiberSplice" WHERE "CableLinePointA" in (SELECT id FROM "CableLinePoint"'.$wr.') OR "CableLinePointB" in (SELECT id FROM "CableLinePoint"'.$wr.')';
-	$res = PQuery($query);
-	$result = $res['rows'][0]['count'];
-	return $result;
-}
-
 function getFiberSpliceOrganizerInfo($linesPerPage = -1, $skip = -1, $networkNode = -1, $free = 1) {
-	$query  = 'SELECT DISTINCT "fso".id, "fso"."FiberSpliceOrganizationType" AS "FiberSpliceOrganizationTypeId", "fsot"."marking" AS "FiberSpliceOrganizationTypeMarking", "fsot"."manufacturer" AS "FiberSpliceOrganizationTypeManufacturer", "nn".id AS "NetworkNodeId", "nn"."name" AS "NetworkNodeName", COUNT(DISTINCT "fs".id) AS "FiberSpliceCount" ';
-	$query .= 'FROM "FiberSpliceOrganizer" AS "fso" ';
-	$query .= 'LEFT JOIN "FiberSplice" AS "fs" ON "fs"."FiberSpliceOrganizer"="fso".id ';
-	$query .= 'LEFT JOIN "CableLinePoint" AS "clp" ON "clp".id="fs"."CableLinePointA" OR "clp".id="fs"."CableLinePointB" ';
-	$query .= 'LEFT JOIN "NetworkNode" AS "nn" ON "nn".id="clp"."NetworkNode" ';
-	$query .= 'LEFT JOIN "FiberSpliceOrganizerType" AS "fsot" ON "fsot".id="fso"."FiberSpliceOrganizationType" ';
-	$query .= 'WHERE "fs"."FiberSpliceOrganizer"="fso".id ';
+	$query = 'SELECT DISTINCT "fso".id, "fso"."FiberSpliceOrganizationType" AS "FiberSpliceOrganizationTypeId", "fsot"."marking" AS "FiberSpliceOrganizationTypeMarking", "fsot"."manufacturer" AS "FiberSpliceOrganizationTypeManufacturer", "nn".id AS "NetworkNodeId", "nn"."name" AS "NetworkNodeName", COUNT(DISTINCT "fs".id) AS "FiberSpliceCount" FROM "FiberSpliceOrganizer" AS "fso" LEFT JOIN "FiberSplice" AS "fs" ON "fs"."FiberSpliceOrganizer"="fso".id LEFT JOIN "CableLinePoint" AS "clp" ON "clp".id="fs"."CableLinePointA" OR "clp".id="fs"."CableLinePointB" LEFT JOIN "NetworkNode" AS "nn" ON "nn".id="clp"."NetworkNode" LEFT JOIN "FiberSpliceOrganizerType" AS "fsot" ON "fsot".id="fso"."FiberSpliceOrganizationType" WHERE "fs"."FiberSpliceOrganizer"="fso".id';	
 	if ($networkNode != -1) {
 		$query .= ' AND "nn".id='.$networkNode;
 	}
@@ -173,16 +150,6 @@ function getFiberSpliceOrganizerInfo($linesPerPage = -1, $skip = -1, $networkNod
 	}
  	$result = PQuery($query);
 	$result['allPages'] = $allPages;
-	return $result;
-}
-
-function getNetworkNodeCountInFiberSplice() {
-	$query  = 'SELECT COUNT(DISTINCT "nn".id) AS "NetworkNodeCountInFiberSplice" ';
-	$query .= 'FROM "FiberSplice" AS "fs" ';
-	$query .= 'LEFT JOIN "CableLinePoint" AS "clp" ON "clp".id="fs"."CableLinePointA" OR "clp".id="fs"."CableLinePointB" ';
-	$query .= 'LEFT JOIN "NetworkNode" AS "nn" ON "nn".id="clp"."NetworkNode"';
-	$res = PQuery($query);
-	$result = $res['rows'][0]['NetworkNodeCountInFiberSplice'];
 	return $result;
 }
 ?>
