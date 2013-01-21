@@ -8,12 +8,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	$back = $_POST['back'];
 	if ($_POST['mode'] == 1) {
 		$id = $_POST['id'];		
-		$OpenGIS = $_POST['OpenGIS'];
 	    $CableTypes = $_POST['cabletypes'];
 		$length = $_POST['length'];
 		$name = $_POST['name'];
 		$comment = $_POST['comment'];
-		$res = CableLine_Mod($id, $OpenGIS, $CableTypes, $length, $name, $comment);
+		$res = CableLine_Mod($id, $CableTypes, $length, $name, $comment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -27,12 +26,11 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
     	}
 	}
 	elseif ($_POST['mode'] == 2) {
-		$OpenGIS = $_POST['OpenGIS'];
 		$CableTypes = $_POST['cabletypes'];
 		$length = $_POST['length'];
 		$name = $_POST['name'];
 		$comment = $_POST['comment'];
-		$res = CableLine_Add($OpenGIS, $CableTypes, $length, $name, $comment);
+		$res = CableLine_Add($CableTypes, $length, $name, $comment);
 		if (isset($res['error'])) {
            	$message = $res['error'];
 			$error = 1;
@@ -80,7 +78,6 @@ else {
 			$cableLine_arr[] = '<a href="CableType.php?mode=charac&cabletypeid='.$rows[$i]['CableType'].'">'.$rows[$i]['marking'].'</a>';
 			$cableLine_arr[] = $rows[$i]['manufacturer'];
 			$cableLine_arr[] = $rows[$i]['length'];
-			$cableLine_arr[] = $rows[$i]['OpenGIS'];
 			$cableLine_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[$i]['id'].'">Изменить</a>';
 			unset($wr);
 			$wr['CableLine'] = $rows[$i]['id'];
@@ -111,7 +108,6 @@ else {
 		}
 		
 		$smarty->assign("id", $rows[0]['id']);
-		$smarty->assign("OpenGIS", $rows[0]['OpenGIS']);
 		$smarty->assign("CableType", '<a href="CableType.php?mode=charac&cabletypeid='.$rows[0]['CableTypeId'].'">'.$rows[0]['CableTypeMarking'].'</a>');
 		$smarty->assign("manufacturer", $rows[0]['CableTypeManufacturer']);
 		$smarty->assign("length", $rows[0]['length']);
@@ -122,7 +118,6 @@ else {
 		
 		if ($res['CableLinePoints']['count'] > 0) {			$rows2 = $res['CableLinePoints']['rows'];			$i = -1;
 		  	while (++$i < $res['CableLinePoints']['count']) {		  		$cableLine_arr[] = $rows2[$i]['id'];
-		  		$cableLine_arr[] = $rows2[$i]['OpenGIS'];
 	  			$cableLine_arr[] = $rows2[$i]['meterSign'];
 				$cableLine_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>';
 				$cableLine_arr[] = $rows2[$i]['Apartment'];
@@ -151,7 +146,6 @@ else {
 		}
     	$rows = $res['rows'];
 		$smarty->assign("id", $rows[0]['id']);
-		$smarty->assign("OpenGIS", $rows[0]['OpenGIS']);
 		$cableTypeId = $rows[0]['CableType'];
 		$smarty->assign("length", $rows[0]['length']);
 		$smarty->assign("comment", $rows[0]['comment']);

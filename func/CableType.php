@@ -43,7 +43,7 @@ function CableType_Add($marking, $manufacturer, $tubeQuantity, $fiberPerTube, $t
 	return 1;
 }
 
-function CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) {	$result = 1;
+function CableLine_Check($CableTypes, $length, $name, $comment) {	$result = 1;
 	/* здесь проверка */
 	if (is_numeric($length) == false) {
 		$result = 0;
@@ -51,12 +51,7 @@ function CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) {	$re
 	return $result;
 }
 
-function CableLine_Mod($id, $OpenGIS, $CableTypes, $length, $name, $comment) {	if (CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) == 0) {		return 0;
-	}
-	if ($OpenGIS == '') {
-		$upd['OpenGIS'] = "NULL";
-	} else {
-		$upd['OpenGIS'] = $OpenGIS;
+function CableLine_Mod($id, $CableTypes, $length, $name, $comment) {	if (CableLine_Check($CableTypes, $length, $name, $comment) == 0) {		return 0;
 	}
 	$wr['id'] = $CableTypes;
 	$res = CableType_SELECT( 1, $wr );
@@ -75,14 +70,9 @@ function CableLine_Mod($id, $OpenGIS, $CableTypes, $length, $name, $comment) {	
 	return 1;
 }
 
-function CableLine_Add($OpenGIS, $CableTypes, $length, $name, $comment) {	if (CableLine_Check($OpenGIS, $CableTypes, $length, $name, $comment) == 0) {
+function CableLine_Add($CableTypes, $length, $name, $comment) {	if (CableLine_Check($CableTypes, $length, $name, $comment) == 0) {
 		return 0;
-	}	if ($OpenGIS == '') {
-		$upd['OpenGIS'] = "NULL";
-	} else {
-		$upd['OpenGIS'] = $OpenGIS;
-	}
-	$res = CableType_SELECT( 1, $wr );
+	}	$res = CableType_SELECT( 1, $wr );
 	$fibersCount = $res['rows']['tubeQuantity'] * $res['rows']['fiberPerTube'];
 	unset($wr);
 	CableLine_AddDeleteFibers( $fibersCount, $id );

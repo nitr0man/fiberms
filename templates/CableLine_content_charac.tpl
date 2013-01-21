@@ -14,8 +14,6 @@
 		<td><label class="events_anonce">Длина</label></td><td> <label class="events_anonce">{$length}</label></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">OpenGIS</label></td><td> <label class="events_anonce">{$OpenGIS}</label></td>
-		</tr>
 		<tr>
 		<td><label class="events_anonce">Примечание</label></td><td> <label class="events_anonce">{$comment}</label></td>
 		</tr>

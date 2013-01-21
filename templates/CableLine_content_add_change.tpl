@@ -17,8 +17,6 @@
 		<td><label class="events_anonce">Имя</label></td><td> <input type="text" value="{$name}" name="name"></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">OpenGIS</label></td><td> <input type="text" value="{$OpenGIS}" name="OpenGIS"></td>
-		</tr>
 		<tr>
 		<td><label class="events_anonce">Примечание</label></td><td> <textarea name="comment">{$comment}</textarea></td>
 		</tr>
