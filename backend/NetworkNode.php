@@ -85,4 +85,19 @@ function getFreeNetworkBoxes($networkBox) {
 	$result = PQuery($query);
 	return $result;
 }
+
+function getFiberSpliceCount($networkNode = -1) {	
+	$where = '';
+	if ( $networkNode != -1 ) {
+		$wr['id'] = $networkNode;
+		$where = GenWhere( $wr );
+	}
+	$query = 'SELECT COUNT(id) AS "count" FROM "OpticalFiberSplice"'.$where;
+	$result['fiberSpliceCount'] = PQuery( $query )['rows'][0]['count'];
+	if ( $networkNode == -1 ) {
+		$query = 'SELECT COUNT(DISTINCT "NetworkNode") AS "count" FROM "OpticalFiberSplice"';
+		$result['NetworkNodesCountInFiberSplice'] = PQuery( $query )['rows'][0]['count'];
+	}
+	return $result;
+}
 ?>

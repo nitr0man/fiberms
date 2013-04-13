@@ -62,7 +62,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST'){
 	showMessage($message, $error);
 }
 else
-{   if (($_GET['mode'] == 'change') and (isset($_GET['networknodeid'])) and (isset($_GET['clpid1'])) and (isset($_GET['fiber1']))) {
+{   if (($_GET['mode'] == 'change') and (isset($_GET['networknodeid'])) and (isset($_GET['clid1'])) and (isset($_GET['fiber1']))) {
 	    if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
 			showMessage($message, 0);
@@ -212,13 +212,14 @@ else
 			}
             for ($j = 0; $j < count($res['CableLines']); $j++)	{
             	$arr = $res['SpliceArray'][$j][$i];
+				//print_r($arr);
             	$clpid1 = $res['cl_array']['rows'][$j]['clpid'];
             	$clpid2 = $res['cl_array']['rows'][$arr[1]]['clpid'];
             	$fiber1 = $i;
             	$fiber2 = $arr[1];
             	$is_a = $arr[3];
             	$splice_id = $arr[2];
-				$fso = $arr[4];
+				$fso = $arr[3];
 				$fiberPerTube = $res['cl_array']['rows'][$j]['fiberPerTube'];
 				$module = (int)(($i-1) / $fiberPerTube + 1);
 				$rowspan_fso = 1;

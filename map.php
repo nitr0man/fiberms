@@ -267,6 +267,7 @@
 			map.addLayer(layerNodes);
 			
 			var layerCableLinePoints = new OpenLayers.Layer.Vector("Особые точки линии", {
+				minScale: 7000,
                 strategies : [new OpenLayers.Strategy.BBOX({resFactor: 1.1})],
                 protocol   : new OpenLayers.Protocol.HTTP({
                     url    : "get_layers.php?mode=GetSingularCableLinePoints",
@@ -278,6 +279,7 @@
 			
 			var vectorPoint = new OpenLayers.Layer.Vector("Узлы (надписи)",
 			{
+				minScale: 7000,
 				styleMap: new OpenLayers.StyleMap(
 				{ "default": styleMarkersLabels,
 				

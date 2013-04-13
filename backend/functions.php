@@ -101,6 +101,7 @@ function getCurrUserInfo() {
 
 function getStat() {
 	require_once('FS.php');
+	require_once('backend/NetworkNode.php');
 
 	$query = 'SELECT COUNT(*) AS "count" FROM "Users"';
 	$res = PQuery($query);
@@ -112,9 +113,10 @@ function getStat() {
 	$res_nodes = PQuery($query);
 	$res_nodes_rows = $res_nodes['rows'];
 	$result['FiberSplice']['NetworkNodesCount'] = $res_nodes['count'];
-	$fiberSpliceCount = getFiberSpliceCount_NetworkNode();
+	$res2 = getFiberSpliceCount();
+	$fiberSpliceCount = $res2['fiberSpliceCount'];
 	$result['FiberSplice']['FiberSpliceCount'] = $fiberSpliceCount;
-	$NetworkNodeCountInFiberSplice = getNetworkNodeCountInFiberSplice();
+	$NetworkNodeCountInFiberSplice = $res2['NetworkNodesCountInFiberSplice'];
 	$result['FiberSplice']['NetworkNodeCountInFiberSplice'] = $NetworkNodeCountInFiberSplice;
 	$query = 'SELECT COUNT(*) AS "count" FROM "CableLinePoint"';
 	$res = PQuery($query);

@@ -1,9 +1,9 @@
 <?php
 require_once("backend/functions.php");
 
-$config['host'] = "nitr0.homelinux.net";
-$config['user'] = "development";
-$config['pass'] = "devpass12";
+$config['host'] = "localhost";
+$config['user'] = "postgres";
+$config['pass'] = "";
 $config['db'] = "dev";
 $config['LinesPerPage'] = 10;
 $config['version'] = '1.0.0';

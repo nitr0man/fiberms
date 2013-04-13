@@ -118,11 +118,12 @@ else {
 		
 		if ($res['CableLinePoints']['count'] > 0) {			$rows2 = $res['CableLinePoints']['rows'];			$i = -1;
 		  	while (++$i < $res['CableLinePoints']['count']) {		  		$cableLine_arr[] = $rows2[$i]['id'];
-	  			$cableLine_arr[] = $rows2[$i]['meterSign'];
-				$cableLine_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>';
-				$cableLine_arr[] = $rows2[$i]['Apartment'];
-				$cableLine_arr[] = $rows2[$i]['Building'];
-				$cableLine_arr[] = $rows2[$i]['SettlementGeoSpatial'];
+	  			//$cableLine_arr[] = $rows2[$i]['meterSign'];
+				//$cableLine_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>';
+				$cableLine_arr[] = $rows2[$i]['OpenGIS'];
+				//$cableLine_arr[] = $rows2[$i]['Apartment'];
+				//$cableLine_arr[] = $rows2[$i]['Building'];
+				//$cableLine_arr[] = $rows2[$i]['SettlementGeoSpatial'];
 				$cableLine_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows2[$i]['id'].'&cablelineid='.$cableLineId.'">Изменить</a>';
 				$cableLine_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows2[$i]['id'].'">Удалить</a>';
 		  	}
