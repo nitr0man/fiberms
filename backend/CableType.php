@@ -187,9 +187,9 @@ function getNormalCableLines() {
 function getSingularCableLinePoints($OpenGIS = -1) {
 	$query = 'SELECT "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign", "clp"."NetworkNode", "clp"."note", "cl"."name" AS "CableLineName" FROM "CableLinePoint" AS "clp"
 			  LEFT JOIN "CableLine" AS "cl" ON "cl".id = "clp"."CableLine"
-			  WHERE "clp"."NetworkNode" IS NULL ';
+			  WHERE "clp"."meterSign" IS NOT NULL OR "clp"."note" IS NOT NULL';
 	if ($OpenGIS != -1) {
-		$query .= 'AND "clp"."OpenGIS" IS NOT NULL';
+		$query .= ' AND "clp"."OpenGIS" IS NOT NULL';
 	}	
 	$result = PQuery($query);
 	return $result;
@@ -197,8 +197,58 @@ function getSingularCableLinePoints($OpenGIS = -1) {
 
 function getCableLinePoints($cableLine) {
 	$wr['CableLine'] = $cableLine;
-	$query = 'SELECT "OpenGIS" FROM "CableLinePoint"'.genWhere($wr).' ORDER BY "sequence"';
+	$query = 'SELECT id, "OpenGIS", "meterSign", "note" FROM "CableLinePoint"'.genWhere($wr).' ORDER BY "sequence"';
 	$result = PQuery($query);
 	return $result;
+}
+
+function getCableLinesFrag( $cableLines )
+{
+	$resFrags = array();
+	for ( $i = 0; $i < count( $cableLines ); $i++ )
+	{
+		$cableLine = $cableLines[ $i ]['id'];
+		$cableLinePoints = getCableLinePoints( $cableLine );
+		$rows = $cableLinePoints['rows'];
+		$b = 0;
+		$n = 0;
+		for ( $j = 0; $j < count( $rows ); $j++ )
+		{			
+			if ( ( $rows[$j]['note'] != '' ) || ( $rows[$j]['meterSign'] != '' ) )
+			{
+				$OpenGIS = $rows[$j]['OpenGIS'];
+				if ( preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/', $OpenGIS, $matches ) )
+				{
+					$resFrags[$cableLine][$b][$n]['lat'] = $matches['lat'][0];
+					$resFrags[$cableLine][$b][$n]['lon'] = $matches['lon'][0];
+					$resFrags[$cableLine][$b][$n]['id']  = $rows[ $j ]['id'];
+					$n++;
+				}
+				$b++;
+				$n = 0;
+				$OpenGIS = $rows[$j]['OpenGIS'];
+				if ( preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/', $OpenGIS, $matches ) )
+				{
+					$resFrags[$cableLine][$b][$n]['lat'] = $matches['lat'][0];
+					$resFrags[$cableLine][$b][$n]['lon'] = $matches['lon'][0];
+					$resFrags[$cableLine][$b][$n]['id']  = $rows[ $j ]['id'];
+					$n++;
+				}
+				continue;
+			}
+			else
+			{
+				$OpenGIS = $rows[$j]['OpenGIS'];
+				if ( preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/', $OpenGIS, $matches ) )
+				{
+					$resFrags[$cableLine][$b][$n]['lat'] = $matches['lat'][0];
+					$resFrags[$cableLine][$b][$n]['lon'] = $matches['lon'][0];
+					$resFrags[$cableLine][$b][$n]['id']  = $rows[ $j ]['id'];
+					$n++;
+				}
+			}
+		}
+	}
+	return $resFrags;
 }
 ?>
