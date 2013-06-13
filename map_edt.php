@@ -459,7 +459,7 @@
                  );*/
                 map.addControls( [
                     new OpenLayers.Control.Navigation(),
-                    new OpenLayers.Control.PanZoomBar(),
+                    //new OpenLayers.Control.PanZoomBar(),
                     //new OpenLayers.Control.Zoom(),
                     new OpenLayers.Control.LayerSwitcher(
                             { 'ascending': false } ),
