@@ -197,7 +197,7 @@ function getSingularCableLinePoints($OpenGIS = -1) {
 
 function getCableLinePoints($cableLine) {
 	$wr['CableLine'] = $cableLine;
-	$query = 'SELECT id, "OpenGIS", "meterSign", "note" FROM "CableLinePoint"'.genWhere($wr).' ORDER BY "sequence"';
+	$query = 'SELECT id, "OpenGIS", "meterSign", "note", "sequence" FROM "CableLinePoint"'.genWhere($wr).' ORDER BY "sequence"';
 	$result = PQuery($query);
 	return $result;
 }
@@ -222,6 +222,7 @@ function getCableLinesFrag( $cableLines )
 					$resFrags[$cableLine][$b][$n]['lat'] = $matches['lat'][0];
 					$resFrags[$cableLine][$b][$n]['lon'] = $matches['lon'][0];
 					$resFrags[$cableLine][$b][$n]['id']  = $rows[ $j ]['id'];
+					$resFrags[$cableLine][$b][$n]['sequence']  = $rows[ $j ]['sequence'];
 					$n++;
 				}
 				$b++;
@@ -232,6 +233,7 @@ function getCableLinesFrag( $cableLines )
 					$resFrags[$cableLine][$b][$n]['lat'] = $matches['lat'][0];
 					$resFrags[$cableLine][$b][$n]['lon'] = $matches['lon'][0];
 					$resFrags[$cableLine][$b][$n]['id']  = $rows[ $j ]['id'];
+					$resFrags[$cableLine][$b][$n]['sequence']  = $rows[ $j ]['sequence'];
 					$n++;
 				}
 				continue;
@@ -244,6 +246,7 @@ function getCableLinesFrag( $cableLines )
 					$resFrags[$cableLine][$b][$n]['lat'] = $matches['lat'][0];
 					$resFrags[$cableLine][$b][$n]['lon'] = $matches['lon'][0];
 					$resFrags[$cableLine][$b][$n]['id']  = $rows[ $j ]['id'];
+					$resFrags[$cableLine][$b][$n]['sequence']  = $rows[ $j ]['sequence'];
 					$n++;
 				}
 			}

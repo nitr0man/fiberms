@@ -83,13 +83,13 @@
 				}
 				
 				$free_fibers = $cableLine->appendChild($dom->createElement('free_fibers'));
-				$free_fibers = $free_fibers->appendChild($dom->createTextNode( (int)($rows[$i]['fibers'] - $rows[$i]['FiberSpliceCount']) ));			
-				if ( $chng )
-				{
-					$chng = false;
-					$cableLine = $cableLines->appendChild($dom->createElement('cableLine'));
-					$i--;
-				}
+				$free_fibers = $free_fibers->appendChild($dom->createTextNode( (int)($rows[$i]['fibers'] - $rows[$i]['FiberSpliceCount']) ));
+				
+				$sequenceStart = $cableLine->appendChild( $dom->createElement('sequenceStart') );
+				$sequenceStart = $sequenceStart->appendChild( $dom->createTextNode( $value[ $i ][ 0 ]['sequence'] ) );
+				
+				$sequenceEnd = $cableLine->appendChild( $dom->createElement('sequenceEnd') );
+				$sequenceEnd = $sequenceEnd->appendChild( $dom->createTextNode( $value[ $i ][ count( $value[ $i ] ) - 1 ]['sequence'] ) );
 			}
 		}
 		$dom->formatOutput = true;
