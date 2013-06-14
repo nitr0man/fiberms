@@ -102,7 +102,6 @@ function addCableLinePoint( $coors, $CableType, $length, $name, $comment )
         $ins[ 'sequence' ] = $seq++;
         $ins[ 'CableLine' ] = $CableLine;
         $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
-        error_log( $query );
         PQuery( $query );
     }
 }

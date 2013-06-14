@@ -37,6 +37,7 @@
             var converted;
             var CableLineEdtInfo = { };
             var jsonInsertCoor;
+            var cableTypeArr;
 
             var j = 0, j2 = 0;
             var CableLine_Points_count = Array();
@@ -73,7 +74,16 @@
             } );
 
             function getCableTypes() {
-                
+                function fillArr( data ) {
+                    cableTypesObj = JSON.parse( data );
+                    cableTypeArr = [ ];
+                    for ( var i = 0; i < cableTypesObj.CableTypes.length; i++ ) {
+                        cableTypeArr[i] = [ ];
+                        cableTypeArr[i][0] = cableTypesObj.CableTypes[i].id;
+                        cableTypeArr[i][1] = cableTypesObj.CableTypes[i].marking;
+                    }
+                }
+                $.get( 'getLayers_edt.php?mode=GetCableTypes', fillArr );
             }
 
             function refreshAllLayers() {
@@ -100,9 +110,9 @@
                     coorArr: [ ]
                 };
                 var feature = event.feature;
-                var cableTypeArr = [
-                    [ 1097, 'item1' ], [ 2, 'item2' ]
-                ];
+                /*var cableTypeArr = [
+                 [ 1097, 'item1' ], [ 2, 'item2' ]
+                 ];*/
                 form = Ext.create( 'Ext.form.Panel', {
                     bodyPadding: 10,
                     defaultType: 'textfield',
@@ -145,8 +155,7 @@
                             handler: function() {
                                 var form = this.up( 'form' ).getForm();
                                 jsonInsertCoor.CableLineId = -1;
-                                jsonInsertCoor.CableType = form.getValues().cableType;
-                                jsonInsertCoor.CableType = 1097;
+                                jsonInsertCoor.CableType = form.getValues().cableType;                                
                                 jsonInsertCoor.length = form.getValues().length;
                                 jsonInsertCoor.name = form.getValues().name;
                                 jsonInsertCoor.comment = form.getValues().note;
@@ -235,7 +244,6 @@
                     units: "m"/*,
                      allOverlays: true*/
                 } );
-                // This is the layer that uses the locally stored tiles
                 var localLayer = new OpenLayers.Layer.OSM( "Локальна карта",
                         "map/tiles/${z}/${x}/${y}.png",
                         { numZoomLevels: 19,
@@ -343,7 +351,6 @@
                             labelOutlineColor: "black",
                             labelOutlineWidth: 1
                         } );
-                //dddd
 
                 var layerNodes = new OpenLayers.Layer.Vector( "Узлы", {
                     strategies: [ new OpenLayers.Strategy.BBOX(
@@ -685,11 +692,12 @@
             }
 
             //GetXMLFile("get_layers.php?mode=GetCableLines", parseCableLineXML); // получаем кабельные линии
+            getCableTypes(); // получаем типы кабелей
             GetXMLFile( "getLayers_edt.php?mode=GetCableLines",
                     parseCableLineXML ); // получаем кабельные линии
         </script>	
     </head>
     <body>
-        <div id="map"></div><br><button onclick="javascript: refreshAllLayers()">Refresh</button>
+        <div id="map"></div><br><button onclick="javascript: getCableTypes();">GetCableTypes</button>
     </body>
 </html>

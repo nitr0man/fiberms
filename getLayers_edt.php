@@ -419,4 +419,18 @@ elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
     header( "content-type: text/xml" );
     print($res );
 }
+elseif ( $_GET[ 'mode' ] == "GetCableTypes" )
+{
+    $res = CableType_SELECT( '', '' );
+    $rows = $res[ 'rows' ];
+    $cableTypesJSON[ 'CableTypes' ] = array( );
+    $i = -1;
+    while ( ++$i < $res[ 'count' ] )
+    {
+        $cableTypesJSON[ 'CableTypes' ][ $i ][ 'id' ] = (int) $rows[ $i ][ 'id' ];
+        $cableTypesJSON[ 'CableTypes' ][ $i ][ 'marking' ] = $rows[ $i ][ 'marking' ];
+    }
+    $res = json_encode( $cableTypesJSON );
+    print( $res );
+}
 ?>
