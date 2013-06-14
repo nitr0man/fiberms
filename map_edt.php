@@ -27,7 +27,8 @@
             var lon = 32.24;
             var zoom = 14;
             var map;
-            var drawControls, selectControl, selectedFeature, lineLayer, lineLayer_halo;
+            var drawControls, selectControl, selectedFeature;
+            var lineLayer, lineLayer_halo, layerNodes, layerCableLinePoints, vectorPoint;
             var CableLineText_arr = Array();
             var CableLine_arr = { };
             var testForm;
@@ -38,6 +39,8 @@
             var CableLineEdtInfo = { };
             var jsonInsertCoor;
             var cableTypeArr;
+            var refresh = new OpenLayers.Strategy.Refresh(
+                    { force: true, active: true } );
 
             var j = 0, j2 = 0;
             var CableLine_Points_count = Array();
@@ -83,15 +86,25 @@
                         cableTypeArr[i][1] = cableTypesObj.CableTypes[i].marking;
                     }
                 }
-                $.get( 'getLayers_edt.php?mode=GetCableTypes', fillArr );
+                $.get( 'getLayers_edt.php?mode=GetCableTypes',
+                        fillArr );
             }
 
             function refreshAllLayers() {
-                lineLayer.refresh( { force: true } );
-                lineLayer_halo.refresh( { force: true } );
-                lineLayer.redraw( true );
-                lineLayer_halo.redraw( true );
-                alert( 'ok' );
+                /*lineLayer.refresh( { force: true } );
+                 lineLayer_halo.refresh( { force: true } );
+                 lineLayer.redraw( true );
+                 lineLayer_halo.redraw( true );
+                 refresh.refresh();*/
+                lineLayer_halo.destroyFeatures();
+                lineLayer.destroyFeatures();
+                layerNodes.destroyFeatures();
+                layerCableLinePoints.destroyFeatures();
+                vectorPoint.destroyFeatures();
+                GetXMLFile(
+                        "getLayers_edt.php?mode=GetCableLines",
+                        parseCableLineXML );
+                //alert( 'ok' );
                 /*wfsFosc.refresh({force: true});
                  wfsSplice.refresh({force: true});
                  wfsFiber.refresh({force: true});
@@ -155,11 +168,12 @@
                             handler: function() {
                                 var form = this.up( 'form' ).getForm();
                                 jsonInsertCoor.CableLineId = -1;
-                                jsonInsertCoor.CableType = form.getValues().cableType;                                
+                                jsonInsertCoor.CableType = form.getValues().cableType;
                                 jsonInsertCoor.length = form.getValues().length;
                                 jsonInsertCoor.name = form.getValues().name;
                                 jsonInsertCoor.comment = form.getValues().note;
-                                saveCableLine( feature, jsonInsertCoor );
+                                saveCableLine( feature,
+                                        jsonInsertCoor );
                                 dialog.destroy();
                             }
                         }
@@ -201,9 +215,11 @@
 
 
             function addPoint( lon, lat, title, ident, layr ) {
-                var ttt = new OpenLayers.LonLat( parseFloat( lon ), parseFloat(
+                var ttt = new OpenLayers.LonLat( parseFloat( lon ),
+                        parseFloat(
                         lat ) );
-                ttt.transform( new OpenLayers.Projection( "EPSG:4326" ),
+                ttt.transform( new OpenLayers.Projection(
+                        "EPSG:4326" ),
                         new OpenLayers.Projection( "EPSG:900913" ) );
                 for ( var k = 0; k < layr.features.length; k++ ) {
                     if ( layr.features[k].attributes.PointId == ident ) {
@@ -212,11 +228,14 @@
                         return false;
                     }
                 }
-                var point0 = new OpenLayers.Geometry.Point( parseFloat( lon ),
+                var point0 = new OpenLayers.Geometry.Point( parseFloat(
+                        lon ),
                         parseFloat( lat ) );
-                point0.transform( new OpenLayers.Projection( "EPSG:4326" ),
+                point0.transform( new OpenLayers.Projection(
+                        "EPSG:4326" ),
                         new OpenLayers.Projection( "EPSG:900913" ) );
-                layr.addFeatures( new OpenLayers.Feature.Vector( point0,
+                layr.addFeatures( new OpenLayers.Feature.Vector(
+                        point0,
                         { label: title, name: title, PointId: ident } ) );
             }
 
@@ -235,7 +254,8 @@
             function init() {
                 map = new OpenLayers.Map( {
                     div: "map",
-                    projection: new OpenLayers.Projection( "EPSG:4326" ),
+                    projection: new OpenLayers.Projection(
+                            "EPSG:4326" ),
                     displayProjection: new OpenLayers.Projection(
                             "EPSG:4326" ),
                     controls: [
@@ -244,7 +264,8 @@
                     units: "m"/*,
                      allOverlays: true*/
                 } );
-                var localLayer = new OpenLayers.Layer.OSM( "Локальна карта",
+                var localLayer = new OpenLayers.Layer.OSM(
+                        "Локальна карта",
                         "map/tiles/${z}/${x}/${y}.png",
                         { numZoomLevels: 19,
                             alpha: false,
@@ -264,6 +285,7 @@
 
                 var k, k2;
                 for ( k = 0; k < j; k++ ) {
+                    console.log( k );
                     var style_halo = {
                         strokeColor: 'black',
                         strokeWidth: style_arr[CableLine_arr[k]['style']]['strokeWidth'] + 1
@@ -274,15 +296,21 @@
                         //alert(CableLine_Points_count[k]);
                         lon1 = CableLine_arr[k]['points'][k2]['lon'];
                         lat1 = CableLine_arr[k]['points'][k2]['lat'];
-                        points[k2] = new OpenLayers.Geometry.Point( lon1,
+                        points[k2] = new OpenLayers.Geometry.Point(
+                                lon1,
                                 lat1 );
                     }
-                    var line = new OpenLayers.Geometry.LineString( points );
-                    line.transform( new OpenLayers.Projection( "EPSG:4326" ),
-                            new OpenLayers.Projection( "EPSG:900913" ) );
-                    var lineFeature = new OpenLayers.Feature.Vector( line,
+                    var line = new OpenLayers.Geometry.LineString(
+                            points );
+                    line.transform( new OpenLayers.Projection(
+                            "EPSG:4326" ),
+                            new OpenLayers.Projection(
+                            "EPSG:900913" ) );
+                    var lineFeature = new OpenLayers.Feature.Vector(
+                            line,
                             null, style_halo );
-                    lineLayer_halo.addFeatures( [ lineFeature ] );
+                    lineLayer_halo.addFeatures(
+                            [ lineFeature ] );
                     /*CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' +CableLine_arr[k]['cableLineId'] +'">' +CableLine_arr[k]['name'] + '</a></h2>'
                      +'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' +CableLine_arr[k]['cableTypeId'] +'">' +CableLine_arr[k]['cableTypeMarking'] +'</a><br>'
                      +'К-во модулей: ' +CableLine_arr[k]['modules'] +'<br>'
@@ -308,7 +336,8 @@
                  units: "m",
                  protocol: new OpenLayers.Protocol.HTTP( { url: "get_layers.php" } )
                  } );*/
-                lineLayer = new OpenLayers.Layer.Vector( "Кабельные линии" );
+                lineLayer = new OpenLayers.Layer.Vector(
+                        "Кабельные линии" );
                 map.addLayer( lineLayer );
 
                 for ( k = 0; k < j; k++ ) {
@@ -316,16 +345,24 @@
                     for ( k2 = 0; k2 < CableLine_Points_count[k]; k2++ ) {
                         lon1 = CableLine_arr[k]['points'][k2]['lon'];
                         lat1 = CableLine_arr[k]['points'][k2]['lat'];
-                        points[k2] = new OpenLayers.Geometry.Point( lon1,
+                        points[k2] = new OpenLayers.Geometry.Point(
+                                lon1,
                                 lat1 );
                     }
-                    var line = new OpenLayers.Geometry.LineString( points );
-                    line.transform( new OpenLayers.Projection( "EPSG:4326" ),
-                            new OpenLayers.Projection( "EPSG:900913" ) );
-                    var lineFeature = new OpenLayers.Feature.Vector( line,
-                            null, style_arr[CableLine_arr[k]['style']] );
+                    var line = new OpenLayers.Geometry.LineString(
+                            points );
+                    line.transform(
+                            new OpenLayers.Projection(
+                            "EPSG:4326" ),
+                            new OpenLayers.Projection(
+                            "EPSG:900913" ) );
+                    var lineFeature = new OpenLayers.Feature.Vector(
+                            line,
+                            null,
+                            style_arr[CableLine_arr[k]['style']] );
                     var line_halo = lineFeature.clone();
-                    lineLayer.addFeatures( [ lineFeature ] );
+                    lineLayer.addFeatures(
+                            [ lineFeature ] );
                     CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' + CableLine_arr[k]['cableLineId'] + '">' + CableLine_arr[k]['name'] + '</a></h2>'
                             + 'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' + CableLine_arr[k]['cableTypeId'] + '">' + CableLine_arr[k]['cableTypeMarking'] + '</a><br>'
                             + 'Направление: ' + CableLine_arr[k]['direction'] + '<br>'
@@ -352,30 +389,35 @@
                             labelOutlineWidth: 1
                         } );
 
-                var layerNodes = new OpenLayers.Layer.Vector( "Узлы", {
-                    strategies: [ new OpenLayers.Strategy.BBOX(
-                                { resFactor: 1.1 } ) ],
-                    protocol: new OpenLayers.Protocol.HTTP( {
-                        url: "get_layers.php?mode=GetNodesMarkers",
-                        format: new OpenLayers.Format.Text()
-                    } )
-                } );
+                layerNodes = new OpenLayers.Layer.Vector(
+                        "Узлы",
+                        {
+                            strategies: [ new OpenLayers.Strategy.BBOX(
+                                        { resFactor: 1.1 } ) ],
+                            protocol: new OpenLayers.Protocol.HTTP(
+                                    {
+                                        url: "get_layers.php?mode=GetNodesMarkers",
+                                        format: new OpenLayers.Format.Text()
+                                    } )
+                        } );
                 map.addLayer( layerNodes );
 
-                var layerCableLinePoints = new OpenLayers.Layer.Vector(
+                layerCableLinePoints = new OpenLayers.Layer.Vector(
                         "Особые точки линии", {
                     minScale: 7000,
                     strategies: [ new OpenLayers.Strategy.BBOX(
                                 { resFactor: 1.1 } ) ],
-                    protocol: new OpenLayers.Protocol.HTTP( {
-                        url: "get_layers.php?mode=GetSingularCableLinePoints",
-                        format: new OpenLayers.Format.Text()
-                    } )
+                    protocol: new OpenLayers.Protocol.HTTP(
+                            {
+                                url: "get_layers.php?mode=GetSingularCableLinePoints",
+                                format: new OpenLayers.Format.Text()
+                            } )
                 } );
 
-                map.addLayer( layerCableLinePoints );
+                map.addLayer(
+                        layerCableLinePoints );
 
-                var vectorPoint = new OpenLayers.Layer.Vector(
+                vectorPoint = new OpenLayers.Layer.Vector(
                         "Узлы (надписи)",
                         {
                             minScale: 7000,
@@ -386,7 +428,8 @@
                         } );
                 map.addLayer( vectorPoint );
 
-                function updCableLine( event ) {
+                function updCableLine(
+                        event ) {
                     jsonCoor = {
                         seqStart: "",
                         seqEnd: "",
@@ -398,10 +441,13 @@
                     coor = event.feature.geometry.getVertices();
                     for ( var i = 0; i < coor.length; i++ )
                     {
-                        var ll = new OpenLayers.LonLat( coor[ i ].x,
+                        var ll = new OpenLayers.LonLat(
+                                coor[ i ].x,
                                 coor[ i ].y ).transform(
-                                new OpenLayers.Projection( "EPSG:900913" ),
-                                new OpenLayers.Projection( "EPSG:4326" ) );
+                                new OpenLayers.Projection(
+                                "EPSG:900913" ),
+                                new OpenLayers.Projection(
+                                "EPSG:4326" ) );
                         jsonCoor.coorArr[ i ] = { };
                         jsonCoor.coorArr[ i ]["lon"] = ll.lon;
                         jsonCoor.coorArr[ i ]["lat"] = ll.lat;
@@ -409,10 +455,12 @@
                     jsonCoor.seqStart = CableLineEdtInfo[event.feature.id]['seqStart'];
                     jsonCoor.seqEnd = CableLineEdtInfo[event.feature.id]['seqEnd'];
                     jsonCoor.CableLineId = CableLineEdtInfo[event.feature.id]['cableLineId'];
-                    json = JSON.stringify( jsonCoor );
+                    json = JSON.stringify(
+                            jsonCoor );
                     //$.post("map_post.php", { coors: json } ).done( refreshAllLayers );
                     //refreshAllLayers();
-                    $.post( "map_post.php", { coors: json } );
+                    $.post( "map_post.php",
+                            { coors: json } );
                     refreshAllLayers();
                 }
                 lineLayer.events.on( {
@@ -427,9 +475,11 @@
 
                 addCableLineLayer = new OpenLayers.Layer.Vector(
                         "AddLineLayer" );
-                map.addLayer( addCableLineLayer );
+                map.addLayer(
+                        addCableLineLayer );
 
-                function addCableLine( event ) {
+                function addCableLine(
+                        event ) {
                     jsonCoor = {
                         seqStart: "",
                         seqEnd: "",
@@ -438,7 +488,8 @@
                     };
                     /*console.log( event.type,
                      event.feature ? event.feature.id : event.components );*/
-                    onCableLineAddedPopup( event );
+                    onCableLineAddedPopup(
+                            event );
                     /*coor = event.feature.geometry.getVertices();
                      for ( var i = 0; i < coor.length; i++ )
                      {
@@ -464,21 +515,28 @@
                 } );
 
 
-                var panel = new OpenLayers.Control.Panel( {
-                    //displayClass: "olControlEditingToolbar",
-                    createControlMarkup: function( control ) {
-                        var button = document.createElement( 'button' ),
-                                iconSpan = document.createElement( 'span' ),
-                                textSpan = document.createElement( 'span' );
-                        iconSpan.innerHTML = '&nbsp;';
-                        button.appendChild( iconSpan );
-                        if ( control.text ) {
-                            textSpan.innerHTML = control.text;
+                var panel = new OpenLayers.Control.Panel(
+                        {
+                            //displayClass: "olControlEditingToolbar",
+                            createControlMarkup: function(
+                                    control ) {
+                                var button = document.createElement(
+                                        'button' ),
+                                        iconSpan = document.createElement(
+                                        'span' ),
+                                        textSpan = document.createElement(
+                                        'span' );
+                                iconSpan.innerHTML = '&nbsp;';
+                                button.appendChild(
+                                        iconSpan );
+                                if ( control.text ) {
+                                    textSpan.innerHTML = control.text;
+                                }
+                                button.appendChild(
+                                        textSpan );
+                                return button;
+                            }
                         }
-                        button.appendChild( textSpan );
-                        return button;
-                    }
-                }
                 );
 
                 var editCable = new OpenLayers.Control.ModifyFeature(
@@ -493,15 +551,19 @@
                 } );
 
                 var drawCable = new OpenLayers.Control.DrawFeature(
-                        addCableLineLayer, OpenLayers.Handler.Path, {
-                    title: "Позволяет добавлять кабельные линии",
-                    text: 'Добавить<br>линию',
-                    displayClass: "olControlDrawClosure",
-                    handlerOptions: { multi: false }
-                } );
+                        addCableLineLayer,
+                        OpenLayers.Handler.Path,
+                        {
+                            title: "Позволяет добавлять кабельные линии",
+                            text: 'Добавить<br>линию',
+                            displayClass: "olControlDrawClosure",
+                            handlerOptions: { multi: false }
+                        } );
 
-                panel.addControls( [ editCable, drawCable ] );
-                map.addControl( panel );
+                panel.addControls(
+                        [ editCable, drawCable ] );
+                map.addControl(
+                        panel );
 
                 var lat2, lon2, title, ident;
                 for ( l = 0; l < nodesLabels_Count; l++ ) {
@@ -509,7 +571,11 @@
                     lon2 = nodesLabels_arr[l]["points"][0]["lon"];
                     title = nodesLabels_arr[l]["title"];
                     ident = nodesLabels_arr[l]["ident"];
-                    addPoint( lon2, lat2, title, ident, map.layers[6] );
+                    addPoint( lon2,
+                            lat2,
+                            title,
+                            ident,
+                            map.layers[6] );
                 }
 
                 /*lineLayer.events.on( {
@@ -532,20 +598,27 @@
                             { 'ascending': false } ),
                     new OpenLayers.Control.Permalink(),
                     new OpenLayers.Control.ScaleLine(),
-                    new OpenLayers.Control.Permalink( 'permalink' ),
+                    new OpenLayers.Control.Permalink(
+                            'permalink' ),
                     new OpenLayers.Control.MousePosition(),
                     //new OpenLayers.Control.OverviewMap(),
                     new OpenLayers.Control.KeyboardDefaults()
                 ] );
-                var lonLat = new OpenLayers.LonLat( lon,
+                var lonLat = new OpenLayers.LonLat(
+                        lon,
                         lat ).transform(
-                        new OpenLayers.Projection( "EPSG:4326" ),
+                        new OpenLayers.Projection(
+                        "EPSG:4326" ),
                         map.getProjectionObject() );
-                map.setCenter( lonLat, zoom );
-                map.setLayerIndex( map.layers[6], 7 );
+                map.setCenter( lonLat,
+                        zoom );
+                map.setLayerIndex(
+                        map.layers[6],
+                        7 );
             }
 
-            function parseCableLineXML( Response ) {
+            function parseCableLineXML(
+                    Response ) {
                 var doc = Response.responseXML.documentElement;
                 var cableLine = doc.getElementsByTagName(
                         "cableLine" );
@@ -627,7 +700,8 @@
                         parseNetworkNodesDescriptionXML ); // получаем описание для узлов
             }
 
-            function parseNetworkNodesDescriptionXML( Response ) {
+            function parseNetworkNodesDescriptionXML(
+                    Response ) {
                 var doc = Response.responseXML.documentElement;
                 var nodeDescription = doc.getElementsByTagName(
                         "nodeDescription" );
@@ -651,11 +725,13 @@
                     }
                 }
 
-                GetXMLFile( "get_layers.php?mode=GetNodesLabels",
+                GetXMLFile(
+                        "get_layers.php?mode=GetNodesLabels",
                         parseNodesLabelsXML ); // получаем надписи для узлов
             }
 
-            function parseNodesLabelsXML( Response ) {
+            function parseNodesLabelsXML(
+                    Response ) {
                 var doc = Response.responseXML.documentElement;
                 var nodeLabel = doc.getElementsByTagName(
                         "nodeLabel" );
@@ -692,8 +768,11 @@
             }
 
             //GetXMLFile("get_layers.php?mode=GetCableLines", parseCableLineXML); // получаем кабельные линии
+            j = 0;
+            j2 = 0;
             getCableTypes(); // получаем типы кабелей
-            GetXMLFile( "getLayers_edt.php?mode=GetCableLines",
+            GetXMLFile(
+                    "getLayers_edt.php?mode=GetCableLines",
                     parseCableLineXML ); // получаем кабельные линии
         </script>	
     </head>
