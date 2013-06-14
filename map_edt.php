@@ -72,6 +72,10 @@
                         // Стиль линии (25+ волокон)
             } );
 
+            function getCableTypes() {
+                
+            }
+
             function refreshAllLayers() {
                 lineLayer.refresh( { force: true } );
                 lineLayer_halo.refresh( { force: true } );
