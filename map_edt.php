@@ -107,7 +107,8 @@
                             xtype: 'combobox',
                             fieldLabel: 'Тип кабеля',
                             name: 'cableType',
-                            value: '',
+                            valueField: 'value',
+                            displayField: 'text',
                             store: new Ext.data.SimpleStore( {
                                 id: 0,
                                 fields:
@@ -138,23 +139,14 @@
                         {
                             text: 'Добавить',
                             handler: function() {
-                                var form = this.up( 'form' ).
-                                        getForm(); // get the basic form
+                                var form = this.up( 'form' ).getForm();
                                 jsonInsertCoor.CableLineId = -1;
-                                //jsonInsertCoor.CableType = form.getValues().cableType;
+                                jsonInsertCoor.CableType = form.getValues().cableType;
                                 jsonInsertCoor.CableType = 1097;
                                 jsonInsertCoor.length = form.getValues().length;
                                 jsonInsertCoor.name = form.getValues().name;
                                 jsonInsertCoor.comment = form.getValues().note;
-                                /*feature.attributes.rot = form.getValues().rot;
-                                 feature.attributes.flip = form.getValues().flip;
-                                 feature.attributes.vol_use = form.getValues().vol_use;
-                                 feature.attributes.name = form.getValues().name;
-                                 feature.state = OpenLayers.State.UPDATE;
-                                 saveCablePoint.save( [ feature ] );*/
-                                //testForm = form.getValues().cableType;
-                                saveCableLine( feature,
-                                        jsonInsertCoor );
+                                saveCableLine( feature, jsonInsertCoor );
                                 dialog.destroy();
                             }
                         }
@@ -227,75 +219,6 @@
                 }
             }
 
-            function onPopupClose( evt ) {
-                selectControl.unselect( selectedFeature );
-            }
-            function onPopupClose2( evt ) {
-                // 'this' is the popup.
-                selectControl.unselect( this.feature );
-            }
-            function onFeatureSelect( evt ) {
-                feature = evt.feature;
-                id = feature.id;
-                var lonlat = map.getLonLatFromPixel( map.getControlsByClass(
-                        "OpenLayers.Control.MousePosition" )[0].lastXy );
-                popup = new OpenLayers.Popup.FramedCloud( "featurePopup",
-                        lonlat,
-                        new OpenLayers.Size( 100, 100 ),
-                        //"<h2>"+feature.attributes.title + "</h2>" +
-                        CableLineText_arr[id],
-                        null, true, onPopupClose2 );
-                feature.popup = popup;
-                popup.feature = feature;
-                map.addPopup( popup );
-            }
-
-            function onFeatureUnselect( evt ) {
-                feature = evt.feature;
-                if ( feature.popup ) {
-                    popup.feature = null;
-                    map.removePopup( feature.popup );
-                    feature.popup.destroy();
-                    feature.popup = null;
-                }
-            }
-
-            function onFeatureSelect2( evt ) {
-                feature = evt.feature;
-                popup = new OpenLayers.Popup.FramedCloud( "featurePopup",
-                        feature.geometry.getBounds().getCenterLonLat(),
-                        new OpenLayers.Size( 100, 100 ),
-                        "<h2>" + feature.attributes.title + "</h2>" +
-                        feature.attributes.description,
-                        null, true, onPopupClose2 );
-                feature.popup = popup;
-                popup.feature = feature;
-                map.addPopup( popup );
-            }
-
-            function onFeatureSelect3( evt ) {
-                feature = evt.feature;
-                popup = new OpenLayers.Popup.FramedCloud( "featurePopup",
-                        feature.geometry.getBounds().getCenterLonLat(),
-                        new OpenLayers.Size( 100, 100 ),
-                        "<h2>" + feature.attributes.title + "</h2>" +
-                        //feature.attributes.description,
-                        nodeDescription_arr[feature.attributes.description],
-                        null, true, onPopupClose2 );
-                feature.popup = popup;
-                popup.feature = feature;
-                map.addPopup( popup );
-            }
-
-            function onFeatureUnselect2( evt ) {
-                feature = evt.feature;
-                if ( feature.popup ) {
-                    popup.feature = null;
-                    map.removePopup( feature.popup );
-                    feature.popup.destroy();
-                    feature.popup = null;
-                }
-            }
             function init() {
                 map = new OpenLayers.Map( {
                     div: "map",
