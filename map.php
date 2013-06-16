@@ -24,7 +24,7 @@
             var map;
             var drawControls, selectControl, selectedFeature, lineLayer;
             var CableLineText_arr = Array();
-            var CableLine_arr = {};
+            var CableLine_arr = { };
             var j = 0, j2 = 0;
             var CableLine_Points_count = Array();
             var nodesLabels_Count = 0;
@@ -76,8 +76,8 @@
                 point0.transform( new OpenLayers.Projection( "EPSG:4326" ),
                         new OpenLayers.Projection( "EPSG:900913" ) );
                 layr.addFeatures( new OpenLayers.Feature.Vector( point0,
-                        {label: title, name: title, PointId: ident} ) );
-                    }
+                        { label: title, name: title, PointId: ident } ) );
+            }
 
             function toggleControl( element ) {
                 alert( element );
@@ -175,7 +175,7 @@
                 // This is the layer that uses the locally stored tiles
                 var localLayer = new OpenLayers.Layer.OSM( "Локальна карта",
                         "map/tiles/${z}/${x}/${y}.png",
-                        {numZoomLevels: 19,
+                        { numZoomLevels: 19,
                             alpha: false,
                             isBaseLayer: true,
                             attribution: "",
@@ -184,7 +184,7 @@
                 map.addLayer( localLayer );
 
                 var osm = new OpenLayers.Layer.OSM();
-                map.addLayers( [osm] );
+                map.addLayers( [ osm ] );
 
                 // рисуем типо гало :)
                 var lineLayer_halo = new OpenLayers.Layer.Vector(
@@ -211,7 +211,7 @@
                             new OpenLayers.Projection( "EPSG:900913" ) );
                     var lineFeature = new OpenLayers.Feature.Vector( line,
                             null, style_halo );
-                    lineLayer_halo.addFeatures( [lineFeature] );
+                    lineLayer_halo.addFeatures( [ lineFeature ] );
                     /*CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' +CableLine_arr[k]['cableLineId'] +'">' +CableLine_arr[k]['name'] + '</a></h2>'
                      +'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' +CableLine_arr[k]['cableTypeId'] +'">' +CableLine_arr[k]['cableTypeMarking'] +'</a><br>'
                      +'К-во модулей: ' +CableLine_arr[k]['modules'] +'<br>'
@@ -247,7 +247,7 @@
                     var lineFeature = new OpenLayers.Feature.Vector( line,
                             null, style_arr[CableLine_arr[k]['style']] );
                     var line_halo = lineFeature.clone();
-                    lineLayer.addFeatures( [lineFeature] );
+                    lineLayer.addFeatures( [ lineFeature ] );
                     CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' + CableLine_arr[k]['cableLineId'] + '">' + CableLine_arr[k]['name'] + '</a></h2>'
                             + 'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' + CableLine_arr[k]['cableTypeId'] + '">' + CableLine_arr[k]['cableTypeMarking'] + '</a><br>'
                             + 'Направление: ' + CableLine_arr[k]['direction'] + '<br>'
@@ -273,25 +273,25 @@
                 //dddd
 
                 var layerNodes = new OpenLayers.Layer.Vector( "Узлы", {
-                    strategies: [new OpenLayers.Strategy.BBOX(
-                                {resFactor: 1.1} )],
-                            protocol: new OpenLayers.Protocol.HTTP( {
-                                url: "get_layers.php?mode=GetNodesMarkers",
-                                format: new OpenLayers.Format.Text()
-                            } )
-                        } );
+                    strategies: [ new OpenLayers.Strategy.BBOX(
+                                { resFactor: 1.1 } ) ],
+                    protocol: new OpenLayers.Protocol.HTTP( {
+                        url: "get_layers.php?mode=GetNodesMarkers",
+                        format: new OpenLayers.Format.Text()
+                    } )
+                } );
                 map.addLayer( layerNodes );
 
                 var layerCableLinePoints = new OpenLayers.Layer.Vector(
                         "Особые точки линии", {
                     minScale: 7000,
-                    strategies: [new OpenLayers.Strategy.BBOX(
-                                {resFactor: 1.1} )],
-                            protocol: new OpenLayers.Protocol.HTTP( {
-                                url: "get_layers.php?mode=GetSingularCableLinePoints",
-                                format: new OpenLayers.Format.Text()
-                            } )
-                        } );
+                    strategies: [ new OpenLayers.Strategy.BBOX(
+                                { resFactor: 1.1 } ) ],
+                    protocol: new OpenLayers.Protocol.HTTP( {
+                        url: "get_layers.php?mode=GetSingularCableLinePoints",
+                        format: new OpenLayers.Format.Text()
+                    } )
+                } );
 
                 map.addLayer( layerCableLinePoints );
 
@@ -300,8 +300,8 @@
                         {
                             minScale: 7000,
                             styleMap: new OpenLayers.StyleMap(
-                                    {"default": styleMarkersLabels,
-                                        "select": {pointRadius: 20}
+                                    { "default": styleMarkersLabels,
+                                        "select": { pointRadius: 20 }
                                     } )
                         } );
                 map.addLayer( vectorPoint );
@@ -335,168 +335,168 @@
                     'featureunselected': onFeatureUnselect2
                 } );
                 selectControl = new OpenLayers.Control.SelectFeature(
-                        [layerNodes, lineLayer, lineLayer_halo, layerCableLinePoints, vectorPoint] );
-                        map.addControl( selectControl );
-                        selectControl.activate();
+                        [ layerNodes, lineLayer, lineLayer_halo, layerCableLinePoints, vectorPoint ] );
+                map.addControl( selectControl );
+                selectControl.activate();
 
-                        map.addControls(
-                                [
-                                    new OpenLayers.Control.LayerSwitcher(),
-                                    new OpenLayers.Control.Navigation(),
-                                    new OpenLayers.Control.Attribution(),
-                                    new OpenLayers.Control.PanZoomBar(),
-                                    new OpenLayers.Control.MousePosition()
-                                ]
-                                );
-                        var lonLat = new OpenLayers.LonLat( lon,
-                                lat ).transform( new OpenLayers.Projection(
-                                "EPSG:4326" ), map.getProjectionObject() );
-                        map.setCenter( lonLat, zoom );
-                        map.setLayerIndex( map.layers[6], 7 );
+                map.addControls(
+                        [
+                            new OpenLayers.Control.LayerSwitcher(),
+                            new OpenLayers.Control.Navigation(),
+                            new OpenLayers.Control.Attribution(),
+                            new OpenLayers.Control.PanZoomBar(),
+                            new OpenLayers.Control.MousePosition()
+                        ]
+                        );
+                var lonLat = new OpenLayers.LonLat( lon,
+                        lat ).transform( new OpenLayers.Projection(
+                        "EPSG:4326" ), map.getProjectionObject() );
+                map.setCenter( lonLat, zoom );
+                map.setLayerIndex( map.layers[6], 7 );
+            }
+
+            function parseCableLineXML( Response ) {
+                var doc = Response.responseXML.documentElement;
+                var cableLine = doc.getElementsByTagName(
+                        "cableLine" );
+
+                for ( var i = 0; i < cableLine.length; i++ ) {
+                    var f_child = cableLine[i].firstChild;
+                    j2 = 0;
+                    CableLine_arr[i] = { };
+                    CableLine_arr[i]["points"] = Array();
+
+                    while ( f_child.nextSibling ) {
+                        switch ( f_child.nodeName ) {
+                            case "node":
+                                CableLine_arr[i]["points"][j2] = { };
+
+                                CableLine_arr[i]["points"][j2]["lon"] = f_child.getAttribute(
+                                        "lon" );
+                                CableLine_arr[i]["points"][j2]["lat"] = f_child.getAttribute(
+                                        "lat" );
+                                j2++;
+                                break;
+                            case "cableLineId":
+                                CableLine_arr[i]['cableLineId'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "name":
+                                CableLine_arr[i]['name'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "cableTypeId":
+                                CableLine_arr[i]['cableTypeId'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "modules":
+                                CableLine_arr[i]['modules'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "fibers":
+                                CableLine_arr[i]['fibers'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "direction":
+                                CableLine_arr[i]['direction'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "free_fibers":
+                                CableLine_arr[i]['free_fibers'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "cableTypeMarking":
+                                CableLine_arr[i]['cableTypeMarking'] = f_child.firstChild.nodeValue;
+                                break;
+                        }
+                        f_child = f_child.nextSibling;
                     }
-
-                    function parseCableLineXML( Response ) {
-                        var doc = Response.responseXML.documentElement;
-                        var cableLine = doc.getElementsByTagName(
-                                "cableLine" );
-
-                        for ( var i = 0; i < cableLine.length; i++ ) {
-                            var f_child = cableLine[i].firstChild;
-                            j2 = 0;
-                            CableLine_arr[i] = {};
-                            CableLine_arr[i]["points"] = Array();
-
-                            while ( f_child.nextSibling ) {
-                                switch ( f_child.nodeName ) {
-                                    case "node":
-                                        CableLine_arr[i]["points"][j2] = {};
-
-                                        CableLine_arr[i]["points"][j2]["lon"] = f_child.getAttribute( 
-                                                "lon" );
-                                        CableLine_arr[i]["points"][j2]["lat"] = f_child.getAttribute( 
-                                                "lat" );
-                                        j2++;
-                                        break;
-                                    case "cableLineId":
-                                        CableLine_arr[i]['cableLineId'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "name":
-                                        CableLine_arr[i]['name'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "cableTypeId":
-                                        CableLine_arr[i]['cableTypeId'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "modules":
-                                        CableLine_arr[i]['modules'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "fibers":
-                                        CableLine_arr[i]['fibers'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "direction":
-                                        CableLine_arr[i]['direction'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "free_fibers":
-                                        CableLine_arr[i]['free_fibers'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "cableTypeMarking":
-                                        CableLine_arr[i]['cableTypeMarking'] = f_child.firstChild.nodeValue;
-                                        break;
-                                }
-                                f_child = f_child.nextSibling;
-                            }
-                            if ( ( CableLine_arr[i]['cableTypeId'] == 'NULL' ) || ( CableLine_arr[i]['fibers'] == '-1' ) ) {
-                                CableLine_arr[i]['style'] = 4;
+                    if ( ( CableLine_arr[i]['cableTypeId'] == 'NULL' ) || ( CableLine_arr[i]['fibers'] == '-1' ) ) {
+                        CableLine_arr[i]['style'] = 4;
+                    } else {
+                        if ( ( CableLine_arr[i]['fibers'] >= 1 ) && ( CableLine_arr[i]['fibers'] <= 8 ) ) {
+                            CableLine_arr[i]['style'] = 1;
+                        } else {
+                            if ( ( CableLine_arr[i]['fibers'] >= 9 ) && ( CableLine_arr[i]['fibers'] <= 24 ) ) {
+                                CableLine_arr[i]['style'] = 2;
                             } else {
-                                if ( ( CableLine_arr[i]['fibers'] >= 1 ) && ( CableLine_arr[i]['fibers'] <= 8 ) ) {
-                                    CableLine_arr[i]['style'] = 1;
+                                if ( ( CableLine_arr[i]['fibers'] >= 25 ) ) {
+                                    CableLine_arr[i]['style'] = 3;
                                 } else {
-                                    if ( ( CableLine_arr[i]['fibers'] >= 9 ) && ( CableLine_arr[i]['fibers'] <= 24 ) ) {
-                                        CableLine_arr[i]['style'] = 2;
-                                    } else {
-                                        if ( ( CableLine_arr[i]['fibers'] >= 25 ) ) {
-                                            CableLine_arr[i]['style'] = 3;
-                                        } else {
-                                            if ( ( CableLine_arr[i]['fibers'] == 0 ) ) {
-                                                CableLine_arr[i]['style'] = 0;
-                                            }
-                                        }
+                                    if ( ( CableLine_arr[i]['fibers'] == 0 ) ) {
+                                        CableLine_arr[i]['style'] = 0;
                                     }
                                 }
                             }
-                            CableLine_Points_count[i] = j2;
-                            j++;
                         }
-                        GetXMLFile(
-                                "get_layers.php?mode=GetNetworkNodesDescription",
-                                parseNetworkNodesDescriptionXML ); // получаем описание для узлов
                     }
+                    CableLine_Points_count[i] = j2;
+                    j++;
+                }
+                GetXMLFile(
+                        "get_layers.php?mode=GetNetworkNodesDescription",
+                        parseNetworkNodesDescriptionXML ); // получаем описание для узлов
+            }
 
-                    function parseNetworkNodesDescriptionXML( Response ) {
-                        var doc = Response.responseXML.documentElement;
-                        var nodeDescription = doc.getElementsByTagName(
-                                "nodeDescription" );
+            function parseNetworkNodesDescriptionXML( Response ) {
+                var doc = Response.responseXML.documentElement;
+                var nodeDescription = doc.getElementsByTagName(
+                        "nodeDescription" );
 
-                        var txt_index = 0;
-                        for ( var i = 0; i < nodeDescription.length; i++ ) {
-                            var f_child = nodeDescription[i].firstChild;
-                            j2 = 0;
+                var txt_index = 0;
+                for ( var i = 0; i < nodeDescription.length; i++ ) {
+                    var f_child = nodeDescription[i].firstChild;
+                    j2 = 0;
 
-                            while ( f_child.nextSibling ) {
-                                switch ( f_child.nodeName ) {
-                                    case "index":
-                                        //nodeDescription_arr[i]['title'] = f_child.firstChild.nodeValue;
-                                        txt_index = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "description":
-                                        nodeDescription_arr[txt_index] = f_child.firstChild.nodeValue;
-                                        break;
-                                }
-                                f_child = f_child.nextSibling;
-                            }
+                    while ( f_child.nextSibling ) {
+                        switch ( f_child.nodeName ) {
+                            case "index":
+                                //nodeDescription_arr[i]['title'] = f_child.firstChild.nodeValue;
+                                txt_index = f_child.firstChild.nodeValue;
+                                break;
+                            case "description":
+                                nodeDescription_arr[txt_index] = f_child.firstChild.nodeValue;
+                                break;
                         }
-
-                        GetXMLFile( "get_layers.php?mode=GetNodesLabels",
-                                parseNodesLabelsXML ); // получаем надписи для узлов
+                        f_child = f_child.nextSibling;
                     }
+                }
 
-                    function parseNodesLabelsXML( Response ) {
-                        var doc = Response.responseXML.documentElement;
-                        var nodeLabel = doc.getElementsByTagName(
-                                "nodeLabel" );
+                GetXMLFile( "get_layers.php?mode=GetNodesLabels",
+                        parseNodesLabelsXML ); // получаем надписи для узлов
+            }
 
-                        for ( var i = 0; i < nodeLabel.length; i++ ) {
-                            var f_child = nodeLabel[i].firstChild;
-                            j2 = 0;
-                            nodesLabels_arr[i] = {};
-                            nodesLabels_arr[i]["points"] = Array();
+            function parseNodesLabelsXML( Response ) {
+                var doc = Response.responseXML.documentElement;
+                var nodeLabel = doc.getElementsByTagName(
+                        "nodeLabel" );
 
-                            while ( f_child.nextSibling ) {
-                                switch ( f_child.nodeName ) {
-                                    case "node":
-                                        nodesLabels_arr[i]["points"][0] = {};
+                for ( var i = 0; i < nodeLabel.length; i++ ) {
+                    var f_child = nodeLabel[i].firstChild;
+                    j2 = 0;
+                    nodesLabels_arr[i] = { };
+                    nodesLabels_arr[i]["points"] = Array();
 
-                                        nodesLabels_arr[i]["points"][0]["lon"] = f_child.getAttribute( 
-                                                "lon" );
-                                        nodesLabels_arr[i]["points"][0]["lat"] = f_child.getAttribute( 
-                                                "lat" );
-                                        break;
-                                    case "title":
-                                        nodesLabels_arr[i]['title'] = f_child.firstChild.nodeValue;
-                                        break;
-                                    case "ident":
-                                        nodesLabels_arr[i]['ident'] = f_child.firstChild.nodeValue;
-                                        break;
-                                }
-                                f_child = f_child.nextSibling;
-                            }
-                            nodesLabels_Count++;
+                    while ( f_child.nextSibling ) {
+                        switch ( f_child.nodeName ) {
+                            case "node":
+                                nodesLabels_arr[i]["points"][0] = { };
+
+                                nodesLabels_arr[i]["points"][0]["lon"] = f_child.getAttribute(
+                                        "lon" );
+                                nodesLabels_arr[i]["points"][0]["lat"] = f_child.getAttribute(
+                                        "lat" );
+                                break;
+                            case "title":
+                                nodesLabels_arr[i]['title'] = f_child.firstChild.nodeValue;
+                                break;
+                            case "ident":
+                                nodesLabels_arr[i]['ident'] = f_child.firstChild.nodeValue;
+                                break;
                         }
-
-                        init();
+                        f_child = f_child.nextSibling;
                     }
+                    nodesLabels_Count++;
+                }
 
-                    GetXMLFile( "get_layers.php?mode=GetCableLines",
-                            parseCableLineXML ); // получаем кабельные линии
+                init();
+            }
+
+            GetXMLFile( "get_layers.php?mode=GetCableLines",
+                    parseCableLineXML ); // получаем кабельные линии
         </script>	
     </head>
     <body>
