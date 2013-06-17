@@ -579,8 +579,20 @@
                                 selectSingPoint = true;
                             },
                             title: "Позволяет добавлять/изменять особые точки",
-                            text: "Добавить<br>особую точку"
+                            text: "Добавить<br>особую точку",
+                            mode: OpenLayers.Control.Navigation
                         } );
+                /*var addSingPoint = new OpenLayers.Control.ModifyFeature(
+                 addCableLineLayer,
+                 { trigger: function() {
+                 //alert( 'clicked' );
+                 selectLineControl.activate();
+                 selectSingPoint = true;
+                 },
+                 title: "Позволяет добавлять/изменять особые точки",
+                 text: "Добавить<br>особую точку",
+                 mode: OpenLayers.Control.ModifyFeature.RESHAPE
+                 } );*/
 
                 panel.addControls(
                         [ editCable, drawCable, addSingPoint ] );
