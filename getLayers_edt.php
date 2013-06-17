@@ -433,4 +433,20 @@ elseif ( $_GET[ 'mode' ] == "GetCableTypes" )
     $res = json_encode( $cableTypesJSON );
     print( $res );
 }
+elseif ( $_GET[ 'mode' ] == "GetNodes" )
+{
+    require_once("backend/NetworkNode.php");
+
+    $res = NetworkNode_SELECT( 0, '', '' );
+    $rows = $res[ 'rows' ];
+    $nodesJSON[ 'Nodes' ] = array( );
+    $i = -1;
+    while ( ++$i < $res[ 'count' ] )
+    {
+        $nodesJSON[ 'Nodes' ][ $i ][ 'id' ] = (int) $rows[ $i ][ 'id' ];
+        $nodesJSON[ 'Nodes' ][ $i ][ 'name' ] = $rows[ $i ][ 'name' ];
+    }
+    $res = json_encode( $nodesJSON );
+    print( $res );
+}
 ?>

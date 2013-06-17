@@ -7,20 +7,32 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
     $obj = json_decode( $_POST[ 'coors' ] );
     $coors = $obj->{'coorArr'};
-    $CableLine = $obj->{'CableLineId'};
-    if ( $CableLine != -1 )
+    $CableLineId = $obj->{'CableLineId'};
+    if ( $_POST[ 'mode' ] == "updCableLine" )
     {
         $seqStart = $obj->{'seqStart'};
         $seqEnd = $obj->{'seqEnd'};
-        updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd );
+        updCableLinePoints( $coors, $CableLineId, $seqStart, $seqEnd );
     }
-    else
+    elseif ( $_POST[ 'mode' ] == "addCableLine" )
     {
         $length = $obj->{'length'};
         $name = $obj->{'name'};
         $comment = $obj->{'comment'};
         $CableType = $obj->{'CableType'};
         addCableLinePoint( $coors, $CableType, $length, $name, $comment );
+    }
+    elseif ( $_POST[ 'mode' ] == "addSingPoint" )
+    {
+        require_once("func/CableType.php");
+
+        $apartment = $obj->{'apartment'};
+        $building = $obj->{'building'};
+        $meterSign = $obj->{'meterSign'};
+        $note = $obj->{'note'};
+        $networkNode = $obj->{'networkNode'};
+        addSingPoint( $coors, $CableLineId, $networkNode, $apartment, $building,
+                $meterSign, $note );
     }
 }
 ?>

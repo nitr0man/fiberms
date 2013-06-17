@@ -86,6 +86,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
 function addCableLinePoint( $coors, $CableType, $length, $name, $comment )
 {
     require_once 'func/CableType.php';
+
     $ins[ 'CableType' ] = $CableType;
     $ins[ 'length' ] = $length;
     $ins[ 'name' ] = $name;
@@ -105,4 +106,22 @@ function addCableLinePoint( $coors, $CableType, $length, $name, $comment )
         PQuery( $query );
     }
 }
+
+function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
+        $building, $meterSign, $note )
+{
+    $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
+    $wr[ 'CableLine' ] = $CableLineId;
+    $wr[ 'OpenGIS' ] = $OpenGIS;
+    $query = 'SELECT "sequence" FROM "CableLinePoint"'.genWhere( $wr );
+    $res = PQuery( $query );
+    $sequence = $res[ 'rows' ][ 0 ][ 'sequence' ];
+    $query = 'DELETE FROM "CableLinePoint"'.genWhere( $wr );
+    PQuery( $query );
+
+    $SettlementGeoSpatial = "NULL";
+    CableLinePoint_Add( $OpenGIS, $CableLineId, $meterSign, $networkNode, $note,
+            $apartment, $building, $SettlementGeoSpatial, $sequence );
+}
+
 ?>

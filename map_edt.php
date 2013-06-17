@@ -27,8 +27,9 @@
             var lon = 32.24;
             var zoom = 14;
             var map;
-            var drawControls, selectControl, selectedFeature;
-            var lineLayer, lineLayer_halo, layerNodes, layerCableLinePoints, layerNodeNames;
+            var drawControls, selectedFeature;
+            var lineLayer, lineLayer_halo, layerNodes, layerCableLinePoints, layerNodeNames,
+                    selectSingPointLayer;
             var CableLineText_arr = Array();
             var CableLine_arr = { };
 
@@ -36,10 +37,13 @@
             var converted;
             var CableLineEdtInfo = { };
             var jsonInsertCoor;
-            var cableTypeArr;
+            var cableTypeArr, nodesArr;
             var refresh = new OpenLayers.Strategy.Refresh(
                     { force: true, active: true } );
             var mapCr = true;
+            var selectSingPoint = false;
+            var selectLineControl, selectSingPointControl;
+            var selectedCableLineId;
 
             var j = 0, j2 = 0;
             var CableLine_Points_count = Array();
@@ -86,6 +90,20 @@
                     }
                 }
                 $.get( 'getLayers_edt.php?mode=GetCableTypes',
+                        fillArr );
+            }
+
+            function getNodes() {
+                function fillArr( data ) {
+                    nodesArrObj = JSON.parse( data );
+                    nodesArr = [ ];
+                    for ( var i = 0; i < nodesArrObj.Nodes.length; i++ ) {
+                        nodesArr[i] = [ ];
+                        nodesArr[i][0] = nodesArrObj.Nodes[i].id;
+                        nodesArr[i][1] = nodesArrObj.Nodes[i].name;
+                    }
+                }
+                $.get( 'getLayers_edt.php?mode=GetNodes',
                         fillArr );
             }
 
@@ -188,19 +206,11 @@
                 }
                 json = JSON.stringify( jsonInsertCoor );
                 addCableLineLayer.destroyFeatures();
-                $.post( "map_post.php", { coors: json }, function() {
+                $.post( "map_post.php", { coors: json, mode: "addCableLine" },
+                function() {
                     refreshAllLayers();
                 } );
             }
-
-
-
-            var saveCable = new OpenLayers.Strategy.Save( {
-                auto: true,
-                onCommit: refreshAllLayers
-            } );
-
-
 
             function addPoint( lon, lat, title, ident, layr ) {
                 var ttt = new OpenLayers.LonLat( parseFloat( lon ),
@@ -237,6 +247,123 @@
                         control.deactivate();
                     }
                 }
+            }
+
+            function getSingPoints( event ) {
+                if ( selectSingPoint ) {
+                    var feature = event.feature;
+                    selectedCableLineId = CableLineEdtInfo[feature.id]['cableLineId'];
+                    coor = feature.geometry.getVertices();
+                    for ( var i = 0; i < coor.length; i++ )
+                    {
+                        var point = new OpenLayers.Geometry.Point( coor[ i ].x,
+                                coor[ i ].y );
+                        selectSingPointLayer.addFeatures(
+                                [ new OpenLayers.Feature.Vector( point ) ] );
+                    }
+                    selectSingPointControl.activate();
+                    //alert( "select" );
+                    //selectSingPoint = false;
+                }
+            }
+
+            function setSingPoint( event ) {
+                var jsonSingPointCoor = {
+                    CableLineId: "",
+                    meterSign: "",
+                    apartment: "",
+                    building: "",
+                    note: "",
+                    networkNode: "",
+                    coorArr: [ ]
+                };
+                var feature = event.feature;
+                var coorSingPoint = feature.geometry.getVertices();
+                form = Ext.create( 'Ext.form.Panel', {
+                    bodyPadding: 10,
+                    defaultType: 'textfield',
+                    items: [
+                        {
+                            xtype: 'combobox',
+                            fieldLabel: 'Узел',
+                            name: 'networkNode',
+                            valueField: 'value',
+                            displayField: 'text',
+                            store: new Ext.data.SimpleStore( {
+                                id: nodesArr[0].id,
+                                fields:
+                                        [
+                                            'value',
+                                            'text'
+                                        ],
+                                data: nodesArr
+                            } )
+                        },
+                        {
+                            fieldLabel: 'Отметка',
+                            name: 'meterSign',
+                            value: ''
+                        },
+                        {
+                            fieldLabel: 'Квартира',
+                            name: 'apartment',
+                            value: ''
+                        },
+                        {
+                            fieldLabel: 'Здание',
+                            name: 'building',
+                            value: ''
+                        },
+                        {
+                            fieldLabel: 'Примечание',
+                            name: 'note',
+                            value: ''
+                        }
+                    ],
+                    buttons: [
+                        {
+                            text: 'Добавить',
+                            handler: function() {
+                                var form = this.up( 'form' ).getForm();
+                                jsonSingPointCoor.CableLineId = selectedCableLineId;
+                                jsonSingPointCoor.apartment = form.getValues().apartment;
+                                jsonSingPointCoor.building = form.getValues().building;
+                                jsonSingPointCoor.meterSign = form.getValues().meterSign;
+                                jsonSingPointCoor.note = form.getValues().note;
+                                jsonSingPointCoor.networkNode = form.getValues().networkNode;
+                                addSingPoint( coorSingPoint,
+                                        jsonSingPointCoor );
+                                dialog.destroy();
+                            }
+                        }
+                    ]
+                } );
+                dialog = new Ext.Window( {
+                    title: "Добавить особую точку",
+                    layout: "fit",
+                    height: 220, width: 330,
+                    plain: true,
+                    items: [ form ]
+                } );
+                dialog.show();
+                selectSingPointControl.deactivate();
+                selectSingPointLayer.destroyFeatures();
+            }
+
+            function addSingPoint( coor, jsonSingPointCoor ) {
+                //coor = feature.geometry.getVertices();
+                var ll = new OpenLayers.LonLat( coor[ 0 ].x,
+                        coor[ 0 ].y ).transform(
+                        new OpenLayers.Projection( "EPSG:900913" ),
+                        new OpenLayers.Projection( "EPSG:4326" ) );
+                jsonSingPointCoor.coorArr[ 0 ] = { };
+                jsonSingPointCoor.coorArr[ 0 ]["lon"] = ll.lon;
+                jsonSingPointCoor.coorArr[ 0 ]["lat"] = ll.lat;
+                json = JSON.stringify( jsonSingPointCoor );
+                $.post( "map_post.php", { coors: json, mode: "addSingPoint" },
+                function() {
+                    refreshAllLayers();
+                } );
             }
 
             function init() {
@@ -325,6 +452,7 @@
                                     } )
                         } );
                 map.addLayer( layerNodeNames );
+
                 function updCableLine(
                         event ) {
                     jsonCoor = {
@@ -353,18 +481,34 @@
                     json = JSON.stringify(
                             jsonCoor );
                     $.post( "map_post.php",
-                            { coors: json }, function() {
+                            { coors: json, mode: "updCableLine" }, function() {
                         refreshAllLayers();
                     } );
                 }
                 lineLayer.events.on( {
-                    "afterfeaturemodified": updCableLine
+                    "afterfeaturemodified": updCableLine,
+                    "featureselected": getSingPoints
                 } );
+                selectLineControl = new OpenLayers.Control.SelectFeature(
+                        [ lineLayer ] );
+                map.addControl( selectLineControl );
+                //selectLineControl.activate();
 
                 addCableLineLayer = new OpenLayers.Layer.Vector(
                         "AddLineLayer" );
                 map.addLayer(
                         addCableLineLayer );
+                selectSingPointLayer = new OpenLayers.Layer.Vector(
+                        "SelectSingPointLayer" );
+                map.addLayer(
+                        selectSingPointLayer );
+
+                selectSingPointLayer.events.on( {
+                    "featureselected": setSingPoint
+                } );
+                selectSingPointControl = new OpenLayers.Control.SelectFeature(
+                        [ selectSingPointLayer ] );
+                map.addControl( selectSingPointControl );
 
                 function addCableLine(
                         event ) {
@@ -413,7 +557,10 @@
                     displayClass: "olControlMoveClosure",
                     modified: true,
                     createVertices: true,
-                    mode: OpenLayers.Control.ModifyFeature.RESHAPE
+                    mode: OpenLayers.Control.ModifyFeature.RESHAPE,
+                    trigger: function() {
+                        selectLineControl.deactivate();
+                    }
                 } );
 
                 var drawCable = new OpenLayers.Control.DrawFeature(
@@ -425,9 +572,18 @@
                             displayClass: "olControlDrawClosure",
                             handlerOptions: { multi: false }
                         } );
+                var addSingPoint = new OpenLayers.Control.Button(
+                        { trigger: function() {
+                                //alert( 'clicked' );
+                                selectLineControl.activate();
+                                selectSingPoint = true;
+                            },
+                            title: "Позволяет добавлять/изменять особые точки",
+                            text: "Добавить<br>особую точку"
+                        } );
 
                 panel.addControls(
-                        [ editCable, drawCable ] );
+                        [ editCable, drawCable, addSingPoint ] );
                 map.addControl(
                         panel );
 
@@ -713,6 +869,7 @@
             j = 0;
             j2 = 0;
             getCableTypes(); // получаем типы кабелей            
+            getNodes(); // получаем узлы
             GetXMLFile(
                     "getLayers_edt.php?mode=GetCableLines",
                     parseCableLineXML ); // получаем кабельные линии

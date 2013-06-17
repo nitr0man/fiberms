@@ -176,7 +176,7 @@ function CableLinePoint_Mod( $id, $OpenGIS, $CableLine, $meterSign,
 }
 
 function CableLinePoint_Add( $OpenGIS, $CableLine, $meterSign, $networkNode,
-        $note, $Apartment, $Building, $SettlementGeoSpatial )
+        $note, $Apartment, $Building, $SettlementGeoSpatial, $sequence = -1 )
 {
     if ( CableLinePoint_Check( $OpenGIS, $CableLine, $meterSign, $networkNode,
                     $note, $Apartment, $Building, $SettlementGeoSpatial ) == 0 )
@@ -195,6 +195,10 @@ function CableLinePoint_Add( $OpenGIS, $CableLine, $meterSign, $networkNode,
     $ins[ 'Apartment' ] = "NULL";
     $ins[ 'Building' ] = "NULL";
     $ins[ 'SettlementGeoSpatial' ] = "NULL";
+    if ( $sequence > -1 )
+    {
+        $ins[ 'sequence' ] = $sequence;
+    }
     $res = CableLinePoint_INSERT( $ins );
     if ( isset( $res[ 'error' ] ) )
     {
