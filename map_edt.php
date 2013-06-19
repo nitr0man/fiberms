@@ -44,8 +44,9 @@
             var refresh = new OpenLayers.Strategy.Refresh(
                     { force: true, active: true } );
             var mapCr = true;
-            var selectSingPoint = false;
-            var selectLineControl, selectSingPointControl;
+            var selectSingPoint = false, selectDeleteSingPointMode = false;
+            var selectLineControl, selectSingPointControl,
+                    selectDeleteSingPointControl;
             var selectedCableLineId;
 
             var j = 0, j2 = 0;
@@ -226,6 +227,12 @@
                                 format: new OpenLayers.Format.Text()
                             } )
                 } );
+                layerCableLinePoints.events.on( {
+                    "featureselected": selectDeleteSingPoint
+                } );
+                selectDeleteSingPointControl = new OpenLayers.Control.SelectFeature(
+                        [ layerCableLinePoints ] );
+                map.addControl( selectDeleteSingPointControl );
 
                 map.addLayer(
                         layerCableLinePoints );
@@ -307,6 +314,8 @@
                 editCable.events.register( "activate", this, function() {
                     selectSingPointControl.deactivate();
                     selectSingPoint = false;
+                    selectDeleteSingPointControl.deactivate();
+                    selectDeleteSingPointMode = false;
                 } );
 
                 var drawCable = new OpenLayers.Control.DrawFeature(
@@ -321,21 +330,36 @@
                 drawCable.events.register( "activate", this, function() {
                     selectSingPointControl.deactivate();
                     selectSingPoint = false;
+                    selectDeleteSingPointControl.deactivate();
+                    selectDeleteSingPointMode = false;
                 } );
 
                 var addSingPoint = new OpenLayers.Control.Navigation(
                         {
-                            title: "Позволяет добавлять/изменять особые точки",
+                            title: "Позволяет добавлять особые точки",
                             text: "Добавить<br>особую точку",
                             mode: OpenLayers.Control.Navigation
                         } );
                 addSingPoint.events.register( "activate", this, function() {
                     selectLineControl.activate();
                     selectSingPoint = true;
+                    selectDeleteSingPointControl.deactivate();
+                    selectDeleteSingPointMode = false;
+                } );
+                //selectDeleteSingPointControl
+                var deleteSingPoint = new OpenLayers.Control.Navigation(
+                        {
+                            title: "Позволяет удалять особые точки",
+                            text: "Удалить<br>особую точку",
+                            mode: OpenLayers.Control.Navigation
+                        } );
+                deleteSingPoint.events.register( "activate", this, function() {
+                    selectDeleteSingPointControl.activate();
+                    selectDeleteSingPointMode = true;
                 } );
 
                 panel.addControls(
-                        [ editCable, drawCable, addSingPoint ] );
+                        [ editCable, drawCable, addSingPoint, deleteSingPoint ] );
                 map.addControl(
                         panel );
 

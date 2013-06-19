@@ -114,3 +114,23 @@ function addSingPoint( coor, jsonSingPointCoor ) {
         refreshAllLayers();
     } );
 }
+
+function selectDeleteSingPoint( event ) {
+    var jsonCoor = {
+        coorArr: [ ]
+    };
+    var feature = event.feature;
+    var coorSingPoint = feature.geometry.getVertices();
+    var ll = new OpenLayers.LonLat( coorSingPoint[ 0 ].x,
+            coorSingPoint[ 0 ].y ).transform(
+            new OpenLayers.Projection( "EPSG:900913" ),
+            new OpenLayers.Projection( "EPSG:4326" ) );
+    jsonCoor.coorArr[0] = { };
+    jsonCoor.coorArr[ 0 ]["lon"] = ll.lon;
+    jsonCoor.coorArr[ 0 ]["lat"] = ll.lat;
+    json = JSON.stringify( jsonCoor );
+    $.post( "map_post.php", { coors: json, mode: "deleteSingPoint" },
+    function() {
+        refreshAllLayers();
+    } );
+}

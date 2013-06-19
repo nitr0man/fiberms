@@ -34,5 +34,9 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         addSingPoint( $coors, $CableLineId, $networkNode, $apartment, $building,
                 $meterSign, $note );
     }
+    elseif ( $_POST[ 'mode' ] == "deleteSingPoint" )
+    {
+        deleteSingPoint( $coors );
+    }
 }
 ?>

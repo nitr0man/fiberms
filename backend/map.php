@@ -143,4 +143,14 @@ function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
             $apartment, $building, $SettlementGeoSpatial, $sequence );
 }
 
+function deleteSingPoint( $coors )
+{
+    $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
+    $upd[ 'meterSign' ] = "NULL";
+    $upd[ 'note' ] = "NULL";
+    $wr[ 'OpenGIS' ] = $OpenGIS;
+    $query = 'UPDATE "CableLinePoint" SET '.genUpdate( $upd ).genWhere( $wr );
+    PQuery( $query );
+}
+
 ?>
