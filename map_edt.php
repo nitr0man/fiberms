@@ -17,11 +17,11 @@
         <!--script src="http://openlayers.org/api/OpenLayers.js"></script-->
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
         <script src="js/ext-all.js"></script>
-        <script type="text/javascript" src="js/MarkerGrid.js"></script>
+        <!--script type="text/javascript" src="js/MarkerGrid.js"></script>
         <script type="text/javascript" src="js/MarkerTile.js"></script>
-        <script type="text/javascript" src="js/bounds.js"></script>
+        <script type="text/javascript" src="js/bounds.js"></script-->
         <script type="text/javascript" src="js/js_xml.js"></script>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>        
         <script type="text/javascript" src="js/map_edt_cableLine.js"></script>
         <script type="text/javascript" src="js/map_edt_singPoint.js"></script>
         <script type="text/javascript" src="js/map_edt_parseXML.js"></script>
@@ -58,28 +58,24 @@
                 strokeColor: 'blue',
                 //strokeOpacity: 5.5
                 strokeWidth: 2
-                        // Стиль линии (0 волокон)
             },
             {
                 // Стиль линии (1-8 волокон)
                 strokeColor: 'white',
                 //strokeOpacity: 5.5
                 strokeWidth: 2
-                        // Стиль линии (1-8 волокон)
             },
             {
                 // Стиль линии (9-24 волокон)
                 strokeColor: 'white',
                 //strokeOpacity: 5.5
                 strokeWidth: 4
-                        // Стиль линии (9-24 волокон)
             },
             {
                 // Стиль линии (25+ волокон)
                 strokeColor: 'white',
                 //strokeOpacity: 5.5
                 strokeWidth: 6
-                        // Стиль линии (25+ волокон)
             } );
 
             function getCableTypes() {
