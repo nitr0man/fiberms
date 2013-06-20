@@ -371,14 +371,15 @@
                             mode: OpenLayers.Control.Navigation
                         } );
 
-                addSingPoint.events.register( "activate", this, function() {
-                    selectLineControl.activate();
-                    selectSingPoint = true;
-                    selectDeleteSingPointControl.deactivate();
-                    selectDeleteSingPointMode = false;
-                    selectDeleteCableLineControl.deactivate();
-                    selectDeleteCableLineMode = false;
-                } );
+                addSingPoint.events.register( "activate", this,
+                        function() {
+                            selectDeleteSingPointControl.deactivate();
+                            selectDeleteSingPointMode = false;
+                            selectDeleteCableLineControl.deactivate();
+                            selectDeleteCableLineMode = false;
+                            selectLineControl.activate();
+                            selectSingPoint = true;
+                        } );
                 //selectDeleteSingPointControl
                 var deleteSingPoint = new OpenLayers.Control.Navigation(
                         {
@@ -386,14 +387,15 @@
                             text: "Удалить<br>особую точку",
                             mode: OpenLayers.Control.Navigation
                         } );
-                deleteSingPoint.events.register( "activate", this, function() {
-                    selectDeleteSingPointControl.activate();
-                    selectDeleteSingPointMode = true;
-                    selectDeleteSingPointControl.deactivate();
-                    selectDeleteSingPointMode = false;
-                    selectDeleteCableLineControl.deactivate();
-                    selectDeleteCableLineMode = false;
-                } );
+                deleteSingPoint.events.register( "activate", this,
+                        function() {
+                            selectDeleteSingPointControl.deactivate();
+                            selectDeleteSingPointMode = false;
+                            selectDeleteCableLineControl.deactivate();
+                            selectDeleteCableLineMode = false;
+                            selectDeleteSingPointControl.activate();
+                            selectDeleteSingPointMode = true;
+                        } );
 
                 panel.addControls(
                         [ editCable, drawCable, deleteCableLine,
