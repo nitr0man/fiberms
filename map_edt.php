@@ -44,9 +44,10 @@
             var refresh = new OpenLayers.Strategy.Refresh(
                     { force: true, active: true } );
             var mapCr = true;
-            var selectSingPoint = false, selectDeleteSingPointMode = false;
+            var selectSingPoint = false, selectDeleteSingPointMode = false,
+                    selectDeleteCableLineMode = false;
             var selectLineControl, selectSingPointControl,
-                    selectDeleteSingPointControl;
+                    selectDeleteSingPointControl, selectDeleteCableLineControl;
             var selectedCableLineId;
 
             var j = 0, j2 = 0;
@@ -190,6 +191,12 @@
                 lineLayer = new OpenLayers.Layer.Vector(
                         "Кабельные линии" );
                 map.addLayer( lineLayer );
+                lineLayer.events.on( {
+                    "featureselected": selectDeleteCableLine
+                } );
+                selectDeleteCableLineControl = new OpenLayers.Control.SelectFeature(
+                        [ lineLayer ] );
+                map.addControl( selectDeleteCableLineControl );
 
                 var styleMarkersLabels = new OpenLayers.Style( // стили для надписей узлов
                         {
@@ -311,11 +318,14 @@
                     createVertices: true,
                     mode: OpenLayers.Control.ModifyFeature.RESHAPE
                 } );
+
                 editCable.events.register( "activate", this, function() {
                     selectSingPointControl.deactivate();
                     selectSingPoint = false;
                     selectDeleteSingPointControl.deactivate();
                     selectDeleteSingPointMode = false;
+                    selectDeleteCableLineControl.deactivate();
+                    selectDeleteCableLineMode = false;
                 } );
 
                 var drawCable = new OpenLayers.Control.DrawFeature(
@@ -327,11 +337,31 @@
                             displayClass: "olControlDrawCable",
                             handlerOptions: { multi: false }
                         } );
+
                 drawCable.events.register( "activate", this, function() {
                     selectSingPointControl.deactivate();
                     selectSingPoint = false;
                     selectDeleteSingPointControl.deactivate();
                     selectDeleteSingPointMode = false;
+                    selectDeleteCableLineControl.deactivate();
+                    selectDeleteCableLineMode = false;
+                } );
+
+                var deleteCableLine = new OpenLayers.Control.Navigation(
+                        {
+                            title: "Позволяет удалять кабельные линии",
+                            text: "Удалить<br>линию",
+                            mode: OpenLayers.Control.Navigation
+                        }
+                );
+
+                deleteCableLine.events.register( "activate", this, function() {
+                    selectSingPointControl.deactivate();
+                    selectSingPoint = false;
+                    selectDeleteSingPointControl.deactivate();
+                    selectDeleteSingPointMode = false;
+                    selectDeleteCableLineControl.activate();
+                    selectDeleteCableLineMode = true;
                 } );
 
                 var addSingPoint = new OpenLayers.Control.Navigation(
@@ -340,11 +370,14 @@
                             text: "Добавить<br>особую точку",
                             mode: OpenLayers.Control.Navigation
                         } );
+
                 addSingPoint.events.register( "activate", this, function() {
                     selectLineControl.activate();
                     selectSingPoint = true;
                     selectDeleteSingPointControl.deactivate();
                     selectDeleteSingPointMode = false;
+                    selectDeleteCableLineControl.deactivate();
+                    selectDeleteCableLineMode = false;
                 } );
                 //selectDeleteSingPointControl
                 var deleteSingPoint = new OpenLayers.Control.Navigation(
@@ -356,10 +389,15 @@
                 deleteSingPoint.events.register( "activate", this, function() {
                     selectDeleteSingPointControl.activate();
                     selectDeleteSingPointMode = true;
+                    selectDeleteSingPointControl.deactivate();
+                    selectDeleteSingPointMode = false;
+                    selectDeleteCableLineControl.deactivate();
+                    selectDeleteCableLineMode = false;
                 } );
 
                 panel.addControls(
-                        [ editCable, drawCable, addSingPoint, deleteSingPoint ] );
+                        [ editCable, drawCable, deleteCableLine,
+                            addSingPoint, deleteSingPoint ] );
                 map.addControl(
                         panel );
 

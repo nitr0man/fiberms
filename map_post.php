@@ -7,7 +7,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
     $obj = json_decode( $_POST[ 'coors' ] );
     $coors = $obj->{'coorArr'};
-    $CableLineId = $obj->{'CableLineId'};
+    $CableLineId = (int)$obj->{'CableLineId'};
     if ( $_POST[ 'mode' ] == "updCableLine" )
     {
         $seqStart = $obj->{'seqStart'};
@@ -37,6 +37,10 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     elseif ( $_POST[ 'mode' ] == "deleteSingPoint" )
     {
         deleteSingPoint( $coors );
+    }
+    elseif ( $_POST[ 'mode' ] == "deleteCableLine" )
+    {
+        deleteCableLine( $CableLineId );
     }
 }
 ?>

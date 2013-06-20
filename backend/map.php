@@ -153,4 +153,15 @@ function deleteSingPoint( $coors )
     PQuery( $query );
 }
 
+function deleteCableLine( $CableLineId )
+{
+    $wr[ 'CableLine' ] = $CableLineId;
+    $query = 'DELETE FROM "CableLinePoint"'.genWhere( $wr );
+    PQuery( $query );
+    unset( $wr );
+    $wr[ 'id' ] = $CableLineId;
+    $query = 'DELETE FROM "CableLine"'.genWhere( $wr );
+    PQuery( $query );
+}
+
 ?>
