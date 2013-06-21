@@ -142,7 +142,6 @@ function CableLinePoint_UPDATE( $upd, $wr )
     {
         $query .= genWhere( $wr );
     }
-    unset( $field, $value );
     $result = PQuery( $query );
     loggingIs( 1, 'CableLinePoint', $upd, $wr[ 'id' ] );
     return $result;
