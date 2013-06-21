@@ -135,7 +135,7 @@ function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
     $query = 'SELECT "sequence" FROM "CableLinePoint"'.genWhere( $wr );
     $res = PQuery( $query );
     $sequence = $res[ 'rows' ][ 0 ][ 'sequence' ];
-    $query = 'DELETE FROM "CableLinePoint"'.genWhere( $wr );
+    $query = 'DELETE FROM "CableLinePoint"'.genWhere( $wr ).';';
     PQuery( $query );
 
     $SettlementGeoSpatial = "NULL";

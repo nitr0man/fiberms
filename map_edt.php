@@ -326,6 +326,8 @@
                     selectDeleteSingPointMode = false;
                     selectDeleteCableLineControl.deactivate();
                     selectDeleteCableLineMode = false;
+                    selectLineControl.deactivate();
+                    selectSingPoint = false;
                 } );
 
                 var drawCable = new OpenLayers.Control.DrawFeature(
@@ -345,6 +347,8 @@
                     selectDeleteSingPointMode = false;
                     selectDeleteCableLineControl.deactivate();
                     selectDeleteCableLineMode = false;
+                    selectLineControl.deactivate();
+                    selectSingPoint = false;
                 } );
 
                 var deleteCableLine = new OpenLayers.Control.Navigation(
@@ -360,6 +364,8 @@
                     selectSingPoint = false;
                     selectDeleteSingPointControl.deactivate();
                     selectDeleteSingPointMode = false;
+                    selectLineControl.deactivate();
+                    selectSingPoint = false;
                     selectDeleteCableLineControl.activate();
                     selectDeleteCableLineMode = true;
                 } );
@@ -393,6 +399,8 @@
                             selectDeleteSingPointMode = false;
                             selectDeleteCableLineControl.deactivate();
                             selectDeleteCableLineMode = false;
+                            selectLineControl.deactivate();
+                            selectSingPoint = false;
                             selectDeleteSingPointControl.activate();
                             selectDeleteSingPointMode = true;
                         } );

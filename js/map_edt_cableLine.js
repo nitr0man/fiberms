@@ -137,17 +137,19 @@ function addCableLine(
 }
 
 function selectDeleteCableLine( event ) {
-    jsonCoor = {
-        CableLineId: "",
-        coorArr: [ ]
-    };
-    var feature = event.feature;
-    jsonCoor.CableLineId = CableLineEdtInfo[feature.id]['cableLineId'];
-    json = JSON.stringify(
-            jsonCoor );
-    $.post( "map_post.php",
-            { coors: json, mode: "deleteCableLine" }, function() {
-        refreshAllLayers();
-    } );
+    if ( selectDeleteCableLineMode ) {
+        jsonCoor = {
+            CableLineId: "",
+            coorArr: [ ]
+        };
+        var feature = event.feature;
+        jsonCoor.CableLineId = CableLineEdtInfo[feature.id]['cableLineId'];
+        json = JSON.stringify(
+                jsonCoor );
+        $.post( "map_post.php",
+                { coors: json, mode: "deleteCableLine" }, function() {
+            refreshAllLayers();
+        } );
+    }
 }
 
