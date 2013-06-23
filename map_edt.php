@@ -23,6 +23,7 @@
         <script type="text/javascript" src="js/js_xml.js"></script>
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>        
         <script type="text/javascript" src="js/map_edt_cableLine.js"></script>
+        <script type="text/javascript" src="js/map_edt_node.js"></script>
         <script type="text/javascript" src="js/map_edt_singPoint.js"></script>
         <script type="text/javascript" src="js/map_edt_parseXML.js"></script>
         <script type="text/javascript">
@@ -32,7 +33,7 @@
             var map;
             var drawControls, selectedFeature;
             var lineLayer, lineLayer_halo, layerNodes, layerCableLinePoints, layerNodeNames,
-                    selectSingPointLayer;
+                    selectSingPointLayer, addNodeLayer;
             var CableLineText_arr = Array();
             var CableLine_arr = { };
 
@@ -40,7 +41,7 @@
             var converted;
             var CableLineEdtInfo = { };
             var jsonInsertCoor;
-            var cableTypeArr, nodesArr;
+            var cableTypeArr, nodesArr, networkBoxesArr;
             var refresh = new OpenLayers.Strategy.Refresh(
                     { force: true, active: true } );
             var mapCr = true;
@@ -89,6 +90,7 @@
                 selectDeleteCableLineMode = false;
                 selectLineControl.deactivate();
                 selectSingPoint = false;
+                addNodeControl.deactivate();
             }
 
             function getCableTypes() {
@@ -116,6 +118,20 @@
                     }
                 }
                 $.get( 'getLayers_edt.php?mode=GetNodes',
+                        fillArr );
+            }
+
+            function getNetworkBoxes() {
+                function fillArr( data ) {
+                    var networkBoxesObj = JSON.parse( data );
+                    networkBoxesArr = [ ];
+                    for ( var i = 0; i < networkBoxesObj.Boxes.length; i++ ) {
+                        networkBoxesArr[i] = [ ];
+                        networkBoxesArr[i][0] = networkBoxesObj.Boxes[i].id;
+                        networkBoxesArr[i][1] = networkBoxesObj.Boxes[i].inventoryNumber;
+                    }
+                }
+                $.get( 'getLayers_edt.php?mode=GetNetworkBoxes',
                         fillArr );
             }
 
@@ -279,10 +295,25 @@
                         "AddLineLayer" );
                 map.addLayer(
                         addCableLineLayer );
+                addCableLineLayer.events.on( {
+                    "featureadded": addCableLine
+                } );
+
                 selectSingPointLayer = new OpenLayers.Layer.Vector(
                         "SelectSingPointLayer" );
                 map.addLayer(
                         selectSingPointLayer );
+
+                addNodeLayer = new OpenLayers.Layer.Vector(
+                        "AddNodeLayer" );
+                map.addLayer(
+                        addNodeLayer );
+                addNodeLayer.events.on( {
+                    "featureadded": addNodeMsg
+                } );
+                addNodeControl = new OpenLayers.Control.SelectFeature(
+                        [ addNodeLayer ] );
+                map.addControl( addNodeControl );
 
                 selectSingPointLayer.events.on( {
                     "featureselected": setSingPoint
@@ -290,10 +321,6 @@
                 selectSingPointControl = new OpenLayers.Control.SelectFeature(
                         [ selectSingPointLayer ] );
                 map.addControl( selectSingPointControl );
-
-                addCableLineLayer.events.on( {
-                    "featureadded": addCableLine
-                } );
 
                 var panel = new OpenLayers.Control.Panel(
                         {
@@ -389,9 +416,21 @@
                             selectDeleteSingPointMode = true;
                         } );
 
+                var addNode = new OpenLayers.Control.DrawFeature( addNodeLayer,
+                        OpenLayers.Handler.Point, {
+                    title: "Позволяет добавлять узлы",
+                    text: "Добавить<br>узел",
+                    handlerOptions: { multi: false }
+                } );
+                addNode.events.register( "activate", this,
+                        function() {
+                            disableControls();
+                            //addNodeControl.activate();
+                        } );
+
                 panel.addControls(
                         [ editCable, drawCable, deleteCableLine,
-                            addSingPoint, deleteSingPoint ] );
+                            addSingPoint, deleteSingPoint, addNode ] );
                 map.addControl(
                         panel );
 
@@ -525,6 +564,7 @@
             j2 = 0;
             getCableTypes(); // получаем типы кабелей            
             getNodes(); // получаем узлы
+            getNetworkBoxes(); // получаем ящики
             GetXMLFile(
                     "getLayers_edt.php?mode=GetCableLines",
                     parseCableLineXML ); // получаем кабельные линии

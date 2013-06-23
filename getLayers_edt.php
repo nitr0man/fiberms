@@ -449,4 +449,20 @@ elseif ( $_GET[ 'mode' ] == "GetNodes" )
     $res = json_encode( $nodesJSON );
     print( $res );
 }
+elseif ( $_GET[ 'mode' ] == "GetNetworkBoxes" )
+{
+    require_once("backend/NetworkNode.php");
+
+    $res = getFreeNetworkBoxes( -1 );
+    $rows = $res[ 'rows' ];
+    $boxesJSON[ 'Boxes' ] = array( );
+    $i = -1;
+    while ( ++$i < $res[ 'count' ] )
+    {
+        $boxesJSON[ 'Boxes' ][ $i ][ 'id' ] = (int) $rows[ $i ][ 'id' ];
+        $boxesJSON[ 'Boxes' ][ $i ][ 'inventoryNumber' ] = $rows[ $i ][ 'inventoryNumber' ];
+    }
+    $res = json_encode( $boxesJSON );
+    print( $res );
+}
 ?>

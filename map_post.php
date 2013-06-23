@@ -7,7 +7,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
     $obj = json_decode( $_POST[ 'coors' ] );
     $coors = $obj->{'coorArr'};
-    $CableLineId = (int)$obj->{'CableLineId'};
+    $CableLineId = (int) $obj->{'CableLineId'};
     if ( $_POST[ 'mode' ] == "updCableLine" )
     {
         $seqStart = $obj->{'seqStart'};
@@ -41,6 +41,16 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     elseif ( $_POST[ 'mode' ] == "deleteCableLine" )
     {
         deleteCableLine( $CableLineId );
+    }
+    elseif ( $_POST[ 'mode' ] == "addNode" )
+    {
+        $NetworkBoxId = $obj->{'NetworkBoxId'};
+        $apartment = $obj->{'apartment'};
+        $building = $obj->{'building'};
+        $note = $obj->{'note'};
+        $name = $obj->{'name'};
+        addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
+                $building, $apartment );
     }
 }
 ?>

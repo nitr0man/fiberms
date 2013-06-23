@@ -164,4 +164,17 @@ function deleteCableLine( $CableLineId )
     PQuery( $query );
 }
 
+function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
+        $building, $apartment )
+{
+    require_once("func/NetworkNode.php");
+    
+    $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
+    $apartment = "NULL";
+    $building = "NULL";
+    $SettlementGeoSpatial = "NULL";
+    NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
+            $SettlementGeoSpatial, $building, $apartment );
+}
+
 ?>
