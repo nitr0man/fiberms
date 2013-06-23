@@ -43,7 +43,7 @@
             var jsonInsertCoor;
             var cableTypeArr, nodesArr, networkBoxesArr;
             var refresh = new OpenLayers.Strategy.Refresh(
-                    { force: true, active: true } );
+                    { force: true } );
             var mapCr = true;
             var selectSingPoint = false, selectDeleteSingPointMode = false,
                     selectDeleteCableLineMode = false;
@@ -93,6 +93,13 @@
                 addNodeControl.deactivate();
             }
 
+            function getData() {
+                getCableTypes(); // получаем типы кабелей            
+                getNodes(); // получаем узлы
+                getNetworkBoxes(); // получаем ящики
+
+            }
+
             function getCableTypes() {
                 function fillArr( data ) {
                     cableTypesObj = JSON.parse( data );
@@ -138,10 +145,13 @@
             function refreshAllLayers() {
                 lineLayer_halo.destroyFeatures();
                 lineLayer.destroyFeatures();
-                refresh.refresh();
                 layerNodeNames.destroyFeatures();
                 j = 0;
                 nodesLabels_Count = 0;
+                //refresh.refresh();
+                layerNodes.refresh( { force: true } );
+                layerCableLinePoints.refresh( { force: true } );
+                getData();
                 GetXMLFile(
                         "getLayers_edt.php?mode=GetCableLines",
                         parseCableLineXML );
@@ -241,7 +251,7 @@
                         "Узлы",
                         {
                             strategies: [ new OpenLayers.Strategy.BBOX(
-                                        { resFactor: 1.1 } ), refresh ],
+                                        { resFactor: 1.1 } ) ],
                             protocol: new OpenLayers.Protocol.HTTP(
                                     {
                                         url: "get_layers.php?mode=GetNodesMarkers",
@@ -251,16 +261,17 @@
                 map.addLayer( layerNodes );
 
                 layerCableLinePoints = new OpenLayers.Layer.Vector(
-                        "Особые точки линии", {
-                    minScale: 7000,
-                    strategies: [ new OpenLayers.Strategy.BBOX(
-                                { resFactor: 1.1 } ), refresh ],
-                    protocol: new OpenLayers.Protocol.HTTP(
-                            {
-                                url: "get_layers.php?mode=GetSingularCableLinePoints",
-                                format: new OpenLayers.Format.Text()
-                            } )
-                } );
+                        "Особые точки линии",
+                        {
+                            minScale: 7000,
+                            strategies: [ new OpenLayers.Strategy.BBOX(
+                                        { resFactor: 1.1 } ) ],
+                            protocol: new OpenLayers.Protocol.HTTP(
+                                    {
+                                        url: "get_layers.php?mode=GetSingularCableLinePoints",
+                                        format: new OpenLayers.Format.Text()
+                                    } )
+                        } );
                 layerCableLinePoints.events.on( {
                     "featureselected": selectDeleteSingPoint
                 } );
@@ -562,15 +573,13 @@
             //GetXMLFile("get_layers.php?mode=GetCableLines", parseCableLineXML); // получаем кабельные линии
             j = 0;
             j2 = 0;
-            getCableTypes(); // получаем типы кабелей            
-            getNodes(); // получаем узлы
-            getNetworkBoxes(); // получаем ящики
+            getData();
             GetXMLFile(
                     "getLayers_edt.php?mode=GetCableLines",
                     parseCableLineXML ); // получаем кабельные линии
         </script>	
     </head>
     <body>
-        <div id="map"></div><br><!--button onclick="javascript: getCableTypes();">GetCableTypes</button-->
+        <div id="map"></div>
     </body>
 </html>

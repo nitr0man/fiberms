@@ -168,7 +168,7 @@ function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
         $building, $apartment )
 {
     require_once("func/NetworkNode.php");
-    
+
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $apartment = "NULL";
     $building = "NULL";
@@ -177,4 +177,5 @@ function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
             $SettlementGeoSpatial, $building, $apartment );
 }
 
+print( "OK" );
 ?>
