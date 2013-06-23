@@ -7,6 +7,11 @@ function addNodeMsg( event ) {
         note: "",
         coorArr: [ ]
     };
+    if ( networkBoxesArr.length < 1 ) {
+        addNodeLayer.destroyFeatures();
+        // ToDo: show error msg
+        return;
+    }
     var feature = event.feature;
     var coorNode = feature.geometry.getVertices();
     form = Ext.create( 'Ext.form.Panel', {
@@ -75,7 +80,6 @@ function addNodeMsg( event ) {
         items: [ form ]
     } );
     dialog.show();
-    //selectSingPointControl.deactivate();    
 }
 
 function addNode( coor, jsonNodeCoor ) {
