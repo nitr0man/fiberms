@@ -177,5 +177,12 @@ function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
             $SettlementGeoSpatial, $building, $apartment );
 }
 
-print( "OK" );
+function deleteNode( $coors )
+{
+    $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
+    $wr[ 'OpenGIS' ] = $OpenGIS;
+    $query = 'DELETE FROM "NetworkNode"'.genWhere( $wr );
+    PQuery( $query );
+}
+
 ?>

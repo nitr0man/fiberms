@@ -98,3 +98,25 @@ function addNode( coor, jsonNodeCoor ) {
     } );
     addNodeLayer.destroyFeatures();
 }
+
+function selectDeleteNode( event ) {
+    if ( selectDeleteNodeMode ) {
+        var jsonCoor = {
+            coorArr: [ ]
+        };
+        var feature = event.feature;
+        var coorNode = feature.geometry.getVertices();
+        var ll = new OpenLayers.LonLat( coorNode[ 0 ].x,
+                coorNode[ 0 ].y ).transform(
+                new OpenLayers.Projection( "EPSG:900913" ),
+                new OpenLayers.Projection( "EPSG:4326" ) );
+        jsonCoor.coorArr[0] = { };
+        jsonCoor.coorArr[ 0 ]["lon"] = ll.lon;
+        jsonCoor.coorArr[ 0 ]["lat"] = ll.lat;
+        json = JSON.stringify( jsonCoor );
+        $.post( "map_post.php", { coors: json, mode: "deleteNode" },
+        function() {
+            refreshAllLayers();
+        } );
+    }
+}

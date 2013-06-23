@@ -44,7 +44,7 @@
             var cableTypeArr, nodesArr, networkBoxesArr;
             var mapCr = true;
             var selectSingPoint = false, selectDeleteSingPointMode = false,
-                    selectDeleteCableLineMode = false;
+                    selectDeleteCableLineMode = false, selectDeleteNodeMode = false;
             var selectLineControl, selectSingPointControl,
                     selectDeleteSingPointControl, selectDeleteCableLineControl;
             var selectedCableLineId;
@@ -88,7 +88,9 @@
                 selectDeleteCableLineMode = false;
                 selectLineControl.deactivate();
                 selectSingPoint = false;
-                addNodeControl.deactivate();
+                //addNodeControl.deactivate();
+                deleteNodeControl.deactivate();
+                selectDeleteNodeMode = false;
             }
 
             function getData() {
@@ -256,6 +258,12 @@
                                     } )
                         } );
                 map.addLayer( layerNodes );
+                layerNodes.events.on( {
+                    "featureselected": selectDeleteNode
+                } );
+                deleteNodeControl = new OpenLayers.Control.SelectFeature(
+                        [ layerNodes ] );
+                map.addControl( deleteNodeControl );
 
                 layerCableLinePoints = new OpenLayers.Layer.Vector(
                         "Особые точки линии",
@@ -319,9 +327,9 @@
                 addNodeLayer.events.on( {
                     "featureadded": addNodeMsg
                 } );
-                addNodeControl = new OpenLayers.Control.SelectFeature(
+                /*addNodeControl = new OpenLayers.Control.SelectFeature(
                         [ addNodeLayer ] );
-                map.addControl( addNodeControl );
+                map.addControl( addNodeControl );*/
 
                 selectSingPointLayer.events.on( {
                     "featureselected": setSingPoint
@@ -410,7 +418,7 @@
                             selectLineControl.activate();
                             selectSingPoint = true;
                         } );
-                //selectDeleteSingPointControl
+
                 var deleteSingPoint = new OpenLayers.Control.Navigation(
                         {
                             title: "Позволяет удалять особые точки",
@@ -435,10 +443,23 @@
                             disableControls();
                             //addNodeControl.activate();
                         } );
+                        
+                var deleteNode = new OpenLayers.Control.Navigation(
+                        {
+                            title: "Позволяет удалять узлы",
+                            text: "Удалить<br>узел",
+                            mode: OpenLayers.Control.Navigation
+                        } );
+                deleteNode.events.register( "activate", this,
+                        function() {
+                            disableControls();                            
+                            deleteNodeControl.activate();
+                            selectDeleteNodeMode = true;
+                        } );
 
                 panel.addControls(
                         [ editCable, drawCable, deleteCableLine,
-                            addSingPoint, deleteSingPoint, addNode ] );
+                            addSingPoint, deleteSingPoint, addNode, deleteNode ] );
                 map.addControl(
                         panel );
 

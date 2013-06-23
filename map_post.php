@@ -52,5 +52,10 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
                 $building, $apartment );
     }
+    elseif ( $_POST[ 'mode' ] == "deleteNode" )
+    {
+        deleteNode( $coors );
+    }
 }
+print( "OK" );
 ?>
