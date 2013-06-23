@@ -42,8 +42,6 @@
             var CableLineEdtInfo = { };
             var jsonInsertCoor;
             var cableTypeArr, nodesArr, networkBoxesArr;
-            var refresh = new OpenLayers.Strategy.Refresh(
-                    { force: true } );
             var mapCr = true;
             var selectSingPoint = false, selectDeleteSingPointMode = false,
                     selectDeleteCableLineMode = false;
@@ -148,7 +146,6 @@
                 layerNodeNames.destroyFeatures();
                 j = 0;
                 nodesLabels_Count = 0;
-                //refresh.refresh();
                 layerNodes.refresh( { force: true } );
                 layerCableLinePoints.refresh( { force: true } );
                 getData();
