@@ -9,7 +9,7 @@ function addNodeMsg( event ) {
     };
     if ( networkBoxesArr.length < 1 ) {
         addNodeLayer.destroyFeatures();
-        // ToDo: show error msg
+        showError( 'topCenter', 'Нет свободных ящиков!' );
         return;
     }
     var feature = event.feature;
@@ -99,8 +99,10 @@ function addNode( coor, jsonNodeCoor ) {
     addNodeLayer.destroyFeatures();
 }
 
-function selectDeleteNode( event ) {
-    if ( selectDeleteNodeMode ) {
+function selectDeleteNode( event, del ) {
+    del = ( typeof del === "undefined" ) ? false : del;
+    notyInformation.close();
+    if ( selectDeleteNodeMode && del ) {
         var jsonCoor = {
             coorArr: [ ]
         };
@@ -118,5 +120,12 @@ function selectDeleteNode( event ) {
         function() {
             refreshAllLayers();
         } );
+    }
+    else if ( selectDeleteNodeMode && !del ) {
+        showDeleteCableLineQuestion( 'center',
+                'Вы действительно хотите удалить узел?',
+                function() {
+                    selectDeleteNode( event, true );
+                } );
     }
 }

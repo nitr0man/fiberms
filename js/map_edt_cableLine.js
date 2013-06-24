@@ -99,6 +99,7 @@ function updCableLine(
         CableLineId: "",
         coorArr: [ ]
     };
+    notyInformation.close();
     coor = event.feature.geometry.getVertices();
     for ( var i = 0; i < coor.length; i++ )
     {
@@ -136,8 +137,10 @@ function addCableLine(
             event );
 }
 
-function selectDeleteCableLine( event ) {
-    if ( selectDeleteCableLineMode ) {
+function selectDeleteCableLine( event, del ) {
+    del = ( typeof del === "undefined" ) ? false : del;
+    notyInformation.close();
+    if ( selectDeleteCableLineMode && del ) {
         jsonCoor = {
             CableLineId: "",
             coorArr: [ ]
@@ -150,6 +153,13 @@ function selectDeleteCableLine( event ) {
                 { coors: json, mode: "deleteCableLine" }, function() {
             refreshAllLayers();
         } );
+    }
+    else if ( selectDeleteCableLineMode && !del ) {
+        showDeleteCableLineQuestion( 'center',
+                'Вы действительно хотите удалить кабельную линию?',
+                function() {
+                    selectDeleteCableLine( event, true );
+                } );
     }
 }
 

@@ -7,6 +7,7 @@
         <link rel="stylesheet" type="text/css" href="style_popup.css" />
         <link rel="stylesheet" href="style_popup2.css" type="text/css">
         <link rel="stylesheet" href="ext-all.css" type="text/css">
+        <link rel="stylesheet" href="style/buttons.css" type="text/css">
         <style type="text/css">
             #controlToggle li {
                 list-style: none;
@@ -16,16 +17,30 @@
         <!--script src="js/OpenLayers_2.13.js"></script-->
         <!--script src="http://openlayers.org/api/OpenLayers.js"></script-->
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="js/ext-all.js"></script>
-        <!--script type="text/javascript" src="js/MarkerGrid.js"></script>
-        <script type="text/javascript" src="js/MarkerTile.js"></script>
-        <script type="text/javascript" src="js/bounds.js"></script-->
-        <script type="text/javascript" src="js/js_xml.js"></script>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>        
+        <script type="text/javascript" src="js/noty/jquery.noty.js"></script>
+        <script type="text/javascript" src="js/js_xml.js"></script>        
         <script type="text/javascript" src="js/map_edt_cableLine.js"></script>
         <script type="text/javascript" src="js/map_edt_node.js"></script>
         <script type="text/javascript" src="js/map_edt_singPoint.js"></script>
+        <script type="text/javascript" src="js/map_edt_noty.js"></script>
         <script type="text/javascript" src="js/map_edt_parseXML.js"></script>
+        <script type="text/javascript" src="js/noty/jquery.noty.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/center.js"></script>
+        <script type="text/javascript" src="js/noty/themes/default.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/bottom.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/bottomCenter.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/bottomLeft.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/bottomRight.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/center.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/centerLeft.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/centerRight.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/inline.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/top.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/topCenter.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/topLeft.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/topRight.js"></script>
         <script type="text/javascript">
             var lat = 48.5;
             var lon = 32.24;
@@ -36,6 +51,8 @@
                     selectSingPointLayer, addNodeLayer;
             var CableLineText_arr = Array();
             var CableLine_arr = { };
+
+            var notyInformation, notyQuestion, notyError;
 
             var coor;
             var converted;
@@ -300,6 +317,9 @@
 
                 lineLayer.events.on( {
                     "afterfeaturemodified": updCableLine,
+                    "beforefeaturemodified": function() {
+                        notyInformation.close();
+                    },
                     "featureselected": getSingPoints
                 } );
                 selectLineControl = new OpenLayers.Control.SelectFeature(
@@ -328,8 +348,8 @@
                     "featureadded": addNodeMsg
                 } );
                 /*addNodeControl = new OpenLayers.Control.SelectFeature(
-                        [ addNodeLayer ] );
-                map.addControl( addNodeControl );*/
+                 [ addNodeLayer ] );
+                 map.addControl( addNodeControl );*/
 
                 selectSingPointLayer.events.on( {
                     "featureselected": setSingPoint
@@ -375,6 +395,7 @@
 
                 editCable.events.register( "activate", this, function() {
                     disableControls();
+                    showInformation( 'topCenter', 'Выберите линию' );
                 } );
 
                 var drawCable = new OpenLayers.Control.DrawFeature(
@@ -403,6 +424,7 @@
                     disableControls();
                     selectDeleteCableLineControl.activate();
                     selectDeleteCableLineMode = true;
+                    showInformation( 'topCenter', 'Выберите линию' );
                 } );
 
                 var addSingPoint = new OpenLayers.Control.Navigation(
@@ -417,6 +439,7 @@
                             disableControls();
                             selectLineControl.activate();
                             selectSingPoint = true;
+                            showInformation( 'topCenter', 'Выберите линию' );
                         } );
 
                 var deleteSingPoint = new OpenLayers.Control.Navigation(
@@ -430,6 +453,8 @@
                             disableControls();
                             selectDeleteSingPointControl.activate();
                             selectDeleteSingPointMode = true;
+                            showInformation( 'topCenter',
+                                    'Выберите особую точку' );
                         } );
 
                 var addNode = new OpenLayers.Control.DrawFeature( addNodeLayer,
@@ -443,7 +468,7 @@
                             disableControls();
                             //addNodeControl.activate();
                         } );
-                        
+
                 var deleteNode = new OpenLayers.Control.Navigation(
                         {
                             title: "Позволяет удалять узлы",
@@ -452,9 +477,10 @@
                         } );
                 deleteNode.events.register( "activate", this,
                         function() {
-                            disableControls();                            
+                            disableControls();
                             deleteNodeControl.activate();
                             selectDeleteNodeMode = true;
+                            showInformation( 'topCenter', 'Выберите узел' );
                         } );
 
                 panel.addControls(
