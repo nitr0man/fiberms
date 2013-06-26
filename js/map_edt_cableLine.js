@@ -68,6 +68,9 @@ function onCableLineAddedPopup( event ) {
         plain: true,
         items: [ form ]
     } );
+    dialog.on( 'close', function() {
+        addCableLineLayer.destroyFeatures();
+    } );
     dialog.show();
 }
 
@@ -84,7 +87,6 @@ function saveCableLine( feature, jsonInsertCoor ) {
         jsonInsertCoor.coorArr[ i ]["lat"] = ll.lat;
     }
     json = JSON.stringify( jsonInsertCoor );
-    addCableLineLayer.destroyFeatures();
     $.post( "map_post.php", { coors: json, mode: "addCableLine" },
     function() {
         refreshAllLayers();

@@ -79,11 +79,13 @@ function addNodeMsg( event ) {
         plain: true,
         items: [ form ]
     } );
+    dialog.on( 'close', function() {
+        addNodeLayer.destroyFeatures();
+    } );
     dialog.show();
 }
 
 function addNode( coor, jsonNodeCoor ) {
-    //coor = feature.geometry.getVertices();
     var ll = new OpenLayers.LonLat( coor[ 0 ].x,
             coor[ 0 ].y ).transform(
             new OpenLayers.Projection( "EPSG:900913" ),
@@ -96,7 +98,6 @@ function addNode( coor, jsonNodeCoor ) {
     function() {
         refreshAllLayers();
     } );
-    addNodeLayer.destroyFeatures();
 }
 
 function selectDeleteNode( event, del ) {
