@@ -96,6 +96,7 @@ function addNode( coor, jsonNodeCoor ) {
     json = JSON.stringify( jsonNodeCoor );
     $.post( "map_post.php", { coors: json, mode: "addNode" },
     function() {
+        addNodeLayer.destroyFeatures();
         refreshAllLayers();
     } );
 }

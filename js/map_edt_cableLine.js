@@ -89,8 +89,9 @@ function saveCableLine( feature, jsonInsertCoor ) {
     json = JSON.stringify( jsonInsertCoor );
     $.post( "map_post.php", { coors: json, mode: "addCableLine" },
     function() {
+        addCableLineLayer.destroyFeatures();
         refreshAllLayers();
-    } );
+    } );    
 }
 
 function updCableLine(

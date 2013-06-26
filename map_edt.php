@@ -398,7 +398,6 @@
                     createVertices: true,
                     mode: OpenLayers.Control.ModifyFeature.RESHAPE
                 } );
-
                 editCable.events.register( "activate", this, function() {
                     disableControls();
                     showInformation( 'topCenter', 'Выберите линию' );
@@ -413,11 +412,13 @@
                             displayClass: "olControlDrawCable",
                             handlerOptions: { multi: false }
                         } );
-
                 drawCable.events.register( "activate", this, function() {
                     disableControls();
                     showInformation( 'topCenter',
                             'Щелкните два раза для завершения рисования' );
+                    setTimeout( function() {
+                        notyInformation.close();
+                    }, 5000 );
                 } );
 
                 var deleteCableLine = new OpenLayers.Control.Navigation(
