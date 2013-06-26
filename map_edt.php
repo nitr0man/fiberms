@@ -415,6 +415,8 @@
 
                 drawCable.events.register( "activate", this, function() {
                     disableControls();
+                    showInformation( 'topCenter',
+                            'Щелкните два раза для завершения рисования' );
                 } );
 
                 var deleteCableLine = new OpenLayers.Control.Navigation(
