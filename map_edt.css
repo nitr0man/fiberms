@@ -1,0 +1,126 @@
+.olControlPanel button {
+    position: relative;
+    display: block;
+    margin: 2px;
+    border: 1px solid;
+    padding: 0 0px;
+    border-radius: 4px;
+    height: 45px;
+    background-color: white;
+    float: left;
+    overflow: visible; /* needed to remove padding from buttons in IE */
+}
+.olControlPanel button span {
+    padding-left: 35px;
+}
+.olControlPanel button span:first-child {
+    padding-left: 0;
+    display: block;
+    position: absolute;
+    left: 10px;
+}
+
+.olControlPanel .olControlEditCableItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/move_feature_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlEditCableItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/move_feature_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+
+.olControlPanel .olControlDrawCableItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/draw_line_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlDrawCableItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/draw_line_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+
+.olControlPanel .olControlDeleteCableItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/draw_line_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlDeleteCableItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/draw_line_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+
+.olControlPanel .olControlAddSingPointItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/add_point_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlAddSingPointItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/add_point_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+
+.olControlPanel .olControlDeleteSingPointItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/remove_point_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlDeleteSingPointItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/remove_point_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+
+.olControlPanel .olControlAddNodeItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/draw_point_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlAddNodeItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/draw_point_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+
+.olControlPanel .olControlDeleteNodeItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/remove_point_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlDeleteNodeItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/remove_point_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}

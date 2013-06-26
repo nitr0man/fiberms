@@ -4,10 +4,11 @@
         <!--meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"-->
         <meta name="apple-mobile-web-app-capable" content="yes">
         <title>Карта - FiberMS</title>
-        <link rel="stylesheet" type="text/css" href="style_popup.css" />
-        <link rel="stylesheet" href="style_popup2.css" type="text/css">
+        <!--link rel="stylesheet" type="text/css" href="style_popup.css" />
+        <link rel="stylesheet" href="style_popup2.css" type="text/css"-->
         <link rel="stylesheet" href="ext-all.css" type="text/css">
         <link rel="stylesheet" href="style/buttons.css" type="text/css">
+        <link rel="stylesheet" href="map_edt.css" type="text/css">
         <style type="text/css">
             #controlToggle li {
                 list-style: none;
@@ -423,6 +424,7 @@
                         {
                             title: "Позволяет удалять кабельные линии",
                             text: "Удалить<br>линию",
+                            displayClass: "olControlDeleteCable",
                             mode: OpenLayers.Control.Navigation
                         }
                 );
@@ -438,6 +440,7 @@
                         {
                             title: "Позволяет добавлять особые точки",
                             text: "Добавить<br>особую точку",
+                            displayClass: "olControlAddSingPoint",
                             mode: OpenLayers.Control.Navigation
                         } );
 
@@ -453,6 +456,7 @@
                         {
                             title: "Позволяет удалять особые точки",
                             text: "Удалить<br>особую точку",
+                            displayClass: "olControlDeleteSingPoint",
                             mode: OpenLayers.Control.Navigation
                         } );
                 deleteSingPoint.events.register( "activate", this,
@@ -468,6 +472,7 @@
                         OpenLayers.Handler.Point, {
                     title: "Позволяет добавлять узлы",
                     text: "Добавить<br>узел",
+                    displayClass: "olControlAddNode",
                     handlerOptions: { multi: false }
                 } );
                 addNode.events.register( "activate", this,
@@ -480,6 +485,7 @@
                         {
                             title: "Позволяет удалять узлы",
                             text: "Удалить<br>узел",
+                            displayClass: "olControlDeleteNode",
                             mode: OpenLayers.Control.Navigation
                         } );
                 deleteNode.events.register( "activate", this,
