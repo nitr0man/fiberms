@@ -319,6 +319,11 @@
                     "afterfeaturemodified": updCableLine,
                     "beforefeaturemodified": function() {
                         notyInformation.close();
+                        showInformation( 'topCenter',
+                                'Щелкните в любом месте для завершения редактирования' );
+                        setTimeout( function() {
+                            notyInformation.close();
+                        }, 5000 );
                     },
                     "featureselected": getSingPoints
                 } );

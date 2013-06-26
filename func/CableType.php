@@ -187,6 +187,10 @@ function CableLinePoint_Add( $OpenGIS, $CableLine, $meterSign, $networkNode,
     {
         $OpenGIS = 'NULL';
     }
+    if ( $networkNode == "" )
+    {
+        $networkNode = "NULL";
+    }
     $ins[ 'OpenGIS' ] = $OpenGIS;
     $ins[ 'CableLine' ] = $CableLine;
     $ins[ 'meterSign' ] = $meterSign;
