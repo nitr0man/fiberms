@@ -261,6 +261,7 @@ function getCableLinesFrag( $cableLines )
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
+                    $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
                     $n++;
                 }
                 $b++;
@@ -273,6 +274,7 @@ function getCableLinesFrag( $cableLines )
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
+                    $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
                     $n++;
                 }
                 continue;
@@ -287,6 +289,7 @@ function getCableLinesFrag( $cableLines )
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
                     $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
+                    $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
                     $n++;
                 }
             }

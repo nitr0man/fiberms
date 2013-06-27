@@ -1,14 +1,17 @@
 function getSingPoints( event ) {
     if ( selectSingPoint ) {
         var feature = event.feature;
+        selectedLineAddSingPoint = feature;
         selectedCableLineId = CableLineEdtInfo[feature.id]['cableLineId'];
         coor = feature.geometry.getVertices();
         for ( var i = 0; i < coor.length; i++ )
         {
             var point = new OpenLayers.Geometry.Point( coor[ i ].x,
                     coor[ i ].y );
-            selectSingPointLayer.addFeatures(
-                    [ new OpenLayers.Feature.Vector( point ) ] );
+            if ( isCanAddSingPoint( coor[i] ) ) {
+                selectSingPointLayer.addFeatures(
+                        [ new OpenLayers.Feature.Vector( point ) ] );
+            }
         }
         selectSingPointControl.activate();
         notyInformation.close();
@@ -39,6 +42,7 @@ function setSingPoint( event ) {
                 xtype: 'combobox',
                 fieldLabel: 'Узел',
                 name: 'networkNode',
+                id: 'networkNodeId',
                 valueField: 'value',
                 displayField: 'text',
                 store: new Ext.data.SimpleStore( {
@@ -98,7 +102,11 @@ function setSingPoint( event ) {
         items: [ form ]
     } );
     dialog.show();
-    selectSingPointControl.deactivate();
+    var res = isEndLine( coorSingPoint );
+    if ( !res ) {
+        Ext.getCmp( 'networkNodeId' ).disable();
+    }
+    //selectSingPointControl.deactivate();
     selectSingPointLayer.destroyFeatures();
 }
 
@@ -146,4 +154,16 @@ function selectDeleteSingPoint( event, del ) {
                     selectDeleteSingPoint( event, true );
                 } );
     }
+}
+
+function isCanAddSingPoint( coor ) {
+    var result = true;
+    for ( var i = 0; i < layerNodes.features.length; i++ ) {
+        var feature = layerNodes.features[i];
+        if ( feature.geometry.x == coor.x && feature.geometry.y == coor.y ) {
+            result = false;
+            break;
+        }
+    }
+    return result;
 }

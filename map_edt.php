@@ -66,6 +66,7 @@
             var selectLineControl, selectSingPointControl,
                     selectDeleteSingPointControl, selectDeleteCableLineControl;
             var selectedCableLineId;
+            var selectedLineAddSingPoint;
 
             var j = 0, j2 = 0;
             var CableLine_Points_count = Array();
@@ -612,6 +613,7 @@
                     CableLineEdtInfo[lineFeature.id]['seqStart'] = CableLine_arr[k]['sequenceStart'];
                     CableLineEdtInfo[lineFeature.id]['seqEnd'] = CableLine_arr[k]['sequenceEnd'];
                     CableLineEdtInfo[lineFeature.id]['cableLineId'] = CableLine_arr[k]['cableLineId'];
+                    CableLineEdtInfo[lineFeature.id]['superSeqEnd'] = CableLine_arr[k]['superSequenceEnd'];
                 }
 
                 var lat2, lon2, title, ident;

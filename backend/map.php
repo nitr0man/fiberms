@@ -4,35 +4,44 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
 {
     $query = 'SELECT * FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' ORDER BY "sequence"';
     $res = PQuery( $query );
+    error_log( print_r( $res, true ) );
+    error_log( "seqStart=".$seqStart );
+    error_log( "seqEnd=".$seqEnd );
     if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" && $res[ 'rows' ][ $seqEnd ][ 'meterSign' ] != "" )
     {
+        error_log( "1" );
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" < '.$seqEnd;
+        error_log( "delete=".$query );
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
         {
-            $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
+            $seqDiff = count( $coors ) - ( $seqEnd - $seqStart ) - 1;
             $query = 'UPDATE "CableLinePoint" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
+            error_log( "update=".$query );
             PQuery( $query );
             $query = 'UPDATE "CableLinePoint" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
+            error_log( "update=".$query );
             PQuery( $query );
-            $seq = $seqStart;
+            $seq = $seqStart + 1;
         }
         else
         {
             $seq = 0;
         }
-        for ( $i = 0; $i < count( $coors ); $i++ )
+        for ( $i = 1; $i < count( $coors ) - 1; $i++ )
         {
             $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
             $ins[ 'OpenGIS' ] = $coor;
             $ins[ 'sequence' ] = $seq++;
             $ins[ 'CableLine' ] = $CableLine;
             $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+            error_log( "ins=".$query );
             PQuery( $query );
         }
     }
     elseif ( $res[ 'rows' ][ $seqEnd ][ 'meterSign' ] != "" )
     {
+        error_log( "2" );
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" < '.$seqEnd;
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
@@ -48,7 +57,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         {
             $seq = 0;
         }
-        for ( $i = 0; $i < count( $coors ); $i++ )
+        for ( $i = 0; $i < count( $coors ) - 1; $i++ )
         {
             $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
             $ins[ 'OpenGIS' ] = $coor;
@@ -60,6 +69,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
     }
     else if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" )
     {
+        error_log( "3" );
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" <= '.$seqEnd;
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
@@ -75,7 +85,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         {
             $seq = 0;
         }
-        for ( $i = 0; $i < count( $coors ); $i++ )
+        for ( $i = 1; $i < count( $coors ); $i++ )
         {
             $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
             $ins[ 'OpenGIS' ] = $coor;

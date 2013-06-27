@@ -91,7 +91,7 @@ function saveCableLine( feature, jsonInsertCoor ) {
     function() {
         addCableLineLayer.destroyFeatures();
         refreshAllLayers();
-    } );    
+    } );
 }
 
 function updCableLine(
@@ -166,3 +166,19 @@ function selectDeleteCableLine( event, del ) {
     }
 }
 
+function isEndLine( selectedCoor ) {
+    var fId = selectedLineAddSingPoint.id;
+    var currSeqStart = CableLineEdtInfo[fId]['seqStart'];
+    var currSeqEnd = CableLineEdtInfo[fId]['seqEnd'];
+    var superSeqEnd = CableLineEdtInfo[fId]['superSeqEnd'];
+    var coor = selectedLineAddSingPoint.geometry.getVertices();
+    if ( currSeqStart == 0 || currSeqEnd == superSeqEnd ) {
+        if ( ( coor[0].x == selectedCoor[0].x && coor[0].y == selectedCoor[0].y ) || ( coor[coor.length - 1].x == selectedCoor[0].x ) && ( coor[coor.length - 1].y == selectedCoor[0].y ) ) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
+}

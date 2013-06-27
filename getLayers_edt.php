@@ -108,6 +108,9 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
 
             $sequenceEnd = $cableLine->appendChild( $dom->createElement( 'sequenceEnd' ) );
             $sequenceEnd = $sequenceEnd->appendChild( $dom->createTextNode( $value[ $i ][ count( $value[ $i ] ) - 1 ][ 'sequence' ] ) );
+
+            $superSequenceEnd = $cableLine->appendChild( $dom->createElement( 'superSequenceEnd' ) );
+            $superSequenceEnd = $superSequenceEnd->appendChild( $dom->createTextNode( $value[ $i ][ 0 ][ 'superSequenceEnd' ] ) );
         }
     }
     $dom->formatOutput = true;
