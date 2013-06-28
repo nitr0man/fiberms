@@ -85,7 +85,7 @@ function saveCableLine( feature, jsonInsertCoor ) {
         jsonInsertCoor.coorArr[ i ] = { };
         jsonInsertCoor.coorArr[ i ]["lon"] = ll.lon;
         jsonInsertCoor.coorArr[ i ]["lat"] = ll.lat;
-    }
+    }    
     json = JSON.stringify( jsonInsertCoor );
     $.post( "map_post.php", { coors: json, mode: "addCableLine" },
     function() {
@@ -112,7 +112,7 @@ function updCableLine(
                 new OpenLayers.Projection(
                 "EPSG:900913" ),
                 new OpenLayers.Projection(
-                "EPSG:4326" ) );
+                "EPSG:4326" ) );        
         jsonCoor.coorArr[ i ] = { };
         jsonCoor.coorArr[ i ]["lon"] = ll.lon;
         jsonCoor.coorArr[ i ]["lat"] = ll.lat;

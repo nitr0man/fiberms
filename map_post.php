@@ -6,7 +6,7 @@ require_once( "backend/map.php" );
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
     $obj = json_decode( $_POST[ 'coors' ] );
-    $coors = $obj->{'coorArr'};
+    $coors = $obj->{'coorArr'};    
     $CableLineId = (int) $obj->{'CableLineId'};
     if ( $_POST[ 'mode' ] == "updCableLine" )
     {

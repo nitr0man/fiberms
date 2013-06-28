@@ -468,4 +468,27 @@ elseif ( $_GET[ 'mode' ] == "GetNetworkBoxes" )
     $res = json_encode( $boxesJSON );
     print( $res );
 }
+elseif ( $_GET[ 'mode' ] == "GetFreeLinePoints" )
+{
+    require_once 'backend/CableType.php';
+
+    $CableLineId = $_GET[ 'id' ];
+    $res = getCableLinePoints( $CableLineId, TRUE );
+    $rows = $res[ 'rows' ];
+    $pointsJSON[ 'Points' ] = array( );
+    $i = -1;
+    while ( ++$i < $res[ 'count' ] )
+    {
+        $OpenGIS = $rows[ $i ][ 'OpenGIS' ];
+        if ( preg_match_all( '/(?<x>[0-9.]+),(?<y>[0-9.]+)/', $OpenGIS, $matches ) )
+        {
+            $lat = $matches[ 'y' ][ 0 ];
+            $lon = $matches[ 'x' ][ 0 ];
+        }
+        $pointsJSON[ 'Points' ][ $i ][ 'lat' ] = $lat;
+        $pointsJSON[ 'Points' ][ $i ][ 'lon' ] = $lon;
+    }
+    $res = json_encode( $pointsJSON );
+    print( $res );
+}
 ?>

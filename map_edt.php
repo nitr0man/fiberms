@@ -59,7 +59,7 @@
             var converted;
             var CableLineEdtInfo = { };
             var jsonInsertCoor;
-            var cableTypeArr, nodesArr, networkBoxesArr;
+            var cableTypeArr, nodesArr, networkBoxesArr, freePointsArr;
             var mapCr = true;
             var selectSingPoint = false, selectDeleteSingPointMode = false,
                     selectDeleteCableLineMode = false, selectDeleteNodeMode = false;
@@ -327,7 +327,7 @@
                             notyInformation.close();
                         }, 5000 );
                     },
-                    "featureselected": getSingPoints
+                    "featureselected": getFreeSingPoint//getSingPoints
                 } );
                 selectLineControl = new OpenLayers.Control.SelectFeature(
                         [ lineLayer ] );
@@ -388,6 +388,19 @@
                             }
                         }
                 );
+
+                var navigation = new OpenLayers.Control.Navigation(
+                        {
+                            text: "Навигация",
+                            displayClass: "olControlNavigation",
+                            mode: OpenLayers.Control.Navigation
+                        } );
+                navigation.events.register( "activate", this, function() {
+                    disableControls();
+                    if ( typeof notyInformation !== "undefined" ) {
+                        notyInformation.close();
+                    }
+                } );
 
                 var editCable = new OpenLayers.Control.ModifyFeature(
                         lineLayer, {
@@ -499,7 +512,7 @@
                         } );
 
                 panel.addControls(
-                        [ editCable, drawCable, deleteCableLine,
+                        [ navigation, editCable, drawCable, deleteCableLine,
                             addSingPoint, deleteSingPoint, addNode, deleteNode ] );
                 map.addControl(
                         panel );

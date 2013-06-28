@@ -124,3 +124,18 @@
     top: 1px;
     left: 1px;
 }
+
+.olControlPanel .olControlNavigationItemActive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/pan_on.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlNavigationItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/pan_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}

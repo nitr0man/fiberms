@@ -1,14 +1,14 @@
-function getSingPoints( event ) {
+function getSingPoints( /*event*/ ) {
     if ( selectSingPoint ) {
-        var feature = event.feature;
-        selectedLineAddSingPoint = feature;
-        selectedCableLineId = CableLineEdtInfo[feature.id]['cableLineId'];
-        coor = feature.geometry.getVertices();
+        /*var feature = event.feature;
+         selectedLineAddSingPoint = feature;
+         selectedCableLineId = CableLineEdtInfo[feature.id]['cableLineId'];
+         coor = feature.geometry.getVertices();*/
         for ( var i = 0; i < coor.length; i++ )
         {
             var point = new OpenLayers.Geometry.Point( coor[ i ].x,
                     coor[ i ].y );
-            if ( isCanAddSingPoint( coor[i] ) ) {
+            if ( isCanAddSingPoint( coor[ i ] ) ) {
                 selectSingPointLayer.addFeatures(
                         [ new OpenLayers.Feature.Vector( point ) ] );
             }
@@ -157,13 +157,43 @@ function selectDeleteSingPoint( event, del ) {
 }
 
 function isCanAddSingPoint( coor ) {
-    var result = true;
-    for ( var i = 0; i < layerNodes.features.length; i++ ) {
-        var feature = layerNodes.features[i];
-        if ( feature.geometry.x == coor.x && feature.geometry.y == coor.y ) {
-            result = false;
+    function checkCoor( data ) {
+
+    }
+    var result = false;
+    var ll = new OpenLayers.LonLat( coor.x,
+            coor.y ).transform(
+            new OpenLayers.Projection( "EPSG:900913" ),
+            new OpenLayers.Projection( "EPSG:4326" ) );
+    var llLon = parseFloat( Number( ll.lon ).toFixed( 10 ) );
+    var llLat = parseFloat( Number( ll.lat ).toFixed( 10 ) );
+    for ( var i = 0; i < freePointsArr.length; i++ ) {
+        var lon = parseFloat( Number( freePointsArr[i].lon ).toFixed( 10 ) );
+        var lat = parseFloat( Number( freePointsArr[i].lat ).toFixed( 10 ) );
+        if ( lon == llLon && lat == llLat ) {
+            result = true;
             break;
         }
     }
     return result;
+}
+
+function getFreeSingPoint( event ) {
+    function fillArr( data ) {
+        var freePointsObj = JSON.parse( data );
+        freePointsArr = [ ];
+        for ( var i = 0; i < freePointsObj.Points.length; i++ ) {
+            freePointsArr[i] = { };
+            freePointsArr[i].lon = freePointsObj.Points[i].lon;
+            freePointsArr[i].lat = freePointsObj.Points[i].lat;
+        }
+        getSingPoints();
+    }
+    var feature = event.feature;
+    selectedLineAddSingPoint = feature;
+    selectedCableLineId = CableLineEdtInfo[feature.id]['cableLineId'];
+    coor = feature.geometry.getVertices();
+    $.get(
+            'getLayers_edt.php?mode=GetFreeLinePoints&id=' + selectedCableLineId,
+            fillArr );
 }

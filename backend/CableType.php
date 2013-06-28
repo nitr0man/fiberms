@@ -167,16 +167,23 @@ function getCableLinePoint_NetworkNodeName( $cableLineId )
 
 function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1 )
 {
-    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment", "cl"."name", "ct"."marking", "ct"."manufacturer", 	"ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube", "ct"."tubeQuantity", COUNT(DISTINCT "OFJ"."OpticalFiberSplice") AS 	"FiberSpliceCount" FROM "CableLine" AS "cl"
+    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment",
+                "cl"."name", "ct"."marking", "ct"."manufacturer",
+                "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube",
+                "ct"."tubeQuantity", "NN"."OpenGIS" AS "NNOpenGIS",
+                COUNT(DISTINCT "OFJ"."OpticalFiberSplice") AS "FiberSpliceCount"                
+                FROM "CableLine" AS "cl"
 		LEFT JOIN "CableLinePoint" AS "clp" ON "clp"."CableLine" = "cl"."id" 
 		LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
 		LEFT JOIN "OpticalFiber" AS "OF" ON "OF"."CableLine" = "cl".id
-		LEFT JOIN "OpticalFiberJoin" AS "OFJ" ON "OFJ"."OpticalFiber" = "OF".id';
+		LEFT JOIN "OpticalFiberJoin" AS "OFJ" ON "OFJ"."OpticalFiber" = "OF".id
+                LEFT JOIN "NetworkNode" AS "NN" ON "NN"."id" = "clp"."NetworkNode"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
     }
-    $query .= ' GROUP BY "cl"."id", "ct"."marking", "ct"."manufacturer", "ct"."fiberPerTube", "ct"."tubeQuantity"';
+    $query .= ' GROUP BY "cl"."id", "ct"."marking", "ct"."manufacturer", "ct"."fiberPerTube",
+                "ct"."tubeQuantity", "NN"."id"';
     $query .= ' ORDER BY "name"';
     if ( $sort == 1 )
     {
@@ -231,10 +238,18 @@ function getSingularCableLinePoints( $OpenGIS = -1 )
     return $result;
 }
 
-function getCableLinePoints( $cableLine )
+function getCableLinePoints( $cableLine, $onlyFree = FALSE )
 {
     $wr[ 'CableLine' ] = $cableLine;
-    $query = 'SELECT id, "OpenGIS", "meterSign", "note", "sequence" FROM "CableLinePoint"'.genWhere( $wr ).' ORDER BY "sequence"';
+    $query = 'SELECT "clp".id, "clp"."OpenGIS", "clp"."meterSign", "clp"."note", "clp"."sequence",
+              "NN"."OpenGIS" AS "NNOpenGIS"
+              FROM "CableLinePoint" AS "clp"
+              LEFT JOIN "NetworkNode" AS "NN" ON "NN".id = "clp"."NetworkNode"'.genWhere( $wr );
+    if ( $onlyFree )
+    {
+        $query .= ' AND "clp"."OpenGIS" IS NOT NULL';
+    }
+    $query .= ' ORDER BY "sequence"';
     $result = PQuery( $query );
     return $result;
 }
@@ -254,44 +269,53 @@ function getCableLinesFrag( $cableLines )
             if ( ( $rows[ $j ][ 'note' ] != '' ) || ( $rows[ $j ][ 'meterSign' ] != '' ) )
             {
                 $OpenGIS = $rows[ $j ][ 'OpenGIS' ];
-                if ( preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
+                $NNOpenGis = $rows[ $j ][ 'NNOpenGIS' ];
+                if ( !preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
                                 $OpenGIS, $matches ) )
                 {
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
-                    $n++;
+                    preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
+                            $NNOpenGis, $matches );
                 }
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
+                $n++;
                 $b++;
                 $n = 0;
                 $OpenGIS = $rows[ $j ][ 'OpenGIS' ];
-                if ( preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
+                $NNOpenGis = $rows[ $j ][ 'NNOpenGIS' ];
+                if ( !preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
                                 $OpenGIS, $matches ) )
                 {
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
-                    $n++;
+                    preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
+                            $NNOpenGis, $matches );
                 }
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
+                $n++;
                 continue;
             }
             else
             {
                 $OpenGIS = $rows[ $j ][ 'OpenGIS' ];
-                if ( preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
+                $NNOpenGis = $rows[ $j ][ 'NNOpenGIS' ];
+                if ( !preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
                                 $OpenGIS, $matches ) )
                 {
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
-                    $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
-                    $n++;
+                    preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
+                            $NNOpenGis, $matches );
                 }
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
+                $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
+                $n++;
             }
         }
     }
