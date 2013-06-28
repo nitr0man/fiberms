@@ -83,19 +83,19 @@
                 // Стиль линии (1-8 волокон)
                 strokeColor: 'white',
                 //strokeOpacity: 5.5
-                strokeWidth: 2
+                strokeWidth: 3//2
             },
             {
                 // Стиль линии (9-24 волокон)
                 strokeColor: 'white',
                 //strokeOpacity: 5.5
-                strokeWidth: 4
+                strokeWidth: 5
             },
             {
                 // Стиль линии (25+ волокон)
                 strokeColor: 'white',
                 //strokeOpacity: 5.5
-                strokeWidth: 6
+                strokeWidth: 7
             } );
 
             function disableControls() {
