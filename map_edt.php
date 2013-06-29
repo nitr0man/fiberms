@@ -516,6 +516,7 @@
                             addSingPoint, deleteSingPoint, addNode, deleteNode ] );
                 map.addControl(
                         panel );
+                navigation.activate();
 
                 map.addControls( [
                     new OpenLayers.Control.Navigation(),

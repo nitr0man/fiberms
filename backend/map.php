@@ -69,18 +69,18 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
     }
     else if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" )
     {
-        error_log( "3" );
+        //error_log( "3" );
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" <= '.$seqEnd;
-        error_log( "delete=".$query );
+        //error_log( "delete=".$query );
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
         {
             $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
             $query = 'UPDATE "CableLinePoint" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqEnd;
-            error_log( "update=".$query );
+            //error_log( "update=".$query );
             PQuery( $query );
             $query = 'UPDATE "CableLinePoint" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
-            error_log( "update=".$query );
+            //error_log( "update=".$query );
             PQuery( $query );
             $seq = $seqStart + 1;
         }
@@ -95,7 +95,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
             $ins[ 'sequence' ] = $seq++;
             $ins[ 'CableLine' ] = $CableLine;
             $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
-            error_log( "ins=".$query );
+            //error_log( "ins=".$query );
             PQuery( $query );
         }
     }
@@ -193,10 +193,16 @@ function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
 
 function deleteNode( $coors )
 {
+    require_once 'backend/NetworkNode.php';
+
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $wr[ 'OpenGIS' ] = $OpenGIS;
-    $query = 'DELETE FROM "NetworkNode"'.genWhere( $wr );
-    PQuery( $query );
+    $query = 'SELECT id FROM "NetworkNode"'.genWhere( $wr );
+    $res = PQuery( $query );
+    $NetworkNodeId = $res[ 'rows' ][ 0 ][ 'id' ];
+    unset( $wr );
+    $wr[ 'id' ] = $NetworkNodeId;
+    NetworkNode_DELETE( $wr );
 }
 
 ?>

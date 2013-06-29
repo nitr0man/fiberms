@@ -47,10 +47,18 @@ function NetworkNode_UPDATE( $upd, $wr )
 
 function NetworkNode_DELETE( $wr )
 {
+    require_once 'backend/CableType.php';
+
+    $NetworkNodeId = $wr[ 'id' ];
+    $res = NetworkNode_SELECT( '', '', $wr );
+    $upd[ 'NetworkNode' ] = 'NULL';
+    $upd[ 'OpenGIS' ] = $res[ 'rows' ][ 0 ][ 'OpenGIS' ];
+    $query = 'UPDATE "CableLinePoint" SET '.genUpdate( $upd ).' WHERE "NetworkNode"='.$NetworkNodeId;
+    PQuery( $query );
     $query = 'DELETE FROM "NetworkNode"';
     $query .= genWhere( $wr );
     $result = PQuery( $query );
-    loggingIs( 3, 'NetworkNode', '', $wr[ 'id' ] );
+    loggingIs( 3, 'NetworkNode', '', $NetworkNodeId );
     return $result;
 }
 
