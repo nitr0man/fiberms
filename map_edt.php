@@ -110,6 +110,7 @@
                 //addNodeControl.deactivate();
                 deleteNodeControl.deactivate();
                 selectDeleteNodeMode = false;
+                selectSingPointLayer.destroyFeatures();
             }
 
             function getData() {
