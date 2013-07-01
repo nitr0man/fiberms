@@ -54,6 +54,8 @@
             var CableLine_arr = { };
 
             var notyInformation, notyQuestion, notyError;
+            var panel, navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
+                    addSingPointCon, deleteSingPointCon, addNodeCon, deleteNodeCon;
 
             var coor;
             var converted;
@@ -366,7 +368,7 @@
                         [ selectSingPointLayer ] );
                 map.addControl( selectSingPointControl );
 
-                var panel = new OpenLayers.Control.Panel(
+                panel = new OpenLayers.Control.Panel(
                         {
                             //displayClass: "olControlEditingToolbar",
                             createControlMarkup: function(
@@ -390,20 +392,20 @@
                         }
                 );
 
-                var navigation = new OpenLayers.Control.Navigation(
+                navigationCon = new OpenLayers.Control.Navigation(
                         {
                             text: "Навигация",
                             displayClass: "olControlNavigation",
                             mode: OpenLayers.Control.Navigation
                         } );
-                navigation.events.register( "activate", this, function() {
+                navigationCon.events.register( "activate", this, function() {
                     disableControls();
                     if ( typeof notyInformation !== "undefined" ) {
                         notyInformation.close();
                     }
                 } );
 
-                var editCable = new OpenLayers.Control.ModifyFeature(
+                editCableCon = new OpenLayers.Control.ModifyFeature(
                         lineLayer, {
                     title: "Позволяет редактировать кабельные линии",
                     text: 'Изменить<br>линию',
@@ -413,12 +415,12 @@
                     createVertices: true,
                     mode: OpenLayers.Control.ModifyFeature.RESHAPE
                 } );
-                editCable.events.register( "activate", this, function() {
+                editCableCon.events.register( "activate", this, function() {
                     disableControls();
                     showInformation( 'topCenter', 'Выберите линию' );
                 } );
 
-                var drawCable = new OpenLayers.Control.DrawFeature(
+                drawCableCon = new OpenLayers.Control.DrawFeature(
                         addCableLineLayer,
                         OpenLayers.Handler.Path,
                         {
@@ -427,7 +429,7 @@
                             displayClass: "olControlDrawCable",
                             handlerOptions: { multi: false }
                         } );
-                drawCable.events.register( "activate", this, function() {
+                drawCableCon.events.register( "activate", this, function() {
                     disableControls();
                     showInformation( 'topCenter',
                             'Щелкните два раза для завершения рисования' );
@@ -436,7 +438,7 @@
                     }, 5000 );
                 } );
 
-                var deleteCableLine = new OpenLayers.Control.Navigation(
+                deleteCableLineCon = new OpenLayers.Control.Navigation(
                         {
                             title: "Позволяет удалять кабельные линии",
                             text: "Удалить<br>линию",
@@ -444,23 +446,22 @@
                             mode: OpenLayers.Control.Navigation
                         }
                 );
+                deleteCableLineCon.events.register( "activate", this,
+                        function() {
+                            disableControls();
+                            selectDeleteCableLineControl.activate();
+                            selectDeleteCableLineMode = true;
+                            showInformation( 'topCenter', 'Выберите линию' );
+                        } );
 
-                deleteCableLine.events.register( "activate", this, function() {
-                    disableControls();
-                    selectDeleteCableLineControl.activate();
-                    selectDeleteCableLineMode = true;
-                    showInformation( 'topCenter', 'Выберите линию' );
-                } );
-
-                var addSingPoint = new OpenLayers.Control.Navigation(
+                addSingPointCon = new OpenLayers.Control.Navigation(
                         {
                             title: "Позволяет добавлять особые точки",
                             text: "Добавить<br>особую точку",
                             displayClass: "olControlAddSingPoint",
                             mode: OpenLayers.Control.Navigation
                         } );
-
-                addSingPoint.events.register( "activate", this,
+                addSingPointCon.events.register( "activate", this,
                         function() {
                             disableControls();
                             selectLineControl.activate();
@@ -468,14 +469,14 @@
                             showInformation( 'topCenter', 'Выберите линию' );
                         } );
 
-                var deleteSingPoint = new OpenLayers.Control.Navigation(
+                deleteSingPointCon = new OpenLayers.Control.Navigation(
                         {
                             title: "Позволяет удалять особые точки",
                             text: "Удалить<br>особую точку",
                             displayClass: "olControlDeleteSingPoint",
                             mode: OpenLayers.Control.Navigation
                         } );
-                deleteSingPoint.events.register( "activate", this,
+                deleteSingPointCon.events.register( "activate", this,
                         function() {
                             disableControls();
                             selectDeleteSingPointControl.activate();
@@ -484,27 +485,27 @@
                                     'Выберите особую точку' );
                         } );
 
-                var addNode = new OpenLayers.Control.DrawFeature( addNodeLayer,
+                addNodeCon = new OpenLayers.Control.DrawFeature( addNodeLayer,
                         OpenLayers.Handler.Point, {
                     title: "Позволяет добавлять узлы",
                     text: "Добавить<br>узел",
                     displayClass: "olControlAddNode",
                     handlerOptions: { multi: false }
                 } );
-                addNode.events.register( "activate", this,
+                addNodeCon.events.register( "activate", this,
                         function() {
                             disableControls();
                             //addNodeControl.activate();
                         } );
 
-                var deleteNode = new OpenLayers.Control.Navigation(
+                deleteNodeCon = new OpenLayers.Control.Navigation(
                         {
                             title: "Позволяет удалять узлы",
                             text: "Удалить<br>узел",
                             displayClass: "olControlDeleteNode",
                             mode: OpenLayers.Control.Navigation
                         } );
-                deleteNode.events.register( "activate", this,
+                deleteNodeCon.events.register( "activate", this,
                         function() {
                             disableControls();
                             deleteNodeControl.activate();
@@ -513,11 +514,12 @@
                         } );
 
                 panel.addControls(
-                        [ navigation, editCable, drawCable, deleteCableLine,
-                            addSingPoint, deleteSingPoint, addNode, deleteNode ] );
+                        [ navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
+                            addSingPointCon, deleteSingPointCon,
+                            addNodeCon, deleteNodeCon ] );
                 map.addControl(
                         panel );
-                navigation.activate();
+                navigationCon.activate();
 
                 map.addControls( [
                     new OpenLayers.Control.Navigation(),

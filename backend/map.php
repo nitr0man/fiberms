@@ -29,6 +29,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
             $seq = 1;
         }
         $iSt = 1;
+        $toMin = 1;
     }
     elseif ( $res[ 'rows' ][ $seqEnd ][ 'meterSign' ] != "" )
     {
@@ -49,6 +50,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
             $seq = 0;
         }
         $iSt = 0;
+        $toMin = 1;
     }
     else if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" )
     {
@@ -72,6 +74,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
             $seq = 1;
         }
         $iSt = 1;
+        $toMin = 0;
     }
     else
     {
@@ -79,8 +82,9 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         PQuery( $query );
         $seq = 0;
         $iSt = 0;
+        $toMin = 0;
     }
-    for ( $i = $iSt; $i < count( $coors ); $i++ )
+    for ( $i = $iSt; $i < count( $coors ) - $toMin; $i++ )
     {
         $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
         $ins[ 'OpenGIS' ] = $coor;

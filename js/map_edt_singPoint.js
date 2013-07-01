@@ -124,9 +124,8 @@ function addSingPoint( coor, jsonSingPointCoor ) {
     function() {
         refreshAllLayers();
     } );
-    disableControls();
-    selectLineControl.activate();
-    selectSingPoint = true;
+    addSingPointCon.deactivate();
+    addSingPointCon.activate();
 }
 
 function selectDeleteSingPoint( event, del ) {
