@@ -31,7 +31,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $meterSign = $obj->{'meterSign'};
         $note = $obj->{'note'};
         $networkNode = $obj->{'networkNode'};
-        addSingPoint( $coors, $CableLineId, $networkNode, $apartment, $building,
+        addSingPoint( $coors, $CableLineId, $networkNode, "NULL", "NULL",
                 $meterSign, $note );
     }
     elseif ( $_POST[ 'mode' ] == "deleteSingPoint" )

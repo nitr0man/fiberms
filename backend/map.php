@@ -1,5 +1,15 @@
 <?php
 
+function isSingPoint( $point )
+{
+    $res = FALSE;
+    if ( $point[ 'meterSign' ] != "" || $point[ 'note' ] != "" )
+    {
+        $res = TRUE;
+    }
+    return $res;
+}
+
 function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
 {
     $query = 'SELECT * FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' ORDER BY "sequence"';
@@ -7,7 +17,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
     // error_log( print_r( $res, true ) );
     error_log( "seqStart=".$seqStart );
     error_log( "seqEnd=".$seqEnd );
-    if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" && $res[ 'rows' ][ $seqEnd ][ 'meterSign' ] != "" )
+    if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) && isSingPoint( $res[ 'rows' ][ $seqEnd ] ) )
     {
         error_log( "1" );
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" < '.$seqEnd;
@@ -31,9 +41,9 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         $iSt = 1;
         $toMin = 1;
     }
-    elseif ( $res[ 'rows' ][ $seqEnd ][ 'meterSign' ] != "" )
+    elseif ( isSingPoint( $res[ 'rows' ][ $seqEnd ] ) )
     {
-        error_log( "2" );
+        //error_log( "2" );
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" < '.$seqEnd;
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
@@ -52,9 +62,9 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         $iSt = 0;
         $toMin = 1;
     }
-    else if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" )
+    else if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) )
     {
-        error_log( "3" );
+        //error_log( "3" );
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" <= '.$seqEnd;
         //error_log( "delete=".$query );
         PQuery( $query );
@@ -126,15 +136,20 @@ function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $wr[ 'CableLine' ] = $CableLineId;
     $wr[ 'OpenGIS' ] = $OpenGIS;
-    $query = 'SELECT "sequence" FROM "CableLinePoint"'.genWhere( $wr );
-    $res = PQuery( $query );
-    $sequence = $res[ 'rows' ][ 0 ][ 'sequence' ];
-    $query = 'DELETE FROM "CableLinePoint"'.genWhere( $wr ).';';
-    PQuery( $query );
-
-    $SettlementGeoSpatial = "NULL";
-    CableLinePoint_Add( $OpenGIS, $CableLineId, $meterSign, $networkNode, $note,
-            $apartment, $building, $SettlementGeoSpatial, $sequence );
+    if ( $meterSign == "" )
+    {
+        $meterSign = "NULL";
+    }
+    if ( $note == "" )
+    {
+        $note = "NULL";
+    }
+    $upd[ 'meterSign' ] = $meterSign;
+    $upd[ 'note' ] = $note;
+    $upd[ 'Apartment' ] = $apartment;
+    $upd[ 'Building' ] = $building;
+    $upd[ 'SettlementGeoSpatial' ] = "NULL";
+    CableLinePoint_UPDATE( $upd, $wr );
 }
 
 function deleteSingPoint( $coors )
