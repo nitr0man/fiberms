@@ -5,8 +5,8 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
     $query = 'SELECT * FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' ORDER BY "sequence"';
     $res = PQuery( $query );
     // error_log( print_r( $res, true ) );
-    error_log( "seqStart=".$seqStart );
-    error_log( "seqEnd=".$seqEnd );
+    //error_log( "seqStart=".$seqStart );
+    //error_log( "seqEnd=".$seqEnd );
     if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" && $res[ 'rows' ][ $seqEnd ][ 'meterSign' ] != "" )
     {
         error_log( "1" );
@@ -28,16 +28,16 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         {
             $seq = 1;
         }
-        for ( $i = 1; $i < count( $coors ) - 1; $i++ )
-        {
-            $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
-            $ins[ 'OpenGIS' ] = $coor;
-            $ins[ 'sequence' ] = $seq++;
-            $ins[ 'CableLine' ] = $CableLine;
-            $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
-            //error_log( "ins=".$query );
-            PQuery( $query );
-        }
+        /* for ( $i = 1; $i < count( $coors ) - 1; $i++ )
+          {
+          $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
+          $ins[ 'OpenGIS' ] = $coor;
+          $ins[ 'sequence' ] = $seq++;
+          $ins[ 'CableLine' ] = $CableLine;
+          $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+          //error_log( "ins=".$query );
+          PQuery( $query );
+          } */
     }
     elseif ( $res[ 'rows' ][ $seqEnd ][ 'meterSign' ] != "" )
     {
@@ -57,15 +57,15 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         {
             $seq = 0;
         }
-        for ( $i = 0; $i < count( $coors ) - 1; $i++ )
-        {
-            $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
-            $ins[ 'OpenGIS' ] = $coor;
-            $ins[ 'sequence' ] = $seq++;
-            $ins[ 'CableLine' ] = $CableLine;
-            $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
-            PQuery( $query );
-        }
+        /* for ( $i = 0; $i < count( $coors ) - 1; $i++ )
+          {
+          $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
+          $ins[ 'OpenGIS' ] = $coor;
+          $ins[ 'sequence' ] = $seq++;
+          $ins[ 'CableLine' ] = $CableLine;
+          $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+          PQuery( $query );
+          } */
     }
     else if ( $res[ 'rows' ][ $seqStart ][ 'meterSign' ] != "" )
     {
@@ -88,31 +88,40 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         {
             $seq = 1;
         }
-        for ( $i = 1; $i < count( $coors ); $i++ )
-        {
-            $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
-            $ins[ 'OpenGIS' ] = $coor;
-            $ins[ 'sequence' ] = $seq++;
-            $ins[ 'CableLine' ] = $CableLine;
-            $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
-            //error_log( "ins=".$query );
-            PQuery( $query );
-        }
+        /* for ( $i = 1; $i < count( $coors ); $i++ )
+          {
+          $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
+          $ins[ 'OpenGIS' ] = $coor;
+          $ins[ 'sequence' ] = $seq++;
+          $ins[ 'CableLine' ] = $CableLine;
+          $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+          //error_log( "ins=".$query );
+          PQuery( $query );
+          } */
     }
     else
     {
         $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" <= '.$seqEnd;
         PQuery( $query );
         $seq = 0;
-        for ( $i = 0; $i < count( $coors ); $i++ )
-        {
-            $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
-            $ins[ 'OpenGIS' ] = $coor;
-            $ins[ 'sequence' ] = $seq++;
-            $ins[ 'CableLine' ] = $CableLine;
-            $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
-            PQuery( $query );
-        }
+        /* for ( $i = 0; $i < count( $coors ); $i++ )
+          {
+          $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
+          $ins[ 'OpenGIS' ] = $coor;
+          $ins[ 'sequence' ] = $seq++;
+          $ins[ 'CableLine' ] = $CableLine;
+          $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+          PQuery( $query );
+          } */
+    }
+    for ( $i = 0; $i < count( $coors ); $i++ )
+    {
+        $coor = "(".$coors[ $i ]->lon.",".$coors[ $i ]->lat.")";
+        $ins[ 'OpenGIS' ] = $coor;
+        $ins[ 'sequence' ] = $seq++;
+        $ins[ 'CableLine' ] = $CableLine;
+        $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+        PQuery( $query );
     }
 }
 
