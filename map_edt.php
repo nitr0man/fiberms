@@ -630,7 +630,7 @@
                     CableLineEdtInfo[lineFeature.id]['seqStart'] = CableLine_arr[k]['sequenceStart'];
                     CableLineEdtInfo[lineFeature.id]['seqEnd'] = CableLine_arr[k]['sequenceEnd'];
                     CableLineEdtInfo[lineFeature.id]['cableLineId'] = CableLine_arr[k]['cableLineId'];
-                    CableLineEdtInfo[lineFeature.id]['superSeqEnd'] = CableLine_arr[k]['superSequenceEnd'];
+                    CableLineEdtInfo[lineFeature.id]['superSeqEnd'] = CableLine_arr[k]['superSeqEnd'];
                 }
 
                 var lat2, lon2, title, ident;

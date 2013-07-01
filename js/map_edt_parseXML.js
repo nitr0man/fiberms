@@ -51,6 +51,9 @@ function parseCableLineXML(
                 case "sequenceEnd":
                     CableLine_arr[i]['sequenceEnd'] = f_child.firstChild.nodeValue;
                     break;
+                case "superSequenceEnd":
+                    CableLine_arr[i]['superSeqEnd'] = f_child.firstChild.nodeValue;
+                    break;
             }
             f_child = f_child.nextSibling;
         }

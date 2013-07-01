@@ -106,7 +106,6 @@ function setSingPoint( event ) {
     if ( !res ) {
         Ext.getCmp( 'networkNodeId' ).disable();
     }
-    //selectSingPointControl.deactivate();
     selectSingPointLayer.destroyFeatures();
 }
 
