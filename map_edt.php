@@ -50,15 +50,11 @@
             var drawControls, selectedFeature;
             var lineLayer, lineLayer_halo, layerNodes, layerCableLinePoints, layerNodeNames,
                     selectSingPointLayer, addNodeLayer;
-            var CableLineText_arr = Array();
             var CableLine_arr = { };
-
             var notyInformation, notyQuestion, notyError;
             var panel, navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
                     addSingPointCon, deleteSingPointCon, addNodeCon, deleteNodeCon;
-
             var coor;
-            var converted;
             var CableLineEdtInfo = { };
             var jsonInsertCoor;
             var cableTypeArr, nodesArr, networkBoxesArr, freePointsArr;
@@ -69,12 +65,10 @@
                     selectDeleteSingPointControl, selectDeleteCableLineControl;
             var selectedCableLineId;
             var selectedLineAddSingPoint;
-
             var j = 0, j2 = 0;
             var CableLine_Points_count = Array();
             var nodesLabels_Count = 0;
             var nodesLabels_arr = Array();
-            var nodeDescription_arr = Array();
             var style_arr = Array( {
                 // Стиль линии (0 волокон)
                 strokeColor: 'blue',
@@ -170,6 +164,9 @@
                 layerNodeNames.destroyFeatures();
                 j = 0;
                 nodesLabels_Count = 0;
+                CableLineEdtInfo = { };
+                CableLine_arr = { };
+                CableLine_Points_count = Array();
                 layerNodes.refresh( { force: true } );
                 layerCableLinePoints.refresh( { force: true } );
                 getData();
@@ -201,17 +198,6 @@
                 layr.addFeatures( new OpenLayers.Feature.Vector(
                         point0,
                         { label: title, name: title, PointId: ident } ) );
-            }
-
-            function toggleControl( element ) {
-                for ( key in drawControls ) {
-                    var control = drawControls[key];
-                    if ( element.value == key && element.checked ) {
-                        control.activate();
-                    } else {
-                        control.deactivate();
-                    }
-                }
             }
 
             function init() {
@@ -578,20 +564,6 @@
                             null, style_halo );
                     lineLayer_halo.addFeatures(
                             [ lineFeature ] );
-                    /*CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' +CableLine_arr[k]['cableLineId'] +'">' +CableLine_arr[k]['name'] + '</a></h2>'
-                     +'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' +CableLine_arr[k]['cableTypeId'] +'">' +CableLine_arr[k]['cableTypeMarking'] +'</a><br>'
-                     +'К-во модулей: ' +CableLine_arr[k]['modules'] +'<br>'
-                     +'К-во волокон: ' +CableLine_arr[k]['fibers'] +'<br>'
-                     +'Направление: ' +CableLine_arr[k]['direction'] +'<br>'
-                     +'К-во незадействованных волокон: ' +CableLine_arr[k]['free_fibers'];*/
-                    CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' + CableLine_arr[k]['cableLineId'] + '">' + CableLine_arr[k]['name'] + '</a></h2>'
-                            + 'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' + CableLine_arr[k]['cableTypeId'] + '">' + CableLine_arr[k]['cableTypeMarking'] + '</a><br>'
-                            + 'Направление: ' + CableLine_arr[k]['direction'] + '<br>';
-                    CableLineText_arr[lineFeature.id] = CableLineText_arr[lineFeature.id] + 'К-во модулей: ' + CableLine_arr[k]['modules'] + '<br>';
-                    if ( CableLine_arr[k]['fibers'] != '0' ) {
-                        CableLineText_arr[lineFeature.id] = CableLineText_arr[lineFeature.id] + 'К-во волокон: ' + CableLine_arr[k]['fibers'] + '<br>';
-                        CableLineText_arr[lineFeature.id] = CableLineText_arr[lineFeature.id] + 'К-во незадействованных волокон: ' + CableLine_arr[k]['free_fibers'];
-                    }
                 }
                 // рисуем типо гало :)
 
@@ -618,14 +590,6 @@
                     var line_halo = lineFeature.clone();
                     lineLayer.addFeatures(
                             [ lineFeature ] );
-                    CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' + CableLine_arr[k]['cableLineId'] + '">' + CableLine_arr[k]['name'] + '</a></h2>'
-                            + 'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' + CableLine_arr[k]['cableTypeId'] + '">' + CableLine_arr[k]['cableTypeMarking'] + '</a><br>'
-                            + 'Направление: ' + CableLine_arr[k]['direction'] + '<br>'
-                            + 'К-во модулей: ' + CableLine_arr[k]['modules'] + '<br>';
-                    if ( CableLine_arr[k]['fibers'] != '0' ) {
-                        CableLineText_arr[lineFeature.id] = CableLineText_arr[lineFeature.id] + 'К-во волокон: ' + CableLine_arr[k]['fibers'] + '<br>';
-                        CableLineText_arr[lineFeature.id] = CableLineText_arr[lineFeature.id] + 'К-во незадействованных волокон: ' + CableLine_arr[k]['free_fibers'];
-                    }
                     CableLineEdtInfo[lineFeature.id] = { };
                     CableLineEdtInfo[lineFeature.id]['seqStart'] = CableLine_arr[k]['sequenceStart'];
                     CableLineEdtInfo[lineFeature.id]['seqEnd'] = CableLine_arr[k]['sequenceEnd'];

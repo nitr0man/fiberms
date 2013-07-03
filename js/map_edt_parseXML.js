@@ -79,9 +79,12 @@ function parseCableLineXML(
         CableLine_Points_count[i] = j2;
         j++;
     }
+    /*GetXMLFile(
+     "get_layers.php?mode=GetNetworkNodesDescription",
+     parseNetworkNodesDescriptionXML ); // получаем описание для узлов*/
     GetXMLFile(
-            "get_layers.php?mode=GetNetworkNodesDescription",
-            parseNetworkNodesDescriptionXML ); // получаем описание для узлов
+            "get_layers.php?mode=GetNodesLabels",
+            parseNodesLabelsXML ); // получаем надписи для узлов
 }
 
 function parseNetworkNodesDescriptionXML(

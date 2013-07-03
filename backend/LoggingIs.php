@@ -11,6 +11,10 @@ function loggingIs( $type, $tableName, $values, $record )
     }
     $user_res = getCurrUserInfo();
     $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
+    if ( $user == "" )
+    {
+        $user = 1;
+    }
     $res = PQuery( 'SELECT id FROM "LogTableList" WHERE "name"=\''.$tableName.'\'' );
     $tableId = $res[ 'rows' ][ 0 ][ 'id' ];
     if ( $type == 1 )
