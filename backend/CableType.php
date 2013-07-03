@@ -254,6 +254,16 @@ function getCableLinePoints( $cableLine, $onlyFree = FALSE )
     return $result;
 }
 
+function retCable( $matches, $row, $superSeqEnd )
+{
+    $cable[ 'lat' ] = $matches[ 'lat' ][ 0 ];
+    $cable[ 'lon' ] = $matches[ 'lon' ][ 0 ];
+    $cable[ 'id' ] = $row[ 'id' ];
+    $cable[ 'sequence' ] = $row[ 'sequence' ];
+    $cable[ 'superSequenceEnd' ] = $superSeqEnd;
+    return $cable;
+}
+
 function getCableLinesFrag( $cableLines )
 {
     $resFrags = array( );
@@ -275,12 +285,9 @@ function getCableLinesFrag( $cableLines )
                         $matches );
             }
             if ( ( $rows[ $j ][ 'note' ] != '' ) || ( $rows[ $j ][ 'meterSign' ] != '' ) )
-            {
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
+            {                
+                $resFrags[ $cableLine ][ $b ][ $n ] = retCable( $matches,
+                        $rows[ $j ], $rows[ count( $rows ) - 1 ][ 'sequence' ] );
                 //$n++;
                 $b++;
                 $n = 0;
@@ -291,21 +298,15 @@ function getCableLinesFrag( $cableLines )
                 {
                     preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
                             $NNOpenGis, $matches );
-                }
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
+                }                
+                $resFrags[ $cableLine ][ $b ][ $n ] = retCable( $matches,
+                        $rows[ $j ], $rows[ count( $rows ) - 1 ][ 'sequence' ] );
                 $n++;
             }
             else
-            {
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'lat' ] = $matches[ 'lat' ][ 0 ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'lon' ] = $matches[ 'lon' ][ 0 ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'id' ] = $rows[ $j ][ 'id' ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'sequence' ] = $rows[ $j ][ 'sequence' ];
-                $resFrags[ $cableLine ][ $b ][ $n ][ 'superSequenceEnd' ] = $rows[ count( $rows ) - 1 ][ 'sequence' ];
+            {                
+                $resFrags[ $cableLine ][ $b ][ $n ] = retCable( $matches,
+                        $rows[ $j ], $rows[ count( $rows ) - 1 ][ 'sequence' ] );
                 $n++;
             }
         }
