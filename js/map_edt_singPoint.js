@@ -34,6 +34,24 @@ function setSingPoint( event ) {
     notyInformation.close();
     var feature = event.feature;
     var coorSingPoint = feature.geometry.getVertices();
+    if ( divLineMode ) {
+        jsonSingPointCoor.CableLineId = selectedCableLineId;
+        var ll = new OpenLayers.LonLat( coorSingPoint[ 0 ].x,
+                coorSingPoint[ 0 ].y ).transform(
+                new OpenLayers.Projection( "EPSG:900913" ),
+                new OpenLayers.Projection( "EPSG:4326" ) );
+        jsonSingPointCoor.coorArr[ 0 ] = { };
+        jsonSingPointCoor.coorArr[ 0 ]["lon"] = ll.lon;
+        jsonSingPointCoor.coorArr[ 0 ]["lat"] = ll.lat;
+        json = JSON.stringify( jsonSingPointCoor );
+        $.post( "map_post.php", { coors: json, mode: "divCableLine" },
+        function() {
+            refreshAllLayers();
+        } );
+        divCableLineCon.deactivate();
+        divCableLineCon.activate();
+        return;
+    }
     form = Ext.create( 'Ext.form.Panel', {
         bodyPadding: 10,
         defaultType: 'textfield',

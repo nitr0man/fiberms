@@ -8,14 +8,16 @@ var lineLayer, lineLayer_halo, layerNodes, layerCableLinePoints, layerNodeNames,
 var CableLine_arr = { };
 var notyInformation, notyQuestion, notyError;
 var panel, navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
-        addSingPointCon, deleteSingPointCon, addNodeCon, deleteNodeCon;
+        addSingPointCon, deleteSingPointCon, addNodeCon, deleteNodeCon,
+        divCableLineCon;
 var coor;
 var CableLineEdtInfo = { };
 var jsonInsertCoor;
 var cableTypeArr, nodesArr, networkBoxesArr, freePointsArr;
 var mapCr = true;
 var selectSingPoint = false, selectDeleteSingPointMode = false,
-        selectDeleteCableLineMode = false, selectDeleteNodeMode = false;
+        selectDeleteCableLineMode = false, selectDeleteNodeMode = false,
+        divLineMode = false;
 var selectLineControl, selectSingPointControl,
         selectDeleteSingPointControl, selectDeleteCableLineControl;
 var selectedCableLineId;
@@ -62,6 +64,7 @@ function disableControls() {
     deleteNodeControl.deactivate();
     selectDeleteNodeMode = false;
     selectSingPointLayer.destroyFeatures();
+    divLineMode = false;
 }
 
 function getData() {
@@ -394,6 +397,21 @@ function init() {
                 selectDeleteCableLineMode = true;
                 showInformation( 'topCenter', 'Выберите линию' );
             } );
+    divCableLineCon = new OpenLayers.Control.Navigation(
+            {
+                title: "Делит линию",
+                text: "Деление<br>линии",
+                displayClass: "olControlAddSingPoint",
+                mode: OpenLayers.Control.Navigation
+            } );
+    divCableLineCon.events.register( "activate", this,
+            function() {
+                disableControls();
+                selectLineControl.activate();
+                selectSingPoint = true;
+                divLineMode = true;
+                showInformation( 'topCenter', 'Выберите линию' );
+            } );
 
     addSingPointCon = new OpenLayers.Control.Navigation(
             {
@@ -456,7 +474,7 @@ function init() {
 
     panel.addControls(
             [ navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
-                addSingPointCon, deleteSingPointCon,
+                divCableLineCon, addSingPointCon, deleteSingPointCon,
                 addNodeCon, deleteNodeCon ] );
     map.addControl(
             panel );

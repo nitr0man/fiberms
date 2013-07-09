@@ -58,11 +58,12 @@ function NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
     $ins[ 'Building' ] = $building;
     $ins[ 'Apartment' ] = $apartment;
     $res = NetworkNode_INSERT( $ins );
-    if ( isset( $res[ 'error' ] ) )
+    /*if ( isset( $res[ 'error' ] ) )
     {
         return $res;
     }
-    return 1;
+    return 1;*/
+    return $res;
 }
 
 function getNetworkNodeInfo( $networkNodeId )

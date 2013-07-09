@@ -26,6 +26,7 @@ function NetworkNode_INSERT( $ins )
 {
     $query = 'INSERT INTO "NetworkNode"';
     $query .= genInsert( $ins );
+    $query .= " RETURNING id";
     $result = PQuery( $query );
     loggingIs( 2, 'NetworkNode', $ins, '' );
     return $result;

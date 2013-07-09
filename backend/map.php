@@ -1,5 +1,10 @@
 <?php
 
+require_once 'backend/NetworkNode.php';
+require_once 'backend/CableType.php';
+require_once 'func/CableType.php';
+require_once 'func/NetworkNode.php';
+
 function isSingPoint( $point )
 {
     $res = FALSE;
@@ -101,15 +106,13 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         $ins[ 'sequence' ] = $seq++;
         $ins[ 'CableLine' ] = $CableLine;
         $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
-        error_log( "ins=".$query );
+        //error_log( "ins=".$query );
         PQuery( $query );
     }
 }
 
 function addCableLinePoint( $coors, $CableType, $length, $name, $comment )
 {
-    require_once 'func/CableType.php';
-
     $ins[ 'CableType' ] = $CableType;
     $ins[ 'length' ] = $length;
     $ins[ 'name' ] = $name;
@@ -176,8 +179,6 @@ function deleteCableLine( $CableLineId )
 function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
         $building, $apartment )
 {
-    require_once("func/NetworkNode.php");
-
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $apartment = "NULL";
     $building = "NULL";
@@ -188,8 +189,6 @@ function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
 
 function deleteNode( $coors )
 {
-    require_once 'backend/NetworkNode.php';
-
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $wr[ 'OpenGIS' ] = $OpenGIS;
     $query = 'SELECT id FROM "NetworkNode"'.genWhere( $wr );
@@ -200,4 +199,76 @@ function deleteNode( $coors )
     NetworkNode_DELETE( $wr );
 }
 
+function divCableLine( $coors, $CableLineId )
+{
+
+    $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
+    $wr[ 'id' ] = $CableLineId;
+    $res = CableLine_SELECT( 0, $wr );
+    $CableLine = $res[ 'rows' ][ 0 ];
+    unset( $wr );
+    $wr[ 'CableLine' ] = $CableLineId;
+    $query = 'SELECT * FROM "CableLinePoint"'.genWhere( $wr ).
+            'ORDER BY "sequence"';
+    $res2 = PQuery( $query );
+    $CableLinePoints = $res2[ 'rows' ];
+    for ( $i = 0; $i < count( $CableLinePoints ); $i++ )
+    {
+        $point = $CableLinePoints[ $i ];
+        if ( $point[ 'OpenGIS' ] == $OpenGIS )
+        {
+            $seq = $point[ 'sequence' ];
+            $query = 'DELETE FROM "CableLinePoint" WHERE "sequence" > '.$seq.
+                    ' AND "CableLine" = '.$CableLineId;
+            PQuery( $query );
+            $name = "nodeName";
+            $NetworkBoxId = 4597;
+            $note = "lolo";
+            $res3 = NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
+                    "NULL", "NULL", "NULL" );
+            $NetworkNodeId = $res3[ 'rows' ][ 0 ][ 'id' ];
+            $wr[ 'sequence' ] = $seq;
+            $upd[ 'OpenGIS' ] = "NULL";
+            $upd[ 'NetworkNode' ] = $NetworkNodeId;
+            CableLinePoint_UPDATE( $upd, $wr );
+            break;
+        }
+    }
+    $ins[ 'CableType' ] = $CableLine [ 'CableType' ];
+    $ins[ 'length' ] = $CableLine[ 'length' ];
+    $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
+    $ins[ 'comment' ] = $CableLine[ 'comment' ];
+    $query = 'INSERT INTO "CableLine"'.genInsert( $ins ).' RETURNING id';
+    $res4 = PQuery( $query );
+    $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
+    $seq = 0;
+    unset( $ins );
+    for ( $j = $i; $j < count( $CableLinePoints ); $j++ )
+    {
+        $point = $CableLinePoints[ $j ];
+        foreach ( $point as $key => $value )
+        {
+            if ( $key != "id" && $key != "sequence" )
+            {
+                if ( $value != "" )
+                {
+                    $ins[ $key ] = $value;
+                }
+                else
+                {
+                    $ins[ $key ] = "NULL";
+                }
+            }
+        }
+        $ins[ 'CableLine' ] = $NCableLineId;
+        $ins[ 'sequence' ] = $seq++;
+        if ( $j == $i )
+        {
+            $ins[ 'NetworkNode' ] = $NetworkNodeId;
+            $ins[ 'OpenGIS' ] = "NULL";
+        }
+        $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+        PQuery( $query );
+    }
+}
 ?>
