@@ -47,7 +47,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
             $message = $res[ 'error' ];
             $error = 1;
         }
-        elseif ( $res == 1 )
+        elseif ( !isset( $res[ 'error' ] ) )
         {
             header( "Refresh: 3; url=".$back );
             $message = 'Узел изменен!';
@@ -104,7 +104,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
             $message = $res[ 'error' ];
             $error = 1;
         }
-        elseif ( $res == 1 )
+        elseif ( !isset( $res[ 'error' ] ) )
         {
             header( "Refresh: 3; url=".$back );
             $message = 'Узел добавлен!';
