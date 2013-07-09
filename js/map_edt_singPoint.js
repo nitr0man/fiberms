@@ -24,17 +24,22 @@ function getSingPoints( /*event*/ ) {
 function setSingPoint( event ) {
     var jsonSingPointCoor = {
         CableLineId: "",
-        meterSign: "",
+        name: "",
+        NetworkBoxId: "",
         apartment: "",
         building: "",
         note: "",
-        networkNode: "",
         coorArr: [ ]
     };
     notyInformation.close();
     var feature = event.feature;
     var coorSingPoint = feature.geometry.getVertices();
     if ( divLineMode ) {
+        if ( networkBoxesArr.length < 1 ) {
+            addNodeLayer.destroyFeatures();
+            showError( 'topCenter', 'Нет свободных ящиков!' );
+            return;
+        }
         jsonSingPointCoor.CableLineId = selectedCableLineId;
         var ll = new OpenLayers.LonLat( coorSingPoint[ 0 ].x,
                 coorSingPoint[ 0 ].y ).transform(
@@ -43,11 +48,85 @@ function setSingPoint( event ) {
         jsonSingPointCoor.coorArr[ 0 ] = { };
         jsonSingPointCoor.coorArr[ 0 ]["lon"] = ll.lon;
         jsonSingPointCoor.coorArr[ 0 ]["lat"] = ll.lat;
-        json = JSON.stringify( jsonSingPointCoor );
-        $.post( "map_post.php", { coors: json, mode: "divCableLine" },
-        function() {
-            refreshAllLayers();
+
+        form = Ext.create( 'Ext.form.Panel', {
+            bodyPadding: 10,
+            defaultType: 'textfield',
+            items: [
+                {
+                    xtype: 'combobox',
+                    fieldLabel: 'Ящик',
+                    name: 'networkBox',
+                    valueField: 'value',
+                    displayField: 'text',
+                    store: new Ext.data.SimpleStore( {
+                        id: networkBoxesArr[0].id,
+                        fields:
+                                [
+                                    'value',
+                                    'text'
+                                ],
+                        data: networkBoxesArr
+                    } )
+                },
+                {
+                    fieldLabel: 'Имя',
+                    name: 'name',
+                    value: ''
+                },
+                {
+                    fieldLabel: 'Квартира',
+                    name: 'apartment',
+                    value: ''
+                },
+                {
+                    fieldLabel: 'Здание',
+                    name: 'building',
+                    value: ''
+                },
+                {
+                    fieldLabel: 'Примечание',
+                    name: 'note',
+                    value: ''
+                }
+            ],
+            buttons: [
+                {
+                    text: 'Добавить',
+                    handler: function() {
+                        var form = this.up( 'form' ).getForm();
+                        jsonSingPointCoor.name = form.getValues().name;
+                        jsonSingPointCoor.NetworkBoxId = form.getValues().networkBox;
+                        jsonSingPointCoor.building = form.getValues().building;
+                        jsonSingPointCoor.apartment = form.getValues().apartment;
+                        jsonSingPointCoor.note = form.getValues().note;
+                        json = JSON.stringify( jsonSingPointCoor );
+                        $.post( "map_post.php",
+                                { coors: json, mode: "divCableLine" },
+                        function() {
+                            refreshAllLayers();
+                        } );
+                        //addNode( coorNode, jsonNodeCoor );
+                        dialog.destroy();
+                    }
+                }
+            ]
         } );
+        dialog = new Ext.Window( {
+            title: "Добавить узел",
+            layout: "fit",
+            height: 220, width: 330,
+            plain: true,
+            items: [ form ]
+        } );
+        dialog.show();
+
+
+        /*json = JSON.stringify( jsonSingPointCoor );
+         $.post( "map_post.php", { coors: json, mode: "divCableLine" },
+         function() {
+         refreshAllLayers();
+         } );*/
         divCableLineCon.deactivate();
         divCableLineCon.activate();
         return;

@@ -58,7 +58,12 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     }
     elseif ( $_POST[ 'mode' ] == "divCableLine" )
     {
-        divCableLine( $coors, $CableLineId );
+        $nodeInfo[ 'name' ] = $obj->{'name'};
+        $nodeInfo[ 'NetworkBoxId' ] = $obj->{'NetworkBoxId'};
+        $nodeInfo[ 'apartment' ] = $obj->{'apartment'};
+        $nodeInfo[ 'building' ] = $obj->{'building'};
+        $nodeInfo[ 'note' ] = $obj->{'note'};
+        divCableLine( $coors, $CableLineId, $nodeInfo );
     }
 }
 print( "OK" );

@@ -199,7 +199,7 @@ function deleteNode( $coors )
     NetworkNode_DELETE( $wr );
 }
 
-function divCableLine( $coors, $CableLineId )
+function divCableLine( $coors, $CableLineId, $nodeInfo )
 {
 
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
@@ -221,11 +221,14 @@ function divCableLine( $coors, $CableLineId )
             $query = 'DELETE FROM "CableLinePoint" WHERE "sequence" > '.$seq.
                     ' AND "CableLine" = '.$CableLineId;
             PQuery( $query );
-            $name = "nodeName";
-            $NetworkBoxId = 4597;
-            $note = "lolo";
+            $name = $nodeInfo[ 'name' ];
+            $NetworkBoxId = $nodeInfo[ 'NetworkBoxId' ];
+            $note = $nodeInfo[ 'note' ];
+            $SettlementGeoSpatial = "NULL";
+            $building = $nodeInfo[ 'building' ];
+            $apartment = $nodeInfo[ 'apartment' ];
             $res3 = NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
-                    "NULL", "NULL", "NULL" );
+                    $SettlementGeoSpatial, $building, $apartment );
             $NetworkNodeId = $res3[ 'rows' ][ 0 ][ 'id' ];
             $wr[ 'sequence' ] = $seq;
             $upd[ 'OpenGIS' ] = "NULL";

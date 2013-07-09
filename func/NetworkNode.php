@@ -54,9 +54,12 @@ function NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
     $ins[ 'NetworkBox' ] = $networkBox;
     $ins[ 'note' ] = $note;
     $ins[ 'OpenGIS' ] = $OpenGIS;
-    $ins[ 'SettlementGeoSpatial' ] = $SettlementGeoSpatial;
-    $ins[ 'Building' ] = $building;
-    $ins[ 'Apartment' ] = $apartment;
+    //$ins[ 'SettlementGeoSpatial' ] = $SettlementGeoSpatial;
+    //$ins[ 'Building' ] = $building;
+    //$ins[ 'Apartment' ] = $apartment;
+    $ins[ 'SettlementGeoSpatial' ] = "NULL";
+    $ins[ 'Building' ] = "NULL";
+    $ins[ 'Apartment' ] = "NULL";
     $res = NetworkNode_INSERT( $ins );
     /*if ( isset( $res[ 'error' ] ) )
     {
