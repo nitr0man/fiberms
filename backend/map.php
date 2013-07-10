@@ -15,27 +15,28 @@ function isSingPoint( $point )
     return $res;
 }
 
-function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
+function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
+        $tmpT = FALSE )
 {
-    $query = 'SELECT * FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' ORDER BY "sequence"';
+    $query = 'SELECT * FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' ORDER BY "sequence"';
     $res = PQuery( $query );
     // error_log( print_r( $res, true ) );
-    error_log( "seqStart=".$seqStart );
-    error_log( "seqEnd=".$seqEnd );
+    //error_log( "seqStart=".$seqStart );
+    //error_log( "seqEnd=".$seqEnd );
     if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) && isSingPoint( $res[ 'rows' ][ $seqEnd ] ) )
     {
-        error_log( "1" );
-        $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" < '.$seqEnd;
-        error_log( "delete=".$query );
+        //error_log( "1" );
+        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" < '.$seqEnd;
+        //error_log( "delete=".$query );
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
         {
             $seqDiff = count( $coors ) - ( $seqEnd - $seqStart ) - 1;
-            $query = 'UPDATE "CableLinePoint" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
-            error_log( "update=".$query );
+            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
+            //error_log( "update=".$query );
             PQuery( $query );
-            $query = 'UPDATE "CableLinePoint" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
-            error_log( "update=".$query );
+            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
+            //error_log( "update=".$query );
             PQuery( $query );
             $seq = $seqStart + 1;
         }
@@ -49,14 +50,14 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
     elseif ( isSingPoint( $res[ 'rows' ][ $seqEnd ] ) )
     {
         //error_log( "2" );
-        $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" < '.$seqEnd;
+        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" < '.$seqEnd;
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
         {
             $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
-            $query = 'UPDATE "CableLinePoint" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
+            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
             PQuery( $query );
-            $query = 'UPDATE "CableLinePoint" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
+            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
             PQuery( $query );
             $seq = $seqStart;
         }
@@ -70,16 +71,16 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
     else if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) )
     {
         //error_log( "3" );
-        $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" <= '.$seqEnd;
+        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" <= '.$seqEnd;
         //error_log( "delete=".$query );
         PQuery( $query );
         if ( count( $coors ) != $res[ 'count' ] )
         {
             $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
-            $query = 'UPDATE "CableLinePoint" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqEnd;
+            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqEnd;
             //error_log( "update=".$query );
             PQuery( $query );
-            $query = 'UPDATE "CableLinePoint" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
+            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
             //error_log( "update=".$query );
             PQuery( $query );
             $seq = $seqStart + 1;
@@ -93,7 +94,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
     }
     else
     {
-        $query = 'DELETE FROM "CableLinePoint" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" <= '.$seqEnd;
+        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" <= '.$seqEnd;
         PQuery( $query );
         $seq = 0;
         $iSt = 0;
@@ -105,19 +106,20 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd )
         $ins[ 'OpenGIS' ] = $coor;
         $ins[ 'sequence' ] = $seq++;
         $ins[ 'CableLine' ] = $CableLine;
-        $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+        $query = 'INSERT INTO "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genInsert( $ins );
         //error_log( "ins=".$query );
         PQuery( $query );
     }
 }
 
-function addCableLinePoint( $coors, $CableType, $length, $name, $comment )
+function addCableLinePoint( $coors, $CableType, $length, $name, $comment,
+        $tmpT = FALSE )
 {
     $ins[ 'CableType' ] = $CableType;
     $ins[ 'length' ] = $length;
     $ins[ 'name' ] = $name;
     $ins[ 'comment' ] = $comment;
-    $query = 'INSERT INTO "CableLine"'.genInsert( $ins ).' RETURNING id';
+    $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';
     $res = PQuery( $query );
     $CableLine = $res[ 'rows' ][ 0 ][ 'id' ];
     $seq = 0;
@@ -128,7 +130,7 @@ function addCableLinePoint( $coors, $CableType, $length, $name, $comment )
         $ins[ 'OpenGIS' ] = $coor;
         $ins[ 'sequence' ] = $seq++;
         $ins[ 'CableLine' ] = $CableLine;
-        $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+        $query = 'INSERT INTO "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genInsert( $ins );
         PQuery( $query );
     }
 }
@@ -152,63 +154,63 @@ function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
     $upd[ 'Apartment' ] = $apartment;
     $upd[ 'Building' ] = $building;
     $upd[ 'SettlementGeoSpatial' ] = "NULL";
-    CableLinePoint_UPDATE( $upd, $wr );
+    CableLinePoint_UPDATE( $upd, $wr, TRUE );
 }
 
-function deleteSingPoint( $coors )
+function deleteSingPoint( $coors, $tmpT = FALSE )
 {
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $upd[ 'meterSign' ] = "NULL";
     $upd[ 'note' ] = "NULL";
     $wr[ 'OpenGIS' ] = $OpenGIS;
-    $query = 'UPDATE "CableLinePoint" SET '.genUpdate( $upd ).genWhere( $wr );
+    $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET '.genUpdate( $upd ).genWhere( $wr );
     PQuery( $query );
 }
 
-function deleteCableLine( $CableLineId )
+function deleteCableLine( $CableLineId, $tmpT = FALSE )
 {
     $wr[ 'CableLine' ] = $CableLineId;
-    $query = 'DELETE FROM "CableLinePoint"'.genWhere( $wr );
+    $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genWhere( $wr );
     PQuery( $query );
     unset( $wr );
     $wr[ 'id' ] = $CableLineId;
-    $query = 'DELETE FROM "CableLine"'.genWhere( $wr );
+    $query = 'DELETE FROM "'.tmpTable( 'CableLine', $tmpT ).'"'.genWhere( $wr );
     PQuery( $query );
 }
 
 function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
-        $building, $apartment )
+        $building, $apartment, $tmpT = FALSE )
 {
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $apartment = "NULL";
     $building = "NULL";
     $SettlementGeoSpatial = "NULL";
     NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
-            $SettlementGeoSpatial, $building, $apartment );
+            $SettlementGeoSpatial, $building, $apartment, $tmpT );
 }
 
-function deleteNode( $coors )
+function deleteNode( $coors, $tmpT = FALSE )
 {
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $wr[ 'OpenGIS' ] = $OpenGIS;
-    $query = 'SELECT id FROM "NetworkNode"'.genWhere( $wr );
+    $query = 'SELECT id FROM "'.tmpTable( 'NetworkNode', $tmpT ).'"'.genWhere( $wr );
     $res = PQuery( $query );
     $NetworkNodeId = $res[ 'rows' ][ 0 ][ 'id' ];
     unset( $wr );
     $wr[ 'id' ] = $NetworkNodeId;
-    NetworkNode_DELETE( $wr );
+    NetworkNode_DELETE( $wr, $tmpT );
 }
 
-function divCableLine( $coors, $CableLineId, $nodeInfo )
+function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
 {
 
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $wr[ 'id' ] = $CableLineId;
-    $res = CableLine_SELECT( 0, $wr );
+    $res = CableLine_SELECT( 0, $wr, $tmpT );
     $CableLine = $res[ 'rows' ][ 0 ];
     unset( $wr );
     $wr[ 'CableLine' ] = $CableLineId;
-    $query = 'SELECT * FROM "CableLinePoint"'.genWhere( $wr ).
+    $query = 'SELECT * FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genWhere( $wr ).
             'ORDER BY "sequence"';
     $res2 = PQuery( $query );
     $CableLinePoints = $res2[ 'rows' ];
@@ -218,7 +220,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo )
         if ( $point[ 'OpenGIS' ] == $OpenGIS )
         {
             $seq = $point[ 'sequence' ];
-            $query = 'DELETE FROM "CableLinePoint" WHERE "sequence" > '.$seq.
+            $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "sequence" > '.$seq.
                     ' AND "CableLine" = '.$CableLineId;
             PQuery( $query );
             $name = $nodeInfo[ 'name' ];
@@ -228,12 +230,12 @@ function divCableLine( $coors, $CableLineId, $nodeInfo )
             $building = $nodeInfo[ 'building' ];
             $apartment = $nodeInfo[ 'apartment' ];
             $res3 = NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
-                    $SettlementGeoSpatial, $building, $apartment );
+                    $SettlementGeoSpatial, $building, $apartment, $tmpT );
             $NetworkNodeId = $res3[ 'rows' ][ 0 ][ 'id' ];
             $wr[ 'sequence' ] = $seq;
             $upd[ 'OpenGIS' ] = "NULL";
             $upd[ 'NetworkNode' ] = $NetworkNodeId;
-            CableLinePoint_UPDATE( $upd, $wr );
+            CableLinePoint_UPDATE( $upd, $wr, $tmpT );
             break;
         }
     }
@@ -241,7 +243,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo )
     $ins[ 'length' ] = $CableLine[ 'length' ];
     $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
     $ins[ 'comment' ] = $CableLine[ 'comment' ];
-    $query = 'INSERT INTO "CableLine"'.genInsert( $ins ).' RETURNING id';
+    $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';
     $res4 = PQuery( $query );
     $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
     $seq = 0;
@@ -270,8 +272,9 @@ function divCableLine( $coors, $CableLineId, $nodeInfo )
             $ins[ 'NetworkNode' ] = $NetworkNodeId;
             $ins[ 'OpenGIS' ] = "NULL";
         }
-        $query = 'INSERT INTO "CableLinePoint"'.genInsert( $ins );
+        $query = 'INSERT INTO "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genInsert( $ins );
         PQuery( $query );
     }
 }
+
 ?>

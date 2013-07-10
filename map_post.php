@@ -7,12 +7,12 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
     $obj = json_decode( $_POST[ 'coors' ] );
     $coors = $obj->{'coorArr'};
-    $CableLineId = (int) $obj->{'CableLineId'};
+    $CableLineId = (int)$obj->{'CableLineId'};
     if ( $_POST[ 'mode' ] == "updCableLine" )
     {
         $seqStart = $obj->{'seqStart'};
         $seqEnd = $obj->{'seqEnd'};
-        updCableLinePoints( $coors, $CableLineId, $seqStart, $seqEnd );
+        updCableLinePoints( $coors, $CableLineId, $seqStart, $seqEnd, TRUE );
     }
     elseif ( $_POST[ 'mode' ] == "addCableLine" )
     {
@@ -20,7 +20,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $name = $obj->{'name'};
         $comment = $obj->{'comment'};
         $CableType = $obj->{'CableType'};
-        addCableLinePoint( $coors, $CableType, $length, $name, $comment );
+        addCableLinePoint( $coors, $CableType, $length, $name, $comment, TRUE );
     }
     elseif ( $_POST[ 'mode' ] == "addSingPoint" )
     {
@@ -36,11 +36,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     }
     elseif ( $_POST[ 'mode' ] == "deleteSingPoint" )
     {
-        deleteSingPoint( $coors );
+        deleteSingPoint( $coors, TRUE );
     }
     elseif ( $_POST[ 'mode' ] == "deleteCableLine" )
     {
-        deleteCableLine( $CableLineId );
+        deleteCableLine( $CableLineId, TRUE );
     }
     elseif ( $_POST[ 'mode' ] == "addNode" )
     {
@@ -50,11 +50,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $note = $obj->{'note'};
         $name = $obj->{'name'};
         addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
-                $building, $apartment );
+                $building, $apartment, TRUE );
     }
     elseif ( $_POST[ 'mode' ] == "deleteNode" )
     {
-        deleteNode( $coors );
+        deleteNode( $coors, TRUE );
     }
     elseif ( $_POST[ 'mode' ] == "divCableLine" )
     {
@@ -63,7 +63,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $nodeInfo[ 'apartment' ] = $obj->{'apartment'};
         $nodeInfo[ 'building' ] = $obj->{'building'};
         $nodeInfo[ 'note' ] = $obj->{'note'};
-        divCableLine( $coors, $CableLineId, $nodeInfo );
+        divCableLine( $coors, $CableLineId, $nodeInfo, TRUE );
     }
 }
 print( "OK" );

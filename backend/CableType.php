@@ -3,9 +3,9 @@
 require_once("functions.php");
 require_once("backend/LoggingIs.php");
 
-function CableLine_SELECT( $sort, $wr )
+function CableLine_SELECT( $sort, $wr, $tmpT = FALSE )
 {
-    $query = 'SELECT * FROM "CableLine"';
+    $query = 'SELECT * FROM "'.tmpTable( 'CableLine', $tmpT ).'"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
@@ -134,16 +134,16 @@ function CableLinePoint_INSERT( $ins )
     return $result;
 }
 
-function CableLinePoint_UPDATE( $upd, $wr )
+function CableLinePoint_UPDATE( $upd, $wr, $tmpT = FALSE )
 {
-    $query = 'UPDATE "CableLinePoint" SET ';
+    $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET ';
     $query .= genUpdate( $upd );
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
     }
     $result = PQuery( $query );
-    loggingIs( 1, 'CableLinePoint', $upd, $wr[ 'id' ] );
+    loggingIs( 1, tmpTable( 'CableLinePoint', $tmpT ), $upd, $wr[ 'id' ] );
     return $result;
 }
 

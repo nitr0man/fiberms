@@ -22,13 +22,13 @@ function NetworkNode_SELECT( $sort, $FSort, $wr )
     return $result;
 }
 
-function NetworkNode_INSERT( $ins )
+function NetworkNode_INSERT( $ins, $tmpT = FALSE )
 {
-    $query = 'INSERT INTO "NetworkNode"';
+    $query = 'INSERT INTO "'.tmpTable( 'NetworkNode', $tmpT ).'"';
     $query .= genInsert( $ins );
     $query .= " RETURNING id";
     $result = PQuery( $query );
-    loggingIs( 2, 'NetworkNode', $ins, '' );
+    loggingIs( 2, tmpTable( 'NetworkNode', $tmpT ), $ins, '' );
     return $result;
 }
 
@@ -46,7 +46,7 @@ function NetworkNode_UPDATE( $upd, $wr )
     return $result;
 }
 
-function NetworkNode_DELETE( $wr )
+function NetworkNode_DELETE( $wr, $tmpT = FALSE )
 {
     require_once 'backend/CableType.php';
 
@@ -54,12 +54,12 @@ function NetworkNode_DELETE( $wr )
     $res = NetworkNode_SELECT( '', '', $wr );
     $upd[ 'NetworkNode' ] = 'NULL';
     $upd[ 'OpenGIS' ] = $res[ 'rows' ][ 0 ][ 'OpenGIS' ];
-    $query = 'UPDATE "CableLinePoint" SET '.genUpdate( $upd ).' WHERE "NetworkNode"='.$NetworkNodeId;
+    $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET '.genUpdate( $upd ).' WHERE "NetworkNode"='.$NetworkNodeId;
     PQuery( $query );
-    $query = 'DELETE FROM "NetworkNode"';
+    $query = 'DELETE FROM "'.tmpTable( 'NetworkNode', $tmpT ).'"';
     $query .= genWhere( $wr );
     $result = PQuery( $query );
-    loggingIs( 3, 'NetworkNode', '', $NetworkNodeId );
+    loggingIs( 3, ''.tmpTable( 'NetworkNode', $tmpT ).'', '', $NetworkNodeId );
     return $result;
 }
 

@@ -153,10 +153,14 @@ function getCableLineInfo( $nodeId, $zeroFibers = -1, $tmpT = FALSE )
                 "clp".id AS "clpid", "cl"."name", "ct"."marking",
                 "clp"."NetworkNode", "ct".id AS "ctid", "cl".id AS "clid",
                 "ct"."manufacturer", "ct"."fiberPerTube"
-                FROM "'.tmpTable( 'NetworkNode',$tmpT ).'" AS "NN"
-		LEFT JOIN "'.tmpTable( 'CableLinePoint',$tmpT ).'" AS "clp" ON "clp"."NetworkNode"="NN"."id"
-		LEFT JOIN "'.tmpTable( 'CableLine',$tmpT ).'" AS "cl" ON "cl".id="clp"."CableLine"
-		LEFT JOIN "'.tmpTable( 'CableType',$tmpT ).'" AS "ct" ON "ct".id="cl"."CableType" WHERE "NN".id='.$nodeId;
+                FROM "'.tmpTable( 'NetworkNode',
+                    $tmpT ).'" AS "NN"
+		LEFT JOIN "'.tmpTable( 'CableLinePoint',
+                    $tmpT ).'" AS "clp" ON "clp"."NetworkNode"="NN"."id"
+		LEFT JOIN "'.tmpTable( 'CableLine',
+                    $tmpT ).'" AS "cl" ON "cl".id="clp"."CableLine"
+		LEFT JOIN "'.tmpTable( 'CableType',
+                    $tmpT ).'" AS "ct" ON "ct".id="cl"."CableType" WHERE "NN".id='.$nodeId;
     if ( $zeroFibers == -1 )
     {
         $query .= ' AND "ct"."tubeQuantity"*"ct"."fiberPerTube" != 0';

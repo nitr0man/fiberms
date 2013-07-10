@@ -43,7 +43,7 @@ function NetworkNode_Mod( $id, $name, $networkBox, $note, $OpenGIS,
 }
 
 function NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
-        $SettlementGeoSpatial, $building, $apartment )
+        $SettlementGeoSpatial, $building, $apartment, $tmpT = FALSE )
 {
     if ( NetworkNode_Check( $name, $networkBox, $note, $OpenGIS,
                     $SettlementGeoSpatial, $building, $apartment ) == 0 )
@@ -60,12 +60,12 @@ function NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
     $ins[ 'SettlementGeoSpatial' ] = "NULL";
     $ins[ 'Building' ] = "NULL";
     $ins[ 'Apartment' ] = "NULL";
-    $res = NetworkNode_INSERT( $ins );
-    /*if ( isset( $res[ 'error' ] ) )
-    {
-        return $res;
-    }
-    return 1;*/
+    $res = NetworkNode_INSERT( $ins, $tmpT );
+    /* if ( isset( $res[ 'error' ] ) )
+      {
+      return $res;
+      }
+      return 1; */
     return $res;
 }
 
