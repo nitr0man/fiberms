@@ -173,4 +173,45 @@ function tmpTable( $table, $tmp )
     return $tmp ? $table.'_tmp' : $table;
 }
 
+function getTables()
+{
+    $res[ ] = "CableLine";
+    $res[ ] = "CableLinePoint";
+    $res[ ] = "CableType";
+    $res[ ] = "FiberSplice";
+    $res[ ] = "FiberSpliceOrganizer";
+    $res[ ] = "FiberSpliceOrganizerType";
+    $res[ ] = "NetworkBox";
+    $res[ ] = "NetworkBoxType";
+    $res[ ] = "NetworkNode";
+    $res[ ] = "OpticalFiber";
+    $res[ ] = "OpticalFiberJoin";
+    $res[ ] = "OpticalFiberSplice";
+    return $res;
+}
+
+function createTmpTables()
+{
+    $tables = getTables();
+    for ( $i = 0; $i < count( $tables ); $i++ )
+    {
+        $table = $tables[ $i ];
+        $tmpT = tmpTable( $table, TRUE );
+        $query = 'CREATE TABLE "'.$tmpT.'" AS
+                SELECT * FROM "'.$table.'"';
+        PQuery( $query );
+    }
+}
+
+function dropTmpTables()
+{
+    $tables = getTables();
+    for ( $i = 0; $i < count( $tables ); $i++ )
+    {
+        $table = $tables[ $i ];
+        $tmpT = tmpTable( $table, TRUE );
+        $query = 'DROP TABLE '.$tmpT;
+        PQuery( $query );
+    }
+}
 ?>

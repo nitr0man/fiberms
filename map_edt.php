@@ -1,5 +1,6 @@
 <?php
 require_once("auth.php");
+createTmpTables();
 ?>
 <html>
     <head>
