@@ -165,19 +165,26 @@ function getCableLinePoint_NetworkNodeName( $cableLineId )
     return $result;
 }
 
-function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1 )
+function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
+        $tmpT = FALSE )
 {
     $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment",
                 "cl"."name", "ct"."marking", "ct"."manufacturer",
                 "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube",
                 "ct"."tubeQuantity", "NN"."OpenGIS" AS "NNOpenGIS",
                 COUNT(DISTINCT "OFJ"."OpticalFiberSplice") AS "FiberSpliceCount"                
-                FROM "CableLine" AS "cl"
-		LEFT JOIN "CableLinePoint" AS "clp" ON "clp"."CableLine" = "cl"."id" 
-		LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
-		LEFT JOIN "OpticalFiber" AS "OF" ON "OF"."CableLine" = "cl".id
-		LEFT JOIN "OpticalFiberJoin" AS "OFJ" ON "OFJ"."OpticalFiber" = "OF".id
-                LEFT JOIN "NetworkNode" AS "NN" ON "NN"."id" = "clp"."NetworkNode"';
+                FROM "'.tmpTable( 'CableLine',
+                    $tmpT ).'" AS "cl"
+		LEFT JOIN "'.tmpTable( 'CableLinePoint',
+                    $tmpT ).'" AS "clp" ON "clp"."CableLine" = "cl"."id" 
+		LEFT JOIN "'.tmpTable( 'CableType',
+                    $tmpT ).'" AS "ct" ON "ct".id="cl"."CableType"
+		LEFT JOIN "'.tmpTable( 'OpticalFiber',
+                    $tmpT ).'" AS "OF" ON "OF"."CableLine" = "cl".id
+		LEFT JOIN "'.tmpTable( 'OpticalFiberJoin',
+                    $tmpT ).'" AS "OFJ" ON "OFJ"."OpticalFiber" = "OF".id
+                LEFT JOIN "'.tmpTable( 'NetworkNode',
+                    $tmpT ).'" AS "NN" ON "NN"."id" = "clp"."NetworkNode"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
@@ -192,7 +199,8 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "CableLine" ';
+        $query2 = 'SELECT COUNT(*) AS "count" FROM "'.tmpTable( 'CableLine',
+                        $tmpT ).'" ';
         if ( $wr != '' )
         {
             $query2 .= genWhere( $wr );
@@ -225,11 +233,15 @@ function getNormalCableLines()
     return $result;
 }
 
-function getSingularCableLinePoints( $OpenGIS = -1 )
+function getSingularCableLinePoints( $OpenGIS = -1, $tmpT = FALSE )
 {
-    $query = 'SELECT "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign", "clp"."NetworkNode", "clp"."note", "cl"."name" AS "CableLineName" FROM "CableLinePoint" AS "clp"
-			  LEFT JOIN "CableLine" AS "cl" ON "cl".id = "clp"."CableLine"
-			  WHERE "clp"."meterSign" IS NOT NULL OR "clp"."note" IS NOT NULL';
+    $query = 'SELECT "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign",
+              "clp"."NetworkNode", "clp"."note", "cl"."name" AS "CableLineName"
+              FROM "'.tmpTable( 'CableLinePoint',
+                    $tmpT ).'" AS "clp"
+              LEFT JOIN "'.tmpTable( 'CableLine',
+                    $tmpT ).'" AS "cl" ON "cl".id = "clp"."CableLine"
+              WHERE "clp"."meterSign" IS NOT NULL OR "clp"."note" IS NOT NULL';
     if ( $OpenGIS != -1 )
     {
         $query .= ' AND "clp"."OpenGIS" IS NOT NULL';
@@ -238,13 +250,15 @@ function getSingularCableLinePoints( $OpenGIS = -1 )
     return $result;
 }
 
-function getCableLinePoints( $cableLine, $onlyFree = FALSE )
+function getCableLinePoints( $cableLine, $onlyFree = FALSE, $tmpT = FALSE )
 {
     $wr[ 'CableLine' ] = $cableLine;
     $query = 'SELECT "clp".id, "clp"."OpenGIS", "clp"."meterSign", "clp"."note", "clp"."sequence",
               "NN"."OpenGIS" AS "NNOpenGIS"
-              FROM "CableLinePoint" AS "clp"
-              LEFT JOIN "NetworkNode" AS "NN" ON "NN".id = "clp"."NetworkNode"'.genWhere( $wr );
+              FROM "'.tmpTable( 'CableLinePoint',
+                    $tmpT ).'" AS "clp"
+              LEFT JOIN "'.tmpTable( 'NetworkNode',
+                    $tmpT ).'" AS "NN" ON "NN".id = "clp"."NetworkNode"'.genWhere( $wr );
     if ( $onlyFree )
     {
         $query .= ' AND "clp"."OpenGIS" IS NOT NULL';
@@ -285,7 +299,7 @@ function getCableLinesFrag( $cableLines )
                         $matches );
             }
             if ( ( $rows[ $j ][ 'note' ] != '' ) || ( $rows[ $j ][ 'meterSign' ] != '' ) )
-            {                
+            {
                 $resFrags[ $cableLine ][ $b ][ $n ] = retCable( $matches,
                         $rows[ $j ], $rows[ count( $rows ) - 1 ][ 'sequence' ] );
                 //$n++;
@@ -298,13 +312,13 @@ function getCableLinesFrag( $cableLines )
                 {
                     preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/',
                             $NNOpenGis, $matches );
-                }                
+                }
                 $resFrags[ $cableLine ][ $b ][ $n ] = retCable( $matches,
                         $rows[ $j ], $rows[ count( $rows ) - 1 ][ 'sequence' ] );
                 $n++;
             }
             else
-            {                
+            {
                 $resFrags[ $cableLine ][ $b ][ $n ] = retCable( $matches,
                         $rows[ $j ], $rows[ count( $rows ) - 1 ][ 'sequence' ] );
                 $n++;

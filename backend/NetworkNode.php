@@ -77,14 +77,18 @@ function getNetworkNode_NetworkBoxName( $networkNodeId )
 }
 
 function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
-        $linesPerPage = -1, $skip = -1 )
+        $linesPerPage = -1, $skip = -1, $tmpT = FALSE )
 {
     $query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
         "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking", COUNT("OFS".id) AS "fiberSpliceCount"
-  		FROM "NetworkNode" AS "NN"
-  		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox"
-  		LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"
-  		LEFT JOIN "OpticalFiberSplice" AS "OFS" ON "OFS"."NetworkNode" = "NN".id';
+  		FROM "'.tmpTable( 'NetworkNode',
+                    $tmpT ).'" AS "NN"
+  		LEFT JOIN "'.tmpTable( 'NetworkBox',
+                    $tmpT ).'" AS "NB" ON "NB".id="NN"."NetworkBox"
+  		LEFT JOIN "'.tmpTable( 'NetworkBoxType',
+                    $tmpT ).'" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"
+  		LEFT JOIN "'.tmpTable( 'OpticalFiberSplice',
+                    $tmpT ).'" AS "OFS" ON "OFS"."NetworkNode" = "NN".id';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
@@ -97,7 +101,8 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "NetworkNode"';
+        $query2 = 'SELECT COUNT(*) AS "count" FROM "'.tmpTable( 'NetworkNode',
+                        $tmpT ).'"';
         $res = PQuery( $query2 );
         $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }

@@ -168,4 +168,9 @@ function getStat()
     return $result;
 }
 
+function tmpTable( $table, $tmp )
+{
+    return $tmp ? $table.'_tmp' : $table;
+}
+
 ?>
