@@ -1,5 +1,6 @@
 <?php
 require_once("auth.php");
+dropTmpTables();
 createTmpTables();
 ?>
 <html>

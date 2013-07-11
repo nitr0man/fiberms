@@ -197,8 +197,9 @@ function createTmpTables()
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query = 'CREATE TABLE "'.$tmpT.'" AS
-                SELECT * FROM "'.$table.'"';
+        $query = 'CREATE TABLE "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
+        PQuery( $query );
+        $query = 'INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'"';
         PQuery( $query );
     }
 }
@@ -210,8 +211,9 @@ function dropTmpTables()
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query = 'DROP TABLE '.$tmpT;
+        $query = 'DROP TABLE "'.$tmpT.'"';
         PQuery( $query );
     }
 }
+
 ?>
