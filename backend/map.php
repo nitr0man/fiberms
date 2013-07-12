@@ -277,4 +277,39 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     }
 }
 
+function checkSession()
+{
+    $user_res = getCurrUserInfo();
+    $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
+    $query = 'SELECT * FROM "MapSessions"
+                WHERE "LastAction" + INTERVAL \'30 MINUTES\' > NOW()';
+    $res = PQuery( $query );
+    $sesUserId = $res[ 'rows' ][ 0 ][ 'UserId' ];
+    return $res[ 'count' ] > 0 ? $user == $sesUserId ? TRUE : FALSE  : TRUE;
+}
+
+function checkData()
+{
+    $query = 'SELECT * FROM "MapSettings"
+                WHERE "LastChangedMap" >= "LastChangedTmpMap"';
+    $res = PQuery( $query );
+    if ( $res[ 'count' ] == 1 )
+    {
+        dropTmpTables();
+        createTmpTables();
+    }
+}
+
+function setTmpMapLastEdit()
+{
+    $query = 'UPDATE "MapSettings" SET "LastChangedTmpMap" = NOW()';
+    PQuery( $query );
+}
+
+function setMapLastEdit()
+{
+    $query = 'UPDATE "MapSettings" SET "LastChangedMap" = NOW()';
+    PQuery( $query );
+}
+
 ?>

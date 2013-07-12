@@ -7,7 +7,7 @@ require_once('backend/FS.php');
 
 if ( $_GET[ 'mode' ] == 'GetCableLines' )
 { // кабельные линии
-    $res = getCableLineList( 0, '', -1, -1, TRUE );
+    $res = getCableLineList( 0, '', -1, -1 );
     if ( $res[ 'count' ] == 0 )
     {
         die();
@@ -18,8 +18,7 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
     $cableLines = $dom->appendChild( $dom->createElement( 'cableLines' ) );
     for ( $i = 0; $i < $res[ 'count' ]; $i++ )
     {
-        $cableLinePoints_res = getCableLinePoints( $rows[ $i ][ 'id' ], FALSE,
-                TRUE );
+        $cableLinePoints_res = getCableLinePoints( $rows[ $i ][ 'id' ]);
         $cableLine = $cableLines->appendChild( $dom->createElement( 'cableLine' ) );
         for ( $j = 0; $j < $cableLinePoints_res[ 'count' ]; $j++ )
         {
@@ -38,8 +37,7 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
                 $node->appendChild( $node_attr );
             }
         }
-        $direction_row = getCableLineDirection( $rows[ $i ][ 'id' ], -1, -1,
-                TRUE );
+        $direction_row = getCableLineDirection( $rows[ $i ][ 'id' ]);
         if ( $direction_row[ 0 ][ 'name' ] != '-' )
         {
             $direction_href = '<a href="NetworkNodes.php?mode=charac&nodeid='.$direction_row[ 0 ][ 'NetworkNode' ].'">'.$direction_row[ 0 ][ 'name' ].'</a> - <a href="NetworkNodes.php?mode=charac&nodeid='.$direction_row[ 1 ][ 'NetworkNode' ].'">'.$direction_row[ 1 ][ 'name' ].'</a>';
@@ -109,7 +107,7 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
 elseif ( $_GET[ 'mode' ] == 'GetNodesMarkers' )
 {
     //header('Content-Type: text/html; charset=utf-8', true);
-    $res = getNetworkNodeList_NetworkBoxName( '', '', '', -1, -1, TRUE );
+    $res = getNetworkNodeList_NetworkBoxName( '', '', '' );
     $rows = $res[ 'rows' ];
 
     $pois_text = "lat\tlon\ttitle\tdescription\ticon\ticonSize\ticonOffset\n";
@@ -119,7 +117,7 @@ elseif ( $_GET[ 'mode' ] == 'GetNodesMarkers' )
         if ( preg_match_all( '/(?<x>[0-9.]+),(?<y>[0-9.]+)/', $OpenGIS, $matches ) )
         {
             $fiberSpliceCount = $rows[ $i ][ 'fiberSpliceCount' ];
-            $cableLines_row = getCableLineInfo( $rows[ $i ][ 'id' ], 1, TRUE );
+            $cableLines_row = getCableLineInfo( $rows[ $i ][ 'id' ], 1 );
             $cableLinesZeroFibers = 0;
             $cableLinesNotZeroFibers = 0;
             for ( $j = 0; $j < $cableLines_row[ 'count' ]; $j++ )
@@ -160,7 +158,7 @@ elseif ( $_GET[ 'mode' ] == 'GetNodesMarkers' )
 }
 elseif ( $_GET[ 'mode' ] == 'GetNodesLabels' )
 {
-    $res = getNetworkNodeList_NetworkBoxName( '', '', '', -1, -1, TRUE );
+    $res = getNetworkNodeList_NetworkBoxName( '', '', '' );
     if ( $res[ 'count' ] == 0 )
     {
         die();
@@ -204,7 +202,7 @@ elseif ( $_GET[ 'mode' ] == 'GetNodesLabels' )
 }
 elseif ( $_GET[ 'mode' ] == 'GetSingularCableLinePoints' )
 {
-    $res = getSingularCableLinePoints( 1, TRUE );
+    $res = getSingularCableLinePoints( 1 );
     $rows = $res[ 'rows' ];
 
     $pois_text = "lat\tlon\ttitle\tdescription\ticon\ticonSize\ticonOffset\n";
@@ -228,7 +226,7 @@ elseif ( $_GET[ 'mode' ] == 'GetSingularCableLinePoints' )
 }
 elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
 {
-    $res = getNetworkNodeList_NetworkBoxName( '', '', '', -1, -1, TRUE );
+    $res = getNetworkNodeList_NetworkBoxName( '', '', '' );
     $rows = $res[ 'rows' ];
 
     $dom = new DomDocument( '1.0', 'UTF-8' );
@@ -242,7 +240,7 @@ elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
         {
             //$fiberSpliceCount = getFiberSpliceCount_NetworkNode($rows[$i]['id']);
             $fiberSpliceCount = $rows[ $i ][ 'fiberSpliceCount' ];
-            $cableLines_row = getCableLineInfo( $rows[ $i ][ 'id' ], 1, TRUE );
+            $cableLines_row = getCableLineInfo( $rows[ $i ][ 'id' ], 1 );
             $cableLinesZeroFibers = 0;
             $cableLinesNotZeroFibers = 0;
             for ( $j = 0; $j < $cableLines_row[ 'count' ]; $j++ )

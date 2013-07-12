@@ -12,7 +12,7 @@ function PQuery( $query )
 {
     require "config.php";
 
-    //error_log($query);
+    //error_log( $query );
     $res = pg_query( $connection, $query ) or $error = 1;
     if ( $error == 1 )
     {
@@ -193,27 +193,30 @@ function getTables()
 function createTmpTables()
 {
     $tables = getTables();
+    $query = 'BEGIN;';
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query = 'CREATE TABLE "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
-        PQuery( $query );
-        $query = 'INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'"';
-        PQuery( $query );
+        $query .= ' CREATE TABLE "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
+        $query .= ' INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'";';
     }
+    $query .= 'COMMIT;';
+    PQuery( $query );
 }
 
 function dropTmpTables()
 {
     $tables = getTables();
+    $query = 'BEGIN;';
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query = 'DROP TABLE "'.$tmpT.'"';
-        PQuery( $query );
+        $query .= ' DROP TABLE IF EXISTS "'.$tmpT.'";';
     }
+    $query .= ' COMMIT;';
+    PQuery( $query );
 }
 
 ?>

@@ -13,6 +13,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $seqStart = $obj->{'seqStart'};
         $seqEnd = $obj->{'seqEnd'};
         updCableLinePoints( $coors, $CableLineId, $seqStart, $seqEnd, TRUE );
+        setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "addCableLine" )
     {
@@ -21,6 +22,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $comment = $obj->{'comment'};
         $CableType = $obj->{'CableType'};
         addCableLinePoint( $coors, $CableType, $length, $name, $comment, TRUE );
+        setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "addSingPoint" )
     {
@@ -33,14 +35,17 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $networkNode = $obj->{'networkNode'};
         addSingPoint( $coors, $CableLineId, $networkNode, "NULL", "NULL",
                 $meterSign, $note );
+        setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "deleteSingPoint" )
     {
         deleteSingPoint( $coors, TRUE );
+        setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "deleteCableLine" )
     {
         deleteCableLine( $CableLineId, TRUE );
+        setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "addNode" )
     {
@@ -51,10 +56,12 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $name = $obj->{'name'};
         addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
                 $building, $apartment, TRUE );
+        setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "deleteNode" )
     {
         deleteNode( $coors, TRUE );
+        setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "divCableLine" )
     {
@@ -64,6 +71,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $nodeInfo[ 'building' ] = $obj->{'building'};
         $nodeInfo[ 'note' ] = $obj->{'note'};
         divCableLine( $coors, $CableLineId, $nodeInfo, TRUE );
+        setTmpMapLastEdit();
     }
 }
 print( "OK" );

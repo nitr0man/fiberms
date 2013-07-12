@@ -1,7 +1,15 @@
 <?php
-require_once("auth.php");
-dropTmpTables();
-createTmpTables();
+require_once 'auth.php';
+require_once 'backend/map.php';
+
+if ( !checkSession() )
+{
+    header( "Location: map.php" );
+    exit();
+}
+checkData();
+//dropTmpTables();
+//createTmpTables();
 ?>
 <html>
     <head>

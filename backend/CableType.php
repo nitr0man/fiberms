@@ -208,6 +208,7 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $res = PQuery( $query2 );
         $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
+    error_log( $query );
     $result = PQuery( $query );
     $result[ 'allPages' ] = $allPages;
     return $result;
@@ -284,7 +285,7 @@ function getCableLinesFrag( $cableLines )
     for ( $i = 0; $i < count( $cableLines ); $i++ )
     {
         $cableLine = $cableLines[ $i ][ 'id' ];
-        $cableLinePoints = getCableLinePoints( $cableLine );
+        $cableLinePoints = getCableLinePoints( $cableLine, FALSE, TRUE );
         $rows = $cableLinePoints[ 'rows' ];
         $b = 0;
         $n = 0;

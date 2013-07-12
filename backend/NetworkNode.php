@@ -3,9 +3,9 @@
 require_once("functions.php");
 require_once("backend/LoggingIs.php");
 
-function NetworkNode_SELECT( $sort, $FSort, $wr )
+function NetworkNode_SELECT( $sort, $FSort, $wr, $tmpT = FALSE )
 {
-    $query = 'SELECT * FROM "NetworkNode"';
+    $query = 'SELECT * FROM "'.tmpTable( 'NetworkNode', $tmpT ).'"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
