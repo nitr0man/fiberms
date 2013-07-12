@@ -139,3 +139,18 @@
     top: 1px;
     left: 1px;
 }
+
+.olControlPanel .olControlSaveItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/save_features_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}
+.olControlPanel .olControlCancelItemInactive span:first-child {
+    background-image: url("js/OpenLayers-2.12/theme/default/img/cancel_features_off.png");
+    height: 22px;
+    width: 24px;
+    top: 1px;
+    left: 1px;
+}

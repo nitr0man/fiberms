@@ -1,10 +1,12 @@
 <?php
 
-require_once('backend/functions.php');
-require_once('backend/CableType.php');
-require_once('backend/NetworkNode.php');
-require_once('backend/FS.php');
+require_once 'backend/functions.php';
+require_once 'backend/CableType.php';
+require_once 'backend/NetworkNode.php';
+require_once 'backend/FS.php';
+require_once 'backend/map.php';
 
+//checkData();
 if ( $_GET[ 'mode' ] == 'GetCableLines' )
 { // кабельные линии
     $res = getCableLineList( 0, '', -1, -1, TRUE );

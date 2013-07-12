@@ -5,6 +5,7 @@ require_once( "backend/map.php" );
 
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
+    checkData();
     $obj = json_decode( $_POST[ 'coors' ] );
     $coors = $obj->{'coorArr'};
     $CableLineId = (int)$obj->{'CableLineId'};
@@ -73,6 +74,16 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         divCableLine( $coors, $CableLineId, $nodeInfo, TRUE );
         setTmpMapLastEdit();
     }
+    elseif ( $_POST[ 'mode' ] == "save" )
+    {
+        saveTmpData();
+    }
+    elseif ( $_POST[ 'mode' ] == "cancel" )
+    {
+        dropTmpTables();
+        setMapLastEdit();
+    }
+    setMapUserActivity();
 }
 print( "OK" );
 ?>

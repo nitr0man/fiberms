@@ -9,7 +9,7 @@ var CableLine_arr = { };
 var notyInformation, notyQuestion, notyError;
 var panel, navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
         addSingPointCon, deleteSingPointCon, addNodeCon, deleteNodeCon,
-        divCableLineCon;
+        divCableLineCon, saveCon, cancelCon;
 var coor;
 var CableLineEdtInfo = { };
 var jsonInsertCoor;
@@ -472,10 +472,34 @@ function init() {
                 showInformation( 'topCenter', 'Выберите узел' );
             } );
 
+    saveCon = new OpenLayers.Control.Button( {
+        title: "Сохраняет изменения",
+        text: "Сохранить<br>изменения",
+        trigger: function() {
+            $.post( "map_post.php", { mode: "save" },
+            function() {
+                refreshAllLayers();
+            } );
+        },
+        displayClass: "olControlSave"
+    } );
+
+    cancelCon = new OpenLayers.Control.Button( {
+        title: "Отменяет все изменения",
+        text: "Отменить<br>изменения",
+        trigger: function() {
+            $.post( "map_post.php", { mode: "cancel" },
+            function() {
+                refreshAllLayers();
+            } );
+        },
+        displayClass: "olControlCancel"
+    } );
+
     panel.addControls(
             [ navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
                 divCableLineCon, addSingPointCon, deleteSingPointCon,
-                addNodeCon, deleteNodeCon ] );
+                addNodeCon, deleteNodeCon, saveCon, cancelCon ] );
     map.addControl(
             panel );
     navigationCon.activate();

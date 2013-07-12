@@ -208,7 +208,6 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $res = PQuery( $query2 );
         $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
-    error_log( $query );
     $result = PQuery( $query );
     $result[ 'allPages' ] = $allPages;
     return $result;

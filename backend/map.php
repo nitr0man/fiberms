@@ -312,4 +312,31 @@ function setMapLastEdit()
     PQuery( $query );
 }
 
+function setMapUserActivity()
+{
+    $user_res = getCurrUserInfo();
+    $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
+    $query = 'BEGIN;
+                DELETE FROM "MapSessions" WHERE "UserId" = '.$user.';
+                INSERT INTO "MapSessions" ("UserId", "LastAction")
+                VALUES ('.$user.', NOW());
+                COMMIT;';
+    PQuery( $query );
+}
+
+function saveTmpData()
+{
+    $query = 'BEGIN;';
+    $tables = getTables();
+    for ( $i = 0; $i < count( $tables ); $i++ )
+    {
+        $table = $tables[ $i ];
+        $tmpT = tmpTable( $table, TRUE );
+        $query .= ' DELETE FROM "'.$table.'";';
+        $query .= ' INSERT INTO "'.$table.'" SELECT * FROM "'.$tmpT.'";';
+    }
+    $query .= ' COMMIT;';
+    PQuery( $query );
+}
+
 ?>

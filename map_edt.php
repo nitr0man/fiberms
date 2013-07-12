@@ -2,11 +2,12 @@
 require_once 'auth.php';
 require_once 'backend/map.php';
 
-if ( !checkSession() )
+if ( !checkSession() || $_SESSION[ 'class' ] > 1 )
 {
     header( "Location: map.php" );
     exit();
 }
+setMapUserActivity();
 checkData();
 //dropTmpTables();
 //createTmpTables();
