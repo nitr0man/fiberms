@@ -9,8 +9,6 @@ if ( !checkSession() || $_SESSION[ 'class' ] > 1 )
 }
 setMapUserActivity();
 checkData();
-//dropTmpTables();
-//createTmpTables();
 ?>
 <html>
     <head>
