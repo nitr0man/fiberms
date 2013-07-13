@@ -175,18 +175,18 @@ function tmpTable( $table, $tmp )
 
 function getTables()
 {
-    $res[ ] = "CableLine";
     $res[ ] = "CableLinePoint";
+    $res[ ] = "CableLine";
     $res[ ] = "CableType";
-    $res[ ] = "FiberSplice";
     $res[ ] = "FiberSpliceOrganizer";
+    $res[ ] = "FiberSplice";    
     $res[ ] = "FiberSpliceOrganizerType";
-    $res[ ] = "NetworkBox";
-    $res[ ] = "NetworkBoxType";
     $res[ ] = "NetworkNode";
-    $res[ ] = "OpticalFiber";
+    $res[ ] = "NetworkBox";
+    $res[ ] = "NetworkBoxType";    
     $res[ ] = "OpticalFiberJoin";
     $res[ ] = "OpticalFiberSplice";
+    $res[ ] = "OpticalFiber";
     return $res;
 }
 

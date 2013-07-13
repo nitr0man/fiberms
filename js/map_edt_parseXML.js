@@ -83,7 +83,7 @@ function parseCableLineXML(
      "get_layers.php?mode=GetNetworkNodesDescription",
      parseNetworkNodesDescriptionXML ); // получаем описание для узлов*/
     GetXMLFile(
-            "get_layers.php?mode=GetNodesLabels",
+            "getLayers_edt.php?mode=GetNodesLabels",
             parseNodesLabelsXML ); // получаем надписи для узлов
 }
 
@@ -113,7 +113,7 @@ function parseNetworkNodesDescriptionXML(
     }
 
     GetXMLFile(
-            "get_layers.php?mode=GetNodesLabels",
+            "getLayers_edt.php?mode=GetNodesLabels",
             parseNodesLabelsXML ); // получаем надписи для узлов
 }
 

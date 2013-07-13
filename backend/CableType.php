@@ -278,13 +278,13 @@ function retCable( $matches, $row, $superSeqEnd )
     return $cable;
 }
 
-function getCableLinesFrag( $cableLines )
+function getCableLinesFrag( $cableLines, $tmpT = FALSE )
 {
     $resFrags = array( );
     for ( $i = 0; $i < count( $cableLines ); $i++ )
     {
         $cableLine = $cableLines[ $i ][ 'id' ];
-        $cableLinePoints = getCableLinePoints( $cableLine, FALSE, TRUE );
+        $cableLinePoints = getCableLinePoints( $cableLine, FALSE, $tmpT );
         $rows = $cableLinePoints[ 'rows' ];
         $b = 0;
         $n = 0;

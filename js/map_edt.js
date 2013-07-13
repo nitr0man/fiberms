@@ -219,7 +219,7 @@ function init() {
                             { resFactor: 1.1 } ) ],
                 protocol: new OpenLayers.Protocol.HTTP(
                         {
-                            url: "get_layers.php?mode=GetNodesMarkers",
+                            url: "getLayers_edt.php?mode=GetNodesMarkers",
                             format: new OpenLayers.Format.Text()
                         } )
             } );
@@ -239,7 +239,7 @@ function init() {
                             { resFactor: 1.1 } ) ],
                 protocol: new OpenLayers.Protocol.HTTP(
                         {
-                            url: "get_layers.php?mode=GetSingularCableLinePoints",
+                            url: "getLayers_edt.php?mode=GetSingularCableLinePoints",
                             format: new OpenLayers.Format.Text()
                         } )
             } );

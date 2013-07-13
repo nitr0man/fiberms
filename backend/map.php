@@ -333,9 +333,17 @@ function saveTmpData()
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
         $query .= ' DELETE FROM "'.$table.'";';
+        //$query .= ' INSERT INTO "'.$table.'" SELECT * FROM "'.$tmpT.'";';
+    }
+    for ( $i = 0; $i < count( $tables ); $i++ )
+    {
+        $table = $tables[ $i ];
+        $tmpT = tmpTable( $table, TRUE );
+        //$query .= ' DELETE FROM "'.$table.'";';
         $query .= ' INSERT INTO "'.$table.'" SELECT * FROM "'.$tmpT.'";';
     }
     $query .= ' COMMIT;';
+    error_log( $query );
     PQuery( $query );
 }
 

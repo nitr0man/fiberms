@@ -276,7 +276,7 @@
                     strategies: [ new OpenLayers.Strategy.BBOX(
                                 { resFactor: 1.1 } ) ],
                     protocol: new OpenLayers.Protocol.HTTP( {
-                        url: "get_layers.php?mode=GetNodesMarkers",
+                        url: "getLayers.php?mode=GetNodesMarkers",
                         format: new OpenLayers.Format.Text()
                     } )
                 } );
@@ -288,7 +288,7 @@
                     strategies: [ new OpenLayers.Strategy.BBOX(
                                 { resFactor: 1.1 } ) ],
                     protocol: new OpenLayers.Protocol.HTTP( {
-                        url: "get_layers.php?mode=GetSingularCableLinePoints",
+                        url: "getLayers.php?mode=GetSingularCableLinePoints",
                         format: new OpenLayers.Format.Text()
                     } )
                 } );
@@ -427,7 +427,7 @@
                     j++;
                 }
                 GetXMLFile(
-                        "get_layers.php?mode=GetNetworkNodesDescription",
+                        "getLayers.php?mode=GetNetworkNodesDescription",
                         parseNetworkNodesDescriptionXML ); // получаем описание для узлов
             }
 
@@ -455,7 +455,7 @@
                     }
                 }
 
-                GetXMLFile( "get_layers.php?mode=GetNodesLabels",
+                GetXMLFile( "getLayers.php?mode=GetNodesLabels",
                         parseNodesLabelsXML ); // получаем надписи для узлов
             }
 
@@ -495,7 +495,7 @@
                 init();
             }
 
-            GetXMLFile( "getLayers_edt.php?mode=GetCableLines",
+            GetXMLFile( "getLayers.php?mode=GetCableLines",
                     parseCableLineXML ); // получаем кабельные линии
         </script>	
     </head>
