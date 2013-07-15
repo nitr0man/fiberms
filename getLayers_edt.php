@@ -9,6 +9,7 @@ require_once 'backend/map.php';
 //checkData();
 if ( $_GET[ 'mode' ] == 'GetCableLines' )
 { // кабельные линии
+    checkData();
     $res = getCableLineList( 0, '', -1, -1, TRUE );
     if ( $res[ 'count' ] == 0 )
     {

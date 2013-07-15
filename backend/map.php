@@ -328,22 +328,21 @@ function saveTmpData()
 {
     $query = 'BEGIN;';
     $tables = getTables();
+    $tbl_del = "";
+    $ins = "";
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query .= ' DELETE FROM "'.$table.'";';
-        //$query .= ' INSERT INTO "'.$table.'" SELECT * FROM "'.$tmpT.'";';
+        if ( strlen( $tbl_del ) > 0 )
+        {
+            $tbl_del .= ', ';
+        }
+        $tbl_del .= '"'.$table.'"';
+        $ins .= ' INSERT INTO "'.$table.'" SELECT * FROM "'.$tmpT.'";';
     }
-    for ( $i = 0; $i < count( $tables ); $i++ )
-    {
-        $table = $tables[ $i ];
-        $tmpT = tmpTable( $table, TRUE );
-        //$query .= ' DELETE FROM "'.$table.'";';
-        $query .= ' INSERT INTO "'.$table.'" SELECT * FROM "'.$tmpT.'";';
-    }
+    $query .= ' TRUNCATE '.$tbl_del.';'.$ins;
     $query .= ' COMMIT;';
-    error_log( $query );
     PQuery( $query );
 }
 

@@ -175,18 +175,18 @@ function tmpTable( $table, $tmp )
 
 function getTables()
 {
-    $res[ ] = "CableLinePoint";
-    $res[ ] = "CableLine";
     $res[ ] = "CableType";
-    $res[ ] = "FiberSpliceOrganizer";
-    $res[ ] = "FiberSplice";    
-    $res[ ] = "FiberSpliceOrganizerType";
-    $res[ ] = "NetworkNode";
+    $res[ ] = "CableLine";
+    $res[ ] = "NetworkBoxType";
     $res[ ] = "NetworkBox";
-    $res[ ] = "NetworkBoxType";    
-    $res[ ] = "OpticalFiberJoin";
+    $res[ ] = "NetworkNode";
+    $res[ ] = "CableLinePoint";
+    $res[ ] = "FiberSplice";
+    $res[ ] = "FiberSpliceOrganizerType";
+    $res[ ] = "FiberSpliceOrganizer";
     $res[ ] = "OpticalFiberSplice";
     $res[ ] = "OpticalFiber";
+    $res[ ] = "OpticalFiberJoin";
     return $res;
 }
 
@@ -198,7 +198,7 @@ function createTmpTables()
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query .= ' CREATE TABLE "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
+        $query .= ' CREATE TABLE IF NOT EXISTS "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
         $query .= ' INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'";';
     }
     $query .= 'COMMIT;';

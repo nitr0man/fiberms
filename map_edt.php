@@ -8,7 +8,7 @@ if ( !checkSession() || $_SESSION[ 'class' ] > 1 )
     exit();
 }
 setMapUserActivity();
-checkData();
+//checkData();
 ?>
 <html>
     <head>
