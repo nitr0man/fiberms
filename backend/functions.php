@@ -209,12 +209,18 @@ function dropTmpTables()
 {
     $tables = getTables();
     $query = 'BEGIN;';
+    $tbl_del = "";
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query .= ' DROP TABLE IF EXISTS "'.$tmpT.'";';
+        if ( strlen( $tbl_del ) > 0 )
+        {
+            $tbl_del .= ', ';
+        }
+        $tbl_del .= '"'.$tmpT.'"';
     }
+    $query .= ' TRUNCATE '.$tbl_del.';';
     $query .= ' COMMIT;';
     PQuery( $query );
 }

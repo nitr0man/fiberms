@@ -476,6 +476,10 @@ function init() {
         title: "Сохраняет изменения",
         text: "Сохранить<br>изменения",
         trigger: function() {
+            showInformation( 'topCenter', 'Сохраняем...' );
+            setTimeout( function() {
+                notyInformation.close();
+            }, 7000 );
             $.post( "map_post.php", { mode: "save" },
             function() {
                 refreshAllLayers();
@@ -488,6 +492,10 @@ function init() {
         title: "Отменяет все изменения",
         text: "Отменить<br>изменения",
         trigger: function() {
+            showInformation( 'topCenter', 'Отменяем изменения...' );
+            setTimeout( function() {
+                notyInformation.close();
+            }, 7000 );
             $.post( "map_post.php", { mode: "cancel" },
             function() {
                 refreshAllLayers();
