@@ -131,6 +131,9 @@ function refreshAllLayers() {
     GetXMLFile(
             "getLayers_edt.php?mode=GetCableLines",
             parseCableLineXML );
+    if ( typeof notyInformation !== "undefined" ) {
+        notyInformation.close();
+    }
 }
 
 function addPoint( lon, lat, title, ident, layr ) {
@@ -480,7 +483,7 @@ function init() {
             setTimeout( function() {
                 notyInformation.close();
             }, 7000 );
-            $.post( "map_post.php", { mode: "save" },
+            $.post( "map_post.php", { mode: "save", userId: userId },
             function() {
                 refreshAllLayers();
             } );
@@ -496,7 +499,7 @@ function init() {
             setTimeout( function() {
                 notyInformation.close();
             }, 7000 );
-            $.post( "map_post.php", { mode: "cancel" },
+            $.post( "map_post.php", { mode: "cancel", userId: userId },
             function() {
                 refreshAllLayers();
             } );

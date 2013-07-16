@@ -87,7 +87,7 @@ function saveCableLine( feature, jsonInsertCoor ) {
         jsonInsertCoor.coorArr[ i ]["lat"] = ll.lat;
     }    
     json = JSON.stringify( jsonInsertCoor );
-    $.post( "map_post.php", { coors: json, mode: "addCableLine" },
+    $.post( "map_post.php", { coors: json, mode: "addCableLine", userId: userId },
     function() {
         addCableLineLayer.destroyFeatures();
         refreshAllLayers();
@@ -123,7 +123,7 @@ function updCableLine(
     json = JSON.stringify(
             jsonCoor );
     $.post( "map_post.php",
-            { coors: json, mode: "updCableLine" }, function() {
+            { coors: json, mode: "updCableLine", userId: userId }, function() {
         refreshAllLayers();
     } );
 }
@@ -153,7 +153,7 @@ function selectDeleteCableLine( event, del ) {
         json = JSON.stringify(
                 jsonCoor );
         $.post( "map_post.php",
-                { coors: json, mode: "deleteCableLine" }, function() {
+                { coors: json, mode: "deleteCableLine", userId: userId }, function() {
             refreshAllLayers();
         } );
     }

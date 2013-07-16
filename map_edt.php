@@ -8,6 +8,8 @@ if ( !checkSession() || $_SESSION[ 'class' ] > 1 )
     exit();
 }
 setMapUserActivity();
+$user_res = getCurrUserInfo();
+$user = $user_res[ 'rows' ][ 0 ][ 'id' ];
 //checkData();
 ?>
 <html>
@@ -23,6 +25,11 @@ setMapUserActivity();
                 list-style: none;
             }
         </style>
+        <script type="text/javascript">
+        <?php
+            print 'var userId = '.$user.';';
+        ?>
+        </script>
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
         <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>

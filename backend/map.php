@@ -312,10 +312,17 @@ function setMapLastEdit()
     PQuery( $query );
 }
 
-function setMapUserActivity()
+function setMapUserActivity( $userId = -1 )
 {
-    $user_res = getCurrUserInfo();
-    $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
+    if ( $userId == -1 )
+    {
+        $user_res = getCurrUserInfo();
+        $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
+    }
+    else
+    {
+        $user = $userId;
+    }
     $query = 'BEGIN;
                 DELETE FROM "MapSessions" WHERE "UserId" = '.$user.';
                 INSERT INTO "MapSessions" ("UserId", "LastAction")

@@ -94,7 +94,7 @@ function addNode( coor, jsonNodeCoor ) {
     jsonNodeCoor.coorArr[ 0 ]["lon"] = ll.lon;
     jsonNodeCoor.coorArr[ 0 ]["lat"] = ll.lat;
     json = JSON.stringify( jsonNodeCoor );
-    $.post( "map_post.php", { coors: json, mode: "addNode" },
+    $.post( "map_post.php", { coors: json, mode: "addNode", userId: userId },
     function() {
         addNodeLayer.destroyFeatures();
         refreshAllLayers();
@@ -118,7 +118,7 @@ function selectDeleteNode( event, del ) {
         jsonCoor.coorArr[ 0 ]["lon"] = ll.lon;
         jsonCoor.coorArr[ 0 ]["lat"] = ll.lat;
         json = JSON.stringify( jsonCoor );
-        $.post( "map_post.php", { coors: json, mode: "deleteNode" },
+        $.post( "map_post.php", { coors: json, mode: "deleteNode", userId: userId },
         function() {
             refreshAllLayers();
         } );

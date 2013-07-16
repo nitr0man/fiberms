@@ -102,7 +102,7 @@ function setSingPoint( event ) {
                         jsonSingPointCoor.note = form.getValues().note;
                         json = JSON.stringify( jsonSingPointCoor );
                         $.post( "map_post.php",
-                                { coors: json, mode: "divCableLine" },
+                                { coors: json, mode: "divCableLine", userId: userId },
                         function() {
                             refreshAllLayers();
                         } );
@@ -216,7 +216,7 @@ function addSingPoint( coor, jsonSingPointCoor ) {
     jsonSingPointCoor.coorArr[ 0 ]["lon"] = ll.lon;
     jsonSingPointCoor.coorArr[ 0 ]["lat"] = ll.lat;
     json = JSON.stringify( jsonSingPointCoor );
-    $.post( "map_post.php", { coors: json, mode: "addSingPoint" },
+    $.post( "map_post.php", { coors: json, mode: "addSingPoint", userId: userId },
     function() {
         refreshAllLayers();
     } );
@@ -241,7 +241,7 @@ function selectDeleteSingPoint( event, del ) {
         jsonCoor.coorArr[ 0 ]["lon"] = ll.lon;
         jsonCoor.coorArr[ 0 ]["lat"] = ll.lat;
         json = JSON.stringify( jsonCoor );
-        $.post( "map_post.php", { coors: json, mode: "deleteSingPoint" },
+        $.post( "map_post.php", { coors: json, mode: "deleteSingPoint", userId: userId },
         function() {
             refreshAllLayers();
         } );

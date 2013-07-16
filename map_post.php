@@ -4,10 +4,11 @@ require_once( "backend/functions.php" );
 require_once( "backend/map.php" );
 
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
-{    
+{
     $obj = json_decode( $_POST[ 'coors' ] );
     $coors = $obj->{'coorArr'};
     $CableLineId = (int)$obj->{'CableLineId'};
+    $uId = (int)$_POST[ 'userId' ];
     if ( $_POST[ 'mode' ] == "updCableLine" )
     {
         $seqStart = $obj->{'seqStart'};
@@ -78,11 +79,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         saveTmpData();
     }
     elseif ( $_POST[ 'mode' ] == "cancel" )
-    {        
+    {
         setMapLastEdit();
         checkData();
     }
-    setMapUserActivity();
+    setMapUserActivity( $uId );
 }
 print( "OK" );
 ?>
