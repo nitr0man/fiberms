@@ -112,7 +112,7 @@ print 'var userId = '.$user.';';
         <div id="container">
             <div id="map"></div>
             <div id="sidebar">
-                <a href="templates/map_menu.html" data-slidepanel="panel" title="Меню">
+                <a href="map_menu.html" data-slidepanel="panel" title="Меню">
                     <img src="pic/menu.png" id="menuBtn" />
                 </a>
             </div>            
