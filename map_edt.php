@@ -20,15 +20,16 @@ $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
         <link rel="stylesheet" href="ext-all.css" type="text/css">
         <link rel="stylesheet" href="style/buttons.css" type="text/css">
         <link rel="stylesheet" href="map_edt.css" type="text/css">
+        <link rel="stylesheet" type="text/css" href="style/jquery.slidepanel.css">
         <style type="text/css">
             #controlToggle li {
                 list-style: none;
             }
         </style>
         <script type="text/javascript">
-        <?php
-            print 'var userId = '.$user.';';
-        ?>
+<?php
+print 'var userId = '.$user.';';
+?>
         </script>
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
@@ -56,9 +57,19 @@ $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
         <script type="text/javascript" src="js/noty/layouts/topCenter.js"></script>
         <script type="text/javascript" src="js/noty/layouts/topLeft.js"></script>
         <script type="text/javascript" src="js/noty/layouts/topRight.js"></script>
-        <script type="text/javascript" src="js/map_edt.js"></script>	
+        <script type="text/javascript" src="js/map_edt.js"></script>
+        <script type="text/javascript" src="js/jquery.slidepanel.js"></script>
+        <script type="text/javascript">
+            $( document ).ready( function() {
+                $( '[data-slidepanel]' ).slidepanel( {
+                    orientation: 'left',
+                    mode: 'overlay'
+                } );
+            } );
+        </script>
     </head>
     <body>
+        <a href="external.html" data-slidepanel="panel"><img src="pic/menu.png"></img></a>
         <div id="map"></div>
     </body>
 </html>
