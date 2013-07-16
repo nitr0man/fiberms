@@ -1,4 +1,5 @@
-;( function( $, window, document, undefined ) {
+;
+( function( $, window, document, undefined ) {
 
     var defaults = {
         orientation: 'left',
@@ -79,6 +80,7 @@
         $( '.close', this.$panel ).click( function( e ) {
             e.preventDefault();
             base.collapse();
+            $('#menuBtn').show();
         } );
 
     };

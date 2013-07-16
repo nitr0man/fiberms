@@ -25,6 +25,24 @@ $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
             #controlToggle li {
                 list-style: none;
             }
+            /*#container {
+                width: 100%;
+                height: 100%;
+                position: relative;
+            }
+
+            #sidebar, 
+            #map {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+            }
+
+            #sidebar {
+                z-index: 10;
+            }*/
         </style>
         <script type="text/javascript">
 <?php
@@ -65,11 +83,39 @@ print 'var userId = '.$user.';';
                     orientation: 'left',
                     mode: 'overlay'
                 } );
+                $( '#menuBtn' ).click( function() {
+                    $( '#menuBtn' ).hide();
+                } );
             } );
+            /*$( function() {
+             var $sidebar = $( "#sidebar" ),
+             $window = $( window ),
+             offset = $sidebar.offset(),
+             topPadding = 200;
+             
+             $window.scroll( function() {
+             if ( $window.scrollTop() > offset.top ) {
+             $sidebar.stop().animate( {
+             marginTop: $window.scrollTop() - offset.top + topPadding
+             } );
+             } else {
+             $sidebar.stop().animate( {
+             marginTop: 0
+             } );
+             }
+             } );
+             
+             } );*/
         </script>
     </head>
     <body>
-        <a href="external.html" data-slidepanel="panel"><img src="pic/menu.png"></img></a>
-        <div id="map"></div>
+        <div id="container">
+            <div id="map"></div>
+            <div id="sidebar">
+                <a href="templates/map_menu.html" data-slidepanel="panel" title="Меню">
+                    <img src="pic/menu.png" id="menuBtn" />
+                </a>
+            </div>            
+        </div>        
     </body>
 </html>
