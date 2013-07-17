@@ -125,8 +125,6 @@ function refreshAllLayers() {
     CableLineEdtInfo = { };
     CableLine_arr = { };
     CableLine_Points_count = Array();
-    layerNodes.refresh( { force: true } );
-    layerCableLinePoints.refresh( { force: true } );
     getData();
     GetXMLFile(
             "getLayers_edt.php?mode=GetCableLines",
@@ -134,6 +132,10 @@ function refreshAllLayers() {
     if ( typeof notyInformation !== "undefined" ) {
         notyInformation.close();
     }
+    setTimeout( function() {
+        layerNodes.refresh( { force: true } );
+        layerCableLinePoints.refresh( { force: true } );
+    }, 2500 );
 }
 
 function addPoint( lon, lat, title, ident, layr ) {
@@ -482,7 +484,7 @@ function init() {
             showInformation( 'topCenter', 'Сохраняем...' );
             setTimeout( function() {
                 notyInformation.close();
-            }, 7000 );
+            }, 9000 );
             $.post( "map_post.php", { mode: "save", userId: userId },
             function() {
                 refreshAllLayers();
@@ -498,7 +500,7 @@ function init() {
             showInformation( 'topCenter', 'Отменяем изменения...' );
             setTimeout( function() {
                 notyInformation.close();
-            }, 7000 );
+            }, 9000 );
             $.post( "map_post.php", { mode: "cancel", userId: userId },
             function() {
                 refreshAllLayers();
@@ -619,7 +621,6 @@ function drawFeatures() {
     }
 }
 
-//GetXMLFile("get_layers.php?mode=GetCableLines", parseCableLineXML); // получаем кабельные линии
 j = 0;
 j2 = 0;
 getData();

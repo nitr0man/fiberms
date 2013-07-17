@@ -175,7 +175,7 @@ body {
 #slideout {
     background: #666;
     width: 170px;
-    height: 80px;
+    height: 0px;
     left:-170px;
     padding-left: 0px;
     z-index: 903;
@@ -188,9 +188,6 @@ body {
     top: -2px;
     left: 168px;
     cursor: pointer;
-    /*height: 20px;
-    width: 20px;
-    background: #ff0000;*/
 }
 
 #slidecontent {

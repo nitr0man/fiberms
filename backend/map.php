@@ -197,7 +197,7 @@ function deleteNode( $coors, $tmpT = FALSE )
     $res = PQuery( $query );
     $NetworkNodeId = $res[ 'rows' ][ 0 ][ 'id' ];
     unset( $wr );
-    $wr[ 'id' ] = $NetworkNodeId;
+    $wr[ 'id' ] = (int)$NetworkNodeId;
     NetworkNode_DELETE( $wr, $tmpT );
 }
 
@@ -331,6 +331,23 @@ function setMapUserActivity( $userId = -1 )
     PQuery( $query );
 }
 
+function finishMapSession( $userId = -1 )
+{
+    if ( $userId == -1 )
+    {
+        $user_res = getCurrUserInfo();
+        $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
+    }
+    else
+    {
+        $user = $userId;
+    }
+    $wr[ 'UserId' ] = $user;
+    $query = 'UPDATE "MapSessions"
+                SET "LastAction" = "LastAction" - INTERVAL \'30 MINUTES\' '.genWhere( $wr );
+    PQuery( $query );
+}
+
 function saveTmpData()
 {
     $query = 'BEGIN;';
@@ -351,6 +368,7 @@ function saveTmpData()
     $query .= ' TRUNCATE '.$tbl_del.';'.$ins;
     $query .= ' COMMIT;';
     PQuery( $query );
+    setMapLastEdit();
 }
 
 ?>

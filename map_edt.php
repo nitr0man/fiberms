@@ -7,9 +7,15 @@ if ( !checkSession() || $_SESSION[ 'class' ] > 1 )
     header( "Location: map.php" );
     exit();
 }
-setMapUserActivity();
 $user_res = getCurrUserInfo();
 $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
+if ( $_GET[ 'mode' ] == "logout" )
+{
+    finishMapSession();
+    header( "Location: map.php" );
+    exit();
+}
+setMapUserActivity();
 //checkData();
 ?>
 <html>
@@ -20,7 +26,6 @@ $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
         <link rel="stylesheet" href="ext-all.css" type="text/css">
         <link rel="stylesheet" href="style/buttons.css" type="text/css">
         <link rel="stylesheet" href="map_edt.css" type="text/css">
-        <link rel="stylesheet" type="text/css" href="style/jquery.slidepanel.css">
         <style type="text/css">
             #controlToggle li {
                 list-style: none;
@@ -33,23 +38,21 @@ print 'var userId = '.$user.';';
         </script>
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-        <script src="js/ext-all.js"></script>
+        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/ext-all.js"></script>
         <script type="text/javascript" src="js/noty/jquery.noty.js"></script>
         <script type="text/javascript" src="js/js_xml.js"></script>        
         <script type="text/javascript" src="js/map_edt_cableLine.js"></script>
         <script type="text/javascript" src="js/map_edt_node.js"></script>
         <script type="text/javascript" src="js/map_edt_singPoint.js"></script>
         <script type="text/javascript" src="js/map_edt_noty.js"></script>
-        <script type="text/javascript" src="js/map_edt_parseXML.js"></script>
-        <script type="text/javascript" src="js/noty/jquery.noty.js"></script>
-        <script type="text/javascript" src="js/noty/layouts/center.js"></script>
+        <script type="text/javascript" src="js/map_edt_parseXML.js"></script>        
         <script type="text/javascript" src="js/noty/themes/default.js"></script>
+        <script type="text/javascript" src="js/noty/layouts/center.js"></script>
         <script type="text/javascript" src="js/noty/layouts/bottom.js"></script>
         <script type="text/javascript" src="js/noty/layouts/bottomCenter.js"></script>
         <script type="text/javascript" src="js/noty/layouts/bottomLeft.js"></script>
         <script type="text/javascript" src="js/noty/layouts/bottomRight.js"></script>
-        <script type="text/javascript" src="js/noty/layouts/center.js"></script>
         <script type="text/javascript" src="js/noty/layouts/centerLeft.js"></script>
         <script type="text/javascript" src="js/noty/layouts/centerRight.js"></script>
         <script type="text/javascript" src="js/noty/layouts/inline.js"></script>
@@ -79,7 +82,6 @@ print 'var userId = '.$user.';';
                 mainmenuid: "smoothmenu1",
                 orientation: 'v',
                 classname: 'ddsmoothmenu-v',
-                //customtheme: ["#1c5a80", "#18374a"],
                 contentsource: "markup"
             } );
         </script>

@@ -51,7 +51,7 @@ function NetworkNode_DELETE( $wr, $tmpT = FALSE )
     require_once 'backend/CableType.php';
 
     $NetworkNodeId = $wr[ 'id' ];
-    $res = NetworkNode_SELECT( '', '', $wr );
+    $res = NetworkNode_SELECT( '', '', $wr, $tmpT );
     $upd[ 'NetworkNode' ] = 'NULL';
     $upd[ 'OpenGIS' ] = $res[ 'rows' ][ 0 ][ 'OpenGIS' ];
     $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET '.genUpdate( $upd ).' WHERE "NetworkNode"='.$NetworkNodeId;

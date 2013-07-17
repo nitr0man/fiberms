@@ -201,7 +201,7 @@ function createTmpTables()
         $query .= ' CREATE TABLE IF NOT EXISTS "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
         $query .= ' INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'";';
     }
-    $query .= 'COMMIT;';
+    $query .= ' COMMIT;';
     PQuery( $query );
 }
 
