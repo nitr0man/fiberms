@@ -25,49 +25,6 @@ $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
             #controlToggle li {
                 list-style: none;
             }
-            body {
-                overflow-x: hidden;
-            }
-            #slideout {
-                background: #666;
-                width: 280px;
-                height: 80px;
-                left:-280px;
-                padding-left: 0px;
-                z-index: 903;
-                position: absolute;
-                top: 50%;
-            }
-
-            #clickme {
-                position: absolute;
-                top: 0; left: 280px;
-                height: 20px;
-                width: 20px;
-                background: #ff0000;
-            }
-
-            #slidecontent {
-                float:left;
-            }
-            /*#container {
-                width: 100%;
-                height: 100%;
-                position: relative;
-            }
-
-            #sidebar, 
-            #map {
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-
-            #sidebar {
-                z-index: 10;
-            }*/
         </style>
         <script type="text/javascript">
 <?php
@@ -76,7 +33,7 @@ print 'var userId = '.$user.';';
         </script>
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="js/ext-all.js"></script>
         <script type="text/javascript" src="js/noty/jquery.noty.js"></script>
         <script type="text/javascript" src="js/js_xml.js"></script>        
@@ -101,26 +58,18 @@ print 'var userId = '.$user.';';
         <script type="text/javascript" src="js/noty/layouts/topLeft.js"></script>
         <script type="text/javascript" src="js/noty/layouts/topRight.js"></script>
         <script type="text/javascript" src="js/map_edt.js"></script>
-        <!--script type="text/javascript" src="js/jquery.slidepanel.js"></script-->
         <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
         <link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
         <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
         <script type="text/javascript">
             $( document ).ready( function() {
-                /*$( '[data-slidepanel]' ).slidepanel( {
-                 orientation: 'left',
-                 mode: 'overlay'
-                 } );
-                 $( '#menuBtn' ).click( function() {
-                 $( '#menuBtn' ).hide();
-                 } );*/
                 $( function() {
-                    $( "#clickme" ).click( function() {
-                        if ( $( this ).parent().css( "left" ) == "-280px" ) {
+                    $( "#menuBtn" ).click( function() {
+                        if ( $( this ).parent().css( "left" ) == "-170px" ) {
                             $( this ).parent().animate( { left: '0px' },
                             { queue: false, duration: 500 } );
                         } else {
-                            $( this ).parent().animate( { left: '-280px' },
+                            $( this ).parent().animate( { left: '-170px' },
                             { queue: false, duration: 500 } );
                         }
                     } );
@@ -133,35 +82,11 @@ print 'var userId = '.$user.';';
                 //customtheme: ["#1c5a80", "#18374a"],
                 contentsource: "markup"
             } );
-            /*$( function() {
-             var $sidebar = $( "#sidebar" ),
-             $window = $( window ),
-             offset = $sidebar.offset(),
-             topPadding = 200;
-             
-             $window.scroll( function() {
-             if ( $window.scrollTop() > offset.top ) {
-             $sidebar.stop().animate( {
-             marginTop: $window.scrollTop() - offset.top + topPadding
-             } );
-             } else {
-             $sidebar.stop().animate( {
-             marginTop: 0
-             } );
-             }
-             } );
-             
-             } );*/
         </script>
     </head>
     <body>
         <div id="container">
-            <div id="map"></div>
-            <!--div id="sidebar">
-            <!--a href="map_menu.html" data-slidepanel="panel" title="Меню">
-            <img src="pic/menu.png" id="menuBtn" />
-            </a>
-        </div-->            
+            <div id="map"></div>            
         </div>  
         <div id="slideout">
             <div id="slidecontent">
@@ -198,6 +123,13 @@ print 'var userId = '.$user.';';
                                 <li id="li4"><a href="FSOT.php?mode=add">Добавить тип кассеты</a></li>			  
                             </ul>
                         </li>
+                        <li id="li4"><a href="#">Карта</a>
+                            <ul>
+                                <li id="li4"><a href="map.php">Карта (просмотр)</a></li>
+                                <li id="li4"><a href="map_edt.php">Карта (редактирование)</a></li>
+                                <li id="li4"><a href="map_edt.php?mode=logout">Завершить работу с картой</a></li>
+                            </ul>
+                        </li>
                         <li><a href="LoggingIs.php">Журнал</a></li>
                         <li><a href="Users.php">Пользователи</a></li>
                         <li><a href="logout.php">Выйти</a></li>
@@ -205,8 +137,7 @@ print 'var userId = '.$user.';';
                     <br style="clear: left" />
                 </div>
             </div>
-            <div id="clickme">
-            </div>
+            <img src="pic/menu.png" id="menuBtn" title="Меню" />
         </div>
     </body>
 </html>
