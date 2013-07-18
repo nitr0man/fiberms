@@ -82,6 +82,7 @@ print 'var userId = '.$user.';';
                 mainmenuid: "smoothmenu1",
                 orientation: 'v',
                 classname: 'ddsmoothmenu-v',
+                //customtheme: ["white", "black"],
                 contentsource: "markup"
             } );
         </script>

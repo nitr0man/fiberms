@@ -623,7 +623,6 @@ function drawFeatures() {
 
 j = 0;
 j2 = 0;
-getData();
 GetXMLFile(
         "getLayers_edt.php?mode=GetCableLines",
         parseCableLineXML ); // получаем кабельные линии
