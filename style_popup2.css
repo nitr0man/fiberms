@@ -1,8 +1,8 @@
-div.olMap {
-    z-index: 0;
-    padding: 0 !important;
-    margin: 0 !important;
-    cursor: default;
+#map {
+    position: absolute;
+    z-index: 902;
+    width: 100%;
+    height: 100%;
 }
 
 div.olMapViewport {
