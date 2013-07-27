@@ -221,11 +221,14 @@ else
             }
             else
             {
-                $table_text_marking .= '<td colspan=3><a href="CableType.php?mode=charac&cabletypeid='.$res[ 'cl_array' ][ 'rows' ][ $i ][ 'ctid' ].'">'.$res[ 'cl_array' ][ 'rows' ][ $i ][ 'manufacturer' ].'<br>'.$res[ 'cl_array' ][ 'rows' ][ $i ][ 'marking' ].'</a></td>';
+                $table_text_marking .= '<td colspan=3><a href="CableType.php?mode=charac&cabletypeid='
+                        .$res[ 'cl_array' ][ 'rows' ][ $i ][ 'ctid' ].'">'
+                        .$res[ 'cl_array' ][ 'rows' ][ $i ][ 'manufacturer' ].'<br>'
+                        .$res[ 'cl_array' ][ 'rows' ][ $i ][ 'marking' ].'</a></td>';
             }
             $table_text_fiber_count .= '<td colspan=3>'.$res[ 'cl_array' ][ 'rows' ][ $i ][ 'fiber' ].'</td>';
 
-            //$direction = getCableLineDirection($res['cl_array']['rows'][$i]['clpid'], $networkNodeId);
+            //$direction = getCableLineDirection($res['cl_array']['rows'][$i]['clpid'], $networkNodeId);            
             $direction_rows = getCableLineDirection( -1,
                     $res[ 'cl_array' ][ 'rows' ][ $i ][ 'clpid' ],
                     $networkNodeId );
@@ -279,6 +282,8 @@ else
             {
                 $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
                 //print_r($arr);
+                //print($arr[ 1 ] );
+                //print_r( $res[ 'cl_array' ][ 'rows' ] );                
                 $clpid1 = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clpid' ];
                 $clpid2 = $res[ 'cl_array' ][ 'rows' ][ $arr[ 1 ] ][ 'clpid' ];
                 $fiber1 = $i;
@@ -295,10 +300,13 @@ else
                     if ( isset( $_GET[ 'print' ] ) )
                     {
                         $linksD = ' ';
+                        $linksT = ' ';
                     }
                     else
                     {
                         $linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.'>[x]</a>';
+                        $linksT = ' <a href="Tracing.php?CableLine='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ]
+                                .'&clpid='.$clpid1.'&networknodeid='.$networkNodeId.'">[T]</a>';
                     }
                     if ( isset( $_GET[ 'print' ] ) )
                     {
@@ -306,7 +314,11 @@ else
                     }
                     else
                     {
-                        $table_text_fibers .= '<td>'.'<a href="FiberSplice.php?mode=change&fiber1='.$fiber1.'&fiber2='.$fiber2.'&networknodeid='.$networkNodeId.'&spliceid='.$splice_id.'&clid2='.$res[ 'cl_array' ][ 'rows' ][ $arr[ 0 ] ][ 'clid' ].'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ].'">'.(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</a> '.$linksD.'</td>';
+                        $table_text_fibers .= '<td>'.'<a href="FiberSplice.php?mode=change&fiber1='.$fiber1
+                                .'&fiber2='.$fiber2.'&networknodeid='.$networkNodeId.'&spliceid='.$splice_id
+                                .'&clid2='.$res[ 'cl_array' ][ 'rows' ][ $arr[ 0 ] ][ 'clid' ]
+                                .'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ].'">'
+                                .(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</a> '.$linksD.' '.$linksT.'</td>';
                     }
                     if ( ($i == 1) or ($i % $fiberPerTube == 1 ) )
                     {
@@ -328,7 +340,10 @@ else
                         }
                         else
                         {
-                            $linksN = '<a href="FiberSplice.php?mode=add&fiber1='.$fiber1.'&networknodeid='.$networkNodeId.'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ].'">[+]</a>';
+                            $linksN = '<a href="FiberSplice.php?mode=add&fiber1='.$fiber1.'&networknodeid='
+                                    .$networkNodeId
+                                    .'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ]
+                                    .'">[+]</a>';
                         }
                         if ( ($i == 1) or ($i % $fiberPerTube == 1 ) )
                         {
