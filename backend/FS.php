@@ -163,7 +163,7 @@ function getSplices( $spliceId = -1, $fiberId = -1 )
         $res = PQuery( $query );
     }
     elseif ( $fiberId == -1 && $spliceId != -1 )
-    {        
+    {
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
                 WHERE "OpticalFiberSplice" != '.$spliceId;
@@ -233,61 +233,6 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
         error_log( $query );
         $res = PQuery( $query );
         $result = array_merge( $result, $res[ 'rows' ] );
-    }
-    return $result;
-}
-
-function trace( $spliceId = -1, $fiberId = -1 )
-{
-    $result = array( );
-    if ( $spliceId != -1 && $fiberId != -1 )
-    {        
-        $spliceIds = getSplices( $spliceId, $fiberId );
-        if ( count( $spliceIds ) > 0 )
-        {
-            $fibers = getFibs( $spliceIds, $fiberId );
-            $result = array_merge( $result, $fibers );
-            for ( $i = 0; $i < count( $fibers ); $i++ )
-            {
-                $sId = $fibers[ 'OpticalFiberSplice' ];
-                $cId = $fibers[ 'CableLine' ];
-                if ( ($sId != '') && ($cId != '') )
-                {
-                    $res = trace( $fibers[ 'OpticalFiberSplice' ],
-                            $fibers[ 'OpticalFiber' ] );
-                    $result = array_merge( $result, $res );
-                }
-            }
-        }
-    }
-    elseif ( $spliceId != -1 && $fiberId == -1 )
-    {
-        $fibers = getFibs( $spliceIds );
-        $result = array_merge( $result, $fibers );
-        for ( $i = 0; $i < count( $fibers ); $i++ )
-        {
-            $sId = $fibers[ 'OpticalFiberSplice' ];
-            $cId = $fibers[ 'CableLine' ];
-            if ( ($sId != '') && ($cId != '') )
-            {
-                $res = trace( $fibers[ 'OpticalFiberSplice' ],
-                        $fibers[ 'OpticalFiber' ] );
-                $result = array_merge( $result, $res );
-            }
-        }
-    }
-    elseif ( $spliceId == -1 && $fiberId != -1 )
-    {
-        $spliceIds = getSplices( $spliceId, $fiberId );
-        for ( $i = 0; $i < count( $spliceIds ); $i++ )
-        {
-            $sId = $spliceIds[ $i ][ 'OpticalFiberSplice' ];
-            if ( ($sId != '' ) )
-            {
-                $res = trace( $sId );
-                $result = array_merge( $result, $res );
-            }
-        }
     }
     return $result;
 }

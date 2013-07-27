@@ -243,4 +243,60 @@ function deleteSplice( $OFJ_id )
     return $res;
 }
 
+function trace( $spliceId = -1, $fiberId = -1 )
+{
+    $result = array( );
+    if ( $spliceId != -1 && $fiberId != -1 )
+    {
+        $spliceIds = getSplices( $spliceId, $fiberId );
+        if ( count( $spliceIds ) > 0 )
+        {
+            $fibers = getFibs( $spliceIds, $fiberId );
+            $result = array_merge( $result, $fibers );
+            for ( $i = 0; $i < count( $fibers ); $i++ )
+            {
+                $sId = $fibers[ 'OpticalFiberSplice' ];
+                $cId = $fibers[ 'CableLine' ];
+                if ( ($sId != '') && ($cId != '') )
+                {
+                    $res = trace( $fibers[ 'OpticalFiberSplice' ],
+                            $fibers[ 'OpticalFiber' ] );
+                    $result = array_merge( $result, $res );
+                }
+            }
+        }
+    }
+    elseif ( $spliceId != -1 && $fiberId == -1 )
+    {
+        $fibers = getFibs( array( array( "OpticalFiberSplice" => $spliceId ) ) );
+        error_log( print_r( $fibers, true ) );
+        $result = array_merge( $result, $fibers );
+        for ( $i = 0; $i < count( $fibers ); $i++ )
+        {
+            $sId = $fibers[ 'OpticalFiberSplice' ];
+            $cId = $fibers[ 'CableLine' ];
+            if ( ($sId != '') && ($cId != '') )
+            {
+                $res = trace( $fibers[ 'OpticalFiberSplice' ],
+                        $fibers[ 'OpticalFiber' ] );
+                $result = array_merge( $result, $res );
+            }
+        }
+    }
+    elseif ( $spliceId == -1 && $fiberId != -1 )
+    {
+        $spliceIds = getSplices( $spliceId, $fiberId );
+        for ( $i = 0; $i < count( $spliceIds ); $i++ )
+        {
+            $sId = $spliceIds[ $i ][ 'OpticalFiberSplice' ];
+            if ( ($sId != '' ) )
+            {
+                $res = trace( $sId );
+                $result = array_merge( $result, $res );
+            }
+        }
+    }
+    return $result;
+}
+
 ?>

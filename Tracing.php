@@ -11,14 +11,15 @@ $networkNodeId = $_GET[ 'networknodeid' ];
 
 //$res = getCableLineDirection( $cableLine, $cableLinePoint, $networkNodeId );
 //$res = tracing( $cableLine, $cableLinePoint, $networkNodeId );
-$res = trace( -1, 66 );
+$res = trace( 1 );
+//$res = trace( 1, 66 );
 /*
-SELECT * FROM "OpticalFiberJoin" AS "ofj"
-WHERE "ofj"."OpticalFiber" = 66;
+  SELECT * FROM "OpticalFiberJoin" AS "ofj"
+  WHERE "ofj"."OpticalFiber" = 66;
 
-SELECT * FROM "OpticalFiberJoin" AS "ofj"
-LEFT JOIN "OpticalFiber" AS "of" ON "of".id = "ofj"."OpticalFiber"
-WHERE "ofj"."OpticalFiber" != 66 AND ("ofj"."OpticalFiberSplice" = 1 OR "ofj"."OpticalFiberSplice" = 10);
+  SELECT * FROM "OpticalFiberJoin" AS "ofj"
+  LEFT JOIN "OpticalFiber" AS "of" ON "of".id = "ofj"."OpticalFiber"
+  WHERE "ofj"."OpticalFiber" != 66 AND ("ofj"."OpticalFiberSplice" = 1 OR "ofj"."OpticalFiberSplice" = 10);
  */
 print_r( $res );
 ?>
