@@ -1,6 +1,6 @@
 <?php
 
-require_once('config.php');
+require_once 'config.php';
 
 function PConnect( $host, $db, $user, $pass )
 {
@@ -12,7 +12,7 @@ function PQuery( $query )
 {
     require "config.php";
 
-    //error_log( $query );
+    error_log( $query );
     $res = pg_query( $connection, $query ) or $error = 1;
     if ( $error == 1 )
     {

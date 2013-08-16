@@ -159,27 +159,22 @@ function getSplices( $spliceId = -1, $fiberId = -1 )
                 FROM "OpticalFiberJoin"
                 WHERE "OpticalFiber" IN (SELECT id FROM "OpticalFiber" WHERE "CableLine" = '.$cableLineId.')
                     AND "OpticalFiberSplice" != '.$spliceId;
-        error_log( $query );
+        //error_log( $query );
         $res = PQuery( $query );
     }
-    elseif ( $fiberId == -1 && $spliceId != -1 )
+    elseif ( $spliceId != -1 )
     {
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
                 WHERE "OpticalFiberSplice" != '.$spliceId;
-        error_log( $query );
+        //error_log( $query );
         $res = PQuery( $query );
     }
-    elseif ( $fiberId != -1 && $spliceId == -1 )
+    else
     {
-        $query = 'SELECT "CableLine" FROM "OpticalFiber"
-                WHERE id = '.$fiberId;
-        $res_cl = PQuery( $query );
-        $cableLineId = $res_cl[ 'rows' ][ 0 ][ 'CableLine' ];
-        $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
-                FROM "OpticalFiberJoin"
-                WHERE "OpticalFiber" IN (SELECT id FROM "OpticalFiber" WHERE "CableLine" = '.$cableLineId.')';
-        error_log( $query );
+        $query = 'SELECT id, "OpticalFiber", "OpticalFiberSplice"
+                    FROM "OpticalFiberJoin"
+                    WHERE "OpticalFiber" = '.$fiberId;
         $res = PQuery( $query );
     }
     return $res[ 'rows' ];
@@ -201,7 +196,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
                     WHERE "ofj"."OpticalFiberSplice" = '.$sId.' AND "of"."CableLine" != '.$cableLineId;
-            error_log( $query );
+            //error_log( $query );
             $res = PQuery( $query );
             $result = array_merge( $result, $res[ 'rows' ] );
         }
@@ -215,7 +210,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
                     WHERE "ofj"."OpticalFiberSplice" = '.$sId;
-            error_log( $query );
+            //error_log( $query );
             $res = PQuery( $query );
             $result = array_merge( $result, $res[ 'rows' ] );
         }
@@ -230,7 +225,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
                     WHERE "of"."CableLine" != '.$cableLineId;
-        error_log( $query );
+        //error_log( $query );
         $res = PQuery( $query );
         $result = array_merge( $result, $res[ 'rows' ] );
     }
@@ -283,4 +278,5 @@ function getFiberSpliceOrganizerInfo( $linesPerPage = -1, $skip = -1,
     $result[ 'allPages' ] = $allPages;
     return $result;
 }
+
 ?>
