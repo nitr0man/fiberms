@@ -192,9 +192,14 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
         for ( $i = 0; $i < count( $spliceIds ); $i++ )
         {
             $sId = $spliceIds[ $i ][ 'OpticalFiberSplice' ];
-            $query = 'SELECT "CableLine", "fiber", "OpticalFiberSplice", "OpticalFiber"
+            $query = 'SELECT "of"."CableLine", "of"."fiber", "ofj"."OpticalFiberSplice", "ofj"."OpticalFiber", "of"."note",
+                        "ofs"."NetworkNode", "ofs"."FiberSpliceOrganizer", 
+                        "cl"."name" AS "cl_name", "nn"."name" AS "nn_name"
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
+                    LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.$sId.'
+                    LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
+                    LEFT JOIN "NetworkNode" AS "nn" ON "nn".id = "ofs"."NetworkNode"
                     WHERE "ofj"."OpticalFiberSplice" = '.$sId.' AND "of"."CableLine" != '.$cableLineId;
             //error_log( $query );
             $res = PQuery( $query );
