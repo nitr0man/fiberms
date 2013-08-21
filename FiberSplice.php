@@ -305,8 +305,7 @@ else
                     else
                     {
                         $linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.'>[x]</a>';
-                        $linksT = ' <a href="Tracing.php?CableLine='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ]
-                                .'&clpid='.$clpid1.'&networknodeid='.$networkNodeId.'">[T]</a>';
+                        $linksT = ' <a href="Tracing.php?spliceId='.$res[ 'SpliceArray' ][ $j ][ $i ][ 4 ].'&fiberId=-1">[T]</a>';
                     }
                     if ( isset( $_GET[ 'print' ] ) )
                     {

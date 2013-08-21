@@ -95,8 +95,9 @@ function getFiberTable( $nodeID )
                 $fA = $rows[ $i ][ 'fiber' ];
                 $fB = $rows[ $i + 1 ][ 'fiber' ];
                 $FSO = $rows[ $i ][ 'FiberSpliceOrganizer' ];
-                $spliceArray[ $ClA ][ $fA ] = array( $ClB, $fB, $rows[ $i + 1 ][ 'OFJ_id' ], $FSO );
-                $spliceArray[ $ClB ][ $fB ] = array( $ClA, $fA, $rows[ $i ][ 'OFJ_id' ], $FSO );
+                $spliceId = $rows[ $i ][ 'OpticalFiberSplice' ];
+                $spliceArray[ $ClA ][ $fA ] = array( $ClB, $fB, $rows[ $i + 1 ][ 'OFJ_id' ], $FSO, $spliceId );
+                $spliceArray[ $ClB ][ $fB ] = array( $ClA, $fA, $rows[ $i ][ 'OFJ_id' ], $FSO, $spliceId );
                 $i = $i + 2;
             }
             else
@@ -255,15 +256,10 @@ function trace( $spliceId = -1, $fiberId = -1 )
             $result = array_merge( $result, $fibers );
             for ( $i = 0; $i < count( $fibers ); $i++ )
             {
-                /* $sId = $fibers[ 'OpticalFiberSplice' ];
-                  $cId = $fibers[ 'CableLine' ]; */
                 $sId = $fibers[ $i ][ 'OpticalFiberSplice' ];
                 $oF = $fibers[ $i ][ 'OpticalFiber' ];
-                //if ( ($sId != '') && ($cId != '') )
                 if ( ($sId != '') && ($oF != '') )
                 {
-                    /* $res = trace( $fibers[ 'OpticalFiberSplice' ],
-                      $fibers[ 'OpticalFiber' ] ); */
                     $res = trace( $sId, $oF );
                     $result = array_merge( $result, $res );
                 }
@@ -287,15 +283,11 @@ function trace( $spliceId = -1, $fiberId = -1 )
         }
         if ( count( $trackArr[ 0 ] ) > count( $trackArr[ 1 ] ) )
         {
-            /* $result = array_merge( $trackArr[ 0 ],
-              array_reverse( $trackArr[ 1 ] ) ); */
             $result = array_merge( array_reverse( $trackArr[ 1 ] ),
                     $trackArr[ 0 ] );
         }
         else
         {
-            /* $result = array_merge( array_reverse( $trackArr[ 0 ] ),
-              $trackArr[ 1 ] ); */
             $result = array_merge( array_reverse( $trackArr[ 0 ] ),
                     $trackArr[ 1 ] );
         }
@@ -316,15 +308,11 @@ function trace( $spliceId = -1, $fiberId = -1 )
         }
         if ( count( $trackArr[ 0 ] ) > count( $trackArr[ 1 ] ) )
         {
-            /* $result = array_merge( $trackArr[ 0 ],
-              array_reverse( $trackArr[ 1 ] ) ); */
             $result = array_merge( array_reverse( $trackArr[ 1 ] ),
                     $trackArr[ 0 ] );
         }
         else
         {
-            /* $result = array_merge( array_reverse( $trackArr[ 0 ] ),
-              $trackArr[ 1 ] ); */
             $result = array_merge( array_reverse( $trackArr[ 0 ] ),
                     $trackArr[ 1 ] );
         }
