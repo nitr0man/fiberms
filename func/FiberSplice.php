@@ -269,7 +269,6 @@ function trace( $spliceId = -1, $fiberId = -1 )
     elseif ( $spliceId != -1 )
     {
         $fibers = getFibs( array( array( "OpticalFiberSplice" => $spliceId ) ) );
-        //print_r($fibers);
         $trackArr = array( );
         for ( $i = 0; $i < count( $fibers ); $i++ )
         {
@@ -281,15 +280,60 @@ function trace( $spliceId = -1, $fiberId = -1 )
                 $trackArr[ $i ] = $res;
             }
         }
-        if ( count( $trackArr[ 0 ] ) > count( $trackArr[ 1 ] ) )
+
+        $traceArr = array( );
+        for ( $i = 0; $i < count( $trackArr ); $i++ )
         {
-            $result = array_merge( array_reverse( $trackArr[ 1 ] ),
-                    $trackArr[ 0 ] );
+            $k = 0;
+            for ( $j = 0; $j < count( $trackArr[ $i ] ); $j++ )
+            {
+                $traceArr[ $i ][ $k ][ 'isNode' ] = 1;
+                $traceArr[ $i ][ $k ][ 'NetworkNode' ] = $trackArr[ $i ][ $j ][ 'NetworkNode' ];
+                $traceArr[ $i ][ $k++ ][ 'nn_name' ] = $trackArr[ $i ][ $j ][ 'nn_name' ];
+
+                $traceArr[ $i ][ $k ][ 'isNode' ] = 0;
+                foreach ( $trackArr[ $i ][ $j ] as $key => $value )
+                {
+                    if ( ($key != 'NetworkNode') && ($key != 'nn_name') )
+                    {
+                        $traceArr[ $i ][ $k ][ $key ] = $value;
+                    }
+                }
+                $k++;
+            }
+        }
+        $cArr_res = getAllInfoBySpliceId( $spliceId );
+        $cArr = array( );
+        for ( $i = 0; $i < count( $cArr_res ); $i++ )
+        {
+            $cArr[ $i ][ 'isNode' ] = 0;
+            foreach ( $cArr_res[ $i ] as $key => $value )
+            {
+                if ( ($key != 'NetworkNode') && ($key != 'nn_name') )
+                {
+                    $cArr[ $i ][ $key ] = $value;
+                }
+            }
+        }
+        $cArr[ $i ][ 'isNode' ] = 1;
+        $cArr[ $i ][ 'NetworkNode' ] = $cArr_res[ $i - 1 ][ 'NetworkNode' ];
+        $cArr[ $i ][ 'nn_name' ] = $cArr_res[ $i - 1 ][ 'nn_name' ];
+
+        if ( count( $traceArr[ 0 ] ) > count( $traceArr[ 1 ] ) )
+        {
+            $traceArr[ 1 ] = array_reverse( $traceArr[ 1 ] );
+            $traceArr[ 1 ][ ] = $cArr[ 0 ];
+            $traceArr[ 1 ][ ] = $cArr[ 1 ];
+            $traceArr[ 1 ][ ] = $cArr[ 2 ];
+            $result = array_merge( $traceArr[ 1 ], $traceArr[ 0 ] );
         }
         else
         {
-            $result = array_merge( array_reverse( $trackArr[ 0 ] ),
-                    $trackArr[ 1 ] );
+            $traceArr[ 0 ] = array_reverse( $traceArr[ 0 ] );
+            $traceArr[ 0 ][ ] = $cArr[ 0 ];
+            $traceArr[ 0 ][ ] = $cArr[ 1 ];
+            $traceArr[ 0 ][ ] = $cArr[ 2 ];
+            $result = array_merge( $traceArr[ 0 ], $traceArr[ 1 ] );
         }
     }
     else

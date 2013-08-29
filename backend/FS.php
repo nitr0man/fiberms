@@ -237,6 +237,20 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
     return $result;
 }
 
+function getAllInfoBySpliceId( $spliceId )
+{
+    $query = 'SELECT "of"."CableLine", "of"."fiber", "of"."note", "ofs"."NetworkNode",
+            "ofs"."FiberSpliceOrganizer", "cl"."name" AS "cl_name", "nn"."name" AS "nn_name"
+            FROM "OpticalFiberJoin" AS "ofj"
+            LEFT JOIN "OpticalFiber" AS "of" ON "of".id = "ofj"."OpticalFiber"
+            LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.$spliceId.'
+            LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
+            LEFT JOIN "NetworkNode" AS "nn" ON "nn".id = "ofs"."NetworkNode"
+            WHERE "ofj"."OpticalFiberSplice" = '.$spliceId;
+    $res = PQuery( $query );
+    return $res[ 'rows' ];
+}
+
 function getCableLineInfo( $nodeId, $zeroFibers = -1, $tmpT = FALSE )
 {
     $query = 'SELECT "ct"."tubeQuantity"*"ct"."fiberPerTube" AS "fiber",
