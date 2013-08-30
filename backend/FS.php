@@ -251,6 +251,16 @@ function getAllInfoBySpliceId( $spliceId )
     return $res[ 'rows' ];
 }
 
+function getLineByFiberId( $fiberId )
+{
+    $query = 'SELECT "of"."CableLine", "of".fiber, "of".note, "cl"."name" AS "cl_name"
+                FROM "OpticalFiber" AS "of"
+                LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
+                WHERE "of".id = '.$fiberId;
+    $res = PQuery( $query );
+    return $res[ 'rows' ][ 0 ];
+}
+
 function getCableLineInfo( $nodeId, $zeroFibers = -1, $tmpT = FALSE )
 {
     $query = 'SELECT "ct"."tubeQuantity"*"ct"."fiberPerTube" AS "fiber",
