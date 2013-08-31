@@ -393,16 +393,12 @@ function trace( $spliceId = -1, $fiberId = -1 )
             $traceArr[ 1 ] = array_reverse( $traceArr[ 1 ] );
             $traceArr[ 1 ][ ] = $cArr;
             $result = array_merge( $traceArr[ 1 ], $traceArr[ 0 ] );
-            /* $result = array_merge( array_reverse( $trackArr[ 1 ] ),
-              $trackArr[ 0 ] ); */
         }
         else
         {
             $traceArr[ 0 ] = array_reverse( $traceArr[ 0 ] );
             $traceArr[ 0 ][ ] = $cArr;
             $result = array_merge( $trackArr[ 0 ], $traceArr[ 1 ] );
-            /* $result = array_merge( array_reverse( $trackArr[ 0 ] ),
-              $trackArr[ 1 ] ); */
         }
     }
     return $result;
