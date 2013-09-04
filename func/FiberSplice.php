@@ -288,6 +288,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
             for ( $j = 0; $j < count( $trackArr[ $i ] ); $j++ )
             {
                 $traceArr[ $i ][ $k ][ 'isNode' ] = 1;
+                $traceArr[ $i ][ $k ][ 'isTr' ] = 0;
                 $traceArr[ $i ][ $k ][ 'NetworkNode' ] = $trackArr[ $i ][ $j ][ 'NetworkNode' ];
                 $traceArr[ $i ][ $k ][ 'FiberSpliceOrganizer' ] = $trackArr[ $i ][ $j ][ 'FiberSpliceOrganizer' ];
                 $traceArr[ $i ][ $k++ ][ 'nn_name' ] = $trackArr[ $i ][ $j ][ 'nn_name' ];
@@ -308,6 +309,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
         for ( $i = 0; $i < count( $cArr_res ); $i++ )
         {
             $cArr[ $i ][ 'isNode' ] = 0;
+            $cArr[ $i ][ 'isTr' ] = 1;
             foreach ( $cArr_res[ $i ] as $key => $value )
             {
                 if ( ($key != 'NetworkNode') && ($key != 'nn_name') )
@@ -317,6 +319,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
             }
         }
         $cArr[ $i ][ 'isNode' ] = 1;
+        $cArr[ $i ][ 'isTr' ] = 1;
         $cArr[ $i ][ 'NetworkNode' ] = $cArr_res[ $i - 1 ][ 'NetworkNode' ];
         $cArr[ $i ][ 'nn_name' ] = $cArr_res[ $i - 1 ][ 'nn_name' ];
         $cArr[ $i ][ 'FiberSpliceOrganizer' ] = $cArr_res[ $i - 1 ][ 'FiberSpliceOrganizer' ];
@@ -325,16 +328,16 @@ function trace( $spliceId = -1, $fiberId = -1 )
         {
             $traceArr[ 1 ] = array_reverse( $traceArr[ 1 ] );
             $traceArr[ 1 ][ ] = $cArr[ 0 ];
-            $traceArr[ 1 ][ ] = $cArr[ 1 ];
             $traceArr[ 1 ][ ] = $cArr[ 2 ];
+            $traceArr[ 1 ][ ] = $cArr[ 1 ];
             $result = array_merge( $traceArr[ 1 ], $traceArr[ 0 ] );
         }
         else
         {
             $traceArr[ 0 ] = array_reverse( $traceArr[ 0 ] );
             $traceArr[ 0 ][ ] = $cArr[ 0 ];
-            $traceArr[ 0 ][ ] = $cArr[ 1 ];
             $traceArr[ 0 ][ ] = $cArr[ 2 ];
+            $traceArr[ 0 ][ ] = $cArr[ 1 ];
             $result = array_merge( $traceArr[ 0 ], $traceArr[ 1 ] );
         }
     }
