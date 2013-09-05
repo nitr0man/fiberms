@@ -152,13 +152,13 @@ function getSplices( $spliceId = -1, $fiberId = -1 )
     if ( $spliceId != -1 && $fiberId != -1 )
     {
         $query = 'SELECT "CableLine" FROM "OpticalFiber"
-                WHERE id = '.$fiberId;
+                WHERE id = '.pg_escape_string( $fiberId );
         $res_cl = PQuery( $query );
         $cableLineId = $res_cl[ 'rows' ][ 0 ][ 'CableLine' ];
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
-                WHERE "OpticalFiber" IN (SELECT id FROM "OpticalFiber" WHERE "CableLine" = '.$cableLineId.')
-                    AND "OpticalFiberSplice" != '.$spliceId;
+                WHERE "OpticalFiber" IN (SELECT id FROM "OpticalFiber" WHERE "CableLine" = '.pg_escape_string( $cableLineId ).')
+                    AND "OpticalFiberSplice" != '.pg_escape_string( $spliceId );
         //error_log( $query );
         $res = PQuery( $query );
     }
@@ -166,7 +166,7 @@ function getSplices( $spliceId = -1, $fiberId = -1 )
     {
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
-                WHERE "OpticalFiberSplice" != '.$spliceId;
+                WHERE "OpticalFiberSplice" != '.pg_escape_string( $spliceId );
         //error_log( $query );
         $res = PQuery( $query );
     }
@@ -174,7 +174,7 @@ function getSplices( $spliceId = -1, $fiberId = -1 )
     {
         $query = 'SELECT id, "OpticalFiber", "OpticalFiberSplice"
                     FROM "OpticalFiberJoin"
-                    WHERE "OpticalFiber" = '.$fiberId;
+                    WHERE "OpticalFiber" = '.pg_escape_string( $fiberId );
         $res = PQuery( $query );
     }
     return $res[ 'rows' ];
@@ -186,7 +186,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
     if ( $spliceIds != -1 && $fiberId != -1 )
     {
         $query = 'SELECT "CableLine" FROM "OpticalFiber"
-                WHERE id = '.$fiberId;
+                WHERE id = '.pg_escape_string( $fiberId );
         $res_cl = PQuery( $query );
         $cableLineId = $res_cl[ 'rows' ][ 0 ][ 'CableLine' ];
         for ( $i = 0; $i < count( $spliceIds ); $i++ )
@@ -223,7 +223,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
     elseif ( $fiberId != -1 && $spliceIds == -1 )
     {
         $query = 'SELECT "CableLine" FROM "OpticalFiber"
-                WHERE id = '.$fiberId;
+                WHERE id = '.pg_escape_string( $fiberId );
         $res_cl = PQuery( $query );
         $cableLineId = $res_cl[ 'rows' ][ 0 ][ 'CableLine' ];
         $query = 'SELECT "CableLine", "fiber", "OpticalFiberSplice", "OpticalFiber"
@@ -244,10 +244,10 @@ function getAllInfoBySpliceId( $spliceId )
             "ofj"."OpticalFiber", "ofj".id AS "ofj_id"
             FROM "OpticalFiberJoin" AS "ofj"
             LEFT JOIN "OpticalFiber" AS "of" ON "of".id = "ofj"."OpticalFiber"
-            LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.$spliceId.'
+            LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.pg_escape_string( $spliceId ).'
             LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
             LEFT JOIN "NetworkNode" AS "nn" ON "nn".id = "ofs"."NetworkNode"
-            WHERE "ofj"."OpticalFiberSplice" = '.$spliceId;
+            WHERE "ofj"."OpticalFiberSplice" = '.pg_escape_string( $spliceId );
     $res = PQuery( $query );
     return $res[ 'rows' ];
 }
@@ -257,7 +257,7 @@ function getLineByFiberId( $fiberId )
     $query = 'SELECT "of"."CableLine", "of".fiber, "of".note, "cl"."name" AS "cl_name", "of".id
                 FROM "OpticalFiber" AS "of"
                 LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
-                WHERE "of".id = '.$fiberId;
+                WHERE "of".id = '.($fiberId);
     $res = PQuery( $query );
     return $res[ 'rows' ][ 0 ];
 }
