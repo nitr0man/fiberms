@@ -240,7 +240,8 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
 function getAllInfoBySpliceId( $spliceId )
 {
     $query = 'SELECT "of"."CableLine", "of"."fiber", "of"."note", "ofs"."NetworkNode",
-            "ofs"."FiberSpliceOrganizer", "cl"."name" AS "cl_name", "nn"."name" AS "nn_name"
+            "ofs"."FiberSpliceOrganizer", "cl"."name" AS "cl_name", "nn"."name" AS "nn_name",
+            "ofj"."OpticalFiber", "ofj".id AS "ofj_id"
             FROM "OpticalFiberJoin" AS "ofj"
             LEFT JOIN "OpticalFiber" AS "of" ON "of".id = "ofj"."OpticalFiber"
             LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.$spliceId.'
@@ -253,7 +254,7 @@ function getAllInfoBySpliceId( $spliceId )
 
 function getLineByFiberId( $fiberId )
 {
-    $query = 'SELECT "of"."CableLine", "of".fiber, "of".note, "cl"."name" AS "cl_name"
+    $query = 'SELECT "of"."CableLine", "of".fiber, "of".note, "cl"."name" AS "cl_name", "of".id
                 FROM "OpticalFiber" AS "of"
                 LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
                 WHERE "of".id = '.$fiberId;

@@ -281,20 +281,17 @@ else
             for ( $j = 0; $j < count( $res[ 'CableLines' ] ); $j++ )
             {
                 $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
-                //print_r($arr);
-                //print($arr[ 1 ] );
-                //print_r( $res[ 'cl_array' ][ 'rows' ] );                
-                $clpid1 = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clpid' ];
-                $clpid2 = $res[ 'cl_array' ][ 'rows' ][ $arr[ 1 ] ][ 'clpid' ];
+                //$clpid1 = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clpid' ];
+                //$clpid2 = $res[ 'cl_array' ][ 'rows' ][ $arr[ 1 ] ][ 'clpid' ];
                 $fiber1 = $i;
                 $fiber2 = $arr[ 1 ];
-                $is_a = $arr[ 3 ];
+                //$is_a = $arr[ 3 ];
                 $splice_id = $arr[ 2 ];
                 $fso = $arr[ 3 ];
                 $fiberPerTube = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiberPerTube' ];
                 $module = (int)(($i - 1) / $fiberPerTube + 1);
                 $rowspan_fso = 1;
-                $rowspan_module = 1;
+                //$rowspan_module = 1;                
                 if ( isset( $arr ) )
                 {
                     if ( isset( $_GET[ 'print' ] ) )
@@ -305,7 +302,8 @@ else
                     else
                     {
                         $linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.'>[x]</a>';
-                        $linksT = ' <a href="Tracing.php?spliceId='.$res[ 'SpliceArray' ][ $j ][ $i ][ 4 ].'&fiberId=-1">[T]</a>';
+                        $clid = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ];
+                        $linksT = ' <a href="Tracing.php?spliceId='.$res[ 'SpliceArray' ][ $j ][ $i ][ 4 ].'&fiberId=-1&clid='.$clid.'">[T]</a>';
                     }
                     if ( isset( $_GET[ 'print' ] ) )
                     {

@@ -9,6 +9,7 @@ global $smarty;
 
 $spliceId = pg_escape_string( $_GET[ 'spliceId' ] );
 $fiberId = pg_escape_string( $_GET[ 'fiberId' ] );
+$clid = $_GET[ 'clid' ];
 
 $trace_res = trace( $spliceId, $fiberId );
 $traceArr = array( );
@@ -20,7 +21,8 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $CableLineName = $trace_res[ $i ][ 'cl_name' ];
         $fiber = $trace_res[ $i ][ 'fiber' ];
         $fiberNote = $trace_res[ $i ][ 'note' ];
-        if ( $trace_res[ $i ][ 'isTr' ] == 1 )
+        if ( $trace_res[ $i ][ 'CableLine' ] == $clid ||
+                $trace_res[ $i ][ 'id' ] == $fiberId )
         {
             $traceArr[ ] = "<b>Линия</b>";
         }
@@ -37,14 +39,7 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $NetworkNode = $trace_res[ $i ][ 'NetworkNode' ];
         $NetworkNodeName = $trace_res[ $i ][ 'nn_name' ];
         $organizer = $trace_res[ $i ][ 'FiberSpliceOrganizer' ];
-        if ( $trace_res[ $i ][ 'isTr' ] == 1 )
-        {
-            $traceArr[ ] = "<b>Узел</b>";
-        }
-        else
-        {
-            $traceArr[ ] = "Узел";
-        }
+        $traceArr[ ] = "Узел";
         $traceArr[ ] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$NetworkNode.'">'
                 .$NetworkNodeName.'</a>, кассета '.$organizer;
         $traceArr[ ] = '-';
