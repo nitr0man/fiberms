@@ -966,6 +966,13 @@ ALTER SEQUENCE "SettlementGeoSpatial_id_seq" OWNED BY "SettlementGeoSpatial".id;
 -- Name: Users; Type: TABLE; Schema: public; Owner: -
 --
 
+CREATE SEQUENCE "Users_id_seq"
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
 CREATE TABLE "Users" (
     id integer DEFAULT nextval('"Users_id_seq"'::regclass) NOT NULL,
     username character varying(15) NOT NULL,
@@ -974,7 +981,11 @@ CREATE TABLE "Users" (
     class character varying(1) DEFAULT 2
 );
 ALTER TABLE ONLY "Users" ALTER COLUMN class SET STORAGE PLAIN;
+ALTER SEQUENCE "Users_id_seq" OWNED BY "Users".id;
 
+COPY "Users" (id, username, password, token, class) FROM stdin;
+1	test	f5d1278e8109edd94e1e4197e04873b9	a6f1d586356313aab590d6b27b09ef0a	1
+\.
 
 --
 -- TOC entry 275 (class 1259 OID 147917)
