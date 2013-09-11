@@ -127,11 +127,27 @@ function getFiberSpliceCount( $networkNode = -1 )
         $where = GenWhere( $wr );
     }
     $query = 'SELECT COUNT(id) AS "count" FROM "OpticalFiberSplice"'.$where;
-    $result[ 'fiberSpliceCount' ] = PQuery( $query )[ 'rows' ][ 0 ][ 'count' ];
+    $res = PQuery( $query );
+    if ( $res[ 'count' ] > 0 )
+    {
+        $result[ 'fiberSpliceCount' ] = $res[ 'rows' ][ 0 ][ 'count' ];
+    }
+    else
+    {
+        $result[ 'fiberSpliceCount' ] = 0;
+    }
     if ( $networkNode == -1 )
     {
         $query = 'SELECT COUNT(DISTINCT "NetworkNode") AS "count" FROM "OpticalFiberSplice"';
-        $result[ 'NetworkNodesCountInFiberSplice' ] = PQuery( $query )[ 'rows' ][ 0 ][ 'count' ];
+        $res2 = PQuery( $query );
+        if ( $res2[ 'count' ] > 0 )
+        {
+            $result[ 'NetworkNodesCountInFiberSplice' ] = $res2[ 'rows' ][ 0 ][ 'count' ];
+        }
+        else
+        {
+            $result[ 'NetworkNodesCountInFiberSplice' ] = 0;
+        }
     }
     return $result;
 }
