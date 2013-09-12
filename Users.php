@@ -46,11 +46,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         if ( $_POST[ 'rb' ] == 'true' )
         {
             $wr[ 'id' ] = $id;
-            $upd[ 'username' ] = "'$login'";
-            $upd[ 'class' ] = "'$group'";
+            $upd[ 'username' ] = $login;
+            $upd[ 'class' ] = $group;
             if ( $password != '' )
             {
-                $upd[ 'password' ] = "'".md5( $password )."'";
+                $upd[ 'password' ] = md5( $password );
             }
             Users_UPDATE( $upd, $wr );
             print("Пользователь изменен!<br />
