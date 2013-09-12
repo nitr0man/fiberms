@@ -58,7 +58,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         }
         else
         {
-            $wr[ 'username' ] = "'$login'";
+            $wr[ 'username' ] = $login;
             $res = Users_SELECT( '', $wr );
             if ( $res[ 'count' ] > 0 )
             {
@@ -66,9 +66,9 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 				      <a href=\"Users.php\">Назад</a>" );
                 die();
             }
-            $ins[ 'username' ] = "'$login'";
-            $ins[ 'password' ] = "'".md5( $password )."'";
-            $ins[ 'class' ] = "'$group'";
+            $ins[ 'username' ] = $login;
+            $ins[ 'password' ] = md5( $password );
+            $ins[ 'class' ] = $group;
             Users_INSERT( $ins );
             print("Пользователь добавлен!<br />
 			<a href=\"Users.php\">Назад</a>" );
