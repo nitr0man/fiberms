@@ -15,6 +15,7 @@ function PQuery( $query )
     global $connection;
 
     //error_log( $query );
+    //print($query);
     $res = pg_query( $connection, $query ) or $error = 1;
     if ( $error == 1 )
     {
@@ -183,7 +184,7 @@ function getTables()
     $res[ ] = "NetworkBox";
     $res[ ] = "NetworkNode";
     $res[ ] = "CableLinePoint";
-    $res[ ] = "FiberSplice";
+    //$res[ ] = "FiberSplice";
     $res[ ] = "FiberSpliceOrganizerType";
     $res[ ] = "FiberSpliceOrganizer";
     $res[ ] = "OpticalFiberSplice";
@@ -194,13 +195,17 @@ function getTables()
 
 function createTmpTables()
 {
+    global $config;
+    $db_user = $config[ 'user' ];
     $tables = getTables();
     $query = 'BEGIN;';
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        $query .= ' CREATE TABLE IF NOT EXISTS "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
+        //$query .= ' CREATE TABLE IF NOT EXISTS "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
+        $query .= ' CREATE TABLE  "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING DEFAULTS );';
+        $query .= 'ALTER TABLE "CableLine" OWNER TO '.$db_user.';';
         $query .= ' INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'";';
     }
     $query .= ' COMMIT;';
@@ -222,8 +227,10 @@ function dropTmpTables()
         }
         $tbl_del .= '"'.$tmpT.'"';
     }
-    $query .= ' TRUNCATE '.$tbl_del.';';
+    //$query .= ' TRUNCATE '.$tbl_del.';';
+    $query .= ' DROP TABLE IF EXISTS '.$tbl_del.' CASCADE;';
     $query .= ' COMMIT;';
+    //print($query);
     PQuery( $query );
 }
 

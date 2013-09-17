@@ -297,7 +297,7 @@ function checkData()
     {
         dropTmpTables();
         createTmpTables();
-    }
+    }    
 }
 
 function setTmpMapLastEdit()
