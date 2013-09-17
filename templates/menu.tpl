@@ -36,6 +36,8 @@
 		  </li>
 		  <li><a href="LoggingIs.php">Журнал</a></li>
 		  <li><a href="Users.php">Пользователи</a></li>
+		  <li><a href="map.php">Карта</a></li>
+		  <li><a href="map_edt.php">Карта (редактирование)</a></li>
 		  <li><a href="logout.php">Выйти</a></li>
 		</ul>
 	   <br style="clear: left" />

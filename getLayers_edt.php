@@ -12,10 +12,6 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
     checkData();
     error_log("1");
     $res = getCableLineList( 0, '', -1, -1, TRUE );
-    if ( $res[ 'count' ] == 0 )
-    {
-        die();
-    }
     $rows = $res[ 'rows' ];
 
     $dom = new DomDocument( '1.0', 'UTF-8' );
@@ -178,10 +174,6 @@ elseif ( $_GET[ 'mode' ] == 'GetNodesMarkers' )
 elseif ( $_GET[ 'mode' ] == 'GetNodesLabels' )
 {
     $res = getNetworkNodeList_NetworkBoxName( '', '', '', -1, -1, TRUE );
-    if ( $res[ 'count' ] == 0 )
-    {
-        die();
-    }
     $rows = $res[ 'rows' ];
 
     $dom = new DomDocument( '1.0', 'UTF-8' );
