@@ -4,6 +4,7 @@ require_once 'config.php';
 
 function PConnect( $host, $db, $user, $pass )
 {
+    global $connection;
     $connection = pg_connect( "host='".$host."' dbname='".$db."' user='".$user."' password='".$pass."'" );
     return $connection;
 }
@@ -11,6 +12,7 @@ function PConnect( $host, $db, $user, $pass )
 function PQuery( $query )
 {
     require "config.php";
+    global $connection;
 
     //error_log( $query );
     $res = pg_query( $connection, $query ) or $error = 1;
