@@ -165,14 +165,35 @@ function getCableLinePoint_NetworkNodeName( $cableLineId )
     return $result;
 }
 
+function getCableLinesSpliceCount( $tmpT = FALSE )
+{
+    $result = array( );
+    $query = 'SELECT "cl".id, COUNT(DISTINCT "ofj"."OpticalFiberSplice") AS "FiberSpliceCount"
+        FROM "CableLine" AS "cl"
+        LEFT JOIN "'.tmpTable( 'OpticalFiber',
+                    $tmpT ).'" AS "of" ON "of"."CableLine" = "cl".id
+        LEFT JOIN "'.tmpTable( 'OpticalFiberJoin',
+                    $tmpT ).'" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
+        LEFT JOIN "'.tmpTable( 'OpticalFiberSplice',
+                    $tmpT ).'" AS "ofs" ON "ofs"."id" = "ofj"."OpticalFiberSplice"
+        GROUP BY "cl".id';
+    $res = PQuery( $query );
+    $rows = $res[ 'rows' ];
+    for ( $i = 0; $i < $res[ 'count' ]; $i++ )
+    {
+        $cableLine = $rows[ $i ][ 'id' ];
+        $result[ $cableLine ][ 'FiberSpliceCount' ] = $rows[ $i ][ 'FiberSpliceCount' ];
+    }
+    return $result;
+}
+
 function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $tmpT = FALSE )
 {
     $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment",
                 "cl"."name", "ct"."marking", "ct"."manufacturer",
                 "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube",
-                "ct"."tubeQuantity", "NN"."OpenGIS" AS "NNOpenGIS",
-                COUNT(DISTINCT "OFJ"."OpticalFiberSplice") AS "FiberSpliceCount"                
+                "ct"."tubeQuantity", "NN"."OpenGIS" AS "NNOpenGIS"                                
                 FROM "'.tmpTable( 'CableLine',
                     $tmpT ).'" AS "cl"
 		LEFT JOIN "'.tmpTable( 'CableLinePoint',
@@ -189,8 +210,6 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
     {
         $query .= genWhere( $wr );
     }
-    $query .= ' GROUP BY "cl"."id", "ct"."marking", "ct"."manufacturer", "ct"."fiberPerTube",
-                "ct"."tubeQuantity", "NN"."id"';
     $query .= ' ORDER BY "name"';
     if ( $sort == 1 )
     {
@@ -209,6 +228,14 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
+
+    $splices = getCableLinesSpliceCount( $tmpT );
+    for ( $i = 0; $i < $result[ 'count' ]; $i++ )
+    {
+        $id = $result[ 'rows' ][ $i ][ 'id' ];
+        $result[ 'rows' ][ $i ][ 'FiberSpliceCount' ] = $splices[ $id ][ 'FiberSpliceCount' ];
+    }
+
     $result[ 'allPages' ] = $allPages;
     return $result;
 }

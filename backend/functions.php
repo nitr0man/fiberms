@@ -15,7 +15,6 @@ function PQuery( $query )
     global $connection;
 
     //error_log( $query );
-    //print($query);
     $res = pg_query( $connection, $query ) or $error = 1;
     if ( $error == 1 )
     {

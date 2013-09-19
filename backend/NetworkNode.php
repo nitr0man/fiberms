@@ -80,7 +80,7 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
         $linesPerPage = -1, $skip = -1, $tmpT = FALSE )
 {
     $query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
-        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking", COUNT("OFS".id) AS "fiberSpliceCount"
+        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking"
   		FROM "'.tmpTable( 'NetworkNode',
                     $tmpT ).'" AS "NN"
   		LEFT JOIN "'.tmpTable( 'NetworkBox',
@@ -97,7 +97,6 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
     {
         $query .= ' ORDER BY "NN"."'.$FSort.'" LIMIT 0,2';
     }
-    $query .= ' GROUP BY "NN".id, "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking"';
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
@@ -107,6 +106,14 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
         $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
+    
+    $splices = getSpliceCountByNetworkNode( $tmpT );
+    for ( $i = 0; $i < $result[ 'count' ]; $i++ )
+    {
+        $id = $result[ 'rows' ][ $i ][ 'id' ];
+        $result[ 'rows' ][ $i ][ 'fiberSpliceCount' ] = $splices[ $id ][ 'fiberSpliceCount' ];
+    }
+    
     $result[ 'allPages' ] = $allPages;
     return $result;
 }
@@ -115,6 +122,27 @@ function getFreeNetworkBoxes( $networkBox )
 {
     $query = 'SELECT "NB".id, "NB"."NetworkBoxType", "NB"."inventoryNumber", "NN".id AS "nnid" FROM "NetworkBox" AS "NB" LEFT JOIN "NetworkNode" AS "NN" ON "NN"."NetworkBox"="NB".id WHERE "NN".id IS NULL OR "NB".id='.$networkBox;
     $result = PQuery( $query );
+    return $result;
+}
+
+function getSpliceCountByNetworkNode( $tmpT = FALSE )
+{
+    $result = array( );
+    $query = 'SELECT "NN".id, COUNT("OFS".id) AS "fiberSpliceCount"
+  		FROM "'.tmpTable( 'NetworkNode',
+                    $tmpT ).'" AS "NN"
+  		LEFT JOIN "'.tmpTable( 'NetworkBox',
+                    $tmpT ).'" AS "NB" ON "NB".id="NN"."NetworkBox"
+  		LEFT JOIN "'.tmpTable( 'OpticalFiberSplice',
+                    $tmpT ).'" AS "OFS" ON "OFS"."NetworkNode" = "NN".id
+  		GROUP BY "NN".id';
+    $res = PQuery( $query );
+    $rows = $res[ 'rows' ];
+    for ( $i = 0; $i < $res[ 'count' ]; $i++ )
+    {
+        $networkNode = $rows[ $i ][ 'id' ];
+        $result[ $networkNode ][ 'fiberSpliceCount' ] = $rows[ $i ][ 'fiberSpliceCount' ];
+    }
     return $result;
 }
 
