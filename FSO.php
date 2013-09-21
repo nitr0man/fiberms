@@ -66,7 +66,7 @@ else
             $page = $_GET[ 'page' ];
         }
         $res = getFiberSpliceOrganizerInfo( $config[ 'LinesPerPage' ],
-                ($page - 1) * $config[ 'LinesPerPage' ] );
+                ($page - 1) * $config[ 'LinesPerPage' ], -1, -1 );
         $pages = genPages( 'FSO.php?',
                 ceil( $res[ 'allPages' ] / $config[ 'LinesPerPage' ] ), $page );
 

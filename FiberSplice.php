@@ -84,7 +84,8 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
-    if ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'networknodeid' ] )) and (isset( $_GET[ 'clid1' ] )) and (isset( $_GET[ 'fiber1' ] )) )
+    if ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'networknodeid' ] ))
+            and (isset( $_GET[ 'clid1' ] )) and (isset( $_GET[ 'fiber1' ] )) )
     {
         if ( $_SESSION[ 'class' ] > 1 )
         {
