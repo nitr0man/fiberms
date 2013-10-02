@@ -190,7 +190,7 @@ function getCableLinesSpliceCount( $tmpT = FALSE )
 function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $tmpT = FALSE )
 {
-    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment",
+    $query = 'SELECT DISTINCT ON ("cl".id, cl."name") "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment",
                 "cl"."name", "ct"."marking", "ct"."manufacturer",
                 "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube",
                 "ct"."tubeQuantity", "NN"."OpenGIS" AS "NNOpenGIS"                                

@@ -130,7 +130,8 @@ function parseNodesLabelsXML(
         nodesLabels_arr[i] = { };
         nodesLabels_arr[i]["points"] = Array();
 
-        while ( f_child.nextSibling ) {
+
+        while ( !!f_child && f_child.nextSibling ) {
             switch ( f_child.nodeName ) {
                 case "node":
                     nodesLabels_arr[i]["points"][0] = { };
@@ -149,6 +150,7 @@ function parseNodesLabelsXML(
             }
             f_child = f_child.nextSibling;
         }
+
         nodesLabels_Count++;
     }
     if ( mapCr ) {
