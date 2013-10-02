@@ -25,7 +25,7 @@ function CableLine_SELECT( $sort, $wr, $tmpT = FALSE )
 function CableLine_INSERT( $ins )
 {
     $query = 'INSERT INTO "CableLine"';
-    $query .= genInsert( $ins );
+    $query .= genInsert( $ins )." RETURNING id";
     $result = PQuery( $query );
     loggingIs( 2, 'CableLine', $ins, '' );
     return $result;

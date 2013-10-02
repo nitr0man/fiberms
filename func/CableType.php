@@ -103,10 +103,6 @@ function CableLine_Add( $CableTypes, $length, $name, $comment )
     {
         return 0;
     }
-    $res = CableType_SELECT( 1, $wr );
-    $fibersCount = $res[ 'rows' ][ 'tubeQuantity' ] * $res[ 'rows' ][ 'fiberPerTube' ];
-    unset( $wr );
-    CableLine_AddDeleteFibers( $fibersCount, $id );
     $ins[ 'CableType' ] = $CableTypes;
     $ins[ 'length' ] = $length;
     $ins[ 'comment' ] = $comment;
@@ -116,6 +112,11 @@ function CableLine_Add( $CableTypes, $length, $name, $comment )
     {
         return $res;
     }
+    $id = $res[ 'rows' ][ 0 ][ 'id' ];
+    $wr[ 'id' ] = $CableTypes;
+    $res2 = CableType_SELECT( 1, $wr );
+    $fibersCount = $res2[ 'rows' ][ 0 ][ 'tubeQuantity' ] * $res2[ 'rows' ][ 0 ][ 'fiberPerTube' ];
+    CableLine_AddDeleteFibers( $fibersCount, $id );
     return 1;
 }
 
