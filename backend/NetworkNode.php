@@ -118,9 +118,14 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
     return $result;
 }
 
-function getFreeNetworkBoxes( $networkBox )
+function getFreeNetworkBoxes( $networkBox, $tmpT = FALSE )
 {
-    $query = 'SELECT "NB".id, "NB"."NetworkBoxType", "NB"."inventoryNumber", "NN".id AS "nnid" FROM "NetworkBox" AS "NB" LEFT JOIN "NetworkNode" AS "NN" ON "NN"."NetworkBox"="NB".id WHERE "NN".id IS NULL OR "NB".id='.$networkBox;
+    $query = 'SELECT "NB".id, "NB"."NetworkBoxType", "NB"."inventoryNumber", "NN".id AS "nnid"
+        FROM "'.tmpTable( 'NetworkBox',
+                    $tmpT ).'" AS "NB"
+        LEFT JOIN "'.tmpTable( 'NetworkNode',
+                    $tmpT ).'" AS "NN" ON "NN"."NetworkBox"="NB".id
+        WHERE "NN".id IS NULL OR "NB".id='.$networkBox;
     $result = PQuery( $query );
     return $result;
 }

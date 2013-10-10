@@ -7,13 +7,18 @@ function addNodeMsg( event ) {
         note: "",
         coorArr: [ ]
     };
-    if ( networkBoxesArr.length < 1 ) {
-        addNodeLayer.destroyFeatures();
-        showError( 'topCenter', 'Нет свободных ящиков!' );
-        return;
-    }
+    /*if ( networkBoxesArr.length < 1 ) {
+     addNodeLayer.destroyFeatures();
+     showError( 'topCenter', 'Нет свободных ящиков!' );
+     return;
+     }*/
     var feature = event.feature;
     var coorNode = feature.geometry.getVertices();
+    var firstId = -1;
+    if ( !!networkBoxesArr[0] ) {
+        firstId = networkBoxesArr[0].id;
+    }
+
     form = Ext.create( 'Ext.form.Panel', {
         bodyPadding: 10,
         defaultType: 'textfield',
@@ -25,7 +30,7 @@ function addNodeMsg( event ) {
                 valueField: 'value',
                 displayField: 'text',
                 store: new Ext.data.SimpleStore( {
-                    id: networkBoxesArr[0].id,
+                    id: firstId,
                     fields:
                             [
                                 'value',
@@ -118,7 +123,8 @@ function selectDeleteNode( event, del ) {
         jsonCoor.coorArr[ 0 ]["lon"] = ll.lon;
         jsonCoor.coorArr[ 0 ]["lat"] = ll.lat;
         json = JSON.stringify( jsonCoor );
-        $.post( "map_post.php", { coors: json, mode: "deleteNode", userId: userId },
+        $.post( "map_post.php",
+                { coors: json, mode: "deleteNode", userId: userId },
         function() {
             refreshAllLayers();
         } );

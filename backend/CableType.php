@@ -317,8 +317,13 @@ function getCableLinesFrag( $cableLines, $tmpT = FALSE )
         $n = 0;
         for ( $j = 0; $j < count( $rows ); $j++ )
         {
+            $rows[ $j ][ 'sequence' ] = $j;
+        }
+        for ( $j = 0; $j < count( $rows ); $j++ )
+        {
             $OpenGIS = $rows[ $j ][ 'OpenGIS' ];
             $NNOpenGis = $rows[ $j ][ 'NNOpenGIS' ];
+            $rows[ $j ][ 'sequence' ] = $j;
             if ( !preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/', $OpenGIS,
                             $matches ) )
             {

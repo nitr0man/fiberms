@@ -323,7 +323,7 @@ elseif ( $_GET[ 'mode' ] == "GetNetworkBoxes" )
 {
     require_once("backend/NetworkNode.php");
 
-    $res = getFreeNetworkBoxes( -1 );
+    $res = getFreeNetworkBoxes( -1, TRUE );
     $rows = $res[ 'rows' ];
     $boxesJSON[ 'Boxes' ] = array( );
     $i = -1;

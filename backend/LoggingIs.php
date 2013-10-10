@@ -2,6 +2,7 @@
 
 function loggingIs( $type, $tableName, $values, $record )
 {
+    $tableName = substr( $tableName, 0, strpos( $tableName, "_tmp" ) );
     if ( $type != 3 )
     {
         foreach ( $values as $field => $value )

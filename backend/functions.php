@@ -14,7 +14,7 @@ function PQuery( $query )
     require "config.php";
     global $connection;
 
-    //error_log( $query );
+    error_log( $query );
     //print $query."<br>";
     $res = pg_query( $connection, $query ) or $error = 1;
     if ( $error == 1 )
