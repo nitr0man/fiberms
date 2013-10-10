@@ -609,15 +609,17 @@ function drawFeatures() {
 
     var lat2, lon2, title, ident;
     for ( l = 0; l < nodesLabels_Count; l++ ) {
-        lat2 = nodesLabels_arr[l]["points"][0]["lat"];
-        lon2 = nodesLabels_arr[l]["points"][0]["lon"];
-        title = nodesLabels_arr[l]["title"];
-        ident = nodesLabels_arr[l]["ident"];
-        addPoint( lon2,
-                lat2,
-                title,
-                ident,
-                layerNodeNames );
+        if ( !!nodesLabels_arr[l]["points"][0] ) {
+            lat2 = nodesLabels_arr[l]["points"][0]["lat"];
+            lon2 = nodesLabels_arr[l]["points"][0]["lon"];
+            title = nodesLabels_arr[l]["title"];
+            ident = nodesLabels_arr[l]["ident"];
+            addPoint( lon2,
+                    lat2,
+                    title,
+                    ident,
+                    layerNodeNames );
+        }
     }
 }
 

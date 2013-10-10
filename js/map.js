@@ -288,11 +288,13 @@ function init() {
 
     var lat2, lon2, title, ident;
     for ( l = 0; l < nodesLabels_Count; l++ ) {
-        lat2 = nodesLabels_arr[l]["points"][0]["lat"];
-        lon2 = nodesLabels_arr[l]["points"][0]["lon"];
-        title = nodesLabels_arr[l]["title"];
-        ident = nodesLabels_arr[l]["ident"];
-        addPoint( lon2, lat2, title, ident, map.layers[6] );
+        if ( !!nodesLabels_arr[l]["points"][0] ) {
+            lat2 = nodesLabels_arr[l]["points"][0]["lat"];
+            lon2 = nodesLabels_arr[l]["points"][0]["lon"];
+            title = nodesLabels_arr[l]["title"];
+            ident = nodesLabels_arr[l]["ident"];
+            addPoint( lon2, lat2, title, ident, map.layers[6] );
+        }
     }
 
     lineLayer.events.on( {
@@ -421,7 +423,7 @@ function parseNetworkNodesDescriptionXML( Response ) {
         var f_child = nodeDescription[i].firstChild;
         j2 = 0;
 
-        while ( f_child.nextSibling ) {
+        while ( !!f_child && f_child.nextSibling ) {
             switch ( f_child.nodeName ) {
                 case "index":
                     //nodeDescription_arr[i]['title'] = f_child.firstChild.nodeValue;
@@ -450,7 +452,7 @@ function parseNodesLabelsXML( Response ) {
         nodesLabels_arr[i] = { };
         nodesLabels_arr[i]["points"] = Array();
 
-        while ( f_child.nextSibling ) {
+        while ( !!f_child && f_child.nextSibling ) {
             switch ( f_child.nodeName ) {
                 case "node":
                     nodesLabels_arr[i]["points"][0] = { };
