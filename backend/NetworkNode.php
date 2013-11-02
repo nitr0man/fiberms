@@ -65,13 +65,14 @@ function NetworkNode_DELETE( $wr, $tmpT = FALSE )
 
 function getNetworkNode_NetworkBoxName( $networkNodeId )
 {
-    $query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
+    $query = 'SELECT "NN".id, "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
         "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", COUNT("OFS".id) AS "fiberSpliceCount"
   		FROM "NetworkNode" AS "NN"
 		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox" 
 		LEFT JOIN "OpticalFiberSplice" AS "OFS" ON "OFS"."NetworkNode" = "NN".id
 		WHERE "NN".id='.pg_escape_string( $networkNodeId ).'
-		GROUP BY "NN".id, "NB"."inventoryNumber"';
+		GROUP BY "NN".id, "NB"."inventoryNumber", "NN"."name", "NN"."NetworkBox",
+                  "NN"."note", "NN"."SettlementGeoSpatial", "NN"."Building", "NN"."Apartment"';
     $result = PQuery( $query );
     return $result;
 }

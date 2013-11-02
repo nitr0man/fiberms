@@ -80,13 +80,18 @@ function getNetworkNodeInfo( $networkNodeId )
 {
     $res = getNetworkNode_NetworkBoxName( $networkNodeId );
     $result[ 'NetworkNode' ] = $res;
-    $query = 'SELECT "clp".id, "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign", "clp"."NetworkNode", "clp"."note", "clp"."Apartment", "clp"."Building", "clp"."SettlementGeoSpatial", "cl"."name" AS "clname", COUNT("OFJ"."OpticalFiberSplice") AS "fiberSpliceCount"
+    $query = 'SELECT "clp".id, "clp"."CableLine", "clp"."meterSign",
+        "clp"."NetworkNode", "clp"."note", "clp"."Apartment", "clp"."Building",
+        "clp"."SettlementGeoSpatial", "cl"."name" AS "clname",
+        COUNT("OFJ"."OpticalFiberSplice") AS "fiberSpliceCount"
 		FROM "CableLinePoint" AS "clp"
 		LEFT JOIN "CableLine" AS "cl" ON "cl".id="clp"."CableLine"
 		LEFT JOIN "OpticalFiber" AS "OF" ON "OF"."CableLine" = "cl".id
 		LEFT JOIN "OpticalFiberJoin" AS "OFJ" ON "OFJ"."OpticalFiber" = "OF".id
 		WHERE "clp"."NetworkNode"='.pg_escape_string( $networkNodeId ).'
-		GROUP BY "clp".id, "cl"."name"';
+		GROUP BY "clp".id, "cl"."name", "clp"."CableLine", "clp"."meterSign",
+                  "clp"."NetworkNode", "clp"."note", "clp"."Apartment",
+                  "clp"."Building", "clp"."SettlementGeoSpatial"';
     $res2 = PQuery( $query );
     $result[ 'NetworkNode' ][ 'CableLinePoints' ] = $res2;
     unset( $wr );
