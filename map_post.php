@@ -27,7 +27,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     }
     elseif ( $_POST[ 'mode' ] == "addSingPoint" )
     {
-        require_once("func/CableType.php");
+        require_once ( "func/CableType.php" );
 
         $apartment = $obj->{'apartment'};
         $building = $obj->{'building'};
@@ -73,6 +73,12 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $nodeInfo[ 'note' ] = $obj->{'note'};
         divCableLine( $coors, $CableLineId, $nodeInfo, TRUE );
         setTmpMapLastEdit();
+    }
+    elseif ( $_POST[ 'mode' ] == "addNetworkBox" )
+    {
+        $networkBoxType = $obj->{'networkBoxType'};
+        $invNum = $obj->{'invNum'};
+        addNetworkBox( $networkBoxType, $invNum );
     }
     elseif ( $_POST[ 'mode' ] == "save" )
     {

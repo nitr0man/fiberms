@@ -335,6 +335,22 @@ elseif ( $_GET[ 'mode' ] == "GetNetworkBoxes" )
     $res = json_encode( $boxesJSON );
     print( $res );
 }
+elseif ( $_GET[ 'mode' ] == "GetNetworkBoxTypes" )
+{
+    require_once("backend/NetworkBoxType.php");
+
+    $res = NetworkBoxType_SELECT( '', '' );
+    $rows = $res[ 'rows' ];
+    $boxTypesJSON[ 'BoxTypes' ] = array( );
+    $i = -1;
+    while ( ++$i < $res[ 'count' ] )
+    {
+        $boxTypesJSON[ 'BoxTypes' ][ $i ][ 'id' ] = (int)$rows[ $i ][ 'id' ];
+        $boxTypesJSON[ 'BoxTypes' ][ $i ][ 'marking' ] = $rows[ $i ][ 'marking' ];
+    }
+    $resJ = json_encode( $boxTypesJSON );
+    print( $resJ );
+}
 elseif ( $_GET[ 'mode' ] == "GetFreeLinePoints" )
 {
     require_once 'backend/CableType.php';

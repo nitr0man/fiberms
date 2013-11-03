@@ -4,6 +4,7 @@ require_once 'backend/NetworkNode.php';
 require_once 'backend/CableType.php';
 require_once 'func/CableType.php';
 require_once 'func/NetworkNode.php';
+require_once 'func/NetworkBoxType.php';
 
 function isSingPoint( $point )
 {
@@ -201,6 +202,11 @@ function deleteNode( $coors, $tmpT = FALSE )
     NetworkNode_DELETE( $wr, $tmpT );
 }
 
+function addNetworkBox( $networkBoxType, $invNum )
+{
+    NetworkBox_Add( $networkBoxType, $invNum );
+}
+
 function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
 {
 
@@ -297,7 +303,7 @@ function checkData()
     {
         dropTmpTables();
         createTmpTables();
-    }    
+    }
 }
 
 function setTmpMapLastEdit()

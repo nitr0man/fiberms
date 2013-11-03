@@ -13,7 +13,7 @@ var panel, navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
 var coor;
 var CableLineEdtInfo = { };
 var jsonInsertCoor;
-var cableTypeArr, nodesArr, networkBoxesArr, freePointsArr;
+var cableTypeArr, nodesArr, networkBoxesArr, freePointsArr, networkBoxTypesArr;
 var mapCr = true;
 var selectSingPoint = false, selectDeleteSingPointMode = false,
         selectDeleteCableLineMode = false, selectDeleteNodeMode = false,
@@ -71,6 +71,7 @@ function getData() {
     getCableTypes(); // получаем типы кабелей            
     getNodes(); // получаем узлы
     getNetworkBoxes(); // получаем ящики
+    getNetworkBoxTypes(); // получаем типы ящиков
 
 }
 
@@ -113,6 +114,20 @@ function getNetworkBoxes() {
         }
     }
     $.get( 'getLayers_edt.php?mode=GetNetworkBoxes',
+            fillArr );
+}
+
+function getNetworkBoxTypes() {
+    function fillArr( data ) {
+        var networkBoxTypesObj = JSON.parse( data );
+        networkBoxTypesArr = [ ];
+        for ( var i = 0; i < networkBoxTypesObj.BoxTypes.length; i++ ) {
+            networkBoxTypesArr[i] = [ ];
+            networkBoxTypesArr[i][0] = networkBoxTypesObj.BoxTypes[i].id;
+            networkBoxTypesArr[i][1] = networkBoxTypesObj.BoxTypes[i].marking;
+        }
+    }
+    $.get( 'getLayers_edt.php?mode=GetNetworkBoxTypes',
             fillArr );
 }
 
