@@ -7,23 +7,36 @@
   <meta name="keywords" content="" />
   {if (!isset($smarty.get.print))}
 	<link href="main_style.css" rel="stylesheet" type="text/css" media="screen" />  
-	<link rel="stylesheet" type="text/css" href="ddsmoothmenu-v.css" />
-	<link rel="stylesheet" type="text/css" href="ddsmoothmenu.css" />
+	<link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
+    <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
   {/if}
   <!--script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script-->
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
   <script type="text/javascript" src="js/jquery.corner.js"></script>
-  <script type="text/javascript">
-	ddsmoothmenu.init({
-		mainmenuid: "smoothmenu1", 
-		orientation: 'v', 
-		classname: 'ddsmoothmenu', 
-		//customtheme: ["#1c5a80", "#18374a"],
-		contentsource: "markup" 
-	})
-  </script>
   <script type="text/javascript" src="js/ajax.js"></script>
+  <script type="text/javascript">
+		$( document ).ready( function() {
+			$( function() {
+				$( "#menuBtn" ).click( function() {
+					if ( $( this ).parent().css( "left" ) == "-170px" ) {
+						$( this ).parent().animate( { left: '0px' },
+						{ queue: false, duration: 500 } );
+					} else {
+						$( this ).parent().animate( { left: '-170px' },
+						{ queue: false, duration: 500 } );
+					}
+				} );
+			} );
+		} );
+		ddsmoothmenu.init( {
+			mainmenuid: "smoothmenu1",
+			orientation: 'v',
+			classname: 'ddsmoothmenu-v',
+			//customtheme: ["white", "black"],
+			contentsource: "markup"
+		} );
+	</script>
   {if (isset($smarty.get.print))}
 	<style type="text/css">
 		th {
