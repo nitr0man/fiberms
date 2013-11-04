@@ -156,8 +156,8 @@ else
         }
         if ( $res[ 'count' ] < 1 )
         {
-            $message = 'Узла с таким ID не существует!<br />
-			<a href="NetworkBox.php">Назад</a>';
+            $message = 'Ящика с таким ID не существует!<br />
+			<a href="NetworkNodes.php">Назад</a>';
             showMessage( $message, 0 );
         }
         $pages = genPages( 'NetworkNodes.php?sort='.$sort.'&',
@@ -166,25 +166,25 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $node_arr[ ] = $rows[ $i ][ 'id' ];
-            $node_arr[ ] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'name' ].'</a>';
-            $node_arr[ ] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[ $i ][ 'NetworkBox' ].'">'.$rows[ $i ][ 'inventoryNumber' ].'</a>';
-            $node_arr[ ] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'NBTmarking' ].'</a>';
-            $node_arr[ ] = $rows[ $i ][ 'fiberSpliceCount' ];
-            $node_arr[ ] = $rows[ $i ][ 'OpenGIS' ];
-            $node_arr[ ] = $rows[ $i ][ 'SettlementGeoSpatial' ];
-            $node_arr[ ] = $rows[ $i ][ 'Building' ];
-            $node_arr[ ] = $rows[ $i ][ 'Apartment' ];
-            $node_arr[ ] = '<a href="NetworkNodes.php?mode=change&nodeid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
+            $node_arr[] = $rows[ $i ][ 'id' ];
+            $node_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'name' ].'</a>';
+            $node_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[ $i ][ 'NetworkBox' ].'">'.$rows[ $i ][ 'inventoryNumber' ].'</a>';
+            $node_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'NBTmarking' ].'</a>';
+            $node_arr[] = $rows[ $i ][ 'fiberSpliceCount' ];
+            $node_arr[] = $rows[ $i ][ 'OpenGIS' ];
+            $node_arr[] = $rows[ $i ][ 'SettlementGeoSpatial' ];
+            $node_arr[] = $rows[ $i ][ 'Building' ];
+            $node_arr[] = $rows[ $i ][ 'Apartment' ];
+            $node_arr[] = '<a href="NetworkNodes.php?mode=change&nodeid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
             $wr[ 'NetworkNode' ] = $rows[ $i ][ 'id' ];
             $res2 = CableLinePoint_SELECT( $wr );
             if ( $res2[ 'count' ] == 0 )
             {
-                $node_arr[ ] = '<a href="NetworkNodes.php?mode=delete&nodeid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
+                $node_arr[] = '<a href="NetworkNodes.php?mode=delete&nodeid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
             }
             else
             {
-                $node_arr[ ] = '';
+                $node_arr[] = '';
             }
         }
         $smarty->assign( "data", $node_arr );
@@ -197,24 +197,30 @@ else
 
         $nodeId = $_GET[ 'nodeid' ];
         $res = getNetworkNodeInfo( $nodeId );
+        if ( $res[ 'NetworkNode' ][ 'count' ] < 1 )
+        {
+            $message = 'Ящика с таким ID не существует!<br />
+			<a href="NetworkNodes.php">Назад</a>';
+            showMessage( $message, 0 );
+        }
         $rows = $res[ 'NetworkNode' ][ 'rows' ][ 0 ];
         $clpRows = $res[ 'NetworkNode' ][ 'CableLinePoints' ][ 'rows' ];
 
         $i = -1;
         while ( ++$i < $res[ 'NetworkNode' ][ 'CableLinePoints' ][ 'count' ] )
         {
-            $CableLinePoints_arr[ ] = $clpRows[ $i ][ 'id' ];
-            $CableLinePoints_arr[ ] = '<a href="CableLine.php?mode=charac&cablelineid='.$clpRows[ $i ][ 'CableLine' ].'">'.$clpRows[ $i ][ 'clname' ].'</a>';
-            $CableLinePoints_arr[ ] = $clpRows[ $i ][ 'meterSign' ];
-            $CableLinePoints_arr[ ] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$clpRows[ $i ][ 'id' ].'">Изменить</a>';
+            $CableLinePoints_arr[] = $clpRows[ $i ][ 'id' ];
+            $CableLinePoints_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$clpRows[ $i ][ 'CableLine' ].'">'.$clpRows[ $i ][ 'clname' ].'</a>';
+            $CableLinePoints_arr[] = $clpRows[ $i ][ 'meterSign' ];
+            $CableLinePoints_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$clpRows[ $i ][ 'id' ].'">Изменить</a>';
             $fiberSpliceCount = $clpRows[ $i ][ 'fiberSpliceCount' ];
             if ( $fiberSpliceCount == 0 )
             {
-                $CableLinePoints_arr[ ] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$clpRows[ $i ][ 'id' ].'">Удалить</a>';
+                $CableLinePoints_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$clpRows[ $i ][ 'id' ].'">Удалить</a>';
             }
             else
             {
-                $CableLinePoints_arr[ ] = '';
+                $CableLinePoints_arr[] = '';
             }
         }
 
@@ -222,18 +228,18 @@ else
         $i = -1;
         while ( ++$i < $res[ 'NetworkNode' ][ 'FSO' ][ 'count' ] )
         {
-            $FSO_arr[ ] = $fsoRows[ $i ][ 'id' ];
-            $FSO_arr[ ] = $fsoRows[ $i ][ 'FiberSpliceOrganizationTypeMarking' ];
-            $FSO_arr[ ] = $fsoRows[ $i ][ 'FiberSpliceOrganizationTypeManufacturer' ];
-            $FSO_arr[ ] = $fsoRows[ $i ][ 'FiberSpliceCount' ];
-            $FSO_arr[ ] = '<a href="FSO.php?mode=change&fsoid='.$fsoRows[ $i ][ 'id' ].'">Изменить</a>';
+            $FSO_arr[] = $fsoRows[ $i ][ 'id' ];
+            $FSO_arr[] = $fsoRows[ $i ][ 'FiberSpliceOrganizationTypeMarking' ];
+            $FSO_arr[] = $fsoRows[ $i ][ 'FiberSpliceOrganizationTypeManufacturer' ];
+            $FSO_arr[] = $fsoRows[ $i ][ 'FiberSpliceCount' ];
+            $FSO_arr[] = '<a href="FSO.php?mode=change&fsoid='.$fsoRows[ $i ][ 'id' ].'">Изменить</a>';
             if ( $fsoRows[ $i ][ 'NetworkNodeName' ] == '' )
             {
-                $FSO_arr[ ] = '<a href="FSO.php?mode=delete&fsoid='.$fsoRows[ $i ][ 'id' ].'">Удалить</a>';
+                $FSO_arr[] = '<a href="FSO.php?mode=delete&fsoid='.$fsoRows[ $i ][ 'id' ].'">Удалить</a>';
             }
             else
             {
-                $FSO_arr[ ] = '';
+                $FSO_arr[] = '';
             }
         }
 
@@ -300,8 +306,8 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $comboBox_Box_Values[ ] = $rows[ $i ][ 'id' ];
-            $comboBox_Box_Text[ ] = $rows[ $i ][ 'inventoryNumber' ];
+            $comboBox_Box_Values[] = $rows[ $i ][ 'id' ];
+            $comboBox_Box_Text[] = $rows[ $i ][ 'inventoryNumber' ];
         }
         $smarty->assign( "combobox_box_values", $comboBox_Box_Values );
         $smarty->assign( "combobox_box_text", $comboBox_Box_Text );
@@ -324,8 +330,8 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $comboBox_Box_Values[ ] = $rows[ $i ][ 'id' ];
-            $comboBox_Box_Text[ ] = $rows[ $i ][ 'inventoryNumber' ];
+            $comboBox_Box_Values[] = $rows[ $i ][ 'id' ];
+            $comboBox_Box_Text[] = $rows[ $i ][ 'inventoryNumber' ];
         }
         $smarty->assign( "combobox_box_values", $comboBox_Box_Values );
         $smarty->assign( "combobox_box_text", $comboBox_Box_Text );
