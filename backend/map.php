@@ -96,7 +96,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
     {
         $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" <= '.$seqEnd;
         PQuery( $query );
-        $seq = 0;
+        $seq = 1;
         $iSt = 0;
         $toMin = 0;
     }
