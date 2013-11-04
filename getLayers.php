@@ -18,6 +18,11 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
     $cableLines = $dom->appendChild( $dom->createElement( 'cableLines' ) );
     $cableLinesFrag = getCableLinesFrag( $rows, FALSE );
     //print_r($cableLinesFrag);
+    $cableInfo = array();
+    for ( $i = 0; $i < $res[ 'count' ]; $i++ )
+    {
+        $cableInfo[ $rows[ $i ][ 'id' ] ] = $rows[ $i ];
+    }
     foreach ( $cableLinesFrag as $key => $value )
     {
         //print_r($value);
@@ -56,12 +61,12 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
             $cableId = $cableId->appendChild( $dom->createTextNode( $cableLineId ) );
 
             $name = $cableLine->appendChild( $dom->createElement( 'name' ) );
-            $name = $name->appendChild( $dom->createTextNode( $rows[ $i ][ 'name' ] ) );
+            $name = $name->appendChild( $dom->createTextNode( $cableInfo[ $cableLineId ][ 'name' ] ) );
 
             $cableTypeId = $cableLine->appendChild( $dom->createElement( 'cableTypeId' ) );
-            if ( isset( $rows[ $i ][ 'CableType' ] ) )
+            if ( isset( $cableInfo[ $cableLineId ][ 'CableType' ] ) )
             {
-                $cableTypeId = $cableTypeId->appendChild( $dom->createTextNode( $rows[ $i ][ 'CableType' ] ) );
+                $cableTypeId = $cableTypeId->appendChild( $dom->createTextNode( $cableInfo[ $cableLineId ][ 'CableType' ] ) );
             }
             else
             {
@@ -69,9 +74,9 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
             }
 
             $cableTypeId = $cableLine->appendChild( $dom->createElement( 'cableTypeMarking' ) );
-            if ( isset( $rows[ $i ][ 'marking' ] ) )
+            if ( isset( $cableInfo[ $cableLineId ][ 'marking' ] ) )
             {
-                $cableTypeId = $cableTypeId->appendChild( $dom->createTextNode( $rows[ $i ][ 'marking' ] ) );
+                $cableTypeId = $cableTypeId->appendChild( $dom->createTextNode( $cableInfo[ $cableLineId ][ 'marking' ] ) );
             }
             else
             {
@@ -81,9 +86,9 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
             $direction = $direction->appendChild( $dom->createTextNode( $direction_href ) );
 
             $modules = $cableLine->appendChild( $dom->createElement( 'modules' ) );
-            if ( $rows[ $i ][ 'fiberPerTube' ] != 0 )
+            if ( $cableInfo[ $cableLineId ][ 'fiberPerTube' ] != 0 )
             {
-                $modules = $modules->appendChild( $dom->createTextNode( (int)( ($rows[ $i ][ 'fibers' ] - 1) / $rows[ $i ][ 'fiberPerTube' ] + 1 ) ) );
+                $modules = $modules->appendChild( $dom->createTextNode( (int)( ($cableInfo[ $cableLineId ][ 'fibers' ] - 1) / $cableInfo[ $cableLineId ][ 'fiberPerTube' ] + 1 ) ) );
             }
             else
             {
@@ -91,9 +96,9 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
             }
 
             $fibers = $cableLine->appendChild( $dom->createElement( 'fibers' ) );
-            if ( isset( $rows[ $i ][ 'fibers' ] ) )
+            if ( isset( $cableInfo[ $cableLineId ][ 'fibers' ] ) )
             {
-                $fibers = $fibers->appendChild( $dom->createTextNode( $rows[ $i ][ 'fibers' ] ) );
+                $fibers = $fibers->appendChild( $dom->createTextNode( $cableInfo[ $cableLineId ][ 'fibers' ] ) );
             }
             else
             {
@@ -101,7 +106,7 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
             }
 
             $free_fibers = $cableLine->appendChild( $dom->createElement( 'free_fibers' ) );
-            $free_fibers = $free_fibers->appendChild( $dom->createTextNode( (int)($rows[ $i ][ 'fibers' ] - $rows[ $i ][ 'FiberSpliceCount' ]) ) );
+            $free_fibers = $free_fibers->appendChild( $dom->createTextNode( (int)($cableInfo[ $cableLineId ][ 'fibers' ] - $cableInfo[ $cableLineId ][ 'FiberSpliceCount' ]) ) );
 
             $sequenceStart = $cableLine->appendChild( $dom->createElement( 'sequenceStart' ) );
             $sequenceStart = $sequenceStart->appendChild( $dom->createTextNode( $value[ $i ][ 0 ][ 'sequence' ] ) );
