@@ -115,8 +115,15 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
 function addCableLinePoint( $coors, $CableType, $length, $name, $comment,
         $tmpT = FALSE )
 {
+    if ( $length == "" )
+    {
+        $ins[ 'length' ] = "NULL";
+    }
+    else
+    {
+        $ins[ 'length' ] = $length;
+    }
     $ins[ 'CableType' ] = $CableType;
-    $ins[ 'length' ] = $length;
     $ins[ 'name' ] = $name;
     $ins[ 'comment' ] = $comment;
     $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';

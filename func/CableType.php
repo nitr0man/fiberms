@@ -103,8 +103,15 @@ function CableLine_Add( $CableTypes, $length, $name, $comment )
     {
         return 0;
     }
+    if ( $length == "" )
+    {
+        $ins[ 'length' ] = "NULL";
+    }
+    else
+    {
+        $ins[ 'length' ] = $length;
+    }
     $ins[ 'CableType' ] = $CableTypes;
-    $ins[ 'length' ] = $length;
     $ins[ 'comment' ] = $comment;
     $ins[ 'name' ] = $name;
     $res = CableLine_INSERT( $ins );
