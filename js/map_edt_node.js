@@ -19,6 +19,30 @@ function addNodeMsg( event ) {
         firstId = networkBoxesArr[0].id;
     }
 
+    Ext.define( 'NetworkBoxesModel', {
+        extend: 'Ext.data.Model',
+        fields: [
+            'value',
+            'text'
+        ]
+    } );
+
+    boxCombo = Ext.form.ComboBox( {
+        xtype: 'combo',
+        flex: 1,
+        name: 'networkBox',
+        valueField: 'value',
+        displayField: 'text',
+        store: new Ext.data.SimpleStore( {
+            id: firstId,
+            fields:
+                    [
+                        'value',
+                        'text'
+                    ],
+            data: networkBoxesArr
+        } )
+    } );
 
     form = Ext.create( 'Ext.form.Panel', {
         bodyPadding: 10,
@@ -44,22 +68,24 @@ function addNodeMsg( event ) {
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
                 fieldLabel: 'Ящик',
-                items: [ {
-                        xtype: 'combo',
-                        flex: 1,
-                        name: 'networkBox',
-                        valueField: 'value',
-                        displayField: 'text',
-                        store: new Ext.data.SimpleStore( {
-                            id: firstId,
-                            fields:
-                                    [
-                                        'value',
-                                        'text'
-                                    ],
-                            data: networkBoxesArr
-                        } )
-                    },
+                items: [
+                    /*{
+                     xtype: 'combo',
+                     flex: 1,
+                     name: 'networkBox',
+                     valueField: 'value',
+                     displayField: 'text',
+                     store: new Ext.data.SimpleStore( {
+                     id: firstId,
+                     fields:
+                     [
+                     'value',
+                     'text'
+                     ],
+                     data: networkBoxesArr
+                     } )
+                     }*/
+                    Ext.form.ComboBox( boxCombo ),
                     {
                         xtype: 'button',
                         text: '+',
@@ -106,6 +132,7 @@ function addNodeMsg( event ) {
             }
         ]
     } );
+
     dialog = new Ext.Window( {
         title: "Добавить узел",
         layout: "fit",
@@ -155,13 +182,12 @@ function addNetworkBox() {
                     jsonNodeCoor.networkBoxType = form.getValues().networkBoxType;
                     jsonNodeCoor.invNum = form.getValues().invNum;
                     json = JSON.stringify( jsonNodeCoor );
-                    $.post( "map_post.php",
-                            { coors: json, mode: "addNetworkBox", userId: userId } );
-                    /*var len = networkBoxesArr.length;
-                    networkBoxesArr[len] = { };
-                    networkBoxesArr[len][0] = networkBoxesObj.Boxes[i].id;
-                    networkBoxesArr[len][1] = networkBoxesObj.Boxes[i].inventoryNumber;*/
-                    getNetworkBoxes();
+                    /*$.post( "map_post.php",
+                     { coors: json, mode: "addNetworkBox", userId: userId } );
+                     getNetworkBoxes();*/
+                    //var boxcombo = form.getComponent( 'networkBox' );                    
+                    var el = Ext.create( 'NetworkBoxesModel', [ 1, "lol" ] );
+                    boxCombo.store.add( el );
                     dialog.destroy( );
                 }
             }
