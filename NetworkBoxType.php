@@ -87,32 +87,32 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $boxType_arr[ ] = $rows[ $i ][ 'id' ];
-            $boxType_arr[ ] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'marking' ].'</a>';
-            $boxType_arr[ ] = $rows[ $i ][ 'manufacturer' ];
-            $boxType_arr[ ] = $rows[ $i ][ 'units' ];
-            $boxType_arr[ ] = $rows[ $i ][ 'width' ];
-            $boxType_arr[ ] = $rows[ $i ][ 'height' ];
-            $boxType_arr[ ] = $rows[ $i ][ 'length' ];
-            $boxType_arr[ ] = $rows[ $i ][ 'diameter' ];
+            $boxType_arr[] = $rows[ $i ][ 'id' ];
+            $boxType_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'marking' ].'</a>';
+            $boxType_arr[] = $rows[ $i ][ 'manufacturer' ];
+            $boxType_arr[] = $rows[ $i ][ 'units' ];
+            $boxType_arr[] = $rows[ $i ][ 'width' ];
+            $boxType_arr[] = $rows[ $i ][ 'height' ];
+            $boxType_arr[] = $rows[ $i ][ 'length' ];
+            $boxType_arr[] = $rows[ $i ][ 'diameter' ];
             $wr[ 'NetworkBoxType' ] = $rows[ $i ][ 'id' ];
             $res2 = NetworkBox_SELECT( '', $wr );
             if ( $res2[ 'count' ] > 0 )
             {
-                $boxType_arr[ ] = '<a href="NetworkBox.php?boxtypeid='.$rows[ $i ][ 'id' ].'">'.$res2[ 'count' ].'</a>';
+                $boxType_arr[] = '<a href="NetworkBox.php?boxtypeid='.$rows[ $i ][ 'id' ].'">'.$res2[ 'count' ].'</a>';
             }
             else
             {
-                $boxType_arr[ ] = $res2[ 'count' ];
+                $boxType_arr[] = $res2[ 'count' ];
             }
-            $boxType_arr[ ] = '<a href="NetworkBoxType.php?mode=change&boxtypeid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
+            $boxType_arr[] = '<a href="NetworkBoxType.php?mode=change&boxtypeid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
             if ( $res2[ 'count' ] == 0 )
             {
-                $boxType_arr[ ] = '<a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
+                $boxType_arr[] = '<a href="NetworkBoxType.php?mode=delete&boxtypeid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
             }
             else
             {
-                $boxType_arr[ ] = '';
+                $boxType_arr[] = '';
             }
         }
         $smarty->assign( "data", $boxType_arr );
