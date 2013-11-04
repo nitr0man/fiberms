@@ -20,7 +20,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
 {
     $query = 'SELECT * FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' ORDER BY "sequence"';
     $res = PQuery( $query );
-    // error_log( print_r( $res, true ) );
+    //error_log( print_r( $res, true ) );
     //error_log( "seqStart=".$seqStart );
     //error_log( "seqEnd=".$seqEnd );
     if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) && isSingPoint( $res[ 'rows' ][ $seqEnd ] ) )
@@ -122,7 +122,7 @@ function addCableLinePoint( $coors, $CableType, $length, $name, $comment,
     $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';
     $res = PQuery( $query );
     $CableLine = $res[ 'rows' ][ 0 ][ 'id' ];
-    $seq = 0;
+    $seq = 1;
     unset( $ins );
     for ( $i = 0; $i < count( $coors ); $i++ )
     {
@@ -148,6 +148,15 @@ function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
     if ( $note == "" )
     {
         $note = "NULL";
+    }
+    //error_log( "node=".$networkNode );
+    if ( $networkNode != "" )
+    {
+        $query = 'SELECT "OpenGIS" FROM "'.tmpTable( 'NetworkNode', TRUE ).
+                '" WHERE id='.$networkNode;
+        $res = PQuery( $query );
+        $networkNodeGIS = $res[ 'rows' ][ 0 ][ 'OpenGIS' ];
+        $upd[ 'OpenGIS' ] = $networkNodeGIS;
     }
     $upd[ 'meterSign' ] = $meterSign;
     $upd[ 'note' ] = $note;
@@ -297,7 +306,7 @@ function checkData()
     {
         dropTmpTables();
         createTmpTables();
-    }    
+    }
 }
 
 function setTmpMapLastEdit()
