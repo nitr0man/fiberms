@@ -125,9 +125,14 @@ function addNodeMsg( event ) {
                     jsonNodeCoor.building = form.getValues().building;
                     jsonNodeCoor.apartment = form.getValues().apartment;
                     jsonNodeCoor.note = form.getValues().note;
-                    addNode( coorNode,
-                            jsonNodeCoor );
-                    dialog.destroy();
+                    if ( jsonNodeCoor.name == "" || jsonNodeCoor.NetworkBoxId == ""
+                            || jsonNodeCoor.note == "" ) {
+                        alert( 'Заполните поля!' );
+                    } else {
+                        addNode( coorNode,
+                                jsonNodeCoor );
+                        dialog.destroy();
+                    }
                 }
             }
         ]

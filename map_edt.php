@@ -38,7 +38,7 @@ print 'var userId = '.$user.';';
         </script>
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min-1.9.1.js"></script>
         <script type="text/javascript" src="js/ext-all.js"></script>
         <script type="text/javascript" src="js/noty/jquery.noty.js"></script>
         <script type="text/javascript" src="js/js_xml.js"></script>        

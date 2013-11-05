@@ -100,14 +100,20 @@ function setSingPoint( event ) {
                         jsonSingPointCoor.building = form.getValues().building;
                         jsonSingPointCoor.apartment = form.getValues().apartment;
                         jsonSingPointCoor.note = form.getValues().note;
-                        json = JSON.stringify( jsonSingPointCoor );
-                        $.post( "map_post.php",
-                                { coors: json, mode: "divCableLine", userId: userId },
-                        function() {
-                            refreshAllLayers();
-                        } );
-                        //addNode( coorNode, jsonNodeCoor );
-                        dialog.destroy();
+                        if ( jsonSingPointCoor.name == ""
+                                || jsonSingPointCoor.NetworkBoxId == ""
+                                || jsonSingPointCoor.note == "" ) {
+                            alert( 'Заполните поля!' );
+                        } else {
+                            json = JSON.stringify( jsonSingPointCoor );
+                            $.post( "map_post.php",
+                                    { coors: json, mode: "divCableLine", userId: userId },
+                            function() {
+                                refreshAllLayers();
+                            } );
+                            //addNode( coorNode, jsonNodeCoor );
+                            dialog.destroy();
+                        }
                     }
                 }
             ]
@@ -216,13 +222,14 @@ function addSingPoint( coor, jsonSingPointCoor ) {
     jsonSingPointCoor.coorArr[ 0 ]["lon"] = ll.lon;
     jsonSingPointCoor.coorArr[ 0 ]["lat"] = ll.lat;
     json = JSON.stringify( jsonSingPointCoor );
-    $.post( "map_post.php", { coors: json, mode: "addSingPoint", userId: userId },
-    function() {
-        refreshAllLayers();
-    } );
-    addSingPointCon.deactivate();
-    addSingPointCon.activate();
-}
+    $.post( "map_post.php",
+            { coors: json, mode: "addSingPoint", userId: userId },
+            function() {
+                refreshAllLayers();
+            } );
+            addSingPointCon.deactivate();
+            addSingPointCon.activate();
+        }
 
 function selectDeleteSingPoint( event, del ) {
     del = ( typeof del === "undefined" ) ? false : del;
@@ -241,11 +248,12 @@ function selectDeleteSingPoint( event, del ) {
         jsonCoor.coorArr[ 0 ]["lon"] = ll.lon;
         jsonCoor.coorArr[ 0 ]["lat"] = ll.lat;
         json = JSON.stringify( jsonCoor );
-        $.post( "map_post.php", { coors: json, mode: "deleteSingPoint", userId: userId },
-        function() {
-            refreshAllLayers();
-        } );
-    } else if ( selectDeleteSingPointMode && !del ) {
+        $.post( "map_post.php",
+                { coors: json, mode: "deleteSingPoint", userId: userId },
+                function() {
+                    refreshAllLayers();
+                } );
+            } else if ( selectDeleteSingPointMode && !del ) {
         showDeleteCableLineQuestion( 'center',
                 'Вы действительно хотите удалить особую точку?',
                 function() {

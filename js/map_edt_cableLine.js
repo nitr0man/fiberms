@@ -54,9 +54,14 @@ function onCableLineAddedPopup( event ) {
                     jsonInsertCoor.length = form.getValues().length;
                     jsonInsertCoor.name = form.getValues().name;
                     jsonInsertCoor.comment = form.getValues().note;
-                    saveCableLine( feature,
-                            jsonInsertCoor );
-                    dialog.destroy();
+                    if ( jsonInsertCoor.CableType == "" || jsonInsertCoor.name == ""
+                            || jsonInsertCoor.comment == "" ) {
+                        alert( 'Заполните поля!' );
+                    } else {
+                        saveCableLine( feature,
+                                jsonInsertCoor );
+                        dialog.destroy();
+                    }
                 }
             }
         ]
@@ -85,14 +90,15 @@ function saveCableLine( feature, jsonInsertCoor ) {
         jsonInsertCoor.coorArr[ i ] = { };
         jsonInsertCoor.coorArr[ i ]["lon"] = ll.lon;
         jsonInsertCoor.coorArr[ i ]["lat"] = ll.lat;
-    }    
+    }
     json = JSON.stringify( jsonInsertCoor );
-    $.post( "map_post.php", { coors: json, mode: "addCableLine", userId: userId },
-    function() {
-        addCableLineLayer.destroyFeatures();
-        refreshAllLayers();
-    } );
-}
+    $.post( "map_post.php",
+            { coors: json, mode: "addCableLine", userId: userId },
+            function() {
+                addCableLineLayer.destroyFeatures();
+                refreshAllLayers();
+            } );
+        }
 
 function updCableLine(
         event ) {
@@ -110,9 +116,9 @@ function updCableLine(
                 coor[ i ].x,
                 coor[ i ].y ).transform(
                 new OpenLayers.Projection(
-                "EPSG:900913" ),
+                        "EPSG:900913" ),
                 new OpenLayers.Projection(
-                "EPSG:4326" ) );        
+                        "EPSG:4326" ) );
         jsonCoor.coorArr[ i ] = { };
         jsonCoor.coorArr[ i ]["lon"] = ll.lon;
         jsonCoor.coorArr[ i ]["lat"] = ll.lat;
@@ -153,7 +159,8 @@ function selectDeleteCableLine( event, del ) {
         json = JSON.stringify(
                 jsonCoor );
         $.post( "map_post.php",
-                { coors: json, mode: "deleteCableLine", userId: userId }, function() {
+                { coors: json, mode: "deleteCableLine", userId: userId },
+        function() {
             refreshAllLayers();
         } );
     }

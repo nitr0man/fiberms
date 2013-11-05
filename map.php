@@ -11,7 +11,7 @@
             }
         </style>
         <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
-        <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery.min-1.9.1.js"></script>
         <script src="js/OpenLayers.js"></script>
         <script type="text/javascript" src="js/MarkerGrid.js"></script>
         <script type="text/javascript" src="js/MarkerTile.js"></script>
