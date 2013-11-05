@@ -78,7 +78,10 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     {
         $networkBoxType = $obj->{'networkBoxType'};
         $invNum = $obj->{'invNum'};
-        addNetworkBox( $networkBoxType, $invNum );
+        $boxId = addNetworkBox( $networkBoxType, $invNum, TRUE );
+        $result = array( "NetworkBoxId" => $boxId );
+        print json_encode( $result );
+        die();
     }
     elseif ( $_POST[ 'mode' ] == "save" )
     {

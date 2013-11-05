@@ -184,7 +184,6 @@ function getTables()
     $res[ ] = "NetworkBox";
     $res[ ] = "NetworkNode";
     $res[ ] = "CableLinePoint";
-    //$res[ ] = "FiberSplice";
     $res[ ] = "FiberSpliceOrganizerType";
     $res[ ] = "FiberSpliceOrganizer";
     $res[ ] = "OpticalFiberSplice";

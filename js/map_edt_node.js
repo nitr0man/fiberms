@@ -44,7 +44,7 @@ function addNodeMsg( event ) {
         } )
     } );
 
-    form = Ext.create( 'Ext.form.Panel', {
+    nodeForm = Ext.create( 'Ext.form.Panel', {
         bodyPadding: 10,
         defaultType: 'textfield',
         items: [
@@ -131,28 +131,28 @@ function addNodeMsg( event ) {
                     } else {
                         addNode( coorNode,
                                 jsonNodeCoor );
-                        dialog.destroy();
+                        nodeDialog.destroy();
                     }
                 }
             }
         ]
     } );
 
-    dialog = new Ext.Window( {
+    nodeDialog = new Ext.Window( {
         title: "Добавить узел",
         layout: "fit",
         height: 220, width: 330,
         plain: true,
-        items: [ form ]
+        items: [ nodeForm ]
     } );
-    dialog.on( 'close', function() {
+    nodeDialog.on( 'close', function() {
         addNodeLayer.destroyFeatures();
     } );
-    dialog.show();
+    nodeDialog.show();
 }
 
 function addNetworkBox() {
-    form = Ext.create( 'Ext.form.Panel', {
+    var networkBoxForm = Ext.create( 'Ext.form.Panel', {
         bodyPadding: 10,
         defaultType: 'textfield',
         items: [
@@ -163,7 +163,6 @@ function addNetworkBox() {
                 valueField: 'value',
                 displayField: 'text',
                 store: new Ext.data.SimpleStore( {
-                    id: 0,
                     fields:
                             [
                                 'value',
@@ -187,13 +186,17 @@ function addNetworkBox() {
                     jsonNodeCoor.networkBoxType = form.getValues().networkBoxType;
                     jsonNodeCoor.invNum = form.getValues().invNum;
                     json = JSON.stringify( jsonNodeCoor );
-                    /*$.post( "map_post.php",
-                     { coors: json, mode: "addNetworkBox", userId: userId } );
-                     getNetworkBoxes();*/
-                    //var boxcombo = form.getComponent( 'networkBox' );                    
-                    var el = Ext.create( 'NetworkBoxesModel', [ 1, "lol" ] );
-                    boxCombo.store.add( el );
-                    dialog.destroy( );
+                    $.post( "map_post.php",
+                            { coors: json, mode: "addNetworkBox", userId: userId },
+                    function( data )
+                    {
+                        networkBoxObj = JSON.parse( data );
+                        var el = Ext.create( 'NetworkBoxesModel',
+                                [ parseInt( networkBoxObj.NetworkBoxId ),
+                                    jsonNodeCoor.invNum.toString() ] );
+                        boxCombo.store.add( el );
+                        dialog.destroy( );
+                    } );
                 }
             }
         ]
@@ -203,10 +206,7 @@ function addNetworkBox() {
         layout: "fit",
         height: 150, width: 330,
         plain: true,
-        items: [ form ]
-    } );
-    dialog.on( 'close', function() {
-        addNodeLayer.destroyFeatures();
+        items: [ networkBoxForm ]
     } );
     dialog.show();
 }

@@ -218,9 +218,15 @@ function deleteNode( $coors, $tmpT = FALSE )
     NetworkNode_DELETE( $wr, $tmpT );
 }
 
-function addNetworkBox( $networkBoxType, $invNum )
+function addNetworkBox( $networkBoxType, $invNum, $tmpT = FALSE )
 {
-    NetworkBox_Add( $networkBoxType, $invNum );
+    $ins[ 'NetworkBoxType' ] = $networkBoxType;
+    $ins[ 'inventoryNumber' ] = $invNum;
+    $query = 'INSERT INTO "'.tmpTable( 'NetworkBox', $tmpT ).'" '
+            .genInsert( $ins ).' RETURNING id';
+    $res = PQuery( $query );
+    $NetworkBoxId = $res[ 'rows' ][ 0 ][ 'id' ];
+    return $NetworkBoxId;
 }
 
 function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
