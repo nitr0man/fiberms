@@ -134,7 +134,15 @@ function getCurrUserInfo()
 {
     global $_SESSION;
     $login = $_SESSION[ 'user' ];
-    $query = 'SELECT * FROM "Users" WHERE "username"=\''.$login.'\'';
+    if ( $login != "" )
+    {
+        $query = 'SELECT * FROM "Users" WHERE "username"=\''.$login.'\'';
+    }
+    else
+    {
+        $id = $_SESSION[ 'user_id' ];
+        $query = 'SELECT * FROM "Users" WHERE "id"='.$id;
+    }
     $result = PQuery( $query );
     return $result;
 }
@@ -178,17 +186,17 @@ function tmpTable( $table, $tmp )
 
 function getTables()
 {
-    $res[ ] = "CableType";
-    $res[ ] = "CableLine";
-    $res[ ] = "NetworkBoxType";
-    $res[ ] = "NetworkBox";
-    $res[ ] = "NetworkNode";
-    $res[ ] = "CableLinePoint";
-    $res[ ] = "FiberSpliceOrganizerType";
-    $res[ ] = "FiberSpliceOrganizer";
-    $res[ ] = "OpticalFiberSplice";
-    $res[ ] = "OpticalFiber";
-    $res[ ] = "OpticalFiberJoin";
+    $res[] = "CableType";
+    $res[] = "CableLine";
+    $res[] = "NetworkBoxType";
+    $res[] = "NetworkBox";
+    $res[] = "NetworkNode";
+    $res[] = "CableLinePoint";
+    $res[] = "FiberSpliceOrganizerType";
+    $res[] = "FiberSpliceOrganizer";
+    $res[] = "OpticalFiberSplice";
+    $res[] = "OpticalFiber";
+    $res[] = "OpticalFiberJoin";
     return $res;
 }
 

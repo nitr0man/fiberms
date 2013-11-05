@@ -9,6 +9,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     $coors = $obj->{'coorArr'};
     $CableLineId = (int)$obj->{'CableLineId'};
     $uId = (int)$_POST[ 'userId' ];
+    $_SESSION[ 'user_id' ] = $uId;
     if ( $_POST[ 'mode' ] == "updCableLine" )
     {
         $seqStart = $obj->{'seqStart'};

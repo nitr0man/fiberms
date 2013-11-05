@@ -2,9 +2,10 @@
 
 function loggingIs( $type, $tableName, $values, $record )
 {
+    $normalTable = $tableName;
     if ( strpos( $tableName, "_tmp" ) !== FALSE )
     {
-        $tableName = substr( $tableName, 0, strpos( $tableName, "_tmp" ) );
+        $normalTable = substr( $tableName, 0, strpos( $tableName, "_tmp" ) );
     }
     if ( $type != 3 )
     {
@@ -19,22 +20,22 @@ function loggingIs( $type, $tableName, $values, $record )
     {
         $user = 1;
     }
-    $res = PQuery( 'SELECT id FROM "LogTableList" WHERE "name"=\''.$tableName.'\'' );
+    $res = PQuery( 'SELECT id FROM "LogTableList" WHERE "name"=\''.$normalTable.'\'' );
     $tableId = $res[ 'rows' ][ 0 ][ 'id' ];
-    if ( $type == 1 )
-    {   //update
+    if ( $type == 1 ) //update
+    {
         $action = 'UPDATED:'.$action;
     }
-    elseif ( $type == 2 )
-    {  //insert
+    elseif ( $type == 2 ) //insert
+    {
         $action = 'ADDED:'.$action;
         $wr = genWhere( $values );
         $query = 'SELECT * FROM "'.pg_escape_string( $tableName ).'"'.$wr;
         $res = PQuery( $query );
         $record = $res[ 'rows' ][ 0 ][ 'id' ];
     }
-    elseif ( $type == 3 )
-    { //delete
+    elseif ( $type == 3 ) //delete
+    {
         $action = 'DELETED';
     }
     $query = 'INSERT INTO "LogAdminActions" ("table", "record", "time", "action", "admin") VALUES ('.pg_escape_string( $tableId ).', '.pg_escape_string( $record ).', NOW(), \''.$action.'\', '.pg_escape_string( $user ).')';
