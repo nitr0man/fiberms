@@ -393,7 +393,7 @@ function saveTmpData()
         $tbl_del .= '"'.$table.'"';
         $ins .= ' INSERT INTO "'.$table.'" SELECT * FROM "'.$tmpT.'";';
     }
-    $query .= ' TRUNCATE '.$tbl_del.';'.$ins;
+    $query .= ' TRUNCATE '.$tbl_del.' CASCADE;'.$ins;
     $query .= ' COMMIT;';
     PQuery( $query );
     setMapLastEdit();

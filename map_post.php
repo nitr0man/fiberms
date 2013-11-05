@@ -1,7 +1,7 @@
 <?php
 
-require_once( "backend/functions.php" );
-require_once( "backend/map.php" );
+require_once "backend/functions.php";
+require_once "backend/map.php";
 
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
