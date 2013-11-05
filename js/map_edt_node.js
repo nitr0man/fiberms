@@ -48,43 +48,11 @@ function addNodeMsg( event ) {
         bodyPadding: 10,
         defaultType: 'textfield',
         items: [
-            /*{
-             xtype: 'combobox',
-             fieldLabel: 'Ящик',
-             name: 'networkBox',
-             valueField: 'value',
-             displayField: 'text',
-             store: new Ext.data.SimpleStore( {
-             id: firstId,
-             fields:
-             [
-             'value',
-             'text'
-             ],
-             data: networkBoxesArr
-             } )
-             },*/
             {
                 xtype: 'fieldcontainer',
                 layout: 'hbox',
                 fieldLabel: 'Ящик',
                 items: [
-                    /*{
-                     xtype: 'combo',
-                     flex: 1,
-                     name: 'networkBox',
-                     valueField: 'value',
-                     displayField: 'text',
-                     store: new Ext.data.SimpleStore( {
-                     id: firstId,
-                     fields:
-                     [
-                     'value',
-                     'text'
-                     ],
-                     data: networkBoxesArr
-                     } )
-                     }*/
                     Ext.form.ComboBox( boxCombo ),
                     {
                         xtype: 'button',
