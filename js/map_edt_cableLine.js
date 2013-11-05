@@ -17,6 +17,7 @@ function onCableLineAddedPopup( event ) {
                 fieldLabel: 'Тип кабеля',
                 name: 'cableType',
                 valueField: 'value',
+                editable: false,
                 displayField: 'text',
                 store: new Ext.data.SimpleStore( {
                     id: 0,
@@ -94,11 +95,11 @@ function saveCableLine( feature, jsonInsertCoor ) {
     json = JSON.stringify( jsonInsertCoor );
     $.post( "map_post.php",
             { coors: json, mode: "addCableLine", userId: userId },
-            function() {
-                addCableLineLayer.destroyFeatures();
-                refreshAllLayers();
-            } );
-        }
+    function() {
+        addCableLineLayer.destroyFeatures();
+        refreshAllLayers();
+    } );
+}
 
 function updCableLine(
         event ) {

@@ -59,6 +59,7 @@ function setSingPoint( event ) {
                     name: 'networkBox',
                     valueField: 'value',
                     displayField: 'text',
+                    editable: false,
                     store: new Ext.data.SimpleStore( {
                         id: networkBoxesArr[0].id,
                         fields:
@@ -148,6 +149,7 @@ function setSingPoint( event ) {
                 id: 'networkNodeId',
                 valueField: 'value',
                 displayField: 'text',
+                editable: false,
                 store: new Ext.data.SimpleStore( {
                     id: nodesArr[0].id,
                     fields:
@@ -224,12 +226,12 @@ function addSingPoint( coor, jsonSingPointCoor ) {
     json = JSON.stringify( jsonSingPointCoor );
     $.post( "map_post.php",
             { coors: json, mode: "addSingPoint", userId: userId },
-            function() {
-                refreshAllLayers();
-            } );
-            addSingPointCon.deactivate();
-            addSingPointCon.activate();
-        }
+    function() {
+        refreshAllLayers();
+    } );
+    addSingPointCon.deactivate();
+    addSingPointCon.activate();
+}
 
 function selectDeleteSingPoint( event, del ) {
     del = ( typeof del === "undefined" ) ? false : del;
@@ -250,10 +252,10 @@ function selectDeleteSingPoint( event, del ) {
         json = JSON.stringify( jsonCoor );
         $.post( "map_post.php",
                 { coors: json, mode: "deleteSingPoint", userId: userId },
-                function() {
-                    refreshAllLayers();
-                } );
-            } else if ( selectDeleteSingPointMode && !del ) {
+        function() {
+            refreshAllLayers();
+        } );
+    } else if ( selectDeleteSingPointMode && !del ) {
         showDeleteCableLineQuestion( 'center',
                 'Вы действительно хотите удалить особую точку?',
                 function() {

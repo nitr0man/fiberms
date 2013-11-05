@@ -30,6 +30,7 @@ function addNodeMsg( event ) {
     boxCombo = Ext.form.ComboBox( {
         xtype: 'combo',
         flex: 1,
+        editable: false,      
         name: 'networkBox',
         valueField: 'value',
         displayField: 'text',

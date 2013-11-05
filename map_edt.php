@@ -40,14 +40,7 @@ print 'var userId = '.$user.';';
         <script src="js/OpenLayers-2.12/OpenLayers.debug.js"></script>
         <script type="text/javascript" src="js/jquery.min-1.9.1.js"></script>
         <script type="text/javascript" src="js/ext-all.js"></script>
-        <script type="text/javascript" src="js/noty/jquery.noty.js"></script>
-        <script type="text/javascript" src="js/js_xml.js"></script>        
-        <script type="text/javascript" src="js/map_edt_cableLine.js"></script>
-        <script type="text/javascript" src="js/map_edt_node.js"></script>
-        <script type="text/javascript" src="js/map_edt_singPoint.js"></script>
-        <script type="text/javascript" src="js/map_edt_noty.js"></script>
-        <script type="text/javascript" src="js/map_edt_parseXML.js"></script>        
-        <script type="text/javascript" src="js/noty/themes/default.js"></script>
+        <script type="text/javascript" src="js/noty/jquery.noty.js"></script>        
         <script type="text/javascript" src="js/noty/layouts/center.js"></script>
         <script type="text/javascript" src="js/noty/layouts/bottom.js"></script>
         <script type="text/javascript" src="js/noty/layouts/bottomCenter.js"></script>
@@ -60,6 +53,13 @@ print 'var userId = '.$user.';';
         <script type="text/javascript" src="js/noty/layouts/topCenter.js"></script>
         <script type="text/javascript" src="js/noty/layouts/topLeft.js"></script>
         <script type="text/javascript" src="js/noty/layouts/topRight.js"></script>
+        <script type="text/javascript" src="js/noty/themes/default.js"></script>
+        <script type="text/javascript" src="js/js_xml.js"></script>        
+        <script type="text/javascript" src="js/map_edt_cableLine.js"></script>
+        <script type="text/javascript" src="js/map_edt_node.js"></script>
+        <script type="text/javascript" src="js/map_edt_singPoint.js"></script>
+        <script type="text/javascript" src="js/map_edt_noty.js"></script>
+        <script type="text/javascript" src="js/map_edt_parseXML.js"></script>
         <script type="text/javascript" src="js/map_edt.js"></script>
         <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
         <link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
