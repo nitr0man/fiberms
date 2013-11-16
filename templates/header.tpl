@@ -85,7 +85,7 @@
 {if (!isset($smarty.get.print))}
 <div id="header">
   <table width='100%' border='0' cellpadding='0' cellspacing='0'>
-    <tr style='height: 80'><td align='left' valign='center' style='padding: 10px; padding-left: 20px;'><img src='/img/seti-logo.gif' alt='logo'></td><td align='right' valign=center><h2><img src='/img/kks.gif' alt='text'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
+    <tr style='height: 80'><td align='left' valign='center' style='padding: 10px; padding-left: 20px;'><img src='pic/seti-logo.gif' alt='logo'></td><td align='right' valign=center><h2><img src='pic/kks.gif' alt='text'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
     <tr style='height: 1' class=small><td class=small bgcolor=#000000> </td></tr>
   </table>
 </div>
