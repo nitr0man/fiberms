@@ -125,7 +125,6 @@ function getFreeNetworkBoxes( $networkBox, $tmpT = FALSE )
         LEFT JOIN "'.tmpTable( 'NetworkNode', $tmpT ).'" AS "NN" ON "NN"."NetworkBox"="NB".id
         LEFT JOIN "'.tmpTable( 'NetworkBoxType', $tmpT ).'" AS "NBT" ON "NBT".id = "NB"."NetworkBoxType"
         WHERE "NN".id IS NULL OR "NB".id='.$networkBox;
-    error_log($query);
     $result = PQuery( $query );
     return $result;
 }
