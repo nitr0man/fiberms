@@ -335,8 +335,14 @@ elseif ( $_GET[ 'mode' ] == "GetNetworkBoxes" )
     $i = -1;
     while ( ++$i < $res[ 'count' ] )
     {
+        $invNum = $rows[ $i ][ 'inventoryNumber' ];
+        if ( $invNum == "" )
+        {
+            $invNum = "---";
+        }
+        $invNum .= " (".$rows[ $i ][ 'marking' ].")";
         $boxesJSON[ 'Boxes' ][ $i ][ 'id' ] = (int)$rows[ $i ][ 'id' ];
-        $boxesJSON[ 'Boxes' ][ $i ][ 'inventoryNumber' ] = $rows[ $i ][ 'inventoryNumber' ];
+        $boxesJSON[ 'Boxes' ][ $i ][ 'inventoryNumber' ] = $invNum;
     }
     $res = json_encode( $boxesJSON );
     print( $res );
@@ -347,7 +353,7 @@ elseif ( $_GET[ 'mode' ] == "GetNetworkBoxTypes" )
 
     $res = NetworkBoxType_SELECT( '', '' );
     $rows = $res[ 'rows' ];
-    $boxTypesJSON[ 'BoxTypes' ] = array( );
+    $boxTypesJSON[ 'BoxTypes' ] = array();
     $i = -1;
     while ( ++$i < $res[ 'count' ] )
     {

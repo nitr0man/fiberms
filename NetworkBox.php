@@ -79,13 +79,15 @@ else
         if ( !isset( $typeId ) )
         {
             $res = getNetworkBoxList( $_GET[ 'sort' ], '',
-                    $config[ 'LinesPerPage' ], ($page - 1) * $config[ 'LinesPerPage' ] );
+                    $config[ 'LinesPerPage' ],
+                    ($page - 1) * $config[ 'LinesPerPage' ] );
         }
         else
         {
             $wr[ 'NetworkBoxType' ] = $typeId;
             $res = getNetworkBoxList( $_GET[ 'sort' ], $wr,
-                    $config[ 'LinesPerPage' ], ($page - 1) * $config[ 'LinesPerPage' ] );
+                    $config[ 'LinesPerPage' ],
+                    ($page - 1) * $config[ 'LinesPerPage' ] );
         }
         if ( $res[ 'count' ] < 1 )
         {
@@ -99,11 +101,16 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $box_arr[ ] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'inventoryNumber' ].'</a>';
-            $box_arr[ ] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'marking' ].' ('.$rows[ $i ][ 'NetworkBoxType' ].')</a>';
-            $box_arr[ ] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[ $i ][ 'NNid' ].'">'.$rows[ $i ][ 'NNname' ].'</a>';
-            $box_arr[ ] = '<a href="NetworkBox.php?mode=change&boxid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
-            $box_arr[ ] = '<a href="NetworkBox.php?mode=delete&boxid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
+            $invNum = $rows[ $i ][ 'inventoryNumber' ];
+            if ( $invNum == "" )
+            {
+                $invNum = "---";
+            }
+            $box_arr[] = '<a href="NetworkBox.php?mode=charac&boxid='.$rows[ $i ][ 'id' ].'">'.$invNum.'</a>';
+            $box_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'marking' ].' ('.$rows[ $i ][ 'NetworkBoxType' ].')</a>';
+            $box_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows[ $i ][ 'NNid' ].'">'.$rows[ $i ][ 'NNname' ].'</a>';
+            $box_arr[] = '<a href="NetworkBox.php?mode=change&boxid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
+            $box_arr[] = '<a href="NetworkBox.php?mode=delete&boxid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
         }
         $smarty->assign( "data", $box_arr );
         $smarty->assign( "pages", $pages );
@@ -136,8 +143,13 @@ else
         {
             $changeDelete .= '<br><a href="NetworkBox.php?mode=delete&boxid='.$networkBoxId.'">Удалить</a>';
         }
+        $invNum = $rows[ 'inventoryNumber' ];
+        if ( $invNum == "" )
+        {
+            $invNum = "---";
+        }
 
-        $smarty->assign( "invNum", $rows[ 'inventoryNumber' ] );
+        $smarty->assign( "invNum", $invNum );
         $smarty->assign( "boxtype",
                 '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ 'NetworkBoxType' ][ 'id' ].'">'.$rows[ 'NetworkBoxType' ][ 'marking' ].'</a>' );
         $smarty->assign( "nodename", $networkNodeName );
@@ -172,8 +184,8 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $comboBox_BoxType_Values[ ] = $rows[ $i ][ 'id' ];
-            $comboBox_BoxType_Text[ ] = $rows[ $i ][ 'marking' ];
+            $comboBox_BoxType_Values[] = $rows[ $i ][ 'id' ];
+            $comboBox_BoxType_Text[] = $rows[ $i ][ 'marking' ];
         }
         $smarty->assign( "combobox_boxtype_values", $comboBox_BoxType_Values );
         $smarty->assign( "combobox_boxtype_text", $comboBox_BoxType_Text );
@@ -196,8 +208,8 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $comboBox_BoxType_Values[ ] = $rows[ $i ][ 'id' ];
-            $comboBox_BoxType_Text[ ] = $rows[ $i ][ 'marking' ];
+            $comboBox_BoxType_Values[] = $rows[ $i ][ 'id' ];
+            $comboBox_BoxType_Text[] = $rows[ $i ][ 'marking' ];
         }
         $smarty->assign( "combobox_boxtype_values", $comboBox_BoxType_Values );
         $smarty->assign( "combobox_boxtype_text", $comboBox_BoxType_Text );

@@ -30,7 +30,7 @@ function addNodeMsg( event ) {
     boxCombo = Ext.form.ComboBox( {
         xtype: 'combo',
         flex: 1,
-        editable: false,      
+        editable: false,
         name: 'networkBox',
         valueField: 'value',
         displayField: 'text',
@@ -159,10 +159,14 @@ function addNetworkBox() {
                             { coors: json, mode: "addNetworkBox", userId: userId },
                     function( data )
                     {
+                        var invNum = jsonNodeCoor.invNum.toString();
+                        if ( invNum == "" ) {
+                            invNum = "---";
+                        }
                         networkBoxObj = JSON.parse( data );
                         var el = Ext.create( 'NetworkBoxesModel',
                                 [ parseInt( networkBoxObj.NetworkBoxId ),
-                                    jsonNodeCoor.invNum.toString() ] );
+                                    invNum ] );
                         boxCombo.store.add( el );
                         dialog.destroy( );
                     } );

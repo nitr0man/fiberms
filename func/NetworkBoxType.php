@@ -78,10 +78,6 @@ function NetworkBox_Check( $boxTypeId, $invNum )
 {
     $result = 1;
     /* здесь проверка */
-    if ( is_numeric( $invNum ) == false )
-    {
-        $result = 0;
-    }
     return $result;
 }
 
@@ -109,6 +105,10 @@ function NetworkBox_Add( $boxTypeId, $invNum )
         return 0;
     }
     $ins[ 'NetworkBoxType' ] = $boxTypeId;
+    if ( $invNum == "" )
+    {
+        $invNum = "NULL";
+    }
     $ins[ 'inventoryNumber' ] = $invNum;
     $res = NetworkBox_INSERT( $ins );
     if ( isset( $res[ 'error' ] ) )

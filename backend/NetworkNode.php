@@ -66,13 +66,15 @@ function NetworkNode_DELETE( $wr, $tmpT = FALSE )
 function getNetworkNode_NetworkBoxName( $networkNodeId )
 {
     $query = 'SELECT "NN".id, "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
-        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", COUNT("OFS".id) AS "fiberSpliceCount"
+        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NBT"."marking" AS "NBTMarking",
+        COUNT("OFS".id) AS "fiberSpliceCount"
   		FROM "NetworkNode" AS "NN"
 		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox" 
+                LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType" 
 		LEFT JOIN "OpticalFiberSplice" AS "OFS" ON "OFS"."NetworkNode" = "NN".id
 		WHERE "NN".id='.pg_escape_string( $networkNodeId ).'
 		GROUP BY "NN".id, "NB"."inventoryNumber", "NN"."name", "NN"."NetworkBox",
-                  "NN"."note", "NN"."SettlementGeoSpatial", "NN"."Building", "NN"."Apartment"';
+                  "NN"."note", "NN"."SettlementGeoSpatial", "NN"."Building", "NN"."Apartment", "NBT"."marking"';
     $result = PQuery( $query );
     return $result;
 }
@@ -117,10 +119,13 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
 
 function getFreeNetworkBoxes( $networkBox, $tmpT = FALSE )
 {
-    $query = 'SELECT "NB".id, "NB"."NetworkBoxType", "NB"."inventoryNumber", "NN".id AS "nnid"
+    $query = 'SELECT "NB".id, "NB"."NetworkBoxType", "NB"."inventoryNumber",
+        "NN".id AS "nnid", "NBT"."marking"
         FROM "'.tmpTable( 'NetworkBox', $tmpT ).'" AS "NB"
         LEFT JOIN "'.tmpTable( 'NetworkNode', $tmpT ).'" AS "NN" ON "NN"."NetworkBox"="NB".id
+        LEFT JOIN "'.tmpTable( 'NetworkBoxType', $tmpT ).'" AS "NBT" ON "NBT".id = "NB"."NetworkBoxType"
         WHERE "NN".id IS NULL OR "NB".id='.$networkBox;
+    error_log($query);
     $result = PQuery( $query );
     return $result;
 }

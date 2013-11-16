@@ -255,12 +255,18 @@ else
         {
             $changeDeleteFiberSplice .= '<br><a href="NetworkNodes.php?mode=delete&nodeid='.$nodeId.'">Удалить</a>';
         }
+        $invNum = $rows[ 'inventoryNumber' ];
+        if ( $invNum == "" )
+        {
+            $invNum = "---";
+        }
+        $invNum .= " (".$rows[ 'NBTMarking' ].")";
 
         $smarty->assign( "CableLinePoints", $CableLinePoints_arr );
         $smarty->assign( "FSO", $FSO_arr );
         $smarty->assign( "id", $rows[ 'id' ] );
         $smarty->assign( "name", $rows[ 'name' ] );
-        $smarty->assign( "NetworkBox", $rows[ 'inventoryNumber' ] );
+        $smarty->assign( "NetworkBox", $invNum );
         $smarty->assign( "FiberSpliceCount", $fiberSpliceCount );
         $smarty->assign( "note", nl2br( $rows[ 'note' ] ) );
         $smarty->assign( "OpenGIS", $rows[ 'OpenGIS' ] );
@@ -306,8 +312,14 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
+            $invNum = $rows[ $i ][ 'inventoryNumber' ];
+            if ( $invNum == "" )
+            {
+                $invNum = "---";
+            }
+            $invNum .= " (".$rows[ $i ][ 'marking' ].")";
             $comboBox_Box_Values[] = $rows[ $i ][ 'id' ];
-            $comboBox_Box_Text[] = $rows[ $i ][ 'inventoryNumber' ];
+            $comboBox_Box_Text[] = $invNum;
         }
         $smarty->assign( "combobox_box_values", $comboBox_Box_Values );
         $smarty->assign( "combobox_box_text", $comboBox_Box_Text );
@@ -330,8 +342,14 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
+            $invNum = $rows[ $i ][ 'inventoryNumber' ];
+            if ( $invNum == "" )
+            {
+                $invNum = "---";
+            }
+            $invNum .= " (".$rows[ $i ][ 'marking' ].")";
             $comboBox_Box_Values[] = $rows[ $i ][ 'id' ];
-            $comboBox_Box_Text[] = $rows[ $i ][ 'inventoryNumber' ];
+            $comboBox_Box_Text[] = $invNum;
         }
         $smarty->assign( "combobox_box_values", $comboBox_Box_Values );
         $smarty->assign( "combobox_box_text", $comboBox_Box_Text );

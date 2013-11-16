@@ -220,6 +220,10 @@ function deleteNode( $coors, $tmpT = FALSE )
 
 function addNetworkBox( $networkBoxType, $invNum, $tmpT = FALSE )
 {
+    if ( $invNum == "" )
+    {
+        $invNum = "NULL";
+    }
     $ins[ 'NetworkBoxType' ] = $networkBoxType;
     $ins[ 'inventoryNumber' ] = $invNum;
     $query = 'INSERT INTO "'.tmpTable( 'NetworkBox', $tmpT ).'" '
