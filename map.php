@@ -21,6 +21,7 @@
         <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
         <link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
         <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
+        <link rel="stylesheet" href="js/theme/default/google.css" type="text/css">
         <script type="text/javascript">
             $( document ).ready( function() {
                 $( function() {

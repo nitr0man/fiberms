@@ -156,7 +156,7 @@ function refreshAllLayers() {
 function addPoint( lon, lat, title, ident, layr ) {
     var ttt = new OpenLayers.LonLat( parseFloat( lon ),
             parseFloat(
-            lat ) );
+                    lat ) );
     ttt.transform( new OpenLayers.Projection(
             "EPSG:4326" ),
             new OpenLayers.Projection( "EPSG:900913" ) );
@@ -340,9 +340,9 @@ function init() {
                     var button = document.createElement(
                             'button' ),
                             iconSpan = document.createElement(
-                            'span' ),
+                                    'span' ),
                             textSpan = document.createElement(
-                            'span' );
+                                    'span' );
                     iconSpan.innerHTML = '&nbsp;';
                     button.appendChild(
                             iconSpan );
@@ -371,14 +371,14 @@ function init() {
 
     editCableCon = new OpenLayers.Control.ModifyFeature(
             lineLayer, {
-        title: "Позволяет редактировать кабельные линии",
-        text: 'Изменить<br>линию',
-        vertexRenderIntent: 'temporary',
-        displayClass: "olControlEditCable",
-        modified: true,
-        createVertices: true,
-        mode: OpenLayers.Control.ModifyFeature.RESHAPE
-    } );
+                title: "Позволяет редактировать кабельные линии",
+                text: 'Изменить<br>линию',
+                vertexRenderIntent: 'temporary',
+                displayClass: "olControlEditCable",
+                modified: true,
+                createVertices: true,
+                mode: OpenLayers.Control.ModifyFeature.RESHAPE
+            } );
     editCableCon.events.register( "activate", this, function() {
         disableControls();
         showInformation( 'topCenter', 'Выберите линию' );
@@ -466,11 +466,11 @@ function init() {
 
     addNodeCon = new OpenLayers.Control.DrawFeature( addNodeLayer,
             OpenLayers.Handler.Point, {
-        title: "Позволяет добавлять узлы",
-        text: "Добавить<br>узел",
-        displayClass: "olControlAddNode",
-        handlerOptions: { multi: false }
-    } );
+                title: "Позволяет добавлять узлы",
+                text: "Добавить<br>узел",
+                displayClass: "olControlAddNode",
+                handlerOptions: { multi: false }
+            } );
     addNodeCon.events.register( "activate", this,
             function() {
                 disableControls();
@@ -550,13 +550,25 @@ function init() {
             lon,
             lat ).transform(
             new OpenLayers.Projection(
-            "EPSG:4326" ),
+                    "EPSG:4326" ),
             map.getProjectionObject() );
     map.setCenter( lonLat,
             zoom );
     map.setLayerIndex(
             map.layers[6],
             7 );
+            
+    var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            { type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20 }
+    );
+
+    var gsat = new OpenLayers.Layer.Google(
+            "Google Спутник",
+            { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22 }
+    );
+    map.addLayers( [ ghyb, gsat ] );
+    
     mapCr = false;
     drawFeatures();
 }
@@ -583,7 +595,7 @@ function drawFeatures() {
         line.transform( new OpenLayers.Projection(
                 "EPSG:4326" ),
                 new OpenLayers.Projection(
-                "EPSG:900913" ) );
+                        "EPSG:900913" ) );
         var lineFeature = new OpenLayers.Feature.Vector(
                 line,
                 null, style_halo );
@@ -605,9 +617,9 @@ function drawFeatures() {
                 points );
         line.transform(
                 new OpenLayers.Projection(
-                "EPSG:4326" ),
+                        "EPSG:4326" ),
                 new OpenLayers.Projection(
-                "EPSG:900913" ) );
+                        "EPSG:900913" ) );
         var lineFeature = new OpenLayers.Feature.Vector(
                 line,
                 null,

@@ -264,14 +264,14 @@ function init() {
 
     var layerCableLinePoints = new OpenLayers.Layer.Vector(
             "Особые точки линии", {
-        minScale: 7000,
-        strategies: [ new OpenLayers.Strategy.BBOX(
-                    { resFactor: 1.1 } ) ],
-        protocol: new OpenLayers.Protocol.HTTP( {
-            url: "getLayers.php?mode=GetSingularCableLinePoints",
-            format: new OpenLayers.Format.Text()
-        } )
-    } );
+                minScale: 7000,
+                strategies: [ new OpenLayers.Strategy.BBOX(
+                            { resFactor: 1.1 } ) ],
+                protocol: new OpenLayers.Protocol.HTTP( {
+                    url: "getLayers.php?mode=GetSingularCableLinePoints",
+                    format: new OpenLayers.Format.Text()
+                } )
+            } );
 
     map.addLayer( layerCableLinePoints );
 
@@ -335,6 +335,17 @@ function init() {
             "EPSG:4326" ), map.getProjectionObject() );
     map.setCenter( lonLat, zoom );
     map.setLayerIndex( map.layers[6], 7 );
+
+    var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            { type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20 }
+    );
+    
+    var gsat = new OpenLayers.Layer.Google(
+            "Google Спутник",
+            { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22 }
+    );
+    map.addLayers( [ ghyb, gsat ] );
 }
 
 function parseCableLineXML( Response ) {
