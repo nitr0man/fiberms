@@ -49,26 +49,54 @@ function setSingPoint( event ) {
         jsonSingPointCoor.coorArr[ 0 ]["lon"] = ll.lon;
         jsonSingPointCoor.coorArr[ 0 ]["lat"] = ll.lat;
 
+        var firstId = -1;
+        if ( !!networkBoxesArr[0] ) {
+            firstId = networkBoxesArr[0].id;
+        }
+
+        Ext.define( 'NetworkBoxesModel', {
+            extend: 'Ext.data.Model',
+            fields: [
+                'value',
+                'text'
+            ]
+        } );
+
+        boxCombo = Ext.form.ComboBox( {
+            xtype: 'combo',
+            flex: 1,
+            editable: false,
+            name: 'networkBox',
+            valueField: 'value',
+            displayField: 'text',
+            store: new Ext.data.SimpleStore( {
+                id: firstId,
+                fields:
+                        [
+                            'value',
+                            'text'
+                        ],
+                data: networkBoxesArr
+            } )
+        } );
+
         form = Ext.create( 'Ext.form.Panel', {
             bodyPadding: 10,
             defaultType: 'textfield',
             items: [
                 {
-                    xtype: 'combobox',
+                    xtype: 'fieldcontainer',
+                    layout: 'hbox',
                     fieldLabel: 'Ящик',
-                    name: 'networkBox',
-                    valueField: 'value',
-                    displayField: 'text',
-                    editable: false,
-                    store: new Ext.data.SimpleStore( {
-                        id: networkBoxesArr[0].id,
-                        fields:
-                                [
-                                    'value',
-                                    'text'
-                                ],
-                        data: networkBoxesArr
-                    } )
+                    items: [
+                        Ext.form.ComboBox( boxCombo ),
+                        {
+                            xtype: 'button',
+                            text: '+',
+                            handler: function() {
+                                addNetworkBox();
+                            }
+                        } ]
                 },
                 {
                     fieldLabel: 'Имя',
@@ -112,21 +140,20 @@ function setSingPoint( event ) {
                             function() {
                                 refreshAllLayers();
                             } );
-                            //addNode( coorNode, jsonNodeCoor );
-                            dialog.destroy();
+                            divCableDialog.destroy();
                         }
                     }
                 }
             ]
         } );
-        dialog = new Ext.Window( {
-            title: "Добавить узел",
+        divCableDialog = new Ext.Window( {
+            title: "Деление линии",
             layout: "fit",
             height: 220, width: 330,
             plain: true,
             items: [ form ]
         } );
-        dialog.show();
+        divCableDialog.show();
 
 
         /*json = JSON.stringify( jsonSingPointCoor );
