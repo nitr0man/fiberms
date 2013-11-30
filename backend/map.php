@@ -272,7 +272,14 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
         }
     }
     $ins[ 'CableType' ] = $CableLine [ 'CableType' ];
-    $ins[ 'length' ] = $CableLine[ 'length' ];
+    if ( $CableLine[ 'length' ] != "" )
+    {
+        $ins[ 'length' ] = $CableLine[ 'length' ];
+    }
+    else
+    {
+        $ins[ 'length' ] = 0;
+    }
     $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
     $ins[ 'comment' ] = $CableLine[ 'comment' ];
     $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';
