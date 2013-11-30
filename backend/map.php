@@ -278,7 +278,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     }
     else
     {
-        $ins[ 'length' ] = 0;
+        $ins[ 'length' ] = "NULL";
     }
     $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
     $ins[ 'comment' ] = $CableLine[ 'comment' ];
