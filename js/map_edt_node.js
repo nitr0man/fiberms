@@ -94,8 +94,7 @@ function addNodeMsg( event ) {
                     jsonNodeCoor.building = form.getValues().building;
                     jsonNodeCoor.apartment = form.getValues().apartment;
                     jsonNodeCoor.note = form.getValues().note;
-                    if ( jsonNodeCoor.name == "" || jsonNodeCoor.NetworkBoxId == ""
-                            || jsonNodeCoor.note == "" ) {
+                    if ( jsonNodeCoor.name == "" || jsonNodeCoor.NetworkBoxId == "" ) {
                         alert( 'Заполните поля!' );
                     } else {
                         addNode( coorNode,
