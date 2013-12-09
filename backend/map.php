@@ -52,50 +52,40 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
     {
         //error_log( "2" );
         $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" < '.$seqEnd;
+        //error_log( "delete=".$query );
         PQuery( $query );
-        if ( count( $coors ) != $res[ 'count' ] )
-        {
-            $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
-            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
-            PQuery( $query );
-            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
-            PQuery( $query );
-            $seq = $seqStart;
-        }
-        else
-        {
-            $seq = 0;
-        }
+        $seqDiff = count( $coors ) - ( $seqEnd - $seqStart ) - 1;
+        $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
+        //error_log( "update=".$query );
+        PQuery( $query );
+        $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
+        //error_log( "update=".$query );
+        PQuery( $query );
+        $seq = $seqStart;
         $iSt = 0;
         $toMin = 1;
     }
     else if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) )
     {
         //error_log( "3" );
-        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" <= '.$seqEnd;
+        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" < '.$seqEnd;
         //error_log( "delete=".$query );
         PQuery( $query );
-        if ( count( $coors ) != $res[ 'count' ] )
-        {
-            $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
-            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqEnd;
-            //error_log( "update=".$query );
-            PQuery( $query );
-            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
-            //error_log( "update=".$query );
-            PQuery( $query );
-            $seq = $seqStart + 1;
-        }
-        else
-        {
-            $seq = 1;
-        }
+        $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
+        $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
+        //error_log( "update=".$query );
+        PQuery( $query );
+        $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
+        //error_log( "update=".$query );
+        PQuery( $query );
+        $seq = $seqStart + 1;
         $iSt = 1;
         $toMin = 0;
     }
     else
     {
         $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" <= '.$seqEnd;
+        //error_log( "del=".$query );
         PQuery( $query );
         $seq = 1;
         $iSt = 0;
