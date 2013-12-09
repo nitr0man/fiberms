@@ -130,8 +130,7 @@ function setSingPoint( event ) {
                         jsonSingPointCoor.apartment = form.getValues().apartment;
                         jsonSingPointCoor.note = form.getValues().note;
                         if ( jsonSingPointCoor.name == ""
-                                || jsonSingPointCoor.NetworkBoxId == ""
-                                || jsonSingPointCoor.note == "" ) {
+                                || jsonSingPointCoor.NetworkBoxId == "" ) {
                             alert( 'Заполните поля!' );
                         } else {
                             json = JSON.stringify( jsonSingPointCoor );
