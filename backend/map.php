@@ -9,7 +9,7 @@ require_once 'func/NetworkBoxType.php';
 function isSingPoint( $point )
 {
     $res = FALSE;
-    if ( $point[ 'meterSign' ] != "" || $point[ 'note' ] != "" )
+    if ( $point[ 'meterSign' ] != "" || $point[ 'note' ] != "" || $point[ 'NetworkNode' ] != "" )
     {
         $res = TRUE;
     }
@@ -24,31 +24,24 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
     //error_log( print_r( $res, true ) );
     //error_log( "seqStart=".$seqStart );
     //error_log( "seqEnd=".$seqEnd );
-    if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) && isSingPoint( $res[ 'rows' ][ $seqEnd ] ) )
+    if ( isSingPoint( $res[ 'rows' ][ $seqStart - 1 ] ) && isSingPoint( $res[ 'rows' ][ $seqEnd - 1 ] ) )
     {
         //error_log( "1" );
         $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" < '.$seqEnd;
         //error_log( "delete=".$query );
         PQuery( $query );
-        if ( count( $coors ) != $res[ 'count' ] )
-        {
-            $seqDiff = count( $coors ) - ( $seqEnd - $seqStart ) - 1;
-            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
-            //error_log( "update=".$query );
-            PQuery( $query );
-            $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
-            //error_log( "update=".$query );
-            PQuery( $query );
-            $seq = $seqStart + 1;
-        }
-        else
-        {
-            $seq = 1;
-        }
+        $seqDiff = count( $coors ) - ( $seqEnd - $seqStart ) - 1;
+        $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = ("sequence" + '.$seqDiff.')*-1 WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqEnd;
+        //error_log( "update=".$query );
+        PQuery( $query );
+        $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET "sequence" = "sequence" * -1 WHERE "CableLine" = '.$CableLine.' AND "sequence" < 0';
+        //error_log( "update=".$query );
+        PQuery( $query );
+        $seq = $seqStart + 1;
         $iSt = 1;
         $toMin = 1;
     }
-    elseif ( isSingPoint( $res[ 'rows' ][ $seqEnd ] ) )
+    elseif ( isSingPoint( $res[ 'rows' ][ $seqEnd - 1 ] ) )
     {
         //error_log( "2" );
         $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" < '.$seqEnd;
@@ -65,10 +58,10 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
         $iSt = 0;
         $toMin = 1;
     }
-    else if ( isSingPoint( $res[ 'rows' ][ $seqStart ] ) )
+    else if ( isSingPoint( $res[ 'rows' ][ $seqStart - 1 ] ) )
     {
         //error_log( "3" );
-        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" < '.$seqEnd;
+        $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" > '.$seqStart.' AND "sequence" <= '.$seqEnd;
         //error_log( "delete=".$query );
         PQuery( $query );
         $seqDiff = count( $coors ) - ( $seqEnd - $seqStart );
@@ -84,6 +77,7 @@ function updCableLinePoints( $coors, $CableLine, $seqStart, $seqEnd,
     }
     else
     {
+        //error_log( "4" );
         $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "CableLine" = '.$CableLine.' AND "sequence" >= '.$seqStart.' AND "sequence" <= '.$seqEnd;
         //error_log( "del=".$query );
         PQuery( $query );
@@ -275,7 +269,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';
     $res4 = PQuery( $query );
     $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
-    $seq = 0;
+    $seq = 1;
     unset( $ins );
     for ( $j = $i; $j < count( $CableLinePoints ); $j++ )
     {
