@@ -8,10 +8,10 @@ require_once('backend/FS.php');
 if ( $_GET[ 'mode' ] == 'GetCableLines' )
 { // кабельные линии
     $res = getCableLineList( 0, '', -1, -1 );
-    /*if ( $res[ 'count' ] == 0 )
-    {
-        die();
-    }*/
+    /* if ( $res[ 'count' ] == 0 )
+      {
+      die();
+      } */
     $rows = $res[ 'rows' ];
 
     $dom = new DomDocument( '1.0', 'UTF-8' );
@@ -179,10 +179,10 @@ elseif ( $_GET[ 'mode' ] == 'GetNodesMarkers' )
 elseif ( $_GET[ 'mode' ] == 'GetNodesLabels' )
 {
     $res = getNetworkNodeList_NetworkBoxName( '', '', '' );
-    /*if ( $res[ 'count' ] == 0 )
-    {
-        die();
-    }*/
+    /* if ( $res[ 'count' ] == 0 )
+      {
+      die();
+      } */
     $rows = $res[ 'rows' ];
 
     $dom = new DomDocument( '1.0', 'UTF-8' );
@@ -246,6 +246,8 @@ elseif ( $_GET[ 'mode' ] == 'GetSingularCableLinePoints' )
 }
 elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
 {
+    require_once 'func/FiberSplice.php';
+
     $res = getNetworkNodeList_NetworkBoxName( '', '', '' );
     $rows = $res[ 'rows' ];
 
@@ -283,8 +285,12 @@ elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
                     '<li>0 волокон: '.$cableLinesZeroFibers.'</li>'.
                     '<li>1+ волокон: '.$cableLinesNotZeroFibers.'</li>'.
                     '</ul>'.
-                    'К-во сварок: '.$fiberSpliceCount.'<br>'.
-                    '[<a target="_blank" href="FiberSplice.php?networknodeid='.$rows[ $i ][ 'id' ].'">Таблица сварок</a>]';
+                    'К-во сварок: '.$fiberSpliceCount;
+            $fibRes = getFiberTable( $rows[ $i ][ 'id' ] );
+            if ( $fibRes[ 'maxfiber' ] > 0 )
+            {
+                $desc .= '<br>[<a target="_blank" href="FiberSplice.php?networknodeid='.$rows[ $i ][ 'id' ].'">Таблица сварок</a>]';
+            }
 
             $index = $nodeDescription->appendChild( $dom->createElement( 'index' ) );
             $index = $index->appendChild( $dom->createTextNode( $i ) );

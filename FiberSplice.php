@@ -84,8 +84,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
-    if ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'networknodeid' ] ))
-            and (isset( $_GET[ 'clid1' ] )) and (isset( $_GET[ 'fiber1' ] )) )
+    if ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'networknodeid' ] )) and (isset( $_GET[ 'clid1' ] )) and (isset( $_GET[ 'fiber1' ] )) )
     {
         if ( $_SESSION[ 'class' ] > 1 )
         {
@@ -111,8 +110,8 @@ else
         $cl_array = $res[ 'cl_array' ];
         for ( $i = 0; $i < $cl_array[ 'count' ]; $i++ )
         {
-            $ComboBox_CableLinePoint_Values[ ] = $cl_array[ 'rows' ][ $i ][ 'clid' ];
-            $ComboBox_CableLinePoint_Text[ ] = $cl_array[ 'rows' ][ $i ][ 'name' ];
+            $ComboBox_CableLinePoint_Values[] = $cl_array[ 'rows' ][ $i ][ 'clid' ];
+            $ComboBox_CableLinePoint_Text[] = $cl_array[ 'rows' ][ $i ][ 'name' ];
         }
         $cable1 = $cl_array[ 'rows' ][ $res[ 'CableLines' ][ $_GET[ 'clid1' ] ] ][ 'name' ];
 
@@ -125,8 +124,8 @@ else
         $res = getFiberSpliceOrganizerInfo( -1, -1, $networkNodeId );
         for ( $i = 0; $i < $res[ 'count' ]; $i++ )
         {
-            $ComboBox_FibersSpliceOrganizer_Values[ ] = $res[ 'rows' ][ $i ][ 'id' ];
-            $ComboBox_FibersSpliceOrganizer_Text[ ] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeId' ].")";
+            $ComboBox_FibersSpliceOrganizer_Values[] = $res[ 'rows' ][ $i ][ 'id' ];
+            $ComboBox_FibersSpliceOrganizer_Text[] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeId' ].")";
         }
         $smarty->assign( "ComboBox_FibersSpliceOrganizer_values",
                 $ComboBox_FibersSpliceOrganizer_Values );
@@ -167,8 +166,8 @@ else
         $cl_array = $res[ 'cl_array' ];
         for ( $i = 0; $i < $cl_array[ 'count' ]; $i++ )
         {
-            $ComboBox_CableLinePoint_Values[ ] = $cl_array[ 'rows' ][ $i ][ 'clid' ];
-            $ComboBox_CableLinePoint_Text[ ] = $cl_array[ 'rows' ][ $i ][ 'name' ];
+            $ComboBox_CableLinePoint_Values[] = $cl_array[ 'rows' ][ $i ][ 'clid' ];
+            $ComboBox_CableLinePoint_Text[] = $cl_array[ 'rows' ][ $i ][ 'name' ];
         }
         $cable1 = $cl_array[ 'rows' ][ $res[ 'CableLines' ][ $_GET[ 'clid1' ] ] ][ 'name' ];
 
@@ -181,8 +180,8 @@ else
         $res = getFiberSpliceOrganizerInfo( -1, -1, $networkNodeId );
         for ( $i = 0; $i < $res[ 'count' ]; $i++ )
         {
-            $ComboBox_FibersSpliceOrganizer_Values[ ] = $res[ 'rows' ][ $i ][ 'id' ];
-            $ComboBox_FibersSpliceOrganizer_Text[ ] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeId' ].")";
+            $ComboBox_FibersSpliceOrganizer_Values[] = $res[ 'rows' ][ $i ][ 'id' ];
+            $ComboBox_FibersSpliceOrganizer_Text[] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeId' ].")";
         }
         $smarty->assign( "ComboBox_FibersSpliceOrganizer_values",
                 $ComboBox_FibersSpliceOrganizer_Values );
@@ -208,7 +207,7 @@ else
         $res = getFiberTable( $networkNodeId );
         if ( $res[ 'maxfiber' ] < 1 )
         {
-            $message = 'Узлу должно принадлежать минимум 1 кабель!';
+            $message = 'Узлу должен принадлежать минимум 1 кабель!';
             showMessage( $message, 0 );
         }
 
