@@ -1,7 +1,7 @@
 <?php
 
-require_once("backend/CableType.php");
-require_once("backend/OpticalFiber.php");
+require_once "backend/CableType.php";
+require_once "backend/OpticalFiber.php";
 
 function CableType_Check( $marking, $manufacturer, $tubeQuantity, $fiberPerTube,
         $tensileStrength, $diameter, $comment )
@@ -59,6 +59,7 @@ function CableType_Add( $marking, $manufacturer, $tubeQuantity, $fiberPerTube,
     {
         return $res;
     }
+    CableLine_AddOpticalFiberForAll();
     return 1;
 }
 

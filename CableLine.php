@@ -105,21 +105,21 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $cableLine_arr[ ] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'name' ].'</a>';
-            $cableLine_arr[ ] = '<a href="CableType.php?mode=charac&cabletypeid='.$rows[ $i ][ 'CableType' ].'">'.$rows[ $i ][ 'marking' ].'</a>';
-            $cableLine_arr[ ] = $rows[ $i ][ 'manufacturer' ];
-            $cableLine_arr[ ] = $rows[ $i ][ 'length' ];
-            $cableLine_arr[ ] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
+            $cableLine_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'name' ].'</a>';
+            $cableLine_arr[] = '<a href="CableType.php?mode=charac&cabletypeid='.$rows[ $i ][ 'CableType' ].'">'.$rows[ $i ][ 'marking' ].'</a>';
+            $cableLine_arr[] = $rows[ $i ][ 'manufacturer' ];
+            $cableLine_arr[] = $rows[ $i ][ 'length' ];
+            $cableLine_arr[] = '<a href="CableLine.php?mode=change&cablelineid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
             unset( $wr );
             $wr[ 'CableLine' ] = $rows[ $i ][ 'id' ];
             $res2 = CableLinePoint_SELECT( $wr );
             if ( $res2[ 'count' ] == 0 )
             {
-                $cableLine_arr[ ] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
+                $cableLine_arr[] = '<a href="CableLine.php?mode=delete&cablelineid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
             }
             else
             {
-                $cableLine_arr[ ] = '';
+                $cableLine_arr[] = '';
             }
         }
         $smarty->assign( "data", $cableLine_arr );
@@ -163,15 +163,15 @@ else
             $i = -1;
             while ( ++$i < $res[ 'CableLinePoints' ][ 'count' ] )
             {
-                $cableLine_arr[ ] = $rows2[ $i ][ 'id' ];
+                $cableLine_arr[] = $rows2[ $i ][ 'id' ];
                 //$cableLine_arr[] = $rows2[$i]['meterSign'];
                 //$cableLine_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>';
-                $cableLine_arr[ ] = $rows2[ $i ][ 'OpenGIS' ];
+                $cableLine_arr[] = $rows2[ $i ][ 'OpenGIS' ];
                 //$cableLine_arr[] = $rows2[$i]['Apartment'];
                 //$cableLine_arr[] = $rows2[$i]['Building'];
                 //$cableLine_arr[] = $rows2[$i]['SettlementGeoSpatial'];
-                $cableLine_arr[ ] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows2[ $i ][ 'id' ].'&cablelineid='.$cableLineId.'">Изменить</a>';
-                $cableLine_arr[ ] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows2[ $i ][ 'id' ].'">Удалить</a>';
+                $cableLine_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows2[ $i ][ 'id' ].'&cablelineid='.$cableLineId.'">Изменить</a>';
+                $cableLine_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows2[ $i ][ 'id' ].'">Удалить</a>';
             }
             $smarty->assign( "data", $cableLine_arr );
         }
@@ -208,8 +208,8 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $comboBox_CableType_Values[ ] = $rows[ $i ][ 'id' ];
-            $comboBox_CableType_Text[ ] = $rows[ $i ][ 'marking' ];
+            $comboBox_CableType_Values[] = $rows[ $i ][ 'id' ];
+            $comboBox_CableType_Text[] = $rows[ $i ][ 'marking' ];
         }
         $smarty->assign( "combobox_cabletype_values", $comboBox_CableType_Values );
         $smarty->assign( "combobox_cabletype_text", $comboBox_CableType_Text );
@@ -232,8 +232,8 @@ else
         $i = -1;
         while ( ++$i < $res[ 'count' ] )
         {
-            $comboBox_CableType_Values[ ] = $rows[ $i ][ 'id' ];
-            $comboBox_CableType_Text[ ] = $rows[ $i ][ 'marking' ];
+            $comboBox_CableType_Values[] = $rows[ $i ][ 'id' ];
+            $comboBox_CableType_Text[] = $rows[ $i ][ 'marking' ];
         }
         $smarty->assign( "combobox_cabletype_values", $comboBox_CableType_Values );
         $smarty->assign( "combobox_cabletype_text", $comboBox_CableType_Text );

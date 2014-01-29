@@ -3,6 +3,40 @@
 require_once("functions.php");
 require_once("backend/LoggingIs.php");
 
+function CableLine_AddOpticalFiber( $cableLine )
+{
+    $query = 'SELECT "CableType" FROM "CableLine" WHERE id='.$cableLine;
+    $res = PQuery( $query );
+    $CableType = $res[ 'rows' ][ 0 ][ 'CableType' ];
+    $query = 'SELECT "tubeQuantity" * "fiberPerTube" AS "fibers" FROM "CableType" WHERE id='.$CableType;
+    $res2 = PQuery( $query );
+    $fibers = $res2[ 'rows' ][ 0 ][ 'fibers' ];        
+    for ( $fiber = 1; $fiber <= $fibers; $fiber++ )
+    {
+        $ins[ 'CableLine' ] = $cableLine;
+        $ins[ 'fiber' ] = $fiber;
+        $query = 'INSERT INTO "OpticalFiber" '.genInsert( $ins );        
+        PQuery( $query );
+    }
+}
+
+function CableLine_AddOpticalFiberForAll()
+{
+    $query = 'SELECT "id" FROM "CableLine"';
+    $res = PQuery( $query );
+    $rows = $res[ 'rows' ];
+    for ( $i = 0; $i < $res[ 'count' ]; $i++ )
+    {
+        $wr[ 'CableLine' ] = $rows[ $i ][ 'id' ];
+        $query = 'SELECT COUNT(id) AS "count" FROM "OpticalFiber"'.genWhere( $wr );
+        $res2 = PQuery( $query );
+        if ( $res2[ 'rows' ][ 0 ][ 'count' ] == 0 )
+        {
+            CableLine_AddOpticalFiber( $rows[ $i ][ 'id' ] );
+        }
+    }
+}
+
 function CableLine_SELECT( $sort, $wr, $tmpT = FALSE )
 {
     $query = 'SELECT * FROM "'.tmpTable( 'CableLine', $tmpT ).'"';
