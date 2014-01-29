@@ -149,6 +149,7 @@ function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
         $res = PQuery( $query );
         $networkNodeGIS = $res[ 'rows' ][ 0 ][ 'OpenGIS' ];
         $upd[ 'OpenGIS' ] = $networkNodeGIS;
+        $upd[ 'NetworkNode' ] = $networkNode;
     }
     $upd[ 'meterSign' ] = $meterSign;
     $upd[ 'note' ] = $note;
