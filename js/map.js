@@ -343,7 +343,7 @@ function init() {
     
     var gsat = new OpenLayers.Layer.Google(
             "Google Спутник",
-            { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 22 }
+            { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 20 }
     );
     map.addLayers( [ ghyb, gsat ] );
 }
