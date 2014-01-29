@@ -86,8 +86,7 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
         "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking"
   		FROM "'.tmpTable( 'NetworkNode', $tmpT ).'" AS "NN"
   		LEFT JOIN "'.tmpTable( 'NetworkBox', $tmpT ).'" AS "NB" ON "NB".id="NN"."NetworkBox"
-  		LEFT JOIN "'.tmpTable( 'NetworkBoxType', $tmpT ).'" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"
-  		LEFT JOIN "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'" AS "OFS" ON "OFS"."NetworkNode" = "NN".id';
+  		LEFT JOIN "'.tmpTable( 'NetworkBoxType', $tmpT ).'" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
