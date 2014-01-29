@@ -285,6 +285,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
         for ( $i = 0; $i < count( $trackArr ); $i++ )
         {
             $k = 0;
+            $traceArr[ $i ] = array();
             for ( $j = 0; $j < count( $trackArr[ $i ] ); $j++ )
             {
                 $traceArr[ $i ][ $k ][ 'isNode' ] = 1;
