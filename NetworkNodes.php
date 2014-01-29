@@ -156,7 +156,7 @@ else
         }
         if ( $res[ 'count' ] < 1 )
         {
-            $message = 'Ящика с таким ID не существует!<br />
+            $message = 'Узла с таким ID не существует!<br />
 			<a href="NetworkNodes.php">Назад</a>';
             showMessage( $message, 0 );
         }

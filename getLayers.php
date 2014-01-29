@@ -262,7 +262,7 @@ elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
         {
             //$fiberSpliceCount = getFiberSpliceCount_NetworkNode($rows[$i]['id']);
             $fiberSpliceCount = $rows[ $i ][ 'fiberSpliceCount' ];
-            $cableLines_row = getCableLineInfo( $rows[ $i ][ 'id' ], 1 );
+            $cableLines_row = getCableLineInfo( $rows[ $i ][ 'id' ] );
             $cableLinesZeroFibers = 0;
             $cableLinesNotZeroFibers = 0;
             for ( $j = 0; $j < $cableLines_row[ 'count' ]; $j++ )
