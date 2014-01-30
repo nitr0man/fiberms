@@ -1,10 +1,11 @@
 <?php
 
-require_once("auth.php");
-require_once("smarty.php");
-require_once("func/FiberSplice.php");
-require_once("backend/NetworkNode.php");
-require_once("design_func.php");
+require_once "auth.php";
+require_once "smarty.php";
+require_once "func/FiberSplice.php";
+require_once "backend/NetworkNode.php";
+require_once 'backend/OpticalFiber.php';
+require_once "design_func.php";
 
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
@@ -199,7 +200,6 @@ else
     }
     elseif ( isset( $_GET[ 'networknodeid' ] ) )
     {
-
         $networkNodeId = $_GET[ 'networknodeid' ];
         $wr[ 'id' ] = $networkNodeId;
         $res = NetworkNode_SELECT( '', '', $wr );
@@ -341,13 +341,19 @@ else
                                     .$networkNodeId
                                     .'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ]
                                     .'">[+]</a>';
+                            $clid = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ];
+                            $wr2[ 'CableLine' ] = $clid;
+                            $wr2[ 'fiber' ] = $i;
+                            $res3 = OpticalFiber_SELECT( 1, $wr2 );
+                            $fiberId = $res3[ 'rows' ][ 0 ][ 'id' ];
+                            $linksT = ' <a href="Tracing.php?spliceId=-1&fiberId='.$fiberId.'&clid='.$clid.'">[T]</a>';
                         }
                         if ( ($i == 1) or ($i % $fiberPerTube == 1 ) )
                         {
                             $table_text_module = '<td rowspan="'.$fiberPerTube.'">'.$module.'</td>';
                         }
                     }
-                    $table_text_fibers .= '<td>'.$linksN.'</td>';
+                    $table_text_fibers .= '<td>'.$linksN.' '.$linksT.'</td>';
                 }
                 for ( $k = $i + 1; $k <= $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ]; $k++ )
                 {

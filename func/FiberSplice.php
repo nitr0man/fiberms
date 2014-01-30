@@ -1,10 +1,10 @@
 <?php
 
-require_once("backend/FS.php");
-require_once("backend/CableType.php");
-require_once("backend/OpticalFiberJoin.php");
-require_once("backend/OpticalFiber.php");
-require_once("backend/OpticalFiberSplice.php");
+require_once "backend/FS.php";
+require_once "backend/CableType.php";
+require_once "backend/OpticalFiberJoin.php";
+require_once "backend/OpticalFiber.php";
+require_once "backend/OpticalFiberSplice.php";
 
 /* function FiberSplice_Check() {
 
@@ -96,8 +96,10 @@ function getFiberTable( $nodeID )
                 $fB = $rows[ $i + 1 ][ 'fiber' ];
                 $FSO = $rows[ $i ][ 'FiberSpliceOrganizer' ];
                 $spliceId = $rows[ $i ][ 'OpticalFiberSplice' ];
-                $spliceArray[ $ClA ][ $fA ] = array( $ClB, $fB, $rows[ $i + 1 ][ 'OFJ_id' ], $FSO, $spliceId );
-                $spliceArray[ $ClB ][ $fB ] = array( $ClA, $fA, $rows[ $i ][ 'OFJ_id' ], $FSO, $spliceId );
+                $spliceArray[ $ClA ][ $fA ] = array( $ClB, $fB, $rows[ $i + 1 ][ 'OFJ_id' ],
+                    $FSO, $spliceId );
+                $spliceArray[ $ClB ][ $fB ] = array( $ClA, $fA, $rows[ $i ][ 'OFJ_id' ],
+                    $FSO, $spliceId );
                 $i = $i + 2;
             }
             else
@@ -108,7 +110,7 @@ function getFiberTable( $nodeID )
     }
     else
     {
-        $spliceArray = array( );
+        $spliceArray = array();
     }
     $res[ 'maxfiber' ] = $maxfiber;
     $res[ 'CableLines' ] = $CableLines;
@@ -128,7 +130,7 @@ function getFibers( $networkNodeId, $CableLine, $fiber )
         $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
         if ( (!isset( $arr )) or ($i == $fiber) )
         {
-            $fibers[ ] = $i;
+            $fibers[] = $i;
         }
     }
     return $fibers;
@@ -246,7 +248,7 @@ function deleteSplice( $OFJ_id )
 
 function trace( $spliceId = -1, $fiberId = -1 )
 {
-    $result = array( );
+    $result = array();
     if ( $spliceId != -1 && $fiberId != -1 )
     {
         $spliceIds = getSplices( $spliceId, $fiberId );
@@ -269,7 +271,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
     elseif ( $spliceId != -1 )
     {
         $fibers = getFibs( array( array( "OpticalFiberSplice" => $spliceId ) ) );
-        $trackArr = array( );
+        $trackArr = array();
         for ( $i = 0; $i < count( $fibers ); $i++ )
         {
             $sId = $fibers[ $i ][ 'OpticalFiberSplice' ];
@@ -281,7 +283,9 @@ function trace( $spliceId = -1, $fiberId = -1 )
             }
         }
 
-        $traceArr = array( );
+        $traceArr = array();
+        $traceArr[ 0 ] = array();
+        $traceArr[ 1 ] = array();
         for ( $i = 0; $i < count( $trackArr ); $i++ )
         {
             $k = 0;
@@ -306,7 +310,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
             }
         }
         $cArr_res = getAllInfoBySpliceId( $spliceId );
-        $cArr = array( );
+        $cArr = array();
         for ( $i = 0; $i < count( $cArr_res ); $i++ )
         {
             $cArr[ $i ][ 'isNode' ] = 0;
@@ -326,24 +330,25 @@ function trace( $spliceId = -1, $fiberId = -1 )
         if ( count( $traceArr[ 0 ] ) > count( $traceArr[ 1 ] ) )
         {
             $traceArr[ 1 ] = array_reverse( $traceArr[ 1 ] );
-            $traceArr[ 1 ][ ] = $cArr[ 0 ];
-            $traceArr[ 1 ][ ] = $cArr[ 2 ];
-            $traceArr[ 1 ][ ] = $cArr[ 1 ];
+            $traceArr[ 1 ][] = $cArr[ 0 ];
+            $traceArr[ 1 ][] = $cArr[ 2 ];
+            $traceArr[ 1 ][] = $cArr[ 1 ];
             $result = array_merge( $traceArr[ 1 ], $traceArr[ 0 ] );
         }
         else
         {
             $traceArr[ 0 ] = array_reverse( $traceArr[ 0 ] );
-            $traceArr[ 0 ][ ] = $cArr[ 0 ];
-            $traceArr[ 0 ][ ] = $cArr[ 2 ];
-            $traceArr[ 0 ][ ] = $cArr[ 1 ];
+            $traceArr[ 0 ][] = $cArr[ 0 ];
+            $traceArr[ 0 ][] = $cArr[ 2 ];
+            $traceArr[ 0 ][] = $cArr[ 1 ];
             $result = array_merge( $traceArr[ 0 ], $traceArr[ 1 ] );
         }
     }
     else
     {
         $spliceIds = getSplices( $spliceId, $fiberId );
-        $trackArr = array( );
+        $trackArr = array();
+        $trackArr[ 0 ] = array();
         for ( $i = 0; $i < count( $spliceIds ); $i++ )
         {
             $sId = $spliceIds[ $i ][ 'OpticalFiberSplice' ];
@@ -355,10 +360,13 @@ function trace( $spliceId = -1, $fiberId = -1 )
             }
         }
 
-        $traceArr = array( );
+        $traceArr = array();
+        $traceArr[ 0 ] = array();
+        $traceArr[ 1 ] = array();
         for ( $i = 0; $i < count( $trackArr ); $i++ )
         {
             $k = 0;
+            $traceArr[ $i ] = array();
             for ( $j = 0; $j < count( $trackArr[ $i ] ); $j++ )
             {
                 $traceArr[ $i ][ $k ][ 'isNode' ] = 1;
@@ -380,7 +388,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
         }
 
         $line_res = getLineByFiberId( $fiberId );
-        $cArr = array( );
+        $cArr = array();
         $cArr[ 'isNode' ] = 0;
         $cArr[ 'isTr' ] = 1;
         foreach ( $line_res as $key => $value )
@@ -395,14 +403,14 @@ function trace( $spliceId = -1, $fiberId = -1 )
         if ( count( $traceArr[ 0 ] ) > count( $traceArr[ 1 ] ) )
         {
             $traceArr[ 1 ] = array_reverse( $traceArr[ 1 ] );
-            $traceArr[ 1 ][ ] = $cArr;
+            $traceArr[ 1 ][] = $cArr;
             $result = array_merge( $traceArr[ 1 ], $traceArr[ 0 ] );
         }
         else
         {
             $traceArr[ 0 ] = array_reverse( $traceArr[ 0 ] );
-            $traceArr[ 0 ][ ] = $cArr;
-            $result = array_merge( $trackArr[ 0 ], $traceArr[ 1 ] );
+            $traceArr[ 0 ][] = $cArr;
+            $result = array_merge( $traceArr[ 0 ], $traceArr[ 1 ] );
         }
     }
     return $result;
