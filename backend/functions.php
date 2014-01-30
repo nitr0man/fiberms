@@ -24,6 +24,7 @@ function PQuery( $query )
     }
     $result[ 'count' ] = pg_num_rows( $res );
     $i = 0;
+    $rowarr = array();
     while ( $row = pg_fetch_array( $res, NULL, PGSQL_ASSOC ) )
     {
         $rowarr[ $i++ ] = $row;
