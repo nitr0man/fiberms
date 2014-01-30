@@ -175,6 +175,8 @@ function deleteCableLine( $CableLineId, $tmpT = FALSE )
     $wr[ 'CableLine' ] = $CableLineId;
     $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genWhere( $wr );
     PQuery( $query );
+    $query = 'DELETE FROM "'.tmpTable( 'OpticalFiber', $tmpT ).'"'.genWhere( $wr );
+    PQuery( $query );
     unset( $wr );
     $wr[ 'id' ] = $CableLineId;
     $query = 'DELETE FROM "'.tmpTable( 'CableLine', $tmpT ).'"'.genWhere( $wr );

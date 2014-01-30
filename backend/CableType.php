@@ -96,6 +96,9 @@ function CableLine_UPDATE( $upd, $wr )
 
 function CableLine_DELETE( $wr )
 {
+    $wr2[ 'CableLine' ] = $wr[ 'id' ];
+    $query = 'DELETE FROM "OpticalFiber"'.genWhere( $wr2 );
+    PQuery( $query );
     $query = 'DELETE FROM "CableLine"';
     $query .= genWhere( $wr );
     $result = PQuery( $query );
