@@ -55,8 +55,7 @@ function onCableLineAddedPopup( event ) {
                     jsonInsertCoor.length = form.getValues().length;
                     jsonInsertCoor.name = form.getValues().name;
                     jsonInsertCoor.comment = form.getValues().note;
-                    if ( jsonInsertCoor.CableType == "" || jsonInsertCoor.name == ""
-                            || jsonInsertCoor.comment == "" ) {
+                    if ( jsonInsertCoor.CableType == "" || jsonInsertCoor.name == "" ) {
                         alert( 'Заполните поля!' );
                     } else {
                         saveCableLine( feature,
