@@ -201,8 +201,8 @@ function addNode( coor, jsonNodeCoor ) {
 
 function selectDeleteNode( event, del ) {
     del = ( typeof del === "undefined" ) ? false : del;
-    notyInformation.close();
     if ( selectDeleteNodeMode && del ) {
+        notyInformation.close();
         var jsonCoor = {
             coorArr: [ ]
         };
@@ -223,10 +223,33 @@ function selectDeleteNode( event, del ) {
         } );
     }
     else if ( selectDeleteNodeMode && !del ) {
+        notyInformation.close();
         showDeleteCableLineQuestion( 'center',
                 'Вы действительно хотите удалить узел?',
                 function() {
                     selectDeleteNode( event, true );
                 } );
     }
+}
+
+function moveFeature( event ) {
+    var jsonCoor = {
+        coorArr: [ ]
+    };
+    var feature = event.feature;
+    var coorNode = feature.geometry.getVertices();
+    var ll = new OpenLayers.LonLat( coorNode[ 0 ].x,
+            coorNode[ 0 ].y ).transform(
+            new OpenLayers.Projection( "EPSG:900913" ),
+            new OpenLayers.Projection( "EPSG:4326" ) );
+    jsonCoor.coorArr[0] = { };
+    jsonCoor.coorArr[ 0 ]["lon"] = ll.lon;
+    jsonCoor.coorArr[ 0 ]["lat"] = ll.lat;
+    jsonCoor.coorArr[ 0 ]["id"] = feature.attributes.description;
+    json = JSON.stringify( jsonCoor );
+    $.post( "map_post.php",
+            { coors: json, mode: "moveNode", userId: userId },
+    function() {
+        refreshAllLayers();
+    } );
 }

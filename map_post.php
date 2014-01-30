@@ -65,6 +65,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         deleteNode( $coors, TRUE );
         setTmpMapLastEdit();
     }
+    elseif ( $_POST[ 'mode' ] == "moveNode" )
+    {
+        moveNode( $coors, TRUE );
+        setTmpMapLastEdit();
+    }
     elseif ( $_POST[ 'mode' ] == "divCableLine" )
     {
         $nodeInfo[ 'name' ] = $obj->{'name'};

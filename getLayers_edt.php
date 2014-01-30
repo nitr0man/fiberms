@@ -154,19 +154,7 @@ elseif ( $_GET[ 'mode' ] == 'GetNodesMarkers' )
             $lat = $matches[ 'y' ][ 0 ];
             $lon = $matches[ 'x' ][ 0 ];
             $title = '<a target="_blank" href="NetworkNodes.php?mode=charac&nodeid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'name' ].'</a>';
-            /* $description = 'Ящик: <a target="_blank" href="NetworkBox.php?mode=charac&boxid='.$rows[$i]['NetworkBox'].'">'.$rows[$i]['inventoryNumber'].'</a><br>'.
-              'Тип ящика: <a target="_blank" href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[$i]['NetworkBoxType'].'">'.$rows[$i]['NBTmarking'].'</a><br>'.
-              //'Примечание: './*nl2br($rows[$i]['note'])str_replace(array("\r\n", "\n", "\r"), "<br>", $rows[$i]['note']).'<br>'.
-              'fff<br>'.
-              'Входящие линии: <ul>'.
-              '<li>Всего: '.(string)($cableLinesZeroFibers + $cableLinesNotZeroFibers).'</li>'.
-              '<li>0 волокон: '.$cableLinesZeroFibers.'</li>'.
-              '<li>1+ волокон: '.$cableLinesNotZeroFibers.'</li>'.
-              '</ul>'.
-              'К-во сварок: '.$fiberSpliceCount.'<br>'.
-              '[<a target="_blank" href="FiberSplice.php?networknodeid='.$rows[$i]['id'].'">Таблица сварок</a>]'; */
-            //$icon        = "pic/Ol_icon_blue_example.png";
-            $description = $i;
+            $description = $rows[ $i ][ 'id' ];
             $icon = "pic/node_pic.png";
             $iconSize = "10,10";
             $iconOffset = "-3,-3";

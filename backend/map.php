@@ -148,7 +148,7 @@ function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
                 '" WHERE id='.$networkNode;
         $res = PQuery( $query );
         $networkNodeGIS = $res[ 'rows' ][ 0 ][ 'OpenGIS' ];
-        $upd[ 'OpenGIS' ] = $networkNodeGIS;
+        $upd[ 'OpenGIS' ] = "NULL";
         $upd[ 'NetworkNode' ] = $networkNode;
     }
     $upd[ 'meterSign' ] = $meterSign;
@@ -201,6 +201,15 @@ function deleteNode( $coors, $tmpT = FALSE )
     unset( $wr );
     $wr[ 'id' ] = (int)$NetworkNodeId;
     NetworkNode_DELETE( $wr, $tmpT );
+}
+
+function moveNode( $coors, $tmpT = FALSE )
+{
+    $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
+    $wr[ 'id' ] = $coors[ 0 ]->id;
+    $upd[ 'OpenGIS' ] = $OpenGIS;
+    $query = 'UPDATE "'.tmpTable( 'NetworkNode', $tmpT ).'" SET'.genUpdate( $upd ).genWhere( $wr );
+    PQuery( $query );
 }
 
 function addNetworkBox( $networkBoxType, $invNum, $tmpT = FALSE )

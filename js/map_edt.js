@@ -245,7 +245,8 @@ function init() {
             } );
     map.addLayer( layerNodes );
     layerNodes.events.on( {
-        "featureselected": selectDeleteNode
+        "featureselected": selectDeleteNode,
+        "afterfeaturemodified": moveFeature
     } );
     deleteNodeControl = new OpenLayers.Control.SelectFeature(
             [ layerNodes ] );
@@ -492,6 +493,19 @@ function init() {
                 showInformation( 'topCenter', 'Выберите узел' );
             } );
 
+    moveNode = new OpenLayers.Control.ModifyFeature(
+            layerNodes, {
+                title: "Позволяет перемещать узлы",
+                text: 'Переместить<br>узел',
+                vertexRenderIntent: 'temporary',
+                displayClass: "olControlMoveNode",
+                mode: OpenLayers.Control.DragFeature
+            } );
+    moveNode.events.register( "activate", this, function() {
+        disableControls();
+        showInformation( 'topCenter', 'Выберите узел и переместите его' );
+    } );
+
     saveCon = new OpenLayers.Control.Button( {
         title: "Сохраняет изменения",
         text: "Сохранить<br>изменения",
@@ -527,7 +541,7 @@ function init() {
     panel.addControls(
             [ navigationCon, editCableCon, drawCableCon, deleteCableLineCon,
                 divCableLineCon, addSingPointCon, deleteSingPointCon,
-                addNodeCon, deleteNodeCon, saveCon, cancelCon ] );
+                addNodeCon, deleteNodeCon, moveNode, saveCon, cancelCon ] );
     map.addControl(
             panel );
     navigationCon.activate();
@@ -543,7 +557,7 @@ function init() {
         new OpenLayers.Control.Permalink(
                 'permalink' ),
         new OpenLayers.Control.MousePosition()
-        //new OpenLayers.Control.OverviewMap(),
+                //new OpenLayers.Control.OverviewMap(),
     ] );
     var lonLat = new OpenLayers.LonLat(
             lon,
@@ -556,7 +570,7 @@ function init() {
     map.setLayerIndex(
             map.layers[6],
             7 );
-            
+
     var ghyb = new OpenLayers.Layer.Google(
             "Google Hybrid",
             { type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20 }
@@ -567,7 +581,7 @@ function init() {
             { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 20 }
     );
     map.addLayers( [ ghyb, gsat ] );
-    
+
     mapCr = false;
     drawFeatures();
 }
