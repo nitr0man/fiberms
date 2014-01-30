@@ -62,7 +62,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 else
 {
     if ( !isset( $_GET[ 'mode' ] ) )
-    {
+    {        
         if ( isset( $_GET[ 'sort' ] ) )
         {
             $sort = $_GET[ 'sort' ];

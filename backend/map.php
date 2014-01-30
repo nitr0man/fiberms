@@ -125,6 +125,7 @@ function addCableLinePoint( $coors, $CableType, $length, $name, $comment,
         $query = 'INSERT INTO "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genInsert( $ins );
         PQuery( $query );
     }
+    CableLine_AddOpticalFiberForAll();
 }
 
 function addSingPoint( $coors, $CableLineId, $networkNode, $apartment,
