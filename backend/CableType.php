@@ -3,19 +3,20 @@
 require_once("functions.php");
 require_once("backend/LoggingIs.php");
 
-function CableLine_AddOpticalFiber( $cableLine )
+function CableLine_AddOpticalFiber( $cableLine, $tmpT = FALSE )
 {
-    $query = 'SELECT "CableType" FROM "CableLine" WHERE id='.$cableLine;
+    $query = 'SELECT "CableType" FROM "'.tmpTable( 'CableLine', $tmpT ).'" WHERE id='.$cableLine;
     $res = PQuery( $query );
     $CableType = $res[ 'rows' ][ 0 ][ 'CableType' ];
-    $query = 'SELECT "tubeQuantity" * "fiberPerTube" AS "fibers" FROM "CableType" WHERE id='.$CableType;
+    $query = 'SELECT "tubeQuantity" * "fiberPerTube" AS "fibers" FROM "'.tmpTable( 'CableType',
+                    $tmpT ).'" WHERE id='.$CableType;
     $res2 = PQuery( $query );
-    $fibers = $res2[ 'rows' ][ 0 ][ 'fibers' ];        
+    $fibers = $res2[ 'rows' ][ 0 ][ 'fibers' ];
     for ( $fiber = 1; $fiber <= $fibers; $fiber++ )
     {
         $ins[ 'CableLine' ] = $cableLine;
         $ins[ 'fiber' ] = $fiber;
-        $query = 'INSERT INTO "OpticalFiber" '.genInsert( $ins );        
+        $query = 'INSERT INTO "'.tmpTable( 'OpticalFiber', $tmpT ).'" '.genInsert( $ins );
         PQuery( $query );
     }
 }
@@ -33,6 +34,20 @@ function CableLine_AddOpticalFiberForAll()
         if ( $res2[ 'rows' ][ 0 ][ 'count' ] == 0 )
         {
             CableLine_AddOpticalFiber( $rows[ $i ][ 'id' ] );
+        }
+    }
+
+    $query = 'SELECT "id" FROM "CableLine_tmp"';
+    $res = PQuery( $query );
+    $rows = $res[ 'rows' ];
+    for ( $i = 0; $i < $res[ 'count' ]; $i++ )
+    {
+        $wr[ 'CableLine' ] = $rows[ $i ][ 'id' ];
+        $query = 'SELECT COUNT(id) AS "count" FROM "OpticalFiber_tmp"'.genWhere( $wr );
+        $res2 = PQuery( $query );
+        if ( $res2[ 'rows' ][ 0 ][ 'count' ] == 0 )
+        {
+            CableLine_AddOpticalFiber( $rows[ $i ][ 'id' ], true );
         }
     }
 }
