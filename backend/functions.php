@@ -210,8 +210,7 @@ function createTmpTables()
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
-        //$query .= ' CREATE TABLE IF NOT EXISTS "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING ALL );';
-        $query .= ' CREATE TABLE  "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING DEFAULTS );';
+        $query .= ' CREATE TABLE  "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING DEFAULTS INCLUDING INDEXES );';
         $query .= 'ALTER TABLE "CableLine" OWNER TO '.$db_user.';';
         $query .= ' INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'";';
     }
