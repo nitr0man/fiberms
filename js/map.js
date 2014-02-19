@@ -152,13 +152,24 @@ function init() {
         units: "m"/*,
          allOverlays: true*/
     } );
-    // This is the layer that uses the locally stored tiles
+
+    var ghyb = new OpenLayers.Layer.Google(
+            "Google Hybrid",
+            { type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20 }
+    );
+
+    var gsat = new OpenLayers.Layer.Google(
+            "Google Спутник",
+            { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 20 }
+    );
+    map.addLayers( [ ghyb, gsat ] );
+    
     var localLayer = new OpenLayers.Layer.OSM( "Локальна карта",
             "map/tiles/${z}/${x}/${y}.png",
             { numZoomLevels: 19,
                 alpha: false,
                 isBaseLayer: true,
-                attribution: "",
+                attribution: ""
             } );
     //localLayer.setOpacity(0.6);
     map.addLayer( localLayer );
@@ -192,12 +203,6 @@ function init() {
         var lineFeature = new OpenLayers.Feature.Vector( line,
                 null, style_halo );
         lineLayer_halo.addFeatures( [ lineFeature ] );
-        /*CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' +CableLine_arr[k]['cableLineId'] +'">' +CableLine_arr[k]['name'] + '</a></h2>'
-         +'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' +CableLine_arr[k]['cableTypeId'] +'">' +CableLine_arr[k]['cableTypeMarking'] +'</a><br>'
-         +'К-во модулей: ' +CableLine_arr[k]['modules'] +'<br>'
-         +'К-во волокон: ' +CableLine_arr[k]['fibers'] +'<br>'
-         +'Направление: ' +CableLine_arr[k]['direction'] +'<br>'
-         +'К-во незадействованных волокон: ' +CableLine_arr[k]['free_fibers'];*/
         CableLineText_arr[lineFeature.id] = '<h2><a target="_blank" href="CableLine.php?mode=charac&cablelineid=' + CableLine_arr[k]['cableLineId'] + '">' + CableLine_arr[k]['name'] + '</a></h2>'
                 + 'Тип кабеля: <a target="_blank" href="CableType.php?mode=charac&cabletypeid=' + CableLine_arr[k]['cableTypeId'] + '">' + CableLine_arr[k]['cableTypeMarking'] + '</a><br>'
                 + 'Направление: ' + CableLine_arr[k]['direction'] + '<br>';
@@ -208,7 +213,6 @@ function init() {
         }
     }
     // рисуем типо гало :)
-
 
     lineLayer = new OpenLayers.Layer.Vector( "Кабельные линии" );
     map.addLayer( lineLayer );
@@ -335,17 +339,6 @@ function init() {
             "EPSG:4326" ), map.getProjectionObject() );
     map.setCenter( lonLat, zoom );
     map.setLayerIndex( map.layers[6], 7 );
-
-    var ghyb = new OpenLayers.Layer.Google(
-            "Google Hybrid",
-            { type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20 }
-    );
-    
-    var gsat = new OpenLayers.Layer.Google(
-            "Google Спутник",
-            { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 20 }
-    );
-    map.addLayers( [ ghyb, gsat ] );
 }
 
 function parseCableLineXML( Response ) {
