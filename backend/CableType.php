@@ -304,7 +304,7 @@ function getNormalCableLines()
 
 function getSingularCableLinePoints( $OpenGIS = -1, $tmpT = FALSE )
 {
-    $query = 'SELECT "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign",
+    $query = 'SELECT "clp"."id" AS "CLPId", "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign",
               "clp"."NetworkNode", "clp"."note", "cl"."name" AS "CableLineName"
               FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" AS "clp"
               LEFT JOIN "'.tmpTable( 'CableLine', $tmpT ).'" AS "cl" ON "cl".id = "clp"."CableLine"

@@ -233,8 +233,9 @@ elseif ( $_GET[ 'mode' ] == 'GetSingularCableLinePoints' )
         {
             $lat = $matches[ 'y' ][ 0 ];
             $lon = $matches[ 'x' ][ 0 ];
-            $title = '<a target="_blank" href="CableLine.php?mode=charac&cablelineid='.$rows[ $i ][ 'CableLine' ].'">'.$rows[ $i ][ 'CableLineName' ].'</a>';
-            $description = '<a target="_blank" href="CableLine.php?mode=charac&cablelineid='.$rows[ $i ][ 'CableLine' ].'">Отметка: '.$rows[ $i ][ 'meterSign' ].'</a>';
+            $clpId = $rows[ $i ][ 'CLPId' ];            
+            $title = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">'.$rows[ $i ][ 'CableLineName' ].'</a>';
+            $description = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">Отметка: '.$rows[ $i ][ 'meterSign' ].'</a>';
             $icon = "pic/rhomb_pic.png";
             $iconSize = "7,7";
             $iconOffset = "-5,-5";
@@ -277,15 +278,15 @@ elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
                 }
             }
             $desc = 'Ящик: <a target="_blank" href="NetworkBox.php?mode=charac&boxid='.$rows[ $i ][ 'NetworkBox' ].'">'.$rows[ $i ][ 'inventoryNumber' ].'</a><br>'.
-                    'Тип ящика: <a target="_blank" href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'NBTmarking' ].'</a><br>'.
-                    'Примечание: './* nl2br($rows[$i]['note']) */str_replace( array( "\r\n", "\n", "\r" ),
-                            "<br>", $rows[ $i ][ 'note' ] ).'<br>'.
-                    'Входящие линии: <ul>'.
-                    '<li>Всего: '.(string)($cableLinesZeroFibers + $cableLinesNotZeroFibers).'</li>'.
-                    '<li>0 волокон: '.$cableLinesZeroFibers.'</li>'.
-                    '<li>1+ волокон: '.$cableLinesNotZeroFibers.'</li>'.
-                    '</ul>'.
-                    'К-во сварок: '.$fiberSpliceCount;
+                 'Тип ящика: <a target="_blank" href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'NBTmarking' ].'</a><br>'.
+                 'Примечание: './* nl2br($rows[$i]['note']) */str_replace( array(
+                     "\r\n", "\n", "\r" ), "<br>", $rows[ $i ][ 'note' ] ).'<br>'.
+                 'Входящие линии: <ul>'.
+                 '<li>Всего: '.(string)($cableLinesZeroFibers + $cableLinesNotZeroFibers).'</li>'.
+                 '<li>0 волокон: '.$cableLinesZeroFibers.'</li>'.
+                 '<li>1+ волокон: '.$cableLinesNotZeroFibers.'</li>'.
+                 '</ul>'.
+                 'К-во сварок: '.$fiberSpliceCount;
             $fibRes = getFiberTable( $rows[ $i ][ 'id' ] );
             if ( $fibRes[ 'maxfiber' ] > 0 )
             {
