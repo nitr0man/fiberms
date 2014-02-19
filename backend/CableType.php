@@ -220,7 +220,7 @@ function getCableLinePoint_NetworkNodeName( $cableLineId )
 function getCableLinesSpliceCount( $tmpT = FALSE )
 {
     $result = array();
-    $query = 'SELECT "cl".id, COUNT("ofj"."OpticalFiberSplice") AS "FiberSpliceCount"
+    $query = 'SELECT "cl".id, COUNT(DISTINCT "of"."id") AS "FiberSpliceCount"
         FROM "CableLine" AS "cl"
         LEFT JOIN "'.tmpTable( 'OpticalFiber', $tmpT ).'" AS "of" ON "of"."CableLine" = "cl".id
         LEFT JOIN "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" AS "ofj" ON "ofj"."OpticalFiber" = "of".id        

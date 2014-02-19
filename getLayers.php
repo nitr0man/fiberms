@@ -221,7 +221,7 @@ elseif ( $_GET[ 'mode' ] == 'GetSingularCableLinePoints' )
         {
             $lat = $matches[ 'y' ][ 0 ];
             $lon = $matches[ 'x' ][ 0 ];
-            $clpId = $rows[ $i ][ 'CLPId' ];            
+            $clpId = $rows[ $i ][ 'CLPId' ];
             $title = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">'.$rows[ $i ][ 'CableLineName' ].'</a>';
             $description = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">Отметка: '.$rows[ $i ][ 'meterSign' ].'</a>';
             $icon = "pic/rhomb_pic.png";
