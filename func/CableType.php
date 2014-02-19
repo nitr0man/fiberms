@@ -255,11 +255,6 @@ function CableLine_AddDeleteFibers( $fibersCount, $cableLine )
             }
         }
     }
-    else
-    {
-        $wr[ 'fiber' ] = $fibersCount;
-        $result = OpticalFiber_DELETE( $wr, '>' );
-    }
     return $result;
 }
 
