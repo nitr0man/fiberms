@@ -10,7 +10,7 @@ function parseCableLineXML(
         CableLine_arr[i] = { };
         CableLine_arr[i]["points"] = Array();
 
-        while ( f_child.nextSibling ) {            
+        while ( f_child.nextSibling ) {
             switch ( f_child.nodeName ) {
                 case "node":
                     CableLine_arr[i]["points"][j2] = { };
@@ -155,6 +155,7 @@ function parseNodesLabelsXML(
     }
     if ( mapCr ) {
         init();
+        $( ".olControlPanZoomBar" ).css( { "top": "45px" } );
     } else {
         drawFeatures();
     }

@@ -191,7 +191,7 @@ function init() {
         units: "m"/*,
          allOverlays: true*/
     } );
-    
+
     var ghyb = new OpenLayers.Layer.Google(
             "Google Hybrid",
             { type: google.maps.MapTypeId.HYBRID, numZoomLevels: 20 }
@@ -202,7 +202,7 @@ function init() {
             { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 20 }
     );
     map.addLayers( [ ghyb, gsat ] );
-    
+
     var localLayer = new OpenLayers.Layer.OSM(
             "Локальна карта",
             "map/tiles/${z}/${x}/${y}.png",
@@ -211,7 +211,6 @@ function init() {
                 isBaseLayer: true,
                 attribution: "",
             } );
-    //localLayer.setOpacity(0.6);
     map.addLayer( localLayer );
 
     var osm = new OpenLayers.Layer.OSM();
@@ -560,7 +559,7 @@ function init() {
 
     map.addControls( [
         new OpenLayers.Control.Navigation(),
-        //new OpenLayers.Control.PanZoomBar(),
+        new OpenLayers.Control.PanZoomBar(),
         //new OpenLayers.Control.Zoom(),
         new OpenLayers.Control.LayerSwitcher(
                 { 'ascending': false } ),
@@ -581,7 +580,7 @@ function init() {
             zoom );
     map.setLayerIndex(
             map.layers[6],
-            7 );    
+            7 );
 
     mapCr = false;
     drawFeatures();

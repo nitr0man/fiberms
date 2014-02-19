@@ -163,7 +163,7 @@ function init() {
             { type: google.maps.MapTypeId.SATELLITE, numZoomLevels: 20 }
     );
     map.addLayers( [ ghyb, gsat ] );
-    
+
     var localLayer = new OpenLayers.Layer.OSM( "Локальна карта",
             "map/tiles/${z}/${x}/${y}.png",
             { numZoomLevels: 19,
@@ -171,7 +171,6 @@ function init() {
                 isBaseLayer: true,
                 attribution: ""
             } );
-    //localLayer.setOpacity(0.6);
     map.addLayer( localLayer );
 
     var osm = new OpenLayers.Layer.OSM();
@@ -191,7 +190,6 @@ function init() {
 
         var points = Array();
         for ( k2 = 0; k2 < CableLine_Points_count[k]; k2++ ) {
-            //alert(CableLine_Points_count[k]);
             lon1 = CableLine_arr[k]['points'][k2]['lon'];
             lat1 = CableLine_arr[k]['points'][k2]['lat'];
             points[k2] = new OpenLayers.Geometry.Point( lon1,
@@ -254,7 +252,6 @@ function init() {
                 labelOutlineColor: "black",
                 labelOutlineWidth: 1
             } );
-    //dddd
 
     var layerNodes = new OpenLayers.Layer.Vector( "Узлы", {
         strategies: [ new OpenLayers.Strategy.BBOX(

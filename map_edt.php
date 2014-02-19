@@ -77,7 +77,7 @@ print 'var userId = '.$user.';';
                             { queue: false, duration: 500 } );
                         }
                     } );
-                } );
+                } );                
             } );
             ddsmoothmenu.init( {
                 mainmenuid: "smoothmenu1",
