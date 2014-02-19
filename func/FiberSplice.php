@@ -249,8 +249,10 @@ function deleteSplice( $OFJ_id )
 function trace( $spliceId = -1, $fiberId = -1 )
 {
     global $traceDepth;
+    global $config;
+
     $result = array();
-    if ( $traceDepth > 1000 )
+    if ( $traceDepth > $config[ 'maxTraceDepth' ] )
     {
         return $result;
     }
