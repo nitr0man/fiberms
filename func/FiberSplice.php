@@ -40,7 +40,7 @@ function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer )
 }
 
 function FiberSplice_Add( $CableLineA, $fiberA, $CableLineB, $fiberB,
-        $FiberSpliceOrganizer, $NetworkNodeId )
+     $FiberSpliceOrganizer, $NetworkNodeId )
 {
     $ins[ 'NetworkNode' ] = $NetworkNodeId;
     $ins[ 'FiberSpliceOrganizer' ] = $FiberSpliceOrganizer;
@@ -248,7 +248,13 @@ function deleteSplice( $OFJ_id )
 
 function trace( $spliceId = -1, $fiberId = -1 )
 {
+    global $traceDepth;
     $result = array();
+    if ( $traceDepth > 1000 )
+    {
+        return $result;
+    }
+    $traceDepth++;
     if ( $spliceId != -1 && $fiberId != -1 )
     {
         $spliceIds = getSplices( $spliceId, $fiberId );

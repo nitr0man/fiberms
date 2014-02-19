@@ -241,4 +241,36 @@ function dropTmpTables()
     PQuery( $query );
 }
 
+function removeDup( $arr )
+{
+    for ( $i = 0; $i < count( $arr ); $i++ )
+    {
+        $val = $arr[ $i ];
+        $j = $i + 1;
+        while ( $j < count( $arr ) )
+        {
+            $val = $arr[ $i ];
+            $val2 = $arr[ $j ];           
+            $dupeCount = 0;
+            foreach ( $val as $key => $value )
+            {
+                if ( $value == $val2[ $key ] )
+                {
+                    $dupeCount++;
+                }
+            }
+            if ( $dupeCount == count( $val ) )
+            {
+                unset( $arr[ $j ] );
+                $arr = array_values( $arr );                
+            }
+            else
+            {
+                $j++;
+            }
+        }
+    }
+    return $arr;
+}
+
 ?>

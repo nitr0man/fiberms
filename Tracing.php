@@ -9,10 +9,12 @@ global $smarty;
 
 $spliceId = pg_escape_string( $_GET[ 'spliceId' ] );
 $fiberId = pg_escape_string( $_GET[ 'fiberId' ] );
-$clid = $_GET[ 'clid' ];
+$clid = pg_escape_string( $_GET[ 'clid' ] );
 
+$traceDepth = 0;
 $trace_res = trace( $spliceId, $fiberId );
-$traceArr = array( );
+$trace_res = removeDup( $trace_res );
+$traceArr = array();
 for ( $i = 0; $i < count( $trace_res ); $i++ )
 {
     if ( $trace_res[ $i ][ 'isNode' ] == 0 )
@@ -22,27 +24,27 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $fiber = $trace_res[ $i ][ 'fiber' ];
         $fiberNote = $trace_res[ $i ][ 'note' ];
         if ( $trace_res[ $i ][ 'CableLine' ] == $clid ||
-                $trace_res[ $i ][ 'id' ] == $fiberId )
+             $trace_res[ $i ][ 'id' ] == $fiberId )
         {
-            $traceArr[ ] = "<b>Линия</b>";
+            $traceArr[] = "<b>Линия</b>";
         }
         else
         {
-            $traceArr[ ] = "Линия";
+            $traceArr[] = "Линия";
         }
-        $traceArr[ ] = '<a href="CableLine.php?mode=charac&cablelineid='.$CableLine.'">'
-                .$CableLineName.'</a>, волокно '.$fiber;
-        $traceArr[ ] = $fiberNote;
+        $traceArr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$CableLine.'">'
+             .$CableLineName.'</a>, волокно '.$fiber;
+        $traceArr[] = $fiberNote;
     }
     else
     {
         $NetworkNode = $trace_res[ $i ][ 'NetworkNode' ];
         $NetworkNodeName = $trace_res[ $i ][ 'nn_name' ];
         $organizer = $trace_res[ $i ][ 'FiberSpliceOrganizer' ];
-        $traceArr[ ] = "Узел";
-        $traceArr[ ] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$NetworkNode.'">'
-                .$NetworkNodeName.'</a>, кассета '.$organizer;
-        $traceArr[ ] = '-';
+        $traceArr[] = "Узел";
+        $traceArr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$NetworkNode.'">'
+             .$NetworkNodeName.'</a>, кассета '.$organizer;
+        $traceArr[] = '-';
     }
 }
 $smarty->assign( "data", $traceArr );
