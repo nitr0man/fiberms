@@ -246,9 +246,8 @@ function deleteSplice( $OFJ_id )
     return $res;
 }
 
-function trace( $spliceId = -1, $fiberId = -1 )
+function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0 )
 {
-    global $traceDepth;
     global $config;
 
     $result = array();
@@ -270,7 +269,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
                 $oF = $fibers[ $i ][ 'OpticalFiber' ];
                 if ( ($sId != '') && ($oF != '') )
                 {
-                    $res = trace( $sId, $oF );
+                    $res = trace( $sId, $oF, $traceDepth );
                     $result = array_merge( $result, $res );
                 }
             }
@@ -286,7 +285,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
             $oF = $fibers[ $i ][ 'OpticalFiber' ];
             if ( ($sId != '') && ($oF != '') )
             {
-                $res = trace( $sId, $oF );
+                $res = trace( $sId, $oF, $traceDepth );
                 $trackArr[ $i ] = $res;
             }
         }
@@ -363,7 +362,7 @@ function trace( $spliceId = -1, $fiberId = -1 )
             $oF = $spliceIds[ $i ][ 'OpticalFiber' ];
             if ( ($sId != '') && ($oF != '') )
             {
-                $res = trace( $sId, $oF );
+                $res = trace( $sId, $oF, $traceDepth );
                 $trackArr[ $i ] = $res;
             }
         }

@@ -11,7 +11,6 @@ $spliceId = pg_escape_string( $_GET[ 'spliceId' ] );
 $fiberId = pg_escape_string( $_GET[ 'fiberId' ] );
 $clid = pg_escape_string( $_GET[ 'clid' ] );
 
-$traceDepth = 0;
 $trace_res = trace( $spliceId, $fiberId );
 $trace_res = removeDup( $trace_res );
 $traceArr = array();

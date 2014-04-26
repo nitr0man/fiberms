@@ -151,13 +151,9 @@ function getSplices( $spliceId = -1, $fiberId = -1 )
 {
     if ( $spliceId != -1 && $fiberId != -1 )
     {
-        $query = 'SELECT "CableLine" FROM "OpticalFiber"
-                WHERE id = '.pg_escape_string( $fiberId );
-        $res_cl = PQuery( $query );
-        $cableLineId = $res_cl[ 'rows' ][ 0 ][ 'CableLine' ];
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
-                WHERE "OpticalFiber" IN (SELECT id FROM "OpticalFiber" WHERE "CableLine" = '.pg_escape_string( $cableLineId ).')
+                WHERE "OpticalFiber" = '.pg_escape_string( $fiberId ).'
                     AND "OpticalFiberSplice" != '.pg_escape_string( $spliceId );
         //error_log( $query );
         $res = PQuery( $query );
