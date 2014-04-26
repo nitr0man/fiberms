@@ -85,7 +85,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $networkBoxType = $obj->{'networkBoxType'};
         $invNum = $obj->{'invNum'};
         $boxId = addNetworkBox( $networkBoxType, $invNum, TRUE );
-        $result = array( "NetworkBoxId" => $boxId );
+        if (defined($boxId['id'])) {
+           $result = array( "NetworkBoxId" => $boxId['id'] );
+        } else {
+           $result = array( "error" => $boxId['error'] );
+        }
         setTmpMapLastEdit();
         setMapUserActivity( $uId );
         print json_encode( $result );

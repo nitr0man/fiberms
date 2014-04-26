@@ -221,12 +221,24 @@ function addNetworkBox( $networkBoxType, $invNum, $tmpT = FALSE )
     {
         $invNum = "NULL";
     }
+    $wr[ 'inventoryNumber' ] = $invNum;
+    $query = 'SELECT * FROM "'.tmpTable( 'NetworkBox', $tmpT ).'" '
+            .genWhere( $wr );
+    $res = PQuery( $query );
+    if ($res['count']) {
+       $NetworkBoxId['error'] = 'Duplicate!';
+       return $NetworkBoxId;
+    }
     $ins[ 'NetworkBoxType' ] = $networkBoxType;
     $ins[ 'inventoryNumber' ] = $invNum;
     $query = 'INSERT INTO "'.tmpTable( 'NetworkBox', $tmpT ).'" '
             .genInsert( $ins ).' RETURNING id';
     $res = PQuery( $query );
-    $NetworkBoxId = $res[ 'rows' ][ 0 ][ 'id' ];
+    $NetworkBoxId = [];
+    if (defined($res['error'])) {
+       $NetworkBoxId['error'] = $res['error'];
+    }
+    $NetworkBoxId['id'] = $res[ 'rows' ][ 0 ][ 'id' ];
     return $NetworkBoxId;
 }
 

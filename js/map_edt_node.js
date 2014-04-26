@@ -163,10 +163,14 @@ function addNetworkBox() {
                             invNum = "---";
                         }
                         networkBoxObj = JSON.parse( data );
-                        var el = Ext.create( 'NetworkBoxesModel',
+                        if (networkBoxObj.error) {
+                            alert(networkBoxObj.error);
+                        } else if (networkBoxObj.NetworkBoxId) {
+                            var el = Ext.create( 'NetworkBoxesModel',
                                 [ parseInt( networkBoxObj.NetworkBoxId ),
                                     invNum ] );
-                        boxCombo.store.add( el );
+                            boxCombo.store.add( el );
+                        };
                         dialog.destroy( );
                     } );
                 }
