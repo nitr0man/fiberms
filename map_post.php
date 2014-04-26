@@ -97,7 +97,10 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     }
     elseif ( $_POST[ 'mode' ] == "save" )
     {
-        saveTmpData();
+        $result = saveTmpData();
+        if (defined($result['error'])) {
+            print json_encode( array( "error" => $result['error'] ) );
+        }
     }
     elseif ( $_POST[ 'mode' ] == "cancel" )
     {
@@ -106,5 +109,4 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     }
     setMapUserActivity( $uId );
 }
-print( "OK" );
 ?>

@@ -415,8 +415,11 @@ function saveTmpData()
     }
     $query .= ' TRUNCATE '.$tbl_del.' CASCADE;'.$ins;
     $query .= ' COMMIT;';
-    PQuery( $query );
-    setMapLastEdit();
+    $res = PQuery( $query );
+    if (!defined($res['error'])) {
+        $res = setMapLastEdit();
+    }
+    return $res;
 }
 
 ?>
