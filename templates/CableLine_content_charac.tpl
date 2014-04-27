@@ -20,14 +20,14 @@
 		<!--tr>
 		<td><input value="Изменить" type="submit" name="ChangeButton" /></td>
 		</tr-->		
-	</table></center>	
+	</table>	
 
 	<div>
-			{html_table loop=$data table_attr='id="contable"' cols="ID,OpenGIS,Отметка (м),Узел,Квартира,Здание,SettlementGeoSpatial,Изм.,Удал." caption="Список точек на линии"}
+			{html_table loop=$data table_attr='id="contable"' cols="ID,OpenGIS,Изм.,Удал." caption="Список точек на линии"}
 			<p style="margin: 20px;">{$AddPoint}</a>
 			<td>{$ChangeDelete}</td>
 	</div>
-	
+	</center>
 
 </div>
 </form>

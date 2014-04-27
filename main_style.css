@@ -1,32 +1,62 @@
 body {
-	font-family: Tahoma, Arial, sans-serif;
-	font-size: 12px; 
-	color: #000;
-	background: #F3F3F3 url('pic/all_bg.jpg') top center no-repeat;
-	line-height:16px;
-	height:100%;
+    font-family: Tahoma, Arial, sans-serif;
+    font-size: 12px; 
+    color: #000;
+    background: #F3F3F3 url('pic/all_bg.jpg') top center no-repeat;
+    line-height:16px;
+    height:100%;
+    overflow-x: hidden;
 }
+
+#sidebar{
+    z-index: 903;
+    position: absolute;
+    top: 50%;
+}
+
+#slideout {
+    background: #666;
+    width: 170px;
+    height: 0px;
+    left:-170px;
+    padding-left: 0px;
+    z-index: 903;
+    position: absolute;
+    top: 35%;
+}
+
+#menuBtn {
+    position: absolute;
+    top: -2px;
+    left: 168px;
+    cursor: pointer;
+}
+
+#slidecontent {
+    float:left;
+}
+
 li { 
-	background: #e3e3e3 url("pic/bull.png") no-repeat 4px;
-	}
+    background: #e3e3e3 url("pic/bull.png") no-repeat 4px;
+}
 #main {
-	margin: 0 auto;
-	width: 920px;
+    margin: 0 auto;
+    width: 920px;
 }
 
 .leftcolumn {
-	width: 210px;
-	float: left;
-	height: 400px;
-	margin-bottom: 40px;
+    width: 210px;
+    float: left;
+    height: 400px;
+    margin-bottom: 40px;
 }
 #content {
-	width: 100%;
-	background: #E3E3E3;
-	display:table-cell;
-	position:relative;
-	top: 5px;
- }
+    width: 100%;
+    background: #E3E3E3;
+    display:table-cell;
+    position:relative;
+    top: 5px;
+}
 /*#content tr {
 background: #F0F0F0;}
 #content th {
@@ -67,51 +97,51 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
 .menu ul li a:hover { font: 11px Tahoma, Arial; color:#df4336; text-decoration:none; font-weight: bold; }
 
 .padding-a{
-  padding-top: 12px;
-  border: 0px solid black; 
+    padding-top: 12px;
+    border: 0px solid black; 
 
 }
 
 .arrow-down{
-  margin: 0px;
-  padding: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 .img-arrow{
-  margin-top: 10px;
+    margin-top: 10px;
 }
 #contable {
-  margin: 20px;
-  border: 1px solid #686868;
-  border-radius: 7px;
-  /*text-align: center;*/  
+    margin: 20px;
+    border: 1px solid #686868;
+    border-radius: 7px;
+    /*text-align: center;*/  
 }
 
 select {
-	width: 100%;
+    width: 100%;
 }
 
 input {
-	width: 100%;
+    width: 100%;
 }
 
 caption {
-	font-weight: bold;
-	font-size: medium;
-	padding-bottom: 5px;
+    font-weight: bold;
+    font-size: medium;
+    padding-bottom: 5px;
 }
 
 #fibersplice {
-  margin: 20px;
-  border: 1px solid #686868;
-  text-align: center;
-  border-radius: 7px;
+    margin: 20px;
+    border: 1px solid #686868;
+    text-align: center;
+    border-radius: 7px;
 }
 
 .smallmap {
     border: 0px solid #CCCCCC;
     /*height: 800px;
     width: 1000px;*/
-	height: 100%;
+    height: 100%;
     width: 82%;
 }
