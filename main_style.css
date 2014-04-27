@@ -75,8 +75,17 @@ background: #E3E3E3}*/
 }
 
 ul,ol { list-style: none; }
-h1,h2,h3,h4,h5,h6,pre,code,p { font-size: 1em; }
+h2,h3,h4,h5,h6,pre,code,p { font-size: 1em; }
 ul,ol,dl,li,dt,dd,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input { margin: 0; padding: 0; }
+h1 {
+    font-size: 24px;
+    text-align:center;
+    margin: 20px;
+    color: #CD1A0B;
+    text-shadow: 1px 1px 1px #ff8080;
+    font-weight: bold;
+}
+
 a img,:link img,:visited img { border: none; }
 
 a:link { color: #BC2417; text-decoration: underline; }

@@ -6,7 +6,6 @@ require_once("backend/functions.php");
 
 $stat = getStat();
 
-$smarty->assign( "version", $config[ 'version' ] );
 $smarty->assign( "users_all", $stat[ 'Users' ][ 'All' ] );
 $smarty->assign( "users_admin", $stat[ 'Users' ][ 'Admin' ] );
 $smarty->assign( "FiberSplice_NetworkNodesCount",

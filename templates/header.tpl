@@ -10,7 +10,6 @@
 	<link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
     <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
   {/if}
-  <!--script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script-->
   <script type="text/javascript" src="js/jquery.min.js"></script>
   <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
   <script type="text/javascript" src="js/jquery.corner.js"></script>
@@ -84,10 +83,7 @@
 <body>
 {if (!isset($smarty.get.print))}
 <div id="header">
-  <table width='100%' border='0' cellpadding='0' cellspacing='0'>
-    <tr style='height: 80'><td align='left' valign='center' style='padding: 10px; padding-left: 20px;'><img src='pic/seti-logo.gif' alt='logo'></td><td align='right' valign=center><h2><img src='pic/kks.gif' alt='text'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>
-    <tr style='height: 1' class=small><td class=small bgcolor=#000000> </td></tr>
-  </table>
+<h1>Fiber management system {$version}</h1>
 </div>
 {/if}
 <div id="loading-layer" style="display:none;font-family: Verdana;font-size: 11px;width:200px;height:50px;background:#FFF;padding:10px;text-align:center;border:1px solid #000">
