@@ -38,6 +38,9 @@ function loggingIs( $type, $tableName, $values, $record )
     {
         $action = 'DELETED';
     }
+    if ( !$record || $record == '' ) {
+       $record = 'NULL';
+    };
     $query = 'INSERT INTO "LogAdminActions" ("table", "record", "time", "action", "admin") VALUES ('.pg_escape_string( $tableId ).', '.pg_escape_string( $record ).', NOW(), \''.$action.'\', '.pg_escape_string( $user ).')';
     $res = PQuery( $query );
     return 1;
