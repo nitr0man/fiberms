@@ -285,7 +285,6 @@ function init() {
                             "select": { pointRadius: 20 }
                         } )
             } );
-    map.addLayer( vectorPoint );
 
     var lat2, lon2, title, ident;
     for ( l = 0; l < nodesLabels_Count; l++ ) {
@@ -294,9 +293,10 @@ function init() {
             lon2 = nodesLabels_arr[l]["points"][0]["lon"];
             title = nodesLabels_arr[l]["title"];
             ident = nodesLabels_arr[l]["ident"];
-            addPoint( lon2, lat2, title, ident, map.layers[6] );
+            addPoint( lon2, lat2, title, ident, vectorPoint );
         }
     }
+    map.addLayer( vectorPoint );
 
     lineLayer.events.on( {
         'featureselected': onFeatureSelect,
