@@ -194,6 +194,15 @@ function CableLinePoint_UPDATE( $upd, $wr, $tmpT = FALSE )
     {
         $query .= genWhere( $wr );
     }
+    if (! $wr[ 'id' ]) {
+        if ( $wr != '' )
+        {
+            $query1 = 'SELECT id FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" '.genWhere( $wr );
+            $result = PQuery( $query1 );
+            $wr[ 'id' ] = $result[0]['id'];
+        } else
+            $wr[ 'id' ] = '';
+    }
     $result = PQuery( $query );
     loggingIs( 1, tmpTable( 'CableLinePoint', $tmpT ), $upd, $wr[ 'id' ] );
     return $result;
