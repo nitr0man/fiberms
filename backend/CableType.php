@@ -54,7 +54,7 @@ function CableLine_AddOpticalFiberForAll()
 
 function CableLine_SELECT( $sort, $wr, $tmpT = FALSE )
 {
-    $query = 'SELECT id, "OpenGIS", "CableType", length / 100.0 AS length, comment, name FROM "'.tmpTable( 'CableLine', $tmpT ).'"';
+    $query = 'SELECT id, "OpenGIS", "CableType", round(length / 100.0, 2) AS length, comment, name FROM "'.tmpTable( 'CableLine', $tmpT ).'"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
@@ -258,7 +258,7 @@ function getCableLinesSpliceCount( $tmpT = FALSE )
 function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $tmpT = FALSE )
 {
-    $query = 'SELECT DISTINCT ON ("cl".id, cl."name") "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length" / 100.0 AS "length", "cl"."comment",
+    $query = 'SELECT DISTINCT ON ("cl".id, cl."name") "cl".id, "cl"."OpenGIS", "cl"."CableType", round("cl"."length" / 100.0, 2) AS "length", "cl"."comment",
                 "cl"."name", "ct"."marking", "ct"."manufacturer",
                 "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube",
                 "ct"."tubeQuantity", "NN"."OpenGIS" AS "NNOpenGIS"                                
@@ -303,7 +303,7 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
 
 function getCopperCableLines()
 {
-    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl".length / 100.0 AS "length", "cl".comment, "cl".name, "ct"."fiberPerTube"
+    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", round("cl".length / 100.0, 2) AS "length", "cl".comment, "cl".name, "ct"."fiberPerTube"
 			  FROM "CableLine" AS "cl"
 			  LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
 			  WHERE "ct"."fiberPerTube"=0 AND "OpenGIS" IS NOT NULL';
@@ -313,7 +313,7 @@ function getCopperCableLines()
 
 function getNormalCableLines()
 {
-    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl".length / 100.0 AS "length", "cl".comment, "cl".name, "ct"."fiberPerTube"
+    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", round("cl".length / 100.0, 2) AS "length", "cl".comment, "cl".name, "ct"."fiberPerTube"
 			  FROM "CableLine" AS "cl"
 			  LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
 			  WHERE "ct"."fiberPerTube"!=0 AND "OpenGIS" IS NOT NULL';

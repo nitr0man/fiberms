@@ -127,6 +127,7 @@ else
         $smarty->assign( "data", $cableLine_arr );
         $smarty->assign( "pages", $pages );
         $smarty->assign( "mode", '' );
+        $smarty->assign( "sort", $sort ? '0' : '1' );
     }
     elseif ( ($_GET[ 'mode' ] == 'charac') and (isset( $_GET[ 'cablelineid' ] )) )
     {
