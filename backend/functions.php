@@ -16,8 +16,8 @@ function PQuery( $query )
 
     //error_log( $query );
     //print $query."<br>";
-    $res = pg_query( $connection, $query ) or $error = 1;
-    if ( $error == 1 )
+    $res = pg_query( $connection, $query );
+    if ( !$res )
     {
         $result[ 'error' ] = pg_last_error( $connection );
         return $result;
