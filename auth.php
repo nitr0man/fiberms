@@ -14,7 +14,7 @@ if (isset($_COOKIE['token']) && !isset($_SESSION['user'])) {
 		$_SESSION['class'] = $res['rows'][0]['class'];
 	}
 }
-if (!isset($_SESSION['user'])) {	$smarty->assign('warning", "<center><font color="red"><b>Нужно авторизоватся!</b></font></center>');
+if (!isset($_SESSION['user'])) {	$smarty->assign('warning', '<center><font color="red"><b>Нужно авторизоватся!</b></font></center>');
 	$smarty->display('login.tpl');
 	die();
 }
