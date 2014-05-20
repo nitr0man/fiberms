@@ -63,13 +63,14 @@ else
 {
     if ( !isset( $_GET[ 'mode' ] ) )
     {        
+        $pagesLink = '';
         if ( isset( $_GET[ 'sort' ] ) )
         {
             $sort = $_GET[ 'sort' ];
         }
         else
         {
-            $sort = 0;
+            $sort = 1;
         }
         if ( !isset( $_GET[ 'page' ] ) )
         {
@@ -103,6 +104,7 @@ else
                 ceil( $res[ 'allPages' ] / $config[ 'LinesPerPage' ] ), $page );
         $rows = $res[ 'rows' ];
         $i = -1;
+        $cableLine_arr = array();
         while ( ++$i < $res[ 'count' ] )
         {
             $cableLine_arr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$rows[ $i ][ 'id' ].'">'.$rows[ $i ][ 'name' ].'</a>';
@@ -124,6 +126,7 @@ else
         }
         $smarty->assign( "data", $cableLine_arr );
         $smarty->assign( "pages", $pages );
+        $smarty->assign( "mode", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'charac') and (isset( $_GET[ 'cablelineid' ] )) )
     {
@@ -237,7 +240,7 @@ else
         }
         $smarty->assign( "combobox_cabletype_values", $comboBox_CableType_Values );
         $smarty->assign( "combobox_cabletype_text", $comboBox_CableType_Text );
-        $smarty->assign( "combobox_cabletype_selected", $cableTypeId );
+        $smarty->assign( "combobox_cabletype_selected", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and (isset( $_GET[ 'cablelineid' ] )) )
     {

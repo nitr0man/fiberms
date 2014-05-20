@@ -19,6 +19,9 @@ function PQuery( $query )
     $res = pg_query( $connection, $query );
     if ( !$res )
     {
+        //print_r (debug_backtrace());
+        $result[ 'count' ] = 0;
+        $result[ 'rows' ] = NULL;
         $result[ 'error' ] = pg_last_error( $connection );
         return $result;
     }
@@ -36,6 +39,7 @@ function PQuery( $query )
 
 function genWhere( $wr, $sign = '=' )
 {
+    $where = '';
     foreach ( $wr as $field => $value )
     {
         if ( strlen( $where ) > 0 )
@@ -71,6 +75,8 @@ function genWhere( $wr, $sign = '=' )
 
 function genInsert( $ins )
 {
+    $fields = '';
+    $values = '';
     foreach ( $ins as $field => $value )
     {
         if ( strlen( $fields ) > 0 )

@@ -54,7 +54,7 @@ function CableLine_AddOpticalFiberForAll()
 
 function CableLine_SELECT( $sort, $wr, $tmpT = FALSE )
 {
-    $query = 'SELECT * FROM "'.tmpTable( 'CableLine', $tmpT ).'"';
+    $query = 'SELECT id, "OpenGIS", "CableType", length / 100.0 AS length, comment, name FROM "'.tmpTable( 'CableLine', $tmpT ).'"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
@@ -73,6 +73,11 @@ function CableLine_SELECT( $sort, $wr, $tmpT = FALSE )
 
 function CableLine_INSERT( $ins )
 {
+    if ( $ins[ 'length' ] ) {
+        $len = str_replace(',', '.', $ins[ 'length' ]);
+        if ( is_numeric( $len ) )
+            $ins[ 'length' ] = floatval($len) * 100;
+    }
     $query = 'INSERT INTO "CableLine"';
     $query .= genInsert( $ins )." RETURNING id";
     $result = PQuery( $query );
@@ -82,6 +87,11 @@ function CableLine_INSERT( $ins )
 
 function CableLine_UPDATE( $upd, $wr )
 {
+    if ( $upd[ 'length' ] ) {
+        $len = str_replace(',', '.', $upd[ 'length' ]);
+        if ( is_numeric( $len ) )
+            $upd[ 'length' ] = floatval($len) * 100;
+    }
     $query = 'UPDATE "CableLine" SET ';
     $query .= genUpdate( $upd );
     if ( $wr != '' )
@@ -108,6 +118,7 @@ function CableLine_DELETE( $wr )
 
 function CableType_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
 {
+    $allPages = '';
     $query = 'SELECT * FROM "CableType"';
     if ( $wr != '' )
     {
@@ -247,7 +258,7 @@ function getCableLinesSpliceCount( $tmpT = FALSE )
 function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $tmpT = FALSE )
 {
-    $query = 'SELECT DISTINCT ON ("cl".id, cl."name") "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length", "cl"."comment",
+    $query = 'SELECT DISTINCT ON ("cl".id, cl."name") "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl"."length" / 100.0 AS "length", "cl"."comment",
                 "cl"."name", "ct"."marking", "ct"."manufacturer",
                 "ct"."fiberPerTube"*"ct"."tubeQuantity" AS "fibers", "ct"."fiberPerTube",
                 "ct"."tubeQuantity", "NN"."OpenGIS" AS "NNOpenGIS"                                
@@ -261,7 +272,6 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
     {
         $query .= genWhere( $wr );
     }
-    $query .= ' ORDER BY "name"';
     if ( $sort == 1 )
     {
         $query .= ' ORDER BY "name"';
@@ -293,7 +303,7 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
 
 function getCopperCableLines()
 {
-    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl".length, "cl".comment, "cl".name, "ct"."fiberPerTube"
+    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl".length / 100.0 AS "length", "cl".comment, "cl".name, "ct"."fiberPerTube"
 			  FROM "CableLine" AS "cl"
 			  LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
 			  WHERE "ct"."fiberPerTube"=0 AND "OpenGIS" IS NOT NULL';
@@ -303,7 +313,7 @@ function getCopperCableLines()
 
 function getNormalCableLines()
 {
-    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl".length, "cl".comment, "cl".name, "ct"."fiberPerTube"
+    $query = 'SELECT "cl".id, "cl"."OpenGIS", "cl"."CableType", "cl".length / 100.0 AS "length", "cl".comment, "cl".name, "ct"."fiberPerTube"
 			  FROM "CableLine" AS "cl"
 			  LEFT JOIN "CableType" AS "ct" ON "ct".id="cl"."CableType"
 			  WHERE "ct"."fiberPerTube"!=0 AND "OpenGIS" IS NOT NULL';

@@ -3,6 +3,7 @@
 function loggingIs( $type, $tableName, $values, $record )
 {
     $normalTable = $tableName;
+    $action = '';
     if ( strpos( $tableName, "_tmp" ) !== FALSE )
     {
         $normalTable = substr( $tableName, 0, strpos( $tableName, "_tmp" ) );
@@ -21,6 +22,8 @@ function loggingIs( $type, $tableName, $values, $record )
         $user = 1;
     }
     $res = PQuery( 'SELECT id FROM "LogTableList" WHERE "name"=\''.$normalTable.'\'' );
+    if ( $res[ 'count' ] )
+        return 0;
     $tableId = $res[ 'rows' ][ 0 ][ 'id' ];
     if ( $type == 1 ) //update
     {

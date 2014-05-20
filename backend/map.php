@@ -106,7 +106,7 @@ function addCableLinePoint( $coors, $CableType, $length, $name, $comment,
     }
     else
     {
-        $ins[ 'length' ] = $length;
+        $ins[ 'length' ] = floatval(str_replace(',', '.', $length)) * 100;
     }
     $ins[ 'CableType' ] = $CableType;
     $ins[ 'name' ] = $name;
