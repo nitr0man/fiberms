@@ -20,6 +20,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 
         $smarty->assign( "id", $rows[ 0 ][ 'id' ] );
         $smarty->assign( "login", $rows[ 0 ][ 'username' ] );
+        $smarty->assign( "password", '' );
         $class = $rows[ 0 ][ 'class' ];
         $res = Users_SELECT( '', '' );
         $rows = $res[ 'rows' ];
@@ -77,6 +78,15 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
+    $smarty->assign( "id", '' );
+    $smarty->assign( "login", '' );
+    $smarty->assign( "password", '' );
+    $smarty->assign( "combobox_usergroup_values", '' );
+    $smarty->assign( "combobox_usergroup_text", '' );
+    $smarty->assign( "combobox_usergroup_selected", '' );
+    $smarty->assign( "combobox_users_selected", '' );
+    $smarty->assign( "combobox_users_values", '' );
+    $smarty->assign( "combobox_users_text", '' );
     $smarty->display( 'Users.tpl' );
 }
 ?>

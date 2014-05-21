@@ -12,7 +12,7 @@
 		<td><!--<label class="events_anonce">deprecated</label>--></td><td><input type="hidden" name="whichadded" value="networkbox" size="30" /></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce"><input type="radio" name="group1" id="rb1" checked="checked" style="width: auto;" onClick="javascript: GetUserInfo(0,1); document.users.addchangebutton.value = 'Изменить';"> Изменить</label><br>
+		<td colspan=2><label class="events_anonce"><input type="radio" name="group1" id="rb1" checked="checked" style="width: auto;" onClick="javascript: GetUserInfo(0,1); document.users.addchangebutton.value = 'Изменить';"> Изменить</label><br>
 		<label class="events_anonce"><input type="radio" name="group1" id="rb2" style="width: auto;" onClick="javascript: ClearInput(); document.users.addchangebutton.value = 'Добавить';"> Добавить нового пользователя</label></td>
 		</tr>
 	</table>
@@ -24,7 +24,7 @@
 <!--	<div id="addnewboxtype">-->
 		<table id="contable">
 		<tr>
-		<td><label class="events_anonce">ID:</label></td><td> <input type="text" value="{$id}" name="id"></td>
+		<td><label class="events_anonce">ID:</label></td><td> <input type="text" value="{$id}" name="id" readonly></td>
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Логин:</label></td><td> <input type="text" value="{$login}" name="login"></td><!--<input type="text" checked name="boxtype" size="30" /></td>-->
