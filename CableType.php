@@ -52,17 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	showMessage($message, $error);
 } else {
     if (!isset($_GET['mode'])) {
-		if (!isset($_GET['page'])) {
-			$page = 1;
-		} else {
-			$page = $_GET['page'];
-		}
-		if (isset($_GET['sort'])) {
-			$sort = $_GET['sort'];
-		} else {
-			$sort = 0;
-		}
-		$res = CableType_SELECT($_GET['sort'], '', $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
+		$page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
+		$sort = (isset( $_GET[ 'sort' ] )) ? $_GET[ 'sort' ] : 0;
+		$res = CableType_SELECT($sort, '', $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
 		$pages = genPages('CableType.php?sort='.$sort.'&', ceil($res['allPages']/$config['LinesPerPage']), $page);
 		$rows = $res['rows'];
 	  	$i = -1;
@@ -87,6 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	  	}
 		$smarty->assign("data", $CableType_arr);
 		$smarty->assign('pages', $pages);
+		$smarty->assign( "sort", $sort ? '0' : '1' );
 	} elseif (($_GET['mode'] == 'change') and (isset($_GET['cabletypeid']))) {
 		if ($_SESSION['class'] > 1)	{
 			$message = '!!!';
@@ -95,14 +88,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("mod", "1");
 		$smarty->assign("back", getenv("HTTP_REFERER"));
 
-    	$wr['id'] = $_GET['cabletypeid'];
-    	$res = CableType_SELECT(0, $wr);
-    	if ($res['count'] < 1) {
+		$wr['id'] = $_GET['cabletypeid'];
+		$res = CableType_SELECT(0, $wr);
+		if ($res['count'] < 1) {
 			$message = 'Типа кабеля с таким ID не существует!<br />
 			<a href="CableType.php">Назад</a>';
 			showMessage($message, 0);
 		}
-    	$rows = $res['rows'];
+		$rows = $res['rows'];
 		
 		$smarty->assign("id", $rows[0]['id']);
 		$smarty->assign("marking", $rows[0]['marking']);

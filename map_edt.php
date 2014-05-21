@@ -2,6 +2,8 @@
 require_once 'auth.php';
 require_once 'backend/map.php';
 
+ini_set('display_errors', false);
+
 if ( !checkSession() || $_SESSION[ 'class' ] > 1 )
 {
     header( "Location: map.php" );
@@ -9,7 +11,7 @@ if ( !checkSession() || $_SESSION[ 'class' ] > 1 )
 }
 $user_res = getCurrUserInfo();
 $user = $user_res[ 'rows' ][ 0 ][ 'id' ];
-if ( $_GET[ 'mode' ] == "logout" )
+if ( isset ($_GET[ 'mode' ]) && $_GET[ 'mode' ] == "logout" )
 {
     finishMapSession();
     header( "Location: map.php" );

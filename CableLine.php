@@ -64,22 +64,8 @@ else
     if ( !isset( $_GET[ 'mode' ] ) )
     {        
         $pagesLink = '';
-        if ( isset( $_GET[ 'sort' ] ) )
-        {
-            $sort = $_GET[ 'sort' ];
-        }
-        else
-        {
-            $sort = 1;
-        }
-        if ( !isset( $_GET[ 'page' ] ) )
-        {
-            $page = 1;
-        }
-        else
-        {
-            $page = $_GET[ 'page' ];
-        }
+        $page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
+        $sort = (isset( $_GET[ 'sort' ] )) ? $_GET[ 'sort' ] : 0;
         if ( !isset( $_GET[ 'typeid' ] ) )
         {
             $res = getCableLineList( $sort, '', $config[ 'LinesPerPage' ],

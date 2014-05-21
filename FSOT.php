@@ -43,21 +43,14 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	showMessage($message, $error);
 } else {
     if (!isset($_GET['mode'])) {
-		if (isset($_GET['sort'])) {
-			$sort = $_GET['sort'];
-		} else {
-			$sort = 0;
-		}
-		if (!isset($_GET['page'])) {
-			$page = 1;
-		} else {
-			$page = $_GET['page'];
-		}
+		$page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
+		$sort = (isset( $_GET[ 'sort' ] )) ? $_GET[ 'sort' ] : 0;
 		$res = getFSOTsInfo($sort, $config['LinesPerPage'], ($page-1)*$config['LinesPerPage']);
 		$pages = genPages('FSOT.php?sort='.$sort.'&', ceil($res['FSOTs']['allPages']/$config['LinesPerPage']), $page);
 
 		$rows = $res['FSOTs']['rows'];
 	  	$i = -1;
+		$cableLine_arr = array();
 	  	while (++$i < $res['FSOTs']['count']) {	  		$cableLine_arr[] = $rows[$i]['id'];
 	  		$cableLine_arr[] = $rows[$i]['marking'];
 			$cableLine_arr[] = $rows[$i]['manufacturer'];
@@ -70,6 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 	  	}
 		$smarty->assign("data", $cableLine_arr);
 		$smarty->assign("pages", $pages);
+		$smarty->assign("mode", NULL);
+		$smarty->assign( "sort", $sort ? '0' : '1' );
 	}
 	elseif (($_GET['mode'] == 'change') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{

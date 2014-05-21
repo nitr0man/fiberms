@@ -26,6 +26,7 @@ function genPages($link, $pagesCount, $page) {
 	$count = $page+5;
 	if ($count >= $pagesCount-1) {
 		$count = $pagesCount-1;
+		$End = '';
 	} else {
 		$End = '..';
 	}
@@ -36,7 +37,7 @@ function genPages($link, $pagesCount, $page) {
 			$pages .= ' <a href="'.$link.'page='.$i.'">'.$i.'</a> ';
 		}
 	}
-	if ($page != $pagesCount) {
+	if ($page < $pagesCount) {
 		$pages .= $End.' <a href="'.$link.'page='.$pagesCount.'">'.$pagesCount.'</a>';
 	} else {
 		if ($page != 1) {

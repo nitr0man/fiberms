@@ -59,14 +59,7 @@ else
     $FSOT_Text = array();
     if ( !isset( $_GET[ 'mode' ] ) )
     {
-        if ( !isset( $_GET[ 'page' ] ) )
-        {
-            $page = 1;
-        }
-        else
-        {
-            $page = $_GET[ 'page' ];
-        }
+        $page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
         $res = getFiberSpliceOrganizerInfo( $config[ 'LinesPerPage' ],
                 ($page - 1) * $config[ 'LinesPerPage' ], -1, -1 );
         $pages = genPages( 'FSO.php?',

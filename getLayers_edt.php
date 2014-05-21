@@ -6,6 +6,8 @@ require_once 'backend/NetworkNode.php';
 require_once 'backend/FS.php';
 require_once 'backend/map.php';
 
+ini_set('display_errors', false);
+
 //checkData();
 if ( $_GET[ 'mode' ] == 'GetCableLines' )
 { // кабельные линии

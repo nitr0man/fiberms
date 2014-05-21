@@ -5,6 +5,8 @@ require_once('backend/CableType.php');
 require_once('backend/NetworkNode.php');
 require_once('backend/FS.php');
 
+ini_set('display_errors', false);
+
 if ( $_GET[ 'mode' ] == 'GetCableLines' )
 { // кабельные линии
     $res = getCableLineList( 0, '', -1, -1 );

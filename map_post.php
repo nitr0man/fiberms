@@ -3,6 +3,8 @@
 require_once "backend/functions.php";
 require_once "backend/map.php";
 
+ini_set('display_errors', false);
+
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
     $obj = json_decode( $_POST[ 'coors' ] );

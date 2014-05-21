@@ -71,20 +71,14 @@ else
 {
     if ( !isset( $_GET[ 'mode' ] ) )
     {
-        if ( !isset( $_GET[ 'page' ] ) )
-        {
-            $page = 1;
-        }
-        else
-        {
-            $page = $_GET[ 'page' ];
-        }
+        $page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
         $res = NetworkBoxType_SELECT( '', '', $config[ 'LinesPerPage' ],
                 ($page - 1) * $config[ 'LinesPerPage' ] );
         $pages = genPages( 'NetworkBoxType.php?',
                 ceil( $res[ 'allPages' ] / $config[ 'LinesPerPage' ] ), $page );
         $rows = $res[ 'rows' ];
         $i = -1;
+        $boxType_arr = array();
         while ( ++$i < $res[ 'count' ] )
         {
             $boxType_arr[] = $rows[ $i ][ 'id' ];
@@ -117,6 +111,7 @@ else
         }
         $smarty->assign( "data", $boxType_arr );
         $smarty->assign( "pages", $pages );
+        $smarty->assign( "mode", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'charac') and (isset( $_GET[ 'boxtypeid' ] )) )
     {
@@ -190,6 +185,14 @@ else
         $smarty->assign( "mode", "add_change" );
         $smarty->assign( "mod", "2" );
         $smarty->assign( "back", getenv( "HTTP_REFERER" ) );
+        $smarty->assign( "id", '' );
+        $smarty->assign( "marking", '' );
+        $smarty->assign( "manufacturer", '' );
+        $smarty->assign( "units", 0 );
+        $smarty->assign( "width", 0 );
+        $smarty->assign( "height", 0 );
+        $smarty->assign( "length", 0 );
+        $smarty->assign( "diameter", 0 );
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and (isset( $_GET[ 'boxtypeid' ] )) )
     {

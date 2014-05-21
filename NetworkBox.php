@@ -57,39 +57,26 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
+    $comboBox_BoxType_Values = array();
+    $comboBox_BoxType_Text = array();
     if ( !isset( $_GET[ 'mode' ] ) )
     {
-        if ( isset( $_GET[ 'sort' ] ) )
+        $page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
+        $sort = (isset( $_GET[ 'sort' ] )) ? $_GET[ 'sort' ] : 0;
+        if ( !isset( $_GET[ 'boxtypeid' ] ) )
         {
-            $sort = $_GET[ 'sort' ];
-        }
-        else
-        {
-            $sort = 0;
-        }
-        if ( !isset( $_GET[ 'page' ] ) )
-        {
-            $page = 1;
-        }
-        else
-        {
-            $page = $_GET[ 'page' ];
-        }
-        $typeId = $_GET[ 'boxtypeid' ];
-        if ( !isset( $typeId ) )
-        {
-            $res = getNetworkBoxList( $_GET[ 'sort' ], '',
+            $res = getNetworkBoxList( $sort, '',
                     $config[ 'LinesPerPage' ],
                     ($page - 1) * $config[ 'LinesPerPage' ] );
         }
         else
         {
-            $wr[ 'NetworkBoxType' ] = $typeId;
-            $res = getNetworkBoxList( $_GET[ 'sort' ], $wr,
+            $wr[ 'NetworkBoxType' ] = $_GET[ 'boxtypeid' ];
+            $res = getNetworkBoxList( $sort, $wr,
                     $config[ 'LinesPerPage' ],
                     ($page - 1) * $config[ 'LinesPerPage' ] );
         }
-        if ( $res[ 'count' ] < 1 )
+        if ( $res[ 'count' ] < 1 && isset( $_GET[ 'boxtypeid' ] ) )
         {
             $message = 'Ящиков с таким ID/Типом не существует!<br />
 						<a href="NetworkBox.php">Назад</a>';
@@ -99,6 +86,7 @@ else
                 ceil( $res[ 'allPages' ] / $config[ 'LinesPerPage' ] ), $page );
         $rows = $res[ 'rows' ];
         $i = -1;
+        $box_arr = array();
         while ( ++$i < $res[ 'count' ] )
         {
             $invNum = $rows[ $i ][ 'inventoryNumber' ];
@@ -114,6 +102,8 @@ else
         }
         $smarty->assign( "data", $box_arr );
         $smarty->assign( "pages", $pages );
+        $smarty->assign( "mode", '' );
+        $smarty->assign( "sort", $sort ? '0' : '1' );
     }
     elseif ( ($_GET[ 'mode' ] == 'charac') and (isset( $_GET[ 'boxid' ] )) )
     {
@@ -213,6 +203,7 @@ else
         }
         $smarty->assign( "combobox_boxtype_values", $comboBox_BoxType_Values );
         $smarty->assign( "combobox_boxtype_text", $comboBox_BoxType_Text );
+        $smarty->assign( "invNum", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and (isset( $_GET[ 'boxid' ] )) )
     {

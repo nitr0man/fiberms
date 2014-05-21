@@ -120,41 +120,30 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
+    $comboBox_Box_Values = array();
+    $comboBox_Box_Text = array();
     if ( !isset( $_GET[ 'mode' ] ) )
     {
         require_once('backend/CableType.php');
 
-        if ( !isset( $_GET[ 'page' ] ) )
-        {
-            $page = 1;
-        }
-        else
-        {
-            $page = $_GET[ 'page' ];
-        }
-        if ( isset( $_GET[ 'sort' ] ) )
-        {
-            $sort = $_GET[ 'sort' ];
-        }
-        else
-        {
-            $sort = 0;
-        }
-        $nodeId = $_GET[ 'nodeid' ];
+        $page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
+        $sort = (isset( $_GET[ 'sort' ] )) ? $_GET[ 'sort' ] : 0;
+        $FSort = (isset( $_GET[ 'FSort' ] )) ? $_GET[ 'FSort' ] : NULL;
+
         if ( !isset( $_GET[ 'nodeid' ] ) )
         {
-            $res = getNetworkNodeList_NetworkBoxName( $sort, $_GET[ 'FSort' ],
+            $res = getNetworkNodeList_NetworkBoxName( $sort, $FSort,
                     '', $config[ 'LinesPerPage' ],
                     ($page - 1) * $config[ 'LinesPerPage' ] );
         }
         else
         {
-            $wr[ 'id' ] = $nodeId;
-            $res = getNetworkNodeList_NetworkBoxName( $sort, $_GET[ 'FSort' ],
+            $wr[ 'id' ] = $_GET[ 'nodeid' ];
+            $res = getNetworkNodeList_NetworkBoxName( $sort, $FSort,
                     $wr, $config[ 'LinesPerPage' ],
                     ($page - 1) * $config[ 'LinesPerPage' ] );
         }
-        if ( $res[ 'count' ] < 1 )
+        if ( $res[ 'count' ] < 1 && isset( $_GET[ 'nodeid' ] ) )
         {
             $message = 'Узла с таким ID не существует!<br />
 			<a href="NetworkNodes.php">Назад</a>';
@@ -164,6 +153,7 @@ else
                 ceil( $res[ 'allPages' ] / $config[ 'LinesPerPage' ] ), $page );
         $rows = $res[ 'rows' ];
         $i = -1;
+        $node_arr = array();
         while ( ++$i < $res[ 'count' ] )
         {
             $node_arr[] = $rows[ $i ][ 'id' ];
@@ -189,6 +179,8 @@ else
         }
         $smarty->assign( "data", $node_arr );
         $smarty->assign( "pages", $pages );
+        $smarty->assign( "mode", '' );
+        $smarty->assign( "sort", $sort ? '0' : '1' );
     }
     elseif ( ($_GET[ 'mode' ] == 'charac') and (isset( $_GET[ 'nodeid' ] )) )
     {
@@ -353,6 +345,14 @@ else
         }
         $smarty->assign( "combobox_box_values", $comboBox_Box_Values );
         $smarty->assign( "combobox_box_text", $comboBox_Box_Text );
+        $smarty->assign( "id", '' );
+        $smarty->assign( "name", '' );
+        $smarty->assign( "NetworkBox", '' );
+        $smarty->assign( "note", '' );
+        $smarty->assign( "OpenGIS", '' );
+        $smarty->assign( "SettlementGeoSpatial", '' );
+        $smarty->assign( "Building", '' );
+        $smarty->assign( "Apartment", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and (isset( $_GET[ 'nodeid' ] )) )
     {
