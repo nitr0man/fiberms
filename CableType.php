@@ -143,8 +143,15 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("tensileStrength", $rows[0]['tensileStrength']);
 		$smarty->assign("diameter", $rows[0]['diameter']);
 		$smarty->assign("comment", nl2br($rows[0]['comment']));
-		$smarty->assign("ChangeDelete", $changeDelete);
 	} elseif ($_GET['mode'] == 'add') {
+		$smarty->assign("id", '');
+		$smarty->assign("marking", '');
+		$smarty->assign("manufacturer", '');
+		$smarty->assign("tubeQuantity", 0);
+		$smarty->assign("fiberPerTube", 0);
+		$smarty->assign("tensileStrength", 0);
+		$smarty->assign("diameter", 0);
+		$smarty->assign("comment", '');
 		if ($_SESSION['class'] > 1)
 		{
 			$message = '!!!';

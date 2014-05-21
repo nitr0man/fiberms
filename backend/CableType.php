@@ -118,7 +118,7 @@ function CableLine_DELETE( $wr )
 
 function CableType_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
 {
-    $allPages = '';
+    $allPages = 0;
     $query = 'SELECT * FROM "CableType"';
     if ( $wr != '' )
     {
@@ -276,6 +276,7 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
     {
         $query .= ' ORDER BY "name"';
     }
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;

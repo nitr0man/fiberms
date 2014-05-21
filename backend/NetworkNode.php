@@ -95,6 +95,7 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
     {
         $query .= ' ORDER BY "NN"."'.$FSort.'" LIMIT 0,2';
     }
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;

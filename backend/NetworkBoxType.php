@@ -18,6 +18,7 @@ function NetworkBox_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY "inventoryNumber"';
     }
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
@@ -73,6 +74,7 @@ function NetworkBoxType_SELECT( $ob, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY '.$ob;
     }
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
@@ -131,6 +133,7 @@ function getNetworkBoxList( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY "NB"."inventoryNumber" ';
     }
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;

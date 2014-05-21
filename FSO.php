@@ -55,6 +55,8 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
+    $FSOT_Values = array();
+    $FSOT_Text = array();
     if ( !isset( $_GET[ 'mode' ] ) )
     {
         if ( !isset( $_GET[ 'page' ] ) )

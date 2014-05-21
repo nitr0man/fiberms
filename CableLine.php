@@ -230,6 +230,10 @@ else
         $smarty->assign( "mode", "add_change" );
         $smarty->assign( "mod", "2" );
         $smarty->assign( "back", getenv( "HTTP_REFERER" ) );
+        $smarty->assign( "id", '' );
+        $smarty->assign( "length", '0.00' );
+        $smarty->assign( "comment", '' );
+        $smarty->assign( "name", '' );
 
         $res = CableType_SELECT( '', '' );
         $rows = $res[ 'rows' ];

@@ -14,6 +14,7 @@ function FSO_SELECT( $ob, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY '.$ob;
     }
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
@@ -73,6 +74,7 @@ function FSOT_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY "marking"';
     }
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
@@ -326,6 +328,7 @@ function getFiberSpliceOrganizerInfo( $linesPerPage = -1, $skip = -1,
     }
     $query .= ' GROUP BY "fso".id, "fsot"."marking", "fsot"."manufacturer", "nn".id,
         "fso"."FiberSpliceOrganizationType", "nn"."name"';
+    $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;

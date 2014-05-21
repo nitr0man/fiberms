@@ -100,6 +100,10 @@ if ($_SERVER["REQUEST_METHOD"] == 'POST') {
 		$smarty->assign("mode", "add_change");
 		$smarty->assign("mod", "2");
 		$smarty->assign("back", getenv("HTTP_REFERER"));
+		$smarty->assign("id", '');
+		$smarty->assign("marking", '');
+		$smarty->assign("manufacturer", '');
+		$smarty->assign("note", '');
 	} elseif (($_GET['mode'] == 'delete') and (isset($_GET['fsotid']))) {
 		if ($_SESSION['class'] > 1)	{			$message = '!!!';
 			showMessage($message, 0);
