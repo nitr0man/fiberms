@@ -235,7 +235,7 @@ function addNetworkBox( $networkBoxType, $invNum, $tmpT = FALSE )
             .genInsert( $ins ).' RETURNING id';
     $res = PQuery( $query );
     $NetworkBoxId = [];
-    if (defined($res['error'])) {
+    if (isset($res['error'])) {
        $NetworkBoxId['error'] = $res['error'];
     }
     $NetworkBoxId['id'] = $res[ 'rows' ][ 0 ][ 'id' ];
@@ -345,7 +345,7 @@ function checkSession()
 function checkData()
 {
     $query = 'SELECT * FROM "MapSettings"
-                WHERE "LastChangedMap" >= "LastChangedTmpMap"';
+                WHERE "LastChangedMap" >= "LastChangedTmpMap" OR "LastChangedTmpMap" = NULL';
     $res = PQuery( $query );
     if ( $res[ 'count' ] == 1 )
     {
@@ -424,7 +424,7 @@ function saveTmpData()
     $query .= ' TRUNCATE '.$tbl_del.' CASCADE;'.$ins;
     $query .= ' COMMIT;';
     $res = PQuery( $query );
-    if (!defined($res['error'])) {
+    if (!isset($res['error'])) {
         $res = setMapLastEdit();
     }
     return $res;

@@ -215,9 +215,9 @@ function createTmpTables()
     $tables = array();
     for ( $i = 0; $i < count( $tablist ); $i++ )
     {
-        $res = PQuery( "SELECT * FROM information_schema.tables WHERE table_name = '".tmpTable( $tablist[i], TRUE )."';");
+        $res = PQuery( "SELECT * FROM information_schema.tables WHERE table_name = '".tmpTable( $tablist[$i], TRUE )."';");
         if ($res['count'] == 0) {
-            $tables[] = $tablist[i];
+            $tables[] = $tablist[$i];
         }
     }
     $query = 'BEGIN;';

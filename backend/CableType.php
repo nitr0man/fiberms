@@ -295,7 +295,7 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
     for ( $i = 0; $i < $result[ 'count' ]; $i++ )
     {
         $id = $result[ 'rows' ][ $i ][ 'id' ];
-        $result[ 'rows' ][ $i ][ 'FiberSpliceCount' ] = $splices[ $id ][ 'FiberSpliceCount' ];
+        $result[ 'rows' ][ $i ][ 'FiberSpliceCount' ] = (isset($splices[ $id ])) ? $splices[ $id ][ 'FiberSpliceCount' ] : 0;
     }
 
     $result[ 'allPages' ] = $allPages;

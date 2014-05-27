@@ -1627,6 +1627,8 @@ INSERT INTO "LogTableList" VALUES (10, 'OpticalFiber', NULL);
 INSERT INTO "LogTableList" VALUES (11, 'OpticalFiberJoin', NULL);
 INSERT INTO "LogTableList" VALUES (12, 'OpticalFiberSplice', NULL);
 
+INSERT INTO "MapSettings"  VALUES (NOW(), NOW(), 1);
+
 --
 -- PostgreSQL database dump complete
 --

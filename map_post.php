@@ -7,10 +7,14 @@ ini_set('display_errors', false);
 
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
-    $obj = json_decode( $_POST[ 'coors' ] );
-    $coors = $obj->{'coorArr'};
-    $CableLineId = (int)$obj->{'CableLineId'};
-    $uId = (int)$_POST[ 'userId' ];
+    if (isset($_POST[ 'coors' ])) {
+        $obj = json_decode( $_POST[ 'coors' ] );
+        $coors = isset($obj->{'coorArr'}) ? $obj->{'coorArr'} : NULL;
+        $CableLineId = isset($obj->{'CableLineId'}) ? (int)$obj->{'CableLineId'} : NULL;
+    } else {
+        $coors = $CableLineId = NULL;
+    }
+    $uId = (isset($_POST[ 'userId' ])) ? (int)$_POST[ 'userId' ] : NULL;
     $_SESSION[ 'user_id' ] = $uId;
     if ( $_POST[ 'mode' ] == "updCableLine" )
     {
@@ -90,7 +94,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         if (defined($boxId['id'])) {
            $result = array( "NetworkBoxId" => $boxId['id'] );
         } else {
-           $result = array( "error" => $boxId['error'] );
+           $result = array( "error" => (isset($boxId['error'])) ? $boxId['error'] : NULL );
         }
         setTmpMapLastEdit();
         setMapUserActivity( $uId );
