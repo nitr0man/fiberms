@@ -211,18 +211,26 @@ function createTmpTables()
 {
     global $config;
     $db_user = $config[ 'user' ];
-    $tables = getTables();
+    $tablist = getTables();
+    $tables = array();
+    for ( $i = 0; $i < count( $tablist ); $i++ )
+    {
+        $res = PQuery( "SELECT * FROM information_schema.tables WHERE table_name = '".tmpTable( $tablist[i], TRUE )."';");
+        if ($res['count'] == 0) {
+            $tables[] = $tablist[i];
+        }
+    }
     $query = 'BEGIN;';
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
         $table = $tables[ $i ];
         $tmpT = tmpTable( $table, TRUE );
         $query .= ' CREATE TABLE  "'.$tmpT.'" ( LIKE "'.$table.'" INCLUDING DEFAULTS INCLUDING INDEXES );';
-        $query .= 'ALTER TABLE "CableLine" OWNER TO '.$db_user.';';
+        $query .= 'ALTER TABLE "'.$tmpT.'" OWNER TO '.$db_user.';';
         $query .= ' INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'";';
     }
     $query .= ' COMMIT;';
-    PQuery( $query );
+    return PQuery( $query );
 }
 
 function dropTmpTables()
@@ -244,7 +252,7 @@ function dropTmpTables()
     $query .= ' DROP TABLE IF EXISTS '.$tbl_del.' CASCADE;';
     $query .= ' COMMIT;';
     //print($query);
-    PQuery( $query );
+    return PQuery( $query );
 }
 
 function removeDup( $arr )

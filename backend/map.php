@@ -333,6 +333,12 @@ function checkSession()
                 WHERE "LastAction" + INTERVAL \'30 MINUTES\' > NOW()';
     $res = PQuery( $query );
     $sesUserId = $res[ 'rows' ][ 0 ][ 'UserId' ];
+    if ($res[ 'count' ] > 0) {
+        return $user == $sesUserId ? TRUE : FALSE;
+    } else {
+        checkData();
+        return TRUE;
+    }
     return $res[ 'count' ] > 0 ? $user == $sesUserId ? TRUE : FALSE  : TRUE;
 }
 
@@ -344,6 +350,8 @@ function checkData()
     if ( $res[ 'count' ] == 1 )
     {
         dropTmpTables();
+        createTmpTables();
+    } else {
         createTmpTables();
     }
 }
