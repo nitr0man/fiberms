@@ -239,7 +239,7 @@ function getAllInfoBySpliceId( $spliceId )
 {
     $query = 'SELECT "of"."CableLine", "of"."fiber", "of"."note", "ofs"."NetworkNode",
             "ofs"."FiberSpliceOrganizer", "cl"."name" AS "cl_name", "nn"."name" AS "nn_name",
-            "ofj"."OpticalFiber", "ofj".id AS "ofj_id"
+            round(cl.length / 100.0, 2) AS length, "ofj"."OpticalFiber", "ofj".id AS "ofj_id"
             FROM "OpticalFiberJoin" AS "ofj"
             LEFT JOIN "OpticalFiber" AS "of" ON "of".id = "ofj"."OpticalFiber"
             LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.pg_escape_string( $spliceId ).'
