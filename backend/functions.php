@@ -140,7 +140,7 @@ function genWhereAndOr( $wr, $OrAnd )
 function getCurrUserInfo()
 {
     global $_SESSION;
-    $login = $_SESSION[ 'user' ];
+    $login = (isset($_SESSION[ 'user' ])) ? $_SESSION[ 'user' ] : "";
     if ( $login != "" )
     {
         $query = 'SELECT * FROM "Users" WHERE "username"=\''.$login.'\'';

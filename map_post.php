@@ -62,7 +62,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $building = $obj->{'building'};
         $note = $obj->{'note'};
         $name = $obj->{'name'};
-        addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
+        addNode( $coors, $name, $NetworkBoxId, $note, NULL,
                 $building, $apartment, TRUE );
         setTmpMapLastEdit();
     }
@@ -91,7 +91,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $networkBoxType = $obj->{'networkBoxType'};
         $invNum = $obj->{'invNum'};
         $boxId = addNetworkBox( $networkBoxType, $invNum, TRUE );
-        if (defined($boxId['id'])) {
+        if (isset($boxId['id'])) {
            $result = array( "NetworkBoxId" => $boxId['id'] );
         } else {
            $result = array( "error" => (isset($boxId['error'])) ? $boxId['error'] : NULL );

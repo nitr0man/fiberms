@@ -547,6 +547,10 @@ function init() {
             }, 9000 );
             $.post( "map_post.php", { mode: "cancel", userId: userId },
             function() {
+                res = JSON.parse( data );
+                if (res.error) {
+                    alert(res.error);
+                }
                 refreshAllLayers();
             } );
         },

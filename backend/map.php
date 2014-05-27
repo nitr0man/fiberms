@@ -236,9 +236,11 @@ function addNetworkBox( $networkBoxType, $invNum, $tmpT = FALSE )
     $res = PQuery( $query );
     $NetworkBoxId = [];
     if (isset($res['error'])) {
-       $NetworkBoxId['error'] = $res['error'];
+        $NetworkBoxId['error'] = $res['error'];
+    } else {
+        $NetworkBoxId['id'] = $res[ 'rows' ][ 0 ][ 'id' ];
     }
-    $NetworkBoxId['id'] = $res[ 'rows' ][ 0 ][ 'id' ];
+    error_log(print_r($NetworkBoxId, TRUE));
     return $NetworkBoxId;
 }
 
@@ -345,12 +347,13 @@ function checkSession()
 function checkData()
 {
     $query = 'SELECT * FROM "MapSettings"
-                WHERE "LastChangedMap" >= "LastChangedTmpMap" OR "LastChangedTmpMap" = NULL';
+                WHERE "LastChangedMap" >= "LastChangedTmpMap"';
     $res = PQuery( $query );
     if ( $res[ 'count' ] == 1 )
     {
         dropTmpTables();
         createTmpTables();
+        setTmpMapLastEdit();
     } else {
         createTmpTables();
     }
