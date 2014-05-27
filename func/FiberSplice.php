@@ -127,8 +127,7 @@ function getFibers( $networkNodeId, $CableLine, $fiber )
     $j = $res[ 'CableLines' ][ $CableLine ];
     for ( $i = 1; $i <= $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ]; $i++ )
     {
-        $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
-        if ( (!isset( $arr )) or ($i == $fiber) )
+        if ( (!isset( $res[ 'SpliceArray' ][ $j ][ $i ] )) or ($i == $fiber) )
         {
             $fibers[] = $i;
         }

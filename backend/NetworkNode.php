@@ -66,7 +66,7 @@ function NetworkNode_DELETE( $wr, $tmpT = FALSE )
 function getNetworkNode_NetworkBoxName( $networkNodeId )
 {
     $query = 'SELECT "NN".id, "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
-        "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NBT"."marking" AS "NBTMarking",
+        "NN"."OpenGIS", "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NBT"."marking" AS "NBTMarking",
         COUNT("OFS".id) AS "fiberSpliceCount"
   		FROM "NetworkNode" AS "NN"
 		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox" 

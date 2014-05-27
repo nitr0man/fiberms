@@ -268,7 +268,7 @@ function removeDup( $arr )
             $dupeCount = 0;
             foreach ( $val as $key => $value )
             {
-                if ( $value == $val2[ $key ] )
+                if ( isset($val2[ $key ]) && $value == $val2[ $key ] )
                 {
                     $dupeCount++;
                 }

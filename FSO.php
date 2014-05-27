@@ -67,6 +67,7 @@ else
 
         $rows = $res[ 'rows' ];
         $i = -1;
+        $FSO = array();
         while ( ++$i < $res[ 'count' ] )
         {
             $FSO[ ] = $rows[ $i ][ 'id' ];
@@ -86,6 +87,7 @@ else
         }
         $smarty->assign( "data", $FSO );
         $smarty->assign( "pages", $pages );
+        $smarty->assign( "mode", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'fsoid' ] )) )
     {

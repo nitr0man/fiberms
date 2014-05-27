@@ -9,7 +9,7 @@ require_once "design_func.php";
 
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
-    $back = $_POST[ 'back' ];
+    $back = (isset($_POST[ 'back' ])) ? $_POST[ 'back' ] : '';
     if ( $_POST[ 'mode' ] == 1 )
     {
         $SpliceId = $_POST[ 'SpliceId' ];
@@ -85,7 +85,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
-    if ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'networknodeid' ] )) and (isset( $_GET[ 'clid1' ] )) and (isset( $_GET[ 'fiber1' ] )) )
+    if ( isset($_GET[ 'mode' ]) && ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'networknodeid' ] )) and (isset( $_GET[ 'clid1' ] )) and (isset( $_GET[ 'fiber1' ] )) )
     {
         if ( $_SESSION[ 'class' ] > 1 )
         {
@@ -143,7 +143,7 @@ else
         $smarty->assign( "NetworkNodeId", $networkNodeId );
         $smarty->assign( "curr_fiber", $_GET[ 'fiber2' ] );
     }
-    elseif ( $_GET[ 'mode' ] == 'add' )
+    elseif ( isset($_GET[ 'mode' ]) && $_GET[ 'mode' ] == 'add' )
     {
 
         if ( $_SESSION[ 'class' ] > 1 )
@@ -174,11 +174,13 @@ else
 
         $smarty->assign( "cable1", $cable1 );
         $smarty->assign( "fiber1", $_GET[ 'fiber1' ] );
-        $smarty->assign( "Combobox_Fibers_selected", $_GET[ 'fiber2' ] );
+        $smarty->assign( "Combobox_Fibers_selected", '' );
         $smarty->assign( "ComboBox_Fibers_values", $fibers );
         $smarty->assign( "ComboBox_Fibers_text", $fibers );
 
         $res = getFiberSpliceOrganizerInfo( -1, -1, $networkNodeId );
+        $ComboBox_FibersSpliceOrganizer_Values = array();
+        $ComboBox_FibersSpliceOrganizer_Text = array();
         for ( $i = 0; $i < $res[ 'count' ]; $i++ )
         {
             $ComboBox_FibersSpliceOrganizer_Values[] = $res[ 'rows' ][ $i ][ 'id' ];
@@ -188,7 +190,7 @@ else
                 $ComboBox_FibersSpliceOrganizer_Values );
         $smarty->assign( "ComboBox_FibersSpliceOrganizer_text",
                 $ComboBox_FibersSpliceOrganizer_Text );
-        $smarty->assign( "Combobox_FibersSpliceOrganizer_selected", $fso );
+        $smarty->assign( "Combobox_FibersSpliceOrganizer_selected", '' );
         $smarty->assign( "ComboBox_CableLines_values",
                 $ComboBox_CableLinePoint_Values );
         $smarty->assign( "ComboBox_CableLines_text",
@@ -212,6 +214,7 @@ else
         }
 
         $table_text_cols = '<th>№</th>';
+        $table_text_marking = $table_text_fiber_count = $table_text_direction = $table_text_CableLineNames = $table_text_info = $table_text_fibers = '';
         for ( $i = 0; $i < count( $res[ 'CableLines' ] ); $i++ )
         {
             $table_text_cols .= '<th colspan=3>'.($i + 1).'</th>';
@@ -280,20 +283,21 @@ else
             }
             for ( $j = 0; $j < count( $res[ 'CableLines' ] ); $j++ )
             {
-                $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
                 //$clpid1 = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clpid' ];
                 //$clpid2 = $res[ 'cl_array' ][ 'rows' ][ $arr[ 1 ] ][ 'clpid' ];
                 $fiber1 = $i;
-                $fiber2 = $arr[ 1 ];
                 //$is_a = $arr[ 3 ];
-                $splice_id = $arr[ 2 ];
-                $fso = $arr[ 3 ];
                 $fiberPerTube = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiberPerTube' ];
                 $module = (int)(($i - 1) / $fiberPerTube + 1);
                 $rowspan_fso = 1;
+                $fso = 0;
                 //$rowspan_module = 1;                
-                if ( isset( $arr ) )
+                if ( isset( $res[ 'SpliceArray' ][ $j ][ $i ] ) )
                 {
+                    $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
+                    $fiber2 = $arr[ 1 ];
+                    $splice_id = $arr[ 2 ];
+                    $fso = $arr[ 3 ];
                     if ( isset( $_GET[ 'print' ] ) )
                     {
                         $linksD = ' ';
@@ -334,6 +338,7 @@ else
                         if ( (isset( $_GET[ 'print' ] ) ) )
                         {
                             $linksN = '&nbsp;';
+                            $linksT = '&nbsp;';
                         }
                         else
                         {
@@ -357,6 +362,8 @@ else
                 }
                 for ( $k = $i + 1; $k <= $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ]; $k++ )
                 {
+                    if (!isset($res[ 'SpliceArray' ][ $j ][ $k ]))
+                        break;
                     $arr2 = $res[ 'SpliceArray' ][ $j ][ $k ];
                     $fso2 = $arr2[ 4 ];
                     if ( ($fso == $fso2) and ($fso != -1) and (!empty( $fso )) and (!empty( $fso2 )) )
@@ -414,6 +421,7 @@ else
 
         $smarty->assign( "nodeName", $networkNodeName );
         $smarty->assign( "printLink", $printLink );
+        $smarty->assign( "mode", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and ( isset( $_GET[ 'spliceid' ] ) ) )
     {

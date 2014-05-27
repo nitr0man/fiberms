@@ -218,6 +218,7 @@ else
 
         $fsoRows = $res[ 'NetworkNode' ][ 'FSO' ][ 'rows' ];
         $i = -1;
+        $FSO_arr = array();
         while ( ++$i < $res[ 'NetworkNode' ][ 'FSO' ][ 'count' ] )
         {
             $FSO_arr[] = $fsoRows[ $i ][ 'id' ];
