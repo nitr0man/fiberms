@@ -243,7 +243,7 @@ function CableLine_AddDeleteFibers( $fibersCount, $cableLine )
         $i = 0;
         for ( $fiber = 1; $fiber <= $fibersCount; $fiber++ )
         {
-            if ( $fiber != $rows[ $i ][ 'fiber' ] )
+            if ( !isset $rows[ $i ] || $fiber != $rows[ $i ][ 'fiber' ] )
             {
                 $ins[ 'fiber' ] = $fiber;
                 $ins[ 'CableLine' ] = $cableLine;
@@ -253,6 +253,11 @@ function CableLine_AddDeleteFibers( $fibersCount, $cableLine )
             {
                 $i++;
             }
+        }
+    } else {
+        for ( $fiber = $fibersCount + 1; $fiber <= $lastFiber; $fiber++ ) {
+	    $wr[ 'id' ] = $rows[ $i ][ 'fiber' ];
+	    $result = OpticalFiber_DELETE($wr);
         }
     }
     return $result;
