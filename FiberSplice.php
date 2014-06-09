@@ -235,7 +235,7 @@ else
             $direction_rows = getCableLineDirection( -1,
                     $res[ 'cl_array' ][ 'rows' ][ $i ][ 'clpid' ],
                     $networkNodeId );
-            if ( $direction_rows[ 0 ][ 'NetworkNode' ] == $networkNodeId )
+            if ( isset($direction_rows[ 0 ][ 'NetworkNode' ]) && $direction_rows[ 0 ][ 'NetworkNode' ] == $networkNodeId )
             {
                 $direction[ 'name' ] = $direction_rows[ 1 ][ 'name' ];
                 $direction[ 'NetworkNode' ] = $direction_rows[ 1 ][ 'NetworkNode' ];
@@ -243,7 +243,7 @@ else
             else
             {
                 $direction[ 'name' ] = $direction_rows[ 0 ][ 'name' ];
-                $direction[ 'NetworkNode' ] = $direction_rows[ 0 ][ 'NetworkNode' ];
+                $direction[ 'NetworkNode' ] = (isset($direction_rows[ 0 ][ 'NetworkNode' ])) ? $direction_rows[ 0 ][ 'NetworkNode' ] : '';
             }
             if ( $direction[ 'name' ] == '-' )
             {
@@ -330,8 +330,8 @@ else
                 {
                     if ( ($i > $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ] ) )
                     {
-                        $linksN = '&nbsp;';
                         $table_text_module = '<td> &nbsp;</td>';
+                        $table_text_fibers .= '<td> &nbsp;</td>';
                     }
                     else
                     {
@@ -357,8 +357,8 @@ else
                         {
                             $table_text_module = '<td rowspan="'.$fiberPerTube.'">'.$module.'</td>';
                         }
+                        $table_text_fibers .= '<td>'.$linksN.' '.$linksT.'</td>';
                     }
-                    $table_text_fibers .= '<td>'.$linksN.' '.$linksT.'</td>';
                 }
                 for ( $k = $i + 1; $k <= $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ]; $k++ )
                 {
