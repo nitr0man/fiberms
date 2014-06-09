@@ -149,14 +149,15 @@ function getCableLineDirection( $cableLine, $cableLinePoint, $networkNodeId,
     return $result;
 }
 
-function getSplices( $spliceId = -1, $fiberId = -1 )
+function getSplices( $spliceId = -1, $fiberId = -1, $baseFiber = false )
 {
     if ( $spliceId != -1 && $fiberId != -1 )
     {
+        $op = ($baseFiber) ? ' = ' : ' != ';
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
                 WHERE "OpticalFiber" = '.pg_escape_string( $fiberId ).'
-                    AND "OpticalFiberSplice" != '.pg_escape_string( $spliceId );
+                    AND "OpticalFiberSplice"'.$op.pg_escape_string( $spliceId );
         //error_log( $query );
         $res = PQuery( $query );
     }
@@ -164,7 +165,7 @@ function getSplices( $spliceId = -1, $fiberId = -1 )
     {
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
-                WHERE "OpticalFiberSplice" != '.pg_escape_string( $spliceId );
+                WHERE "OpticalFiberSplice" = '.pg_escape_string( $spliceId );
         //error_log( $query );
         $res = PQuery( $query );
     }
@@ -192,7 +193,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
             $sId = $spliceIds[ $i ][ 'OpticalFiberSplice' ];
             $query = 'SELECT "of"."CableLine", "of"."fiber", "ofj"."OpticalFiberSplice", "ofj"."OpticalFiber", "of"."note",
                         "ofs"."NetworkNode", "ofs"."FiberSpliceOrganizer", 
-                        "cl"."name" AS "cl_name", "nn"."name" AS "nn_name", "cl"."length" AS "length"
+                        "cl"."name" AS "cl_name", "nn"."name" AS "nn_name", round(cl.length / 100.0, 2) AS length
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
                     LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.$sId.'
@@ -201,6 +202,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
                     WHERE "ofj"."OpticalFiberSplice" = '.$sId.' AND "of"."CableLine" != '.$cableLineId;
             //error_log( $query );
             $res = PQuery( $query );
+            $res = fillCableLengthBySign($res);
             $result = array_merge( $result, $res[ 'rows' ] );
         }
     }
@@ -235,6 +237,28 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
     return $result;
 }
 
+function fillCableLengthBySign($res)
+{
+    for ($j = 0; $j < $res['count']; $j++) {
+        $res2 = getCableLinePoints($res['rows'][$j]['CableLine']);
+        if ($res2['count'] > 1) {
+            $start = $res2['rows'][0]['meterSign'];
+            $end = end($res2['rows'])['meterSign'];
+            error_log($res['rows'][$j]['CableLine']." - $start..$end");
+            if (is_numeric($start) && is_numeric($end)) {
+                $res['rows'][$j]['length2'] = abs((int)$end - (int)$start);
+                if (!$res['rows'][$j]['length'])
+                    $res['rows'][$j]['length'] = $res['rows'][$j]['length2'];
+            } else {
+                $res['rows'][$j]['length2'] = NULL;
+            }
+        } else {
+            $res['rows'][$j]['length2'] = NULL;
+        }
+    }
+    return $res;
+}
+
 function getAllInfoBySpliceId( $spliceId )
 {
     $query = 'SELECT "of"."CableLine", "of"."fiber", "of"."note", "ofs"."NetworkNode",
@@ -247,16 +271,18 @@ function getAllInfoBySpliceId( $spliceId )
             LEFT JOIN "NetworkNode" AS "nn" ON "nn".id = "ofs"."NetworkNode"
             WHERE "ofj"."OpticalFiberSplice" = '.pg_escape_string( $spliceId );
     $res = PQuery( $query );
+    $res = fillCableLengthBySign($res);
     return $res[ 'rows' ];
 }
 
 function getLineByFiberId( $fiberId )
 {
-    $query = 'SELECT "of"."CableLine", "of".fiber, "of".note, "cl"."name" AS "cl_name", "of".id
+    $query = 'SELECT "of"."CableLine", "of".fiber, "of".note, "cl"."name" AS "cl_name", "of".id, round(cl.length / 100.0, 2) AS length
                 FROM "OpticalFiber" AS "of"
                 LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
                 WHERE "of".id = '.($fiberId);
     $res = PQuery( $query );
+    $res = fillCableLengthBySign($res);
     return $res[ 'rows' ][ 0 ];
 }
 

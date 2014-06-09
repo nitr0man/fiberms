@@ -33,7 +33,7 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         }
         $traceArr[] = '<a href="CableLine.php?mode=charac&cablelineid='.$CableLine.'">'
              .$CableLineName.'</a>, волокно '.$fiber;
-        $traceArr[] = $trace_res[ $i ][ 'length' ];
+        $traceArr[] = $trace_res[ $i ][ 'length' ] . (($trace_res[$i]['length2']) ? ' / '.$trace_res[$i]['length2'] : '');
         $traceArr[] = $fiberNote;
     }
     else
@@ -44,7 +44,7 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $traceArr[] = "Узел";
         $traceArr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$NetworkNode.'">'
              .$NetworkNodeName.'</a>, кассета '.$organizer;
-        $traceArr[] = '-';
+        $traceArr[] = $trace_res[ $i ][ 'length' ] . (($trace_res[$i]['rlength']) ? ' / '.$trace_res[$i]['rlength'] : '');
         $traceArr[] = '-';
     }
 }

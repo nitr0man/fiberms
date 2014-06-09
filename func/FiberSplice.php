@@ -82,13 +82,14 @@ function getFiberTable( $nodeID )
     }
     // Buiding array of fiber splices
     $fs_array = getNodeFibers( $nodeID );
+    $spliceArray = array();
     if ( $fs_array[ 'count' ] > 0 )
     {
         $rows = $fs_array[ 'rows' ];
         $i = 0;
-        while ( $i < count( $rows ) )
+        while ( $i < count( $rows ) - 1 )
         {
-            if ( $rows[ $i ][ 'OpticalFiberSplice' ] == $rows[ $i + 1 ][ 'OpticalFiberSplice' ] )
+            if (  $rows[ $i ][ 'OpticalFiberSplice' ] == $rows[ $i + 1 ][ 'OpticalFiberSplice' ] )
             {
                 $ClA = $CableLines[ $rows[ $i ][ 'CableLine' ] ];
                 $ClB = $CableLines[ $rows[ $i + 1 ][ 'CableLine' ] ];
@@ -245,7 +246,28 @@ function deleteSplice( $OFJ_id )
     return $res;
 }
 
-function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0 )
+function fillNodeLength($arr, $start = 0)
+{
+    $len = $start;
+    for ($i = 0; $i < count($arr); $i++){
+        if ($arr[$i]['isNode']) {
+            $arr[$i]['length'] = $len;
+        } else {
+            $len += $arr[$i]['length'];
+        }
+    }
+    $len = 0;
+    for ($i = count($arr); $i > 0; $i--){
+        if ($arr[$i-1]['isNode']) {
+            $arr[$i-1]['rlength'] = $len;
+        } else {
+            $len += $arr[$i-1]['length'];
+        }
+    }
+    return $arr;
+}
+
+function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0, $baseFiber = false )
 {
     global $config;
 
@@ -254,10 +276,11 @@ function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0 )
     {
         return $result;
     }
+    error_log("trace($spliceId $fiberId $traceDepth)");
     $traceDepth++;
     if ( $spliceId != -1 && $fiberId != -1 )
     {
-        $spliceIds = getSplices( $spliceId, $fiberId );
+        $spliceIds = getSplices( $spliceId, $fiberId, $baseFiber );
         if ( count( $spliceIds ) > 0 )
         {
             $fibers = getFibs( $spliceIds, $fiberId );
@@ -292,7 +315,7 @@ function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0 )
             $oF = $fs[ $i ][ 'OpticalFiber' ];
             if ( ($sId != '') && ($oF != '') )
             {
-                $res = trace( $sId, $oF, $traceDepth );
+                $res = trace( $sId, $oF, $traceDepth, ( $spliceId == -1 ) );
                 $trackArr[ $i ] = $res;
             }
         }
@@ -300,26 +323,27 @@ function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0 )
         for ( $i = 0; $i < count( $trackArr ); $i++ )
         {
             $k = 0;
-            $traceArr[ $i ] = array();
+            $arr = array();
             for ( $j = 0; $j < count( $trackArr[ $i ] ); $j++ )
             {
-                $traceArr[ $i ][ $k ][ 'isNode' ] = 1;
-                $traceArr[ $i ][ $k ][ 'isTr' ] = 0;
-                $traceArr[ $i ][ $k ][ 'NetworkNode' ] = $trackArr[ $i ][ $j ][ 'NetworkNode' ];
-                $traceArr[ $i ][ $k ][ 'FiberSpliceOrganizer' ] = $trackArr[ $i ][ $j ][ 'FiberSpliceOrganizer' ];
-                $traceArr[ $i ][ $k++ ][ 'nn_name' ] = $trackArr[ $i ][ $j ][ 'nn_name' ];
+                $arr[ $k ][ 'isNode' ] = 1;
+                $arr[ $k ][ 'isTr' ] = 0;
+                $arr[ $k ][ 'NetworkNode' ] = $trackArr[ $i ][ $j ][ 'NetworkNode' ];
+                $arr[ $k ][ 'FiberSpliceOrganizer' ] = $trackArr[ $i ][ $j ][ 'FiberSpliceOrganizer' ];
+                $arr[ $k++ ][ 'nn_name' ] = $trackArr[ $i ][ $j ][ 'nn_name' ];
 
-                $traceArr[ $i ][ $k ][ 'isNode' ] = 0;
+                $arr[ $k ][ 'isNode' ] = 0;
                 foreach ( $trackArr[ $i ][ $j ] as $key => $value )
                 {
                     if ( ($key != 'NetworkNode') && ($key != 'nn_name') )
                     {
-                        $traceArr[ $i ][ $k ][ $key ] = $value;
+                        $arr[ $k ][ $key ] = $value;
                     }
                 }
                 $k++;
             }
-        }
+            $traceArr[ $i ] = $arr;
+        }
 
         if ( $spliceId != -1 ) {
             $cArr_res = getAllInfoBySpliceId( $spliceId );
@@ -338,12 +362,12 @@ function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0 )
             }
             $cArr = array();
             $cArr[ 'isNode' ] = 1;
+            $cArr[ 'length' ] = 0;
+            $cArr[ 'rlength' ] = NULL;
             $cArr[ 'NetworkNode' ] = $cArr_res[ $i - 1 ][ 'NetworkNode' ];
             $cArr[ 'nn_name' ] = $cArr_res[ $i - 1 ][ 'nn_name' ];
             $cArr[ 'FiberSpliceOrganizer' ] = $cArr_res[ $i - 1 ][ 'FiberSpliceOrganizer' ];
-        }
-        else
-        {
+        } else {
             $line_res = getLineByFiberId( $fiberId );
             $cArr = array();
             $cArr[ 'isNode' ] = 0;
@@ -357,7 +381,9 @@ function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0 )
             }
         }
 
-
+	for ($i = 0; $i < count($traceArr); $i++) {
+	    $traceArr[$i] = fillNodeLength($traceArr[$i], ($spliceId != -1) ? 0 : $cArr['length']);
+	}
         if ( count( $traceArr[ 0 ] ) > count( $traceArr[ 1 ] ) )
         {
             $arr0 = array_reverse( $traceArr[ 1 ] );
