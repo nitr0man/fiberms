@@ -364,11 +364,10 @@ else
                 {
                     if (!isset($res[ 'SpliceArray' ][ $j ][ $k ]))
                         break;
-                    $arr2 = $res[ 'SpliceArray' ][ $j ][ $k ];
-                    $fso2 = $arr2[ 4 ];
+                    $fso2 = $res[ 'SpliceArray' ][ $j ][ $k ][ 3 ];
                     if ( ($fso == $fso2) and ($fso != -1) and (!empty( $fso )) and (!empty( $fso2 )) )
                     {
-                        $res[ 'SpliceArray' ][ $j ][ $k ][ 4 ] = -1;
+                        $res[ 'SpliceArray' ][ $j ][ $k ][ 3 ] = -1;
                         $rowspan_fso++;
                     }
                     else
@@ -378,7 +377,7 @@ else
                 }
                 if ( $fso != -1 )
                 {
-                    $table_text_fibers .= '<td rowspan="'.$rowspan_fso.'">'.$fso.'</td>';
+                    $table_text_fibers .= ($fso) ? '<td rowspan="'.$rowspan_fso.'">'.$fso.'</td>' : '<td></td>';
                 }
                 if ( !empty( $table_text_module ) )
                 {
