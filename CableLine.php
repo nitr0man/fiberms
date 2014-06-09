@@ -147,6 +147,7 @@ else
         $smarty->assign( "AddPoint",
                 '<a href="CableLinePoint.php?mode=add&cablelineid='.$cableLineId.'">Добавить точку</a>' );
 
+        $cableLine_arr = array();
         if ( $res[ 'CableLinePoints' ][ 'count' ] > 0 )
         {
             $rows2 = $res[ 'CableLinePoints' ][ 'rows' ];
@@ -163,8 +164,8 @@ else
                 $cableLine_arr[] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows2[ $i ][ 'id' ].'&cablelineid='.$cableLineId.'">Изменить</a>';
                 $cableLine_arr[] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows2[ $i ][ 'id' ].'">Удалить</a>';
             }
-            $smarty->assign( "data", $cableLine_arr );
         }
+        $smarty->assign( "data", $cableLine_arr );
     }
     elseif ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'cablelineid' ] )) )
     {

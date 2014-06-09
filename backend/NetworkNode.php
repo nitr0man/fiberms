@@ -66,16 +66,21 @@ function NetworkNode_DELETE( $wr, $tmpT = FALSE )
 function getNetworkNode_NetworkBoxName( $networkNodeId )
 {
     $query = 'SELECT "NN".id, "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
-        "NN"."OpenGIS", "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NBT"."marking" AS "NBTMarking",
-        COUNT("OFS".id) AS "fiberSpliceCount"
+        "NN"."OpenGIS", "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NBT"."marking" AS "NBTMarking"
   		FROM "NetworkNode" AS "NN"
 		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox" 
                 LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType" 
 		LEFT JOIN "OpticalFiberSplice" AS "OFS" ON "OFS"."NetworkNode" = "NN".id
-		WHERE "NN".id='.pg_escape_string( $networkNodeId ).'
-		GROUP BY "NN".id, "NB"."inventoryNumber", "NN"."name", "NN"."NetworkBox",
-                  "NN"."note", "NN"."SettlementGeoSpatial", "NN"."Building", "NN"."Apartment", "NBT"."marking"';
+		WHERE "NN".id='.pg_escape_string( $networkNodeId );
     $result = PQuery( $query );
+    if ($result['count']) {
+        $res2 = PQuery( 'SELECT COUNT(id) as "fiberSpliceCount" FROM "OpticalFiberSplice" WHERE "NetworkNode"='.pg_escape_string($networkNodeId));
+        if ($res2['count']) {
+            $result['rows'][0]['fiberSpliceCount'] = $res2['rows'][0]['fiberSpliceCount'];
+        } else {
+            $result['rows'][0]['fiberSpliceCount'] = '?';
+        }
+    }
     return $result;
 }
 
