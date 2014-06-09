@@ -184,6 +184,7 @@ function CableLinePoint_SELECT( $wr )
     {
         $query .= genWhere( $wr );
     }
+    $query .= ' ORDER BY sequence';
     $result = PQuery( $query );
     return $result;
 }
@@ -232,7 +233,7 @@ function getCableLinePoint_NetworkNodeName( $cableLineId )
 {
     $query = 'SELECT "clp".id, "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign", "clp"."NetworkNode", "clp"."note", 
        "clp"."Apartment", "clp"."Building", "clp"."SettlementGeoSpatial", "NN"."name"
-	FROM "CableLinePoint" AS "clp"  LEFT JOIN "NetworkNode" AS "NN" ON "NN".id = "clp"."NetworkNode" WHERE "CableLine"='.$cableLineId.' ORDER BY "clp"."meterSign"';
+	FROM "CableLinePoint" AS "clp"  LEFT JOIN "NetworkNode" AS "NN" ON "NN".id = "clp"."NetworkNode" WHERE "CableLine"='.$cableLineId.' ORDER BY "clp"."sequence"';
     $result = PQuery( $query );
     return $result;
 }

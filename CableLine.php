@@ -155,8 +155,8 @@ else
             while ( ++$i < $res[ 'CableLinePoints' ][ 'count' ] )
             {
                 $cableLine_arr[] = $rows2[ $i ][ 'id' ];
-                //$cableLine_arr[] = $rows2[$i]['meterSign'];
-                //$cableLine_arr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>';
+                $cableLine_arr[] = ($rows2[$i]['NetworkNode']) ? '<a href="NetworkNodes.php?mode=charac&nodeid='.$rows2[$i]['NetworkNode'].'">'.$rows2[$i]['name'].'</a>' : '';
+                $cableLine_arr[] = $rows2[$i]['meterSign'];
                 $cableLine_arr[] = $rows2[ $i ][ 'OpenGIS' ];
                 //$cableLine_arr[] = $rows2[$i]['Apartment'];
                 //$cableLine_arr[] = $rows2[$i]['Building'];

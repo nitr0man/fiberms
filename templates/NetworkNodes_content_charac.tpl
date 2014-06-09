@@ -15,7 +15,7 @@
 			<td><label class="events_anonce">К-во сварок</label></td><td> <label class="events_anonce">{$FiberSpliceCount}</label> </td>
 		</tr>		
 		<tr>
-			<td><label class="events_anonce">OpenGIS</label></td><td> <label class="events_anonce">{$OpenGIS}</label> </td>
+			<td><label class="events_anonce">Координаты</label></td><td> <label class="events_anonce">{$OpenGIS}</label> </td>
 		</tr>
 		<tr>
 			<td><label class="events_anonce">SettlementGeoSpatial</label></td><td> {$SettlementGeoSpatial} </td>

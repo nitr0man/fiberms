@@ -243,7 +243,7 @@ function CableLine_AddDeleteFibers( $fibersCount, $cableLine )
         $i = 0;
         for ( $fiber = 1; $fiber <= $fibersCount; $fiber++ )
         {
-            if ( !isset $rows[ $i ] || $fiber != $rows[ $i ][ 'fiber' ] )
+            if ( !isset ($rows[ $i ]) || $fiber != $rows[ $i ][ 'fiber' ] )
             {
                 $ins[ 'fiber' ] = $fiber;
                 $ins[ 'CableLine' ] = $cableLine;

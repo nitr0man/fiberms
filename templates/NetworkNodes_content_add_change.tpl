@@ -14,10 +14,10 @@
 			</td>
 		</tr>		
 		<tr>
-			<td><label class="events_anonce">OpenGIS</label></td><td><input name="OpenGIS" type="text" value="{$OpenGIS}" /></td>
+			<td><label class="events_anonce">Координаты</label></td><td><input name="OpenGIS" type="text" value="{$OpenGIS}" /></td>
 		</tr>
 		<tr>
-			<td><label class="events_anonce">GeoSpartical</label></td><td><input name="SettlementGeoSpatial" type="text" value="{$SettlementGeoSpatial}" /></td>
+			<td><label class="events_anonce">GeoSpatial</label></td><td><input name="SettlementGeoSpatial" type="text" value="{$SettlementGeoSpatial}" /></td>
 		</tr>
 		<tr>
 			<td><label class="events_anonce">Здание</label></td><td><input name="Building" type="text" value="{$Building}" /></td>

@@ -21,7 +21,7 @@
 		</tr>	
 		
 		<tr>
-		<td><label class="events_anonce">OpenGIS</label></td><td> <input type="text" value="{$OpenGIS}" name="OpenGIS"></td>
+		<td><label class="events_anonce">Координаты</label></td><td> <input type="text" value="{$OpenGIS}" name="OpenGIS"></td>
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Квартира</label></td><td> <input type="text" value="{$Apartment}" name="Apartment"></td>
