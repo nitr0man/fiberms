@@ -82,6 +82,8 @@ function CableLine_INSERT( $ins, $tmpT = FALSE )
     $query .= genInsert( $ins )." RETURNING id";
     $result = PQuery( $query );
     loggingIs( 2, 'CableLine', $ins, '' );
+    if (isset($result['rows']))
+	CableLine_AddOpticalFiber($result['rows'][0]['id'], $tmpT);
     return $result;
 }
 
@@ -108,13 +110,12 @@ function CableLine_DELETE( $wr, $tmpT = FALSE  )
 {
     $wr2[ 'CableLine' ] = $wr[ 'id' ];
     $query = 'DELETE FROM "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'" WHERE id IN (SELECT "OpticalFiberSplice" FROM "'.
-	tmpTable( 'OpticalFiberJoin', $tmpT ).'" LEFT JOIN "'.tmpTable( 'OpticalFiber', $tmpT ).'" ON "'.
-	tmpTable( 'OpticalFiberJoin', $tmpT ).'"."OpticalFiber" = "'.tmpTable( 'OpticalFiber', $tmpT ).'".id '.genWhere( $wr2 ).')';
+	tmpTable( 'OpticalFiberJoin', $tmpT ).'" AS ofj LEFT JOIN "'.tmpTable( 'OpticalFiber', $tmpT ).'" AS of ON '.
+	'ofj."OpticalFiber" = of.id '.genWhere( $wr2 ).')';
     $result = PQuery( $query );
-    $query = 'DELETE FROM "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" WHERE id IN (SELECT "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'".id FROM "'.
-	tmpTable( 'OpticalFiberJoin', $tmpT ).'" LEFT JOIN "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'" ON "'.
-	tmpTable( 'OpticalFiberJoin', $tmpT ).'"."OpticalFiberSplice" = "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'".id '.
-	'WHERE "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'".id IS NULL)';
+    $query = 'DELETE FROM "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" WHERE id IN (SELECT ofj.id FROM "'.
+	tmpTable( 'OpticalFiberJoin', $tmpT ).'" AS ofj LEFT JOIN "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'" AS ofs ON '.
+	'ofj."OpticalFiberSplice" = ofs.id WHERE ofs.id IS NULL)';
     $result = PQuery( $query );
     $query = 'DELETE FROM "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" WHERE "OpticalFiber" IN (SELECT id FROM "'.
 	tmpTable( 'OpticalFiber', $tmpT ).'"'.genWhere( $wr2 ).')';
