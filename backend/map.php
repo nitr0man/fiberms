@@ -295,8 +295,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     }
     $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
     $ins[ 'comment' ] = $CableLine[ 'comment' ];
-    $query = CableLine_INSERT( $ins, $tmpT );
-    $res4 = PQuery( $query );
+    $res4 = CableLine_INSERT( $ins, $tmpT );
     $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
     $seq = 1;
     for ( $j = $i; $j < count( $CableLinePoints ); $j++ )
@@ -324,8 +323,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
             $ins[ 'NetworkNode' ] = $NetworkNodeId;
             $ins[ 'OpenGIS' ] = "NULL";
         }
-        $query = CableLinePoint_INSERT( $ins, $tmpT );
-        PQuery( $query );
+        CableLinePoint_INSERT( $ins, $tmpT );
     }
 }
 

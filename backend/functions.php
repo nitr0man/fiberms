@@ -44,13 +44,13 @@ function genWhere( $wr, $sign = '=', $recursive = false )
     {
         if ( strlen( $where ) > 0 )
             $where .= ' AND ';
-        if ( preg_match( '/^(NOT\s)?NULL$/', $value ) )
+        if ( is_string($value) &&  preg_match( '/^(NOT\s)?NULL$/', $value ) )
         {
             $where .= ' "'.$field.'" IS '.pg_escape_string( $value ).'';
         }
         else
         {
-            if ( is_string($value) && preg_match( '/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value ) )
+            if ( is_string($value) &&  preg_match( '/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value ) )
             {
                 $where .= ' "'.$field.'"~=\''.pg_escape_string( $value ).'\'';
             }
