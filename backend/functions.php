@@ -37,7 +37,7 @@ function PQuery( $query )
     return $result;
 }
 
-function genWhere( $wr, $sign = '=' )
+function genWhere( $wr, $sign = '=', $recursive = false )
 {
     $where = '';
     foreach ( $wr as $field => $value )
@@ -54,23 +54,21 @@ function genWhere( $wr, $sign = '=' )
             {
                 $where .= ' "'.$field.'"~=\''.pg_escape_string( $value ).'\'';
             }
+            else if (is_numeric($value))
+            {
+                $where .= ' "'.$field.'"'.$sign.$value.'';
+            }
+            else if (is_array($value))
+            {
+                $where .= genWhere(array($field => $value['val']), $value['sign'], true);
+            }
             else
             {
                 $where .= ' "'.$field.'"'.$sign.'\''.pg_escape_string( $value ).'\'';
             }
         }
-        /* if ($value != 'NULL') {
-          if (preg_match('/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value)) {
-          $where .= ' "'.$field.'"~=\''.pg_escape_string($value).'\'';
-          } else {
-          $where .= ' "'.$field.'"=\''.pg_escape_string($value).'\'';
-          }
-          } else {
-          $where .= ' "'.$field.'" IS '.pg_escape_string($value).'';
-          } */
     }
-    $result = ' WHERE '.$where;
-    return $result;
+    return ($recursive) ? ' '.$where : ' WHERE '.$where ;
 }
 
 function genInsert( $ins )
@@ -99,6 +97,7 @@ function genInsert( $ins )
 
 function genUpdate( $upd )
 {
+    $set = '';
     foreach ( $upd as $field => $value )
     {
         if ( strlen( $set ) > 0 )
