@@ -50,7 +50,7 @@ function genWhere( $wr, $sign = '=', $recursive = false )
         }
         else
         {
-            if ( preg_match( '/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value ) )
+            if ( is_string($value) && preg_match( '/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value ) )
             {
                 $where .= ' "'.$field.'"~=\''.pg_escape_string( $value ).'\'';
             }
