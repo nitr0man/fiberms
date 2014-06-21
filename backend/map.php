@@ -172,15 +172,16 @@ function deleteSingPoint( $coors, $tmpT = FALSE )
 
 function deleteCableLine( $CableLineId, $tmpT = FALSE )
 {
-    $wr[ 'CableLine' ] = $CableLineId;
+/*    $wr[ 'CableLine' ] = $CableLineId;
     $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genWhere( $wr );
     PQuery( $query );
     $query = 'DELETE FROM "'.tmpTable( 'OpticalFiber', $tmpT ).'"'.genWhere( $wr );
     PQuery( $query );
-    unset( $wr );
+    unset( $wr );*/
     $wr[ 'id' ] = $CableLineId;
-    $query = 'DELETE FROM "'.tmpTable( 'CableLine', $tmpT ).'"'.genWhere( $wr );
-    PQuery( $query );
+    CableLine_DELETE($wr, $tmpT);
+//    $query = 'DELETE FROM "'.tmpTable( 'CableLine', $tmpT ).'"'.genWhere( $wr );
+//    PQuery( $query );
 }
 
 function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
@@ -263,9 +264,10 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
         if ( $point[ 'OpenGIS' ] == $OpenGIS )
         {
             $seq = $point[ 'sequence' ];
-            $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" WHERE "sequence" > '.$seq.
-                    ' AND "CableLine" = '.$CableLineId;
-            PQuery( $query );
+            $wr1 = array( 'sequence' => array( 'val' => $seq, 'sign' => '>'),
+			  'CableLine' => $CableLineId
+			);
+            CableLinePoint_DELETE($wr1, $tmpT);
             $name = $nodeInfo[ 'name' ];
             $NetworkBoxId = $nodeInfo[ 'NetworkBoxId' ];
             $note = $nodeInfo[ 'note' ];
@@ -293,14 +295,14 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     }
     $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
     $ins[ 'comment' ] = $CableLine[ 'comment' ];
-    $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';
+    $query = CableLine_INSERT( $ins, $tmpT );
     $res4 = PQuery( $query );
     $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
     $seq = 1;
-    unset( $ins );
     for ( $j = $i; $j < count( $CableLinePoints ); $j++ )
     {
         $point = $CableLinePoints[ $j ];
+        $ins = array();
         foreach ( $point as $key => $value )
         {
             if ( $key != "id" && $key != "sequence" )
@@ -322,8 +324,84 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
             $ins[ 'NetworkNode' ] = $NetworkNodeId;
             $ins[ 'OpenGIS' ] = "NULL";
         }
-        $query = 'INSERT INTO "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genInsert( $ins );
+        $query = CableLinePoint_INSERT( $ins, $tmpT );
         PQuery( $query );
+    }
+}
+
+function divCableLine1( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
+{
+    $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
+    $wr[ 'id' ] = $CableLineId;
+    $res = CableLine_SELECT( 0, $wr, $tmpT );
+    $CableLine = $res[ 'rows' ][ 0 ];
+    unset( $wr );
+    $wr[ 'CableLine' ] = $CableLineId;
+    $query = 'SELECT * FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genWhere( $wr ).
+            'ORDER BY "sequence"';
+    $res2 = PQuery( $query );
+    $CableLinePoints = $res2[ 'rows' ];
+    for ( $i = 0; $i < count( $CableLinePoints ); $i++ )
+    {
+        $point = $CableLinePoints[ $i ];
+        if ( $point[ 'OpenGIS' ] == $OpenGIS )
+        {
+            $name = $nodeInfo[ 'name' ];
+            $NetworkBoxId = $nodeInfo[ 'NetworkBoxId' ];
+            $note = $nodeInfo[ 'note' ];
+            $SettlementGeoSpatial = "NULL";
+            $building = $nodeInfo[ 'building' ];
+            $apartment = $nodeInfo[ 'apartment' ];
+            $res3 = NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
+                    $SettlementGeoSpatial, $building, $apartment, $tmpT );
+            $NetworkNodeId = $res3[ 'rows' ][ 0 ][ 'id' ];
+
+            $seq = $point[ 'sequence' ];
+            $wr[ 'sequence' ] = $seq;
+            $upd[ 'OpenGIS' ] = "NULL";
+            $upd[ 'NetworkNode' ] = $NetworkNodeId;
+            CableLinePoint_UPDATE( $upd, $wr, $tmpT );
+            $wr1 = array( 'sequence' => array( 'val' => $seq, 'sign' => '>'));
+            error_log(genWhere($wr1));
+
+	    $ins = array();
+	    $ins[ 'CableType' ] = $CableLine [ 'CableType' ];
+	    $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
+	    $ins[ 'comment' ] = $CableLine[ 'comment' ];
+	    $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"'.genInsert( $ins ).' RETURNING id';
+	    error_log($query);
+	    $res4 = PQuery( $query );
+	    $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
+
+	    $ins = array();
+	    foreach ( $point as $key => $value )
+	    {
+		if ( $key != "id" && $key != "sequence" )
+		{
+		    if ( $value != "" )
+		{
+		        $ins[ $key ] = $value;
+		    }
+		    else
+		    {
+		        $ins[ $key ] = "NULL";
+		    }
+		}
+	    }
+	    $ins[ 'CableLine' ] = $NCableLineId;
+	    $ins[ 'sequence' ] = 1;
+	    $ins[ 'OpenGIS' ] = 'NULL';
+	    $ins[ 'NetworkNode' ] = $NetworkNodeId;
+	    $query = 'INSERT INTO "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genInsert( $ins );
+	    error_log($query);
+	    PQuery( $query );
+	    $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).
+		    '" SET "CableLine" = '.$NCableLineId.', sequence = sequence + 1 - '.$seq.
+		    ' WHERE "sequence" > '.$seq.' AND "CableLine" = '.$CableLineId;
+	    error_log($query);
+	    PQuery( $query );
+	    break;
+	}
     }
 }
 

@@ -71,28 +71,28 @@ function CableLine_SELECT( $sort, $wr, $tmpT = FALSE )
     return $result;
 }
 
-function CableLine_INSERT( $ins )
+function CableLine_INSERT( $ins, $tmpT = FALSE )
 {
     if ( $ins[ 'length' ] ) {
         $len = str_replace(',', '.', $ins[ 'length' ]);
         if ( is_numeric( $len ) )
             $ins[ 'length' ] = floatval($len) * 100;
     }
-    $query = 'INSERT INTO "CableLine"';
+    $query = 'INSERT INTO "'.tmpTable( 'CableLine', $tmpT ).'"';
     $query .= genInsert( $ins )." RETURNING id";
     $result = PQuery( $query );
     loggingIs( 2, 'CableLine', $ins, '' );
     return $result;
 }
 
-function CableLine_UPDATE( $upd, $wr )
+function CableLine_UPDATE( $upd, $wr, $tmpT = FALSE  )
 {
     if ( $upd[ 'length' ] ) {
         $len = str_replace(',', '.', $upd[ 'length' ]);
         if ( is_numeric( $len ) )
             $upd[ 'length' ] = floatval($len) * 100;
     }
-    $query = 'UPDATE "CableLine" SET ';
+    $query = 'UPDATE "'.tmpTable( 'CableLine', $tmpT ).'" SET ';
     $query .= genUpdate( $upd );
     if ( $wr != '' )
     {
@@ -104,12 +104,26 @@ function CableLine_UPDATE( $upd, $wr )
     return $result;
 }
 
-function CableLine_DELETE( $wr )
+function CableLine_DELETE( $wr, $tmpT = FALSE  )
 {
     $wr2[ 'CableLine' ] = $wr[ 'id' ];
-    $query = 'DELETE FROM "OpticalFiber"'.genWhere( $wr2 );
-    PQuery( $query );
-    $query = 'DELETE FROM "CableLine"';
+    $query = 'DELETE FROM "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'" WHERE id IN (SELECT "OpticalFiberSplice" FROM "'.
+	tmpTable( 'OpticalFiberJoin', $tmpT ).'" LEFT JOIN "'.tmpTable( 'OpticalFiber', $tmpT ).'" ON "'.
+	tmpTable( 'OpticalFiberJoin', $tmpT ).'"."OpticalFiber" = "'.tmpTable( 'OpticalFiber', $tmpT ).'".id '.genWhere( $wr2 ).')';
+    $result = PQuery( $query );
+    $query = 'DELETE FROM "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" WHERE id IN (SELECT "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'".id FROM "'.
+	tmpTable( 'OpticalFiberJoin', $tmpT ).'" LEFT JOIN "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'" ON "'.
+	tmpTable( 'OpticalFiberJoin', $tmpT ).'"."OpticalFiberSplice" = "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'".id '.
+	'WHERE "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'".id IS NULL)';
+    $result = PQuery( $query );
+    $query = 'DELETE FROM "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" WHERE "OpticalFiber" IN (SELECT id FROM "'.
+	tmpTable( 'OpticalFiber', $tmpT ).'"'.genWhere( $wr2 ).')';
+    $result = PQuery( $query );
+    $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genWhere( $wr2 );
+    $result = PQuery( $query );
+    $query = 'DELETE FROM "'.tmpTable( 'OpticalFiber', $tmpT ).'"'.genWhere( $wr2 );
+    $result = PQuery( $query );
+    $query = 'DELETE FROM "'.tmpTable( 'CableLine', $tmpT ).'"';
     $query .= genWhere( $wr );
     $result = PQuery( $query );
     loggingIs( 3, 'CableLine', '', $wr[ 'id' ] );
@@ -177,9 +191,9 @@ function CableType_DELETE( $wr )
     return $result;
 }
 
-function CableLinePoint_SELECT( $wr )
+function CableLinePoint_SELECT( $wr, $tmpT = FALSE )
 {
-    $query = 'SELECT * FROM "CableLinePoint"';
+    $query = 'SELECT * FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
@@ -189,10 +203,11 @@ function CableLinePoint_SELECT( $wr )
     return $result;
 }
 
-function CableLinePoint_INSERT( $ins )
+function CableLinePoint_INSERT( $ins, $tmpT = FALSE )
 {
-    $query = 'INSERT INTO "CableLinePoint"';
+    $query = 'INSERT INTO "'.tmpTable( 'CableLinePoint', $tmpT ).'"';
     $query .= genInsert( $ins );
+    $query .= ' RETURNING id';
     $result = PQuery( $query );
     loggingIs( 2, 'CableLinePoint', $ins, '' );
     return $result;
@@ -202,30 +217,51 @@ function CableLinePoint_UPDATE( $upd, $wr, $tmpT = FALSE )
 {
     $query = 'UPDATE "'.tmpTable( 'CableLinePoint', $tmpT ).'" SET ';
     $query .= genUpdate( $upd );
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
-    if (! $wr[ 'id' ]) {
+    $val = '';
+    if (! isset($wr[ 'id' ])) {
         if ( $wr != '' )
         {
-            $query1 = 'SELECT id FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" '.genWhere( $wr );
+            $query1 = 'SELECT id FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" '.$where;
             $result = PQuery( $query1 );
-            $wr[ 'id' ] = $result[0]['id'];
+            $wr[ 'id' ] = $result['rows'][0]['id'];
+            if ($result['count'] > 1) {
+                $wr[ 'id' ] = '';
+                $val = $where;
+            }
         } else
             $wr[ 'id' ] = '';
     }
-    $result = PQuery( $query );
+    $result = PQuery( $query.$where );
     loggingIs( 1, tmpTable( 'CableLinePoint', $tmpT ), $upd, $wr[ 'id' ] );
+    error_log($query.$where);
     return $result;
 }
 
-function CableLinePoint_DELETE( $wr )
+function CableLinePoint_DELETE( $wr, $tmpT = FALSE )
 {
-    $query = 'DELETE FROM "CableLinePoint"';
-    $query .= genWhere( $wr );
-    $result = PQuery( $query );
-    loggingIs( 3, 'CableTypePoint', '', $wr[ 'id' ] );
+    $query = 'DELETE FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"';
+    $where = genWhere( $wr );
+    $val = '';
+    if (! isset($wr[ 'id' ])) {
+        if ( $wr != '' )
+        {
+            $query1 = 'SELECT id FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'" '.$where;
+            $result = PQuery( $query1 );
+            $wr[ 'id' ] = $result['rows'][0]['id'];
+            if ($result['count'] > 1) {
+                $wr[ 'id' ] = '';
+                $val = $where;
+            }
+        } else
+            $wr[ 'id' ] = '';
+    }
+    $result = PQuery( $query.$where );
+    loggingIs( 3, 'CableLinePoint', $val, $wr[ 'id' ] );
     return $result;
 }
 
