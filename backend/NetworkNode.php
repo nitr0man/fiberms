@@ -158,7 +158,7 @@ function getFiberSpliceCount( $networkNode = -1 )
     if ( $networkNode != -1 )
     {
         $wr[ 'id' ] = $networkNode;
-        $where = GenWhere( $wr );
+        $where = genWhere( $wr );
     }
     $query = 'SELECT COUNT(id) AS "count" FROM "OpticalFiberSplice"'.$where;
     $res = PQuery( $query );
