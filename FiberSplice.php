@@ -138,7 +138,7 @@ else
         $smarty->assign( "ComboBox_CableLines_text",
                 $ComboBox_CableLinePoint_Text );
         $smarty->assign( "ComboBox_CableLines_selected", $cableLineId2 );
-        $smarty->assign( "IsA", $_GET[ 'isa' ] );
+        $smarty->assign( "IsA", (isset($_GET[ 'isa' ])) ? $_GET[ 'isa' ] : '' );
         $smarty->assign( "SpliceId", $_GET[ 'spliceid' ] );
         $smarty->assign( "NetworkNodeId", $networkNodeId );
         $smarty->assign( "curr_fiber", $_GET[ 'fiber2' ] );
