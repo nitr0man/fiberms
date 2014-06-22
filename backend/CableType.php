@@ -239,7 +239,6 @@ function CableLinePoint_UPDATE( $upd, $wr, $tmpT = FALSE )
     }
     $result = PQuery( $query.$where );
     loggingIs( 1, tmpTable( 'CableLinePoint', $tmpT ), $upd, $wr[ 'id' ] );
-    error_log($query.$where);
     return $result;
 }
 

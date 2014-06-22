@@ -2,6 +2,7 @@
 
 require_once 'backend/NetworkNode.php';
 require_once 'backend/CableType.php';
+require_once 'backend/OpticalFiberJoin.php';
 require_once 'func/CableType.php';
 require_once 'func/NetworkNode.php';
 require_once 'func/NetworkBoxType.php';
@@ -325,6 +326,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
         }
         CableLinePoint_INSERT( $ins, $tmpT );
     }
+    OpticalFiberJoin_replaceCableLine( $CableLine['id'], $NCableLineId, end($CableLinePoints)['NetworkNode'], $tmpT );
 }
 
 function divCableLine1( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )

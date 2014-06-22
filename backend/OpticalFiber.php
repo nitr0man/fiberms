@@ -3,9 +3,9 @@
 require_once("functions.php");
 require_once("backend/LoggingIs.php");
 
-function OpticalFiber_SELECT( $sort, $wr )
+function OpticalFiber_SELECT( $sort, $wr, $tmpT = FALSE )
 {
-    $query = 'SELECT * FROM "OpticalFiber"';
+    $query = 'SELECT * FROM "'.tmpTable( 'OpticalFiber', $tmpT ).'"';
     if ( $wr != '' )
     {
         $query .= genWhere( $wr );
