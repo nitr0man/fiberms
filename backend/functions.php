@@ -20,6 +20,8 @@ function PQuery( $query )
     if ( !$res )
     {
         //print_r (debug_backtrace());
+	list(, $caller) = debug_backtrace(false);
+	error_log($caller['function'].', '.$caller['line'].": $query");
         $result[ 'count' ] = 0;
         $result[ 'rows' ] = NULL;
         $result[ 'error' ] = pg_last_error( $connection );
@@ -42,21 +44,27 @@ function genWhere( $wr, $sign = '=', $recursive = false )
     $where = '';
     foreach ( $wr as $field => $value )
     {
+	$fieldarr = explode('.', $field);
+	$nfields = array();
+	foreach ($fieldarr as $f) {
+	    $nfields[] = '"'.$f.'"';
+	}
+	$field1 = implode('.', $nfields);
         if ( strlen( $where ) > 0 )
             $where .= ' AND ';
         if ( is_string($value) &&  preg_match( '/^(NOT\s)?NULL$/', $value ) )
         {
-            $where .= ' "'.$field.'" IS '.pg_escape_string( $value ).'';
+            $where .= ' '.$field1.' IS '.pg_escape_string( $value ).'';
         }
         else
         {
             if ( is_string($value) &&  preg_match( '/^\(\s*([0-9.]+[, \s]+)+[0-9.]+\s*\)$/', $value ) )
             {
-                $where .= ' "'.$field.'"~=\''.pg_escape_string( $value ).'\'';
+                $where .= ' '.$field1.'~=\''.pg_escape_string( $value ).'\'';
             }
             else if (is_numeric($value))
             {
-                $where .= ' "'.$field.'"'.$sign.$value.'';
+                $where .= ' '.$field1.$sign.$value.'';
             }
             else if (is_array($value))
             {
@@ -64,7 +72,7 @@ function genWhere( $wr, $sign = '=', $recursive = false )
             }
             else
             {
-                $where .= ' "'.$field.'"'.$sign.'\''.pg_escape_string( $value ).'\'';
+                $where .= ' '.$field1.$sign.'\''.pg_escape_string( $value ).'\'';
             }
         }
     }
