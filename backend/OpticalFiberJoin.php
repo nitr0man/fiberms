@@ -64,7 +64,7 @@ function getNodeFibers( $nodeId, $OFJ_id = -1, $CableLine = -1, $tmpT = FALSE )
     {
 	$wr[ 'CableLine' ] = $CableLine;
     }
-    $query = 'SELECT "OFJ".id AS "OFJ_id", "OpticalFiber", "OpticalFiberSplice", "OF"."CableLine", "OF"."fiber", "OFS"."FiberSpliceOrganizer"
+    $query = 'SELECT "OFJ".id AS "OFJ_id", "OpticalFiber", "OpticalFiberSplice", "OF"."CableLine", "OF".fiber, "OFS"."FiberSpliceOrganizer", round("OFS".attenuation / 100.0, 2) AS attenuation, "OFS".note
 		FROM "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" AS "OFJ"
 		LEFT JOIN "'.tmpTable( 'OpticalFiber', $tmpT ).'" AS "OF" ON "OF".id = "OFJ"."OpticalFiber"
 		LEFT JOIN "'.tmpTable( 'OpticalFiberSplice', $tmpT ).'" AS "OFS" ON "OFS".id = "OFJ"."OpticalFiberSplice"'.genWhere( $wr ).'

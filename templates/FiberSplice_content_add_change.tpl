@@ -27,6 +27,12 @@
 		<td><label class="events_anonce">Кассета</label></td><td> <select name="FibersSpliceOrganizer"> {html_options values=$ComboBox_FibersSpliceOrganizer_values selected=$Combobox_FibersSpliceOrganizer_selected output=$ComboBox_FibersSpliceOrganizer_text}</select></td>
 		</tr>
 		<tr>
+		<td><label class="events_anonce">Затухание</label></td><td> <input type="text" value="{$attenuation}" name="attenuation"></input></td>
+		</tr>
+		<tr>
+		<td><label class="events_anonce">Описание</label></td><td> <input type="textarea" value="{$note}" name="note"></input></td>
+		</tr>
+		<tr>
 		<th colspan="2"><input value="OK" type="submit" name="ChangeButton" /></th>
 		</tr>
 	</table>

@@ -16,9 +16,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $fiber = $_POST[ 'Fibers' ];
         $FiberSpliceOrganizer = $_POST[ 'FibersSpliceOrganizer' ];
         $cableLine = $_POST[ 'CableLines' ];
+        $attenuation = $_POST[ 'attenuation' ];
+        $note = $_POST[ 'note' ];
 
         $res = FiberSplice_Mod( $SpliceId, $cableLine, $fiber,
-                $FiberSpliceOrganizer );
+                $FiberSpliceOrganizer, $attenuation, $note );
         if ( isset( $res[ 'error' ] ) )
         {
             $message = $res[ 'error' ];
@@ -44,9 +46,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $fiber2 = $_POST[ 'Fibers' ];
         $NetworkNodeId = $_POST[ 'NetworkNodeId' ];
         $FiberSpliceOrganizer = $_POST[ 'FibersSpliceOrganizer' ];
+        $attenuation = $_POST[ 'attenuation' ];
+        $note = $_POST[ 'note' ];
 
         $res = FiberSplice_Add( $CableLine1, $fiber1, $CableLine2, $fiber2,
-                $FiberSpliceOrganizer, $NetworkNodeId );
+                $FiberSpliceOrganizer, $NetworkNodeId, $attenuation, $note );
 
         if ( isset( $res[ 'error' ] ) )
         {
@@ -104,6 +108,8 @@ else
 
         $res = getNodeFibers( $networkNodeId, $OFJ_id );
         $fso = $res[ 'rows' ][ 0 ][ 'FiberSpliceOrganizer' ];
+        $smarty->assign( "attenuation", $res[ 'rows' ][ 0 ][ 'attenuation' ] );
+        $smarty->assign( "note", $res[ 'rows' ][ 0 ][ 'note' ] );
 
         $res = getFiberTable( $networkNodeId );
         $fibers = getFibers( $networkNodeId, $cableLineId2, $fiber );
@@ -142,6 +148,7 @@ else
         $smarty->assign( "SpliceId", $_GET[ 'spliceid' ] );
         $smarty->assign( "NetworkNodeId", $networkNodeId );
         $smarty->assign( "curr_fiber", $_GET[ 'fiber2' ] );
+        $smarty->assign( "clid1", '' );
     }
     elseif ( isset($_GET[ 'mode' ]) && $_GET[ 'mode' ] == 'add' )
     {
@@ -199,6 +206,8 @@ else
         $smarty->assign( "NetworkNodeId", $networkNodeId );
         $smarty->assign( "curr_fiber", '-1' );
         $smarty->assign( "clid1", $cableLineId1 );
+        $smarty->assign( "attenuation", '' );
+        $smarty->assign( "note", '' );
     }
     elseif ( isset( $_GET[ 'networknodeid' ] ) )
     {

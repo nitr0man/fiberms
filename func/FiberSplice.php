@@ -10,7 +10,7 @@ require_once "backend/OpticalFiberSplice.php";
 
   } */
 
-function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer )
+function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer, $attenuation, $note )
 {
     $wr[ 'id' ] = $OFJ_id;
     $res = OpticalFiberJoin_SELECT( 1, $wr );
@@ -31,6 +31,8 @@ function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer )
     unset( $upd );
     $wr[ 'id' ] = $OpticalFiberSplice;
     $upd[ 'FiberSpliceOrganizer' ] = $FiberSpliceOrganizer;
+    $upd[ 'attenuation' ] = $attenuation;
+    $upd[ 'note' ] = $note;
     $res = OpticalFiberSplice_UPDATE( $upd, $wr );
     if ( isset( $res[ 'error' ] ) )
     {
@@ -40,10 +42,12 @@ function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer )
 }
 
 function FiberSplice_Add( $CableLineA, $fiberA, $CableLineB, $fiberB,
-     $FiberSpliceOrganizer, $NetworkNodeId )
+     $FiberSpliceOrganizer, $NetworkNodeId, $attenuation, $note )
 {
     $ins[ 'NetworkNode' ] = $NetworkNodeId;
     $ins[ 'FiberSpliceOrganizer' ] = $FiberSpliceOrganizer;
+    $ins[ 'attenuation' ] = $attenuation;
+    $ins[ 'note' ] = $note;
     $res = OpticalFiberSplice_INSERT( $ins );
     $OFS_id = $res[ 'rows' ][ 0 ][ 'id' ];
     $res = addOpticalFiberJoin( $CableLineA, $fiberA, $OFS_id );
