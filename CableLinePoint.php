@@ -88,9 +88,9 @@ else
             $cableLine_arr[ ] = $rows[ $i ][ 'meterSign' ];
             $cableLine_arr[ ] = $rows[ $i ][ 'NetworkNode' ];
             $cableLine_arr[ ] = $rows[ $i ][ 'note' ];
-            $cableLine_arr[ ] = $rows[ $i ][ 'Apartment' ];
-            $cableLine_arr[ ] = $rows[ $i ][ 'Building' ];
-            $cableLine_arr[ ] = $rows[ $i ][ 'SettlementGeoSpatial' ];
+            //$cableLine_arr[ ] = $rows[ $i ][ 'Apartment' ];
+            //$cableLine_arr[ ] = $rows[ $i ][ 'Building' ];
+            //$cableLine_arr[ ] = $rows[ $i ][ 'SettlementGeoSpatial' ];
             $cableLine_arr[ ] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
             $cableLine_arr[ ] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
         }
