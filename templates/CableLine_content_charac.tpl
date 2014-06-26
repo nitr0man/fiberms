@@ -23,7 +23,7 @@
 	</table>	
 
 	<div>
-			{html_table loop=$data table_attr='id="contable"' cols="ID,Узел,Отметка (м),Координаты,Изм.,Удал." caption="Список точек на линии"}
+			{html_table loop=$data table_attr='id="contable"' cols="ID,Узел,Отметка (м),Координаты,Примечание,Изм.,Удал." caption="Список точек на линии"}
 			<p style="margin: 20px;">{$AddPoint}</a>
 			<td>{$ChangeDelete}</td>
 	</div>
