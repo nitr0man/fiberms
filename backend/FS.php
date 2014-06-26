@@ -304,7 +304,7 @@ function getCableLineInfo( $nodeId, $zeroFibers = -1, $tmpT = FALSE )
     {
         $query .= ' AND "ct"."tubeQuantity"*"ct"."fiberPerTube" != 0';
     }
-    $result = PQuery( $query );
+    $result = PQuery( $query.' ORDER BY fiber DESC' );
     return $result;
 }
 
