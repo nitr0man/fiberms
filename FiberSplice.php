@@ -301,55 +301,38 @@ else
                 $rowspan_fso = 1;
                 $fso = 0;
                 //$rowspan_module = 1;                
-                if ( isset( $res[ 'SpliceArray' ][ $j ][ $i ] ) )
+                if ( ($i > $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ] ) )
                 {
-                    $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
-                    $fiber2 = $arr[ 1 ];
-                    $splice_id = $arr[ 2 ];
-                    $fso = $arr[ 3 ];
-                    if ( isset( $_GET[ 'print' ] ) )
-                    {
-                        $linksD = ' ';
-                        $linksT = ' ';
-                    }
-                    else
-                    {
-                        $linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.'>[x]</a>';
-                        $clid = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ];
-                        $linksT = ' <a href="Tracing.php?spliceId='.$res[ 'SpliceArray' ][ $j ][ $i ][ 4 ].'&fiberId=-1&clid='.$clid.'">[T]</a>';
-                    }
-                    if ( isset( $_GET[ 'print' ] ) )
-                    {
-                        $table_text_fibers .= '<td>'.(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</td>';
-                    }
-                    else
-                    {
-                        $table_text_fibers .= '<td>'.'<a href="FiberSplice.php?mode=change&fiber1='.$fiber1
-                                .'&fiber2='.$fiber2.'&networknodeid='.$networkNodeId.'&spliceid='.$splice_id
-                                .'&clid2='.$res[ 'cl_array' ][ 'rows' ][ $arr[ 0 ] ][ 'clid' ]
-                                .'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ].'">'
-                                .(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</a> '.$linksD.' '.$linksT.'</td>';
-                    }
-                    if ( ($i == 1) or ($i % $fiberPerTube == 1 ) )
-                    {
-                        $table_text_module = '<td rowspan="'.$fiberPerTube.'">'.$module.'</td>';
-                    }
+                    $table_text_module = '<td>&nbsp;</td>';
+                    $table_text_fibers .= '<td>&nbsp;</td>';
                 }
                 else
                 {
-                    if ( ($i > $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ] ) )
+                    if ( isset( $res[ 'SpliceArray' ][ $j ][ $i ] ) )
                     {
-                        $table_text_module = '<td> &nbsp;</td>';
-                        $table_text_fibers .= '<td> &nbsp;</td>';
+                        $arr = $res[ 'SpliceArray' ][ $j ][ $i ];
+                        $fiber2 = $arr[ 1 ];
+                        $splice_id = $arr[ 2 ];
+                        $fso = $arr[ 3 ];
+                        if ( isset( $_GET[ 'print' ] ) )
+                        {
+                            $table_text_fibers .= '<td>'.(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</td>';
+                        }
+                        else
+                        {
+                            $linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.'>[x]</a>';
+                            $clid = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ];
+                            $linksT = ' <a href="Tracing.php?spliceId='.$res[ 'SpliceArray' ][ $j ][ $i ][ 4 ].'&fiberId=-1&clid='.$clid.'">[T]</a>';
+                            $table_text_fibers .= '<td>'.'<a href="FiberSplice.php?mode=change&fiber1='.$fiber1
+                                    .'&fiber2='.$fiber2.'&networknodeid='.$networkNodeId.'&spliceid='.$splice_id
+                                    .'&clid2='.$res[ 'cl_array' ][ 'rows' ][ $arr[ 0 ] ][ 'clid' ]
+                                    .'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ].'">'
+                                    .(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</a> '.$linksD.' '.$linksT.'</td>';
+                        }
                     }
                     else
                     {
-                        if ( (isset( $_GET[ 'print' ] ) ) )
-                        {
-                            $linksN = '&nbsp;';
-                            $linksT = '&nbsp;';
-                        }
-                        else
+                        if ( !(isset( $_GET[ 'print' ] ) ) )
                         {
                             $linksN = '<a href="FiberSplice.php?mode=add&fiber1='.$fiber1.'&networknodeid='
                                     .$networkNodeId
@@ -361,12 +344,14 @@ else
                             $res3 = OpticalFiber_SELECT( 1, $wr2 );
                             $fiberId = $res3[ 'rows' ][ 0 ][ 'id' ];
                             $linksT = ' <a href="Tracing.php?spliceId=-1&fiberId='.$fiberId.'&clid='.$clid.'">[T]</a>';
+                            $table_text_fibers .= '<td>'.$linksN.' '.$linksT.'</td>';
+                        } else {
+                            $table_text_fibers .= '<td></td>';
                         }
-                        if ( ($i == 1) or ($i % $fiberPerTube == 1 ) )
-                        {
-                            $table_text_module = '<td rowspan="'.$fiberPerTube.'">'.$module.'</td>';
-                        }
-                        $table_text_fibers .= '<td>'.$linksN.' '.$linksT.'</td>';
+                    }
+                    if ( ($i == 1) or ($fiberPerTube == 1) or ($i % $fiberPerTube == 1 ) )
+                    {
+                        $table_text_module = '<td rowspan="'.$fiberPerTube.'">'.$module.'</td>';
                     }
                 }
                 for ( $k = $i + 1; $k <= $res[ 'cl_array' ][ 'rows' ][ $j ][ 'fiber' ]; $k++ )
