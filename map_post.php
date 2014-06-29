@@ -83,8 +83,13 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $nodeInfo[ 'apartment' ] = $obj->{'apartment'};
         $nodeInfo[ 'building' ] = $obj->{'building'};
         $nodeInfo[ 'note' ] = $obj->{'note'};
-        divCableLine( $coors, $CableLineId, $nodeInfo, TRUE );
-        setTmpMapLastEdit();
+        $ret = divCableLine( $coors, $CableLineId, $nodeInfo, TRUE );
+        if ($ret['error']) {
+            print json_encode($ret);
+        } else {
+            setTmpMapLastEdit();
+            print json_encode( array( "error" => false ) );
+        }
     }
     elseif ( $_POST[ 'mode' ] == "addNetworkBox" )
     {
@@ -106,12 +111,15 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $result = saveTmpData();
         if (defined($result['error'])) {
             print json_encode( array( "error" => $result['error'] ) );
+        } else {
+            print json_encode( array( "error" => false ) );
         }
     }
     elseif ( $_POST[ 'mode' ] == "cancel" )
     {
         setMapLastEdit();
-        checkData();
+        $result = checkData();
+        print json_encode( $result );
     }
     setMapUserActivity( $uId );
 }

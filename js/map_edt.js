@@ -546,7 +546,7 @@ function init() {
                 notyInformation.close();
             }, 9000 );
             $.post( "map_post.php", { mode: "cancel", userId: userId },
-            function() {
+            function(data) {
                 res = JSON.parse( data );
                 if (res.error) {
                     alert(res.error);

@@ -136,7 +136,11 @@ function setSingPoint( event ) {
                             json = JSON.stringify( jsonSingPointCoor );
                             $.post( "map_post.php",
                                     { coors: json, mode: "divCableLine", userId: userId },
-                            function() {
+                            function(data) {
+                                res = JSON.parse( data );
+                                if (res.error) {
+                                    alert(res.error);
+                                }
                                 refreshAllLayers();
                             } );
                             divCableDialog.destroy();

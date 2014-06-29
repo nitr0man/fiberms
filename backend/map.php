@@ -254,6 +254,24 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     $res = CableLine_SELECT( 0, $wr, $tmpT );
     $CableLine = $res[ 'rows' ][ 0 ];
     unset( $wr );
+
+    $ins[ 'CableType' ] = $CableLine [ 'CableType' ];
+    if ( $CableLine[ 'length' ] != "" )
+    {
+        $ins[ 'length' ] = $CableLine[ 'length' ];
+    }
+    else
+    {
+        $ins[ 'length' ] = "NULL";
+    }
+    $ins[ 'name' ] = $CableLine[ 'name' ].'_'.$nodeInfo[ 'name' ];
+    $ins[ 'comment' ] = $CableLine[ 'comment' ];
+    $res4 = CableLine_INSERT( $ins, $tmpT );
+    if (isset($res4['error'])) {
+	return array('error' => $res4['error']);
+    }
+    $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
+
     $wr[ 'CableLine' ] = $CableLineId;
     $query = 'SELECT * FROM "'.tmpTable( 'CableLinePoint', $tmpT ).'"'.genWhere( $wr ).
             'ORDER BY "sequence"';
@@ -285,19 +303,6 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
             break;
         }
     }
-    $ins[ 'CableType' ] = $CableLine [ 'CableType' ];
-    if ( $CableLine[ 'length' ] != "" )
-    {
-        $ins[ 'length' ] = $CableLine[ 'length' ];
-    }
-    else
-    {
-        $ins[ 'length' ] = "NULL";
-    }
-    $ins[ 'name' ] = $CableLine[ 'name' ]."_div";
-    $ins[ 'comment' ] = $CableLine[ 'comment' ];
-    $res4 = CableLine_INSERT( $ins, $tmpT );
-    $NCableLineId = $res4[ 'rows' ][ 0 ][ 'id' ];
     $seq = 1;
     for ( $j = $i; $j < count( $CableLinePoints ); $j++ )
     {
@@ -327,6 +332,7 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
         CableLinePoint_INSERT( $ins, $tmpT );
     }
     OpticalFiberJoin_replaceCableLine( $CableLine['id'], $NCableLineId, end($CableLinePoints)['NetworkNode'], $tmpT );
+    return array('error' => false);
 }
 
 function divCableLine1( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
@@ -427,6 +433,9 @@ function checkData()
     $query = 'SELECT * FROM "MapSettings"
                 WHERE "LastChangedMap" >= "LastChangedTmpMap"';
     $res = PQuery( $query );
+    if (isset($res['error'])) {
+	return array('error' => $res['error']);
+    }
     if ( $res[ 'count' ] == 1 )
     {
         dropTmpTables();
@@ -435,6 +444,7 @@ function checkData()
     } else {
         createTmpTables();
     }
+    return array('error' => false);
 }
 
 function setTmpMapLastEdit()
