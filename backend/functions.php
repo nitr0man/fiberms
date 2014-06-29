@@ -39,17 +39,28 @@ function PQuery( $query )
     return $result;
 }
 
+function genFieldName($field, $defprefix = NULL)
+{
+    $fieldarr = explode('.', $field);
+    if (count($fieldarr) == 1 && $defprefix) {
+	array_unshift($fieldarr, $defprefix);
+    }
+    $nfields = array();
+    foreach ($fieldarr as $f) {
+	if (mb_strtolower($f) != $f) {
+	    $nfields[] = '"'.$f.'"';
+	} else {
+	    $nfields[] = $f;
+	}
+    }
+    return implode('.', $nfields);
+}
 function genWhere( $wr, $sign = '=', $recursive = false )
 {
     $where = '';
     foreach ( $wr as $field => $value )
     {
-	$fieldarr = explode('.', $field);
-	$nfields = array();
-	foreach ($fieldarr as $f) {
-	    $nfields[] = '"'.$f.'"';
-	}
-	$field1 = implode('.', $nfields);
+	$field1 = genFieldName($field);
         if ( strlen( $where ) > 0 )
             $where .= ' AND ';
         if ( is_string($value) &&  preg_match( '/^(NOT\s)?NULL$/', $value ) )
