@@ -314,9 +314,10 @@ else
                         $fiber2 = $arr[ 1 ];
                         $splice_id = $arr[ 2 ];
                         $fso = $arr[ 3 ];
+                        $cl_col = ($arr[0] == -1) ? '?' : (string)($arr[ 0 ] + 1);
                         if ( isset( $_GET[ 'print' ] ) )
                         {
-                            $table_text_fibers .= '<td>'.(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</td>';
+                            $table_text_fibers .= '<td>'.$cl_col.' - '.$arr[ 1 ].'</td>';
                         }
                         else
                         {
@@ -327,7 +328,7 @@ else
                                     .'&fiber2='.$fiber2.'&networknodeid='.$networkNodeId.'&spliceid='.$splice_id
                                     .'&clid2='.$res[ 'cl_array' ][ 'rows' ][ $arr[ 0 ] ][ 'clid' ]
                                     .'&clid1='.$res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ].'">'
-                                    .(string)($arr[ 0 ] + 1).' - '.$arr[ 1 ].'</a> '.$linksD.' '.$linksT.'</td>';
+                                    .$cl_col.' - '.$arr[ 1 ].'</a> '.$linksD.' '.$linksT.'</td>';
                         }
                     }
                     else

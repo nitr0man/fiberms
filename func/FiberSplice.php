@@ -5,6 +5,7 @@ require_once "backend/CableType.php";
 require_once "backend/OpticalFiberJoin.php";
 require_once "backend/OpticalFiber.php";
 require_once "backend/OpticalFiberSplice.php";
+require_once "util.php";
 
 /* function FiberSplice_Check() {
 
@@ -95,8 +96,8 @@ function getFiberTable( $nodeID )
         {
             if (  $rows[ $i ][ 'OpticalFiberSplice' ] == $rows[ $i + 1 ][ 'OpticalFiberSplice' ] )
             {
-                $ClA = $CableLines[ $rows[ $i ][ 'CableLine' ] ];
-                $ClB = $CableLines[ $rows[ $i + 1 ][ 'CableLine' ] ];
+                $ClA = condAssign($CableLines, $rows[ $i ][ 'CableLine' ], -1);
+                $ClB = condAssign($CableLines, $rows[ $i + 1 ][ 'CableLine' ], -1);
                 $fA = $rows[ $i ][ 'fiber' ];
                 $fB = $rows[ $i + 1 ][ 'fiber' ];
                 $FSO = $rows[ $i ][ 'FiberSpliceOrganizer' ];
