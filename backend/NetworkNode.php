@@ -84,7 +84,7 @@ function getNetworkNode_NetworkBoxName( $networkNodeId )
     return $result;
 }
 
-function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
+function getNetworkNodeList_NetworkBoxName( $sort, $wr,
         $linesPerPage = -1, $skip = -1, $tmpT = FALSE )
 {
     $query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
@@ -96,9 +96,9 @@ function getNetworkNodeList_NetworkBoxName( $sort, $FSort, $wr,
     {
         $query .= genWhere( $wr );
     }
-    if ( $sort == 1 )
+    if ( $sort )
     {
-        $query .= ' ORDER BY "NN"."'.$FSort.'"';
+        $query .= ' ORDER BY '.genFieldName($sort, 'NN');
     }
     $allPages = 0;
     if ( ($linesPerPage != -1) and ($skip != -1) )

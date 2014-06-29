@@ -128,18 +128,17 @@ else
 
         $page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
         $sort = (isset( $_GET[ 'sort' ] )) ? $_GET[ 'sort' ] : 0;
-        $FSort = (isset( $_GET[ 'FSort' ] )) ? $_GET[ 'FSort' ] : NULL;
 
         if ( !isset( $_GET[ 'nodeid' ] ) )
         {
-            $res = getNetworkNodeList_NetworkBoxName( $sort, $FSort,
+            $res = getNetworkNodeList_NetworkBoxName( $sort,
                     '', $config[ 'LinesPerPage' ],
                     ($page - 1) * $config[ 'LinesPerPage' ] );
         }
         else
         {
             $wr[ 'id' ] = $_GET[ 'nodeid' ];
-            $res = getNetworkNodeList_NetworkBoxName( $sort, $FSort,
+            $res = getNetworkNodeList_NetworkBoxName( $sort,
                     $wr, $config[ 'LinesPerPage' ],
                     ($page - 1) * $config[ 'LinesPerPage' ] );
         }
@@ -180,7 +179,7 @@ else
         $smarty->assign( "data", $node_arr );
         $smarty->assign( "pages", $pages );
         $smarty->assign( "mode", '' );
-        $smarty->assign( "sort", $sort ? '0' : '1' );
+        $smarty->assign( "sort", $sort );
     }
     elseif ( ($_GET[ 'mode' ] == 'charac') and (isset( $_GET[ 'nodeid' ] )) )
     {
