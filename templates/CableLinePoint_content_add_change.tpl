@@ -3,6 +3,9 @@
 <input type="hidden" value="{$mod}" name="mode" />
 <input type="hidden" value="{$cablelineid}" name="cablelineid" />
 <input type="hidden" value="{$back}" name="back" />
+{if $disabled == 'disabled'}
+<input type="hidden" value="{$combobox_networknode_selected}" name="networknodes" />
+{/if}
 <input type="hidden" value="{$id}" name="id">
 	<table id="contable">
 		<tr>

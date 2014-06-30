@@ -148,7 +148,7 @@ function CableLinePoint_Check( $OpenGIS, $CableLine, $meterSign, $networkNode,
 {
     $result = 1;
     /* здесь проверка */
-    if ( (is_numeric( $meterSign ) == false ) )
+    if ( !is_numeric( $meterSign ) and $meterSign != '' )
     {
         $result = 0;
     }
@@ -162,6 +162,10 @@ function CableLinePoint_Mod( $id, $OpenGIS, $CableLine, $meterSign,
                     $note, $Apartment, $Building, $SettlementGeoSpatial ) == 0 )
     {
         return 0;
+    }
+    if ( $meterSign == '' )
+    {
+        $meterSign = 'NULL';
     }
     if ( $OpenGIS == '' )
     {
