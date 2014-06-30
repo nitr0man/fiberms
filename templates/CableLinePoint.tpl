@@ -1,6 +1,5 @@
 {include file="header.tpl"}
 {include file="menu.tpl"}
-<body>
 <div id="content">
 {if $mode == 'add_change'}
 	{include file="CableLinePoint_content_add_change.tpl"}

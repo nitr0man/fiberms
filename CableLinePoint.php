@@ -101,7 +101,6 @@ else
         $smarty->assign( "mode", "add_change" );
         $smarty->assign( "disabled", "disabled" );
         $smarty->assign( "mod", "1" );
-        $smarty->assign( "cablelineid", $_GET[ 'cablelineid' ] );
         $smarty->assign( "back", getenv( "HTTP_REFERER" ) );
 
         $wr[ 'id' ] = $_GET[ 'cablelinepointid' ];
@@ -116,6 +115,7 @@ else
         $smarty->assign( "id", $rows[ 0 ][ 'id' ] );
         $smarty->assign( "OpenGIS", $rows[ 0 ][ 'OpenGIS' ] );
         $cableLineId = $rows[ 0 ][ 'CableLine' ];
+        $smarty->assign( "cablelineid", $cableLineId );
         $networkNodeId = $rows[ 0 ][ 'NetworkNode' ];
         if ( $networkNodeId == '' )
         {
@@ -128,7 +128,7 @@ else
         $rows = $res[ 'rows' ];
         $smarty->assign( "cableline", $rows[ 0 ][ 'name' ] );
 
-        $res = NetworkNode_SELECT( 0, '', '' );
+        $res = NetworkNode_SELECT( 0, '', array('id' => $networkNodeId) );
         $rows = $res[ 'rows' ];
         $i = -1;
         while ( ++$i < $res[ 'count' ] )

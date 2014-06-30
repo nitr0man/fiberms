@@ -15,9 +15,7 @@
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Отметка (м)</label></td><td> <input type="text" value="{$meterSign}" name="meterSign"></td>
-		<br />
-		</tr>	
-		
+		</tr>
 		<tr>
 		<td><label class="events_anonce">Координаты</label></td><td> <input type="text" value="{$OpenGIS}" name="OpenGIS"></td>
 		</tr>
