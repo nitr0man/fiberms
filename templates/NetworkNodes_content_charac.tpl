@@ -18,15 +18,6 @@
 			<td><label class="events_anonce">Координаты</label></td><td> <label class="events_anonce">{$OpenGIS}</label> </td>
 		</tr>
 		<tr>
-			<td><label class="events_anonce">SettlementGeoSpatial</label></td><td> {$SettlementGeoSpatial} </td>
-		</tr>
-		<tr>
-			<td><label class="events_anonce">Здание</label></td><td> <label class="events_anonce">{$Building}</label> </td>
-		</tr>
-		<tr>
-			<td><label class="events_anonce">Квартира</label></td><td> <label class="events_anonce">{$Apartment}</label> </td>
-		</tr>
-		<tr>
 			<td><label class="events_anonce">Примечание</label></td><td><label class="events_anonce">{$note}</label></td>
 		</tr>
 	</table>

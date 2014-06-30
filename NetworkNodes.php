@@ -14,31 +14,8 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $name = $_POST[ 'name' ];
         $networkBox = $_POST[ 'boxes' ];
         $note = $_POST[ 'note' ];
-        $OpenGIS = $_POST[ 'OpenGIS' ];
-        if ( $_POST[ 'SettlementGeoSpatial' ] == '' )
-        {
-            $SettlementGeoSpatial = 'NULL';
-        }
-        if ( $_POST[ 'SettlementGeoSpatial' ] != '' )
-        {
-            $SettlementGeoSpatial = $_POST[ 'SettlementGeoSpatial' ];
-        }
-        if ( $_POST[ 'Building' ] == '' )
-        {
-            $building = 'NULL';
-        }
-        if ( $_POST[ 'Building' ] != '' )
-        {
-            $building = $_POST[ 'Building' ];
-        }
-        if ( $_POST[ 'Apartment' ] == '' )
-        {
-            $apartment = 'NULL';
-        }
-        if ( $_POST[ 'Apartment' ] != '' )
-        {
-            $apartment = $_POST[ 'Apartment' ];
-        }
+        $OpenGIS =  ($_POST[ 'OpenGIS' ] == '') ? 'NULL' : $_POST[ 'OpenGIS' ];
+        $apartment = $building = $SettlementGeoSpatial = 'NULL';
 
         $res = NetworkNode_Mod( $id, $name, $networkBox, $note, $OpenGIS,
                 $SettlementGeoSpatial, $building, $apartment );
@@ -64,38 +41,8 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $name = $_POST[ 'name' ];
         $networkBox = $_POST[ 'boxes' ];
         $note = $_POST[ 'note' ];
-        if ( $_POST[ 'OpenGIS' ] == '' )
-        {
-            $OpenGIS = 'NULL';
-        }
-        if ( $_POST[ 'OpenGIS' ] != '' )
-        {
-            $OpenGIS = $_POST[ 'OpenGIS' ];
-        }
-        if ( $_POST[ 'SettlementGeoSpatial' ] == '' )
-        {
-            $SettlementGeoSpatial = 'NULL';
-        }
-        if ( $_POST[ 'SettlementGeoSpatial' ] != '' )
-        {
-            $SettlementGeoSpatial = $_POST[ 'SettlementGeoSpatial' ];
-        }
-        if ( $_POST[ 'Building' ] == '' )
-        {
-            $building = 'NULL';
-        }
-        if ( $_POST[ 'Building' ] != '' )
-        {
-            $building = $_POST[ 'Building' ];
-        }
-        if ( $_POST[ 'Apartment' ] == '' )
-        {
-            $apartment = 'NULL';
-        }
-        if ( $_POST[ 'Apartment' ] != '' )
-        {
-            $apartment = $_POST[ 'Apartment' ];
-        }
+        $OpenGIS =  ($_POST[ 'OpenGIS' ] == '') ? 'NULL' : $_POST[ 'OpenGIS' ];
+        $apartment = $building = $SettlementGeoSpatial = 'NULL';
 
         $res = NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
                 $SettlementGeoSpatial, $building, $apartment );
@@ -161,9 +108,6 @@ else
             $node_arr[] = '<a href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'NBTmarking' ].'</a>';
             $node_arr[] = $rows[ $i ][ 'fiberSpliceCount' ];
             $node_arr[] = $rows[ $i ][ 'OpenGIS' ];
-            $node_arr[] = $rows[ $i ][ 'SettlementGeoSpatial' ];
-            $node_arr[] = $rows[ $i ][ 'Building' ];
-            $node_arr[] = $rows[ $i ][ 'Apartment' ];
             $node_arr[] = '<a href="NetworkNodes.php?mode=change&nodeid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
             $wr[ 'NetworkNode' ] = $rows[ $i ][ 'id' ];
             $res2 = CableLinePoint_SELECT( $wr );
@@ -262,9 +206,6 @@ else
         $smarty->assign( "FiberSpliceCount", $fiberSpliceCount );
         $smarty->assign( "note", nl2br( $rows[ 'note' ] ) );
         $smarty->assign( "OpenGIS", $rows[ 'OpenGIS' ] );
-        $smarty->assign( "SettlementGeoSpatial", $rows[ 'SettlementGeoSpatial' ] );
-        $smarty->assign( "Building", $rows[ 'Building' ] );
-        $smarty->assign( "Apartment", $rows[ 'Apartment' ] );
         $smarty->assign( "ChangeDeleteFiberSplice", $changeDeleteFiberSplice );
     }
     elseif ( ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'nodeid' ] )) )
@@ -293,10 +234,6 @@ else
         $smarty->assign( "NetworkBox", $rows[ 0 ][ 'NetworkBox' ] );
         $smarty->assign( "note", $rows[ 0 ][ 'note' ] );
         $smarty->assign( "OpenGIS", $rows[ 0 ][ 'OpenGIS' ] );
-        $smarty->assign( "SettlementGeoSpatial",
-                $rows[ 0 ][ 'SettlementGeoSpatial' ] );
-        $smarty->assign( "Building", $rows[ 0 ][ 'Building' ] );
-        $smarty->assign( "Apartment", $rows[ 0 ][ 'Apartment' ] );
         $networkBox = $rows[ 0 ][ 'NetworkBox' ];
 
         $res = getFreeNetworkBoxes( $rows[ 0 ][ 'NetworkBox' ] );
@@ -350,9 +287,6 @@ else
         $smarty->assign( "NetworkBox", '' );
         $smarty->assign( "note", '' );
         $smarty->assign( "OpenGIS", '' );
-        $smarty->assign( "SettlementGeoSpatial", '' );
-        $smarty->assign( "Building", '' );
-        $smarty->assign( "Apartment", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and (isset( $_GET[ 'nodeid' ] )) )
     {
