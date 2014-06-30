@@ -252,7 +252,7 @@ else
         }
         $smarty->assign( "combobox_box_values", $comboBox_Box_Values );
         $smarty->assign( "combobox_box_text", $comboBox_Box_Text );
-        $smarty->assign( "combobox_boxtype_selected", $networkBox );
+        $smarty->assign( "combobox_box_selected", $networkBox );
     }
     elseif ( $_GET[ 'mode' ] == 'add' )
     {
