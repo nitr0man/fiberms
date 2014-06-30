@@ -16,9 +16,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $meterSign = $_POST[ 'meterSign' ];
         $networkNode = $_POST[ 'networknodes' ];
         $note = $_POST[ 'note' ];
-        $Apartment = $_POST[ 'Apartment' ];
-        $Building = $_POST[ 'Building' ];
-        $SettlementGeoSpatial = $_POST[ 'SettlementGeoSpatial' ];
+        $Apartment = $Building = $SettlementGeoSpatial = 'NULL';
         $res = CableLinePoint_Mod( $id, $OpenGIS, $CableLine, $meterSign,
                 $networkNode, $note, $Apartment, $Building,
                 $SettlementGeoSpatial );
@@ -46,9 +44,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $meterSign = $_POST[ 'meterSign' ];
         $networkNode = $_POST[ 'networknodes' ];
         $note = $_POST[ 'note' ];
-        $Apartment = $_POST[ 'Apartment' ];
-        $Building = $_POST[ 'Building' ];
-        $SettlementGeoSpatial = $_POST[ 'SettlementGeoSpatial' ];
+        $Apartment = $Building = $SettlementGeoSpatial = 'NULL';
         $res = CableLinePoint_Add( $OpenGIS, $CableLine, $meterSign,
                 $networkNode, $note, $Apartment, $Building,
                 $SettlementGeoSpatial );
@@ -88,9 +84,6 @@ else
             $cableLine_arr[ ] = $rows[ $i ][ 'meterSign' ];
             $cableLine_arr[ ] = $rows[ $i ][ 'NetworkNode' ];
             $cableLine_arr[ ] = $rows[ $i ][ 'note' ];
-            //$cableLine_arr[ ] = $rows[ $i ][ 'Apartment' ];
-            //$cableLine_arr[ ] = $rows[ $i ][ 'Building' ];
-            //$cableLine_arr[ ] = $rows[ $i ][ 'SettlementGeoSpatial' ];
             $cableLine_arr[ ] = '<a href="CableLinePoint.php?mode=change&cablelinepointid='.$rows[ $i ][ 'id' ].'">Изменить</a>';
             $cableLine_arr[ ] = '<a href="CableLinePoint.php?mode=delete&cablelinepointid='.$rows[ $i ][ 'id' ].'">Удалить</a>';
         }
@@ -130,22 +123,10 @@ else
         }
         $smarty->assign( "meterSign", $rows[ 0 ][ 'meterSign' ] );
         $smarty->assign( "note", $rows[ 0 ][ 'note' ] );
-        $smarty->assign( "Apartment", $rows[ 0 ][ 'Apartment' ] );
-        $smarty->assign( "Building", $rows[ 0 ][ 'Building' ] );
-        $smarty->assign( "SettlementGeoSpatial",
-                $rows[ 0 ][ 'SettlementGeoSpatial' ] );
 
-        $res = CableLine_SELECT( '', '' );
+        $res = CableLine_SELECT( 0, array('id' => $cableLineId) );
         $rows = $res[ 'rows' ];
-        $i = -1;
-        while ( ++$i < $res[ 'count' ] )
-        {
-            $comboBox_CableLine_Values[ ] = $rows[ $i ][ 'id' ];
-            $comboBox_CableLine_Text[ ] = $rows[ $i ][ 'length' ];
-        }
-        $smarty->assign( "combobox_cableline_values", $comboBox_CableLine_Values );
-        $smarty->assign( "combobox_cableline_text", $comboBox_CableLine_Text );
-        $smarty->assign( "combobox_cableline_selected", $cableLineId );
+        $smarty->assign( "cableline", $rows[ 0 ][ 'name' ] );
 
         $res = NetworkNode_SELECT( 0, '', '' );
         $rows = $res[ 'rows' ];
