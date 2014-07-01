@@ -1,3 +1,6 @@
+<?php
+require_once 'auth.php';
+?>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -10,39 +13,25 @@
                 list-style: none;
             }
         </style>
-        <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script type="text/javascript" src="js/jquery.min-1.9.1.js"></script>
+        <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+        <script type="text/javascript" src="js/menu.js"></script>
         <script src="js/OpenLayers.js"></script>
         <!--script type="text/javascript" src="js/MarkerGrid.js"></script>
         <script type="text/javascript" src="js/MarkerTile.js"></script>
         <script type="text/javascript" src="js/bounds.js"></script-->
         <script type="text/javascript" src="js/js_xml.js"></script>
+        <script src="http://maps.google.com/maps/api/js?v=3&amp;sensor=false"></script>
         <script type="text/javascript" src="js/map.js"></script>
-        <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
         <link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
         <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
         <link rel="stylesheet" href="js/theme/default/google.css" type="text/css">
         <script type="text/javascript">
-            $( document ).ready( function() {
-                $( function() {
-                    $( "#menuBtn" ).click( function() {
-                        if ( $( this ).parent().css( "left" ) == "-170px" ) {
-                            $( this ).parent().animate( { left: '0px' },
-                            { queue: false, duration: 500 } );
-                        } else {
-                            $( this ).parent().animate( { left: '-170px' },
-                            { queue: false, duration: 500 } );
-                        }
-                    } );
-                } );                
-            } );
-            ddsmoothmenu.init( {
-                mainmenuid: "smoothmenu1",
-                orientation: 'v',
-                classname: 'ddsmoothmenu-v',
-                //customtheme: ["white", "black"],
-                contentsource: "markup"
-            } );
+        <?php
+        print "var lat = ".$config['lat'].";
+        var lon = ".$config['lon'].";
+        var zoom = ".$config['zoom'].";\n"
+        ?>
         </script>
     </head>
     <body>

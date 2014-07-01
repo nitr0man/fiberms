@@ -57,37 +57,18 @@ print 'var userId = '.$user.';';
         <script type="text/javascript" src="js/noty/layouts/topRight.js"></script>
         <script type="text/javascript" src="js/noty/themes/default.js"></script>
         <script type="text/javascript" src="js/js_xml.js"></script>        
+        <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
+        <script type="text/javascript" src="js/menu.js"></script>        
         <script type="text/javascript" src="js/map_edt_cableLine.js"></script>
         <script type="text/javascript" src="js/map_edt_node.js"></script>
         <script type="text/javascript" src="js/map_edt_singPoint.js"></script>
         <script type="text/javascript" src="js/map_edt_noty.js"></script>
         <script type="text/javascript" src="js/map_edt_parseXML.js"></script>
         <script type="text/javascript" src="js/map_edt.js"></script>
-        <script type="text/javascript" src="js/ddsmoothmenu.js"></script>
         <link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
         <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
         <link rel="stylesheet" href="js/theme/default/google.css" type="text/css">
         <script type="text/javascript">
-            $( document ).ready( function() {
-                $( function() {
-                    $( "#menuBtn" ).click( function() {
-                        if ( $( this ).parent().css( "left" ) == "-170px" ) {
-                            $( this ).parent().animate( { left: '0px' },
-                            { queue: false, duration: 500 } );
-                        } else {
-                            $( this ).parent().animate( { left: '-170px' },
-                            { queue: false, duration: 500 } );
-                        }
-                    } );
-                } );                
-            } );
-            ddsmoothmenu.init( {
-                mainmenuid: "smoothmenu1",
-                orientation: 'v',
-                classname: 'ddsmoothmenu-v',
-                //customtheme: ["white", "black"],
-                contentsource: "markup"
-            } );
         </script>
     </head>
     <body>
