@@ -69,6 +69,11 @@ print 'var userId = '.$user.';';
         <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
         <link rel="stylesheet" href="js/theme/default/google.css" type="text/css">
         <script type="text/javascript">
+        <?php
+        print "var lat = ".$config['lat'].";
+        var lon = ".$config['lon'].";
+        var zoom = ".$config['zoom'].";\n"
+        ?>
         </script>
     </head>
     <body>
