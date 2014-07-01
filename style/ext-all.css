@@ -11798,7 +11798,7 @@ body.x-nbr .x-tip-form-invalid-frameInfo {
 /* line 265, ../../../ext-theme-neutral/sass/src/tip/Tip.scss */
 .x-tip-body-form-invalid {
   background: 1px 1px no-repeat;
-  background-image: url(js/img/extjs/exclamation.gif);
+  background-image: url(../js/img/extjs/exclamation.gif);
 }
 /* line 268, ../../../ext-theme-neutral/sass/src/tip/Tip.scss */
 .x-tip-body-form-invalid li {
@@ -13813,7 +13813,7 @@ body.x-nbr .x-window-header-default-collapsed-left-frameInfo {
   font: normal 11px tahoma, arial, verdana, sans-serif;
   line-height: 16px;
   background: no-repeat 0 2px;
-  background-image: url(js/img/extjs/exclamation.gif);
+  background-image: url(../js/img/extjs/exclamation.gif);
 }
 
 /* line 14, ../../../ext-theme-neutral/sass/src/form/Labelable.scss */
@@ -13826,7 +13826,7 @@ div.x-lbl-top-err-icon {
   width: 16px;
   height: 16px;
   margin: 0 1px;
-  background-image: url(js/img/extjs/exclamation.gif);
+  background-image: url(../js/img/extjs/exclamation.gif);
   background-repeat: no-repeat;
 }
 
@@ -13907,7 +13907,7 @@ div.x-lbl-top-err-icon {
   border-width: 1px;
   border-style: solid;
   border-color: #b5b8c8;
-  background-image: url(js/img/extjs/text-bg.gif);
+  background-image: url(../js/img/extjs/text-bg.gif);
   height: 22px;
   line-height: 17px;
 }
@@ -13947,7 +13947,7 @@ textarea.x-form-empty-field {
 .x-form-textarea {
   line-height: normal;
   height: auto;
-  background-image: url(js/img/extjs/text-bg.gif);
+  background-image: url(../js/img/extjs/text-bg.gif);
 }
 
 /* line 1, ../../../ext-theme-neutral/sass/src/form/field/Display.scss */
@@ -14286,7 +14286,7 @@ textarea.x-form-empty-field {
 
 /* line 1, ../../../ext-theme-neutral/sass/src/form/field/Trigger.scss */
 .x-form-trigger {
-  background: url(js/img/extjs/trigger.gif);
+  background: url(../js/img/extjs/trigger.gif);
   width: 17px;
   border-width: 0 0 1px;
   border-color: #b5b8c8;
@@ -14763,7 +14763,7 @@ a.x-monthpicker-item-inner:hover {
 
 /* line 294, ../../../ext-theme-neutral/sass/src/picker/Date.scss */
 .x-monthpicker-yearnav-next {
-  background-image: url(js/img/extjs/tool-sprites.gif);
+  background-image: url(../js/img/extjs/tool-sprites.gif);
   background-position: 0 -120px;
 }
 
@@ -14774,7 +14774,7 @@ a.x-monthpicker-item-inner:hover {
 
 /* line 303, ../../../ext-theme-neutral/sass/src/picker/Date.scss */
 .x-monthpicker-yearnav-prev {
-  background-image: url(js/img/extjs/tool-sprites.gif);
+  background-image: url(../js/img/extjs/tool-sprites.gif);
   background-position: 0 -105px;
 }
 
@@ -16408,7 +16408,7 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
   overflow: hidden;
   width: 15px;
   height: 15px;
-  background-image: url(js/img/extjs/tool-sprites.gif);
+  background-image: url(../js/img/extjs/tool-sprites.gif);
   margin: 0;
 }
 
@@ -16856,38 +16856,38 @@ body.x-nbr .x-grid-row-editor-buttons-default-top-frameInfo {
 .x-resizable-over .x-resizable-handle-west,
 .x-resizable-pinned .x-resizable-handle-east,
 .x-resizable-pinned .x-resizable-handle-west {
-  background-image: url(js/img/extjs/e-handle.gif);
+  background-image: url(../js/img/extjs/e-handle.gif);
 }
 /* line 154, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-over .x-resizable-handle-south,
 .x-resizable-over .x-resizable-handle-north,
 .x-resizable-pinned .x-resizable-handle-south,
 .x-resizable-pinned .x-resizable-handle-north {
-  background-image: url(js/img/extjs/s-handle.gif);
+  background-image: url(../js/img/extjs/s-handle.gif);
 }
 /* line 159, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-over .x-resizable-handle-southeast,
 .x-resizable-pinned .x-resizable-handle-southeast {
   background-position: top left;
-  background-image: url(js/img/extjs/se-handle.gif);
+  background-image: url(../js/img/extjs/se-handle.gif);
 }
 /* line 164, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-over .x-resizable-handle-northwest,
 .x-resizable-pinned .x-resizable-handle-northwest {
   background-position: bottom right;
-  background-image: url(js/img/extjs/nw-handle.gif);
+  background-image: url(../js/img/extjs/nw-handle.gif);
 }
 /* line 169, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-over .x-resizable-handle-northeast,
 .x-resizable-pinned .x-resizable-handle-northeast {
   background-position: bottom left;
-  background-image: url(js/img/extjs/ne-handle.gif);
+  background-image: url(../js/img/extjs/ne-handle.gif);
 }
 /* line 174, ../../../ext-theme-neutral/sass/src/resizer/Resizer.scss */
 .x-resizable-over .x-resizable-handle-southwest,
 .x-resizable-pinned .x-resizable-handle-southwest {
   background-position: top right;
-  background-image: url(js/img/extjs/sw-handle.gif);
+  background-image: url(../js/img/extjs/sw-handle.gif);
 }
 
 /* Horizontal styles */
