@@ -35,11 +35,6 @@ function setSingPoint( event ) {
     var feature = event.feature;
     var coorSingPoint = feature.geometry.getVertices();
     if ( divLineMode ) {
-        if ( networkBoxesArr.length < 1 ) {
-            addNodeLayer.destroyFeatures();
-            showError( 'topCenter', 'Нет свободных ящиков!' );
-            return;
-        }
         jsonSingPointCoor.CableLineId = selectedCableLineId;
         var ll = new OpenLayers.LonLat( coorSingPoint[ 0 ].x,
                 coorSingPoint[ 0 ].y ).transform(
