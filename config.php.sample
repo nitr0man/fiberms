@@ -8,4 +8,9 @@ $config[ 'LinesPerPage' ] = 10;
 $config[ 'version' ] = '1.0.0';
 $config[ 'maxTraceDepth' ] = 1000; // макс. глубина функции трассировки
 
+// Default coordinates
+$config[ 'lat' ] = 48.5;
+$config[ 'lon' ] = 32.24;
+$config[ 'zoom' ] = 14;
+
 ?>

@@ -1,6 +1,3 @@
-var lat = 48.5;
-var lon = 32.24;
-var zoom = 14;
 var map;
 var drawControls, selectControl, selectedFeature, lineLayer;
 var CableLineText_arr = Array();
