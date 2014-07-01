@@ -430,6 +430,10 @@ function checkSession()
 
 function checkData()
 {
+    $res = PQuery( 'BEGIN WORK; LOCK "MapSettings";' );
+    if (isset($res['error'])) {
+        return array('error' => $res['error']);
+    }
     $query = 'SELECT * FROM "MapSettings"
                 WHERE "LastChangedMap" >= "LastChangedTmpMap"';
     $res = PQuery( $query );
@@ -438,13 +442,14 @@ function checkData()
     }
     if ( $res[ 'count' ] == 1 )
     {
-        dropTmpTables();
-        createTmpTables();
+        $res = dropTmpTables(true);
+        $res = createTmpTables(true);
         setTmpMapLastEdit();
     } else {
-        createTmpTables();
+        $res = createTmpTables(true);
     }
-    return array('error' => false);
+    $res = PQuery( 'COMMIT WORK' );
+    return array('error' => isset($res['error']) ? $res['error'] : false );
 }
 
 function setTmpMapLastEdit()
@@ -497,7 +502,7 @@ function finishMapSession( $userId = -1 )
 
 function saveTmpData()
 {
-    $query = 'BEGIN;';
+    $query = 'BEGIN; LOCK "MapSettings";';
     $tables = getTables();
     $tbl_del = "";
     $ins = "";
@@ -517,6 +522,9 @@ function saveTmpData()
     $res = PQuery( $query );
     if (!isset($res['error'])) {
         $res = setMapLastEdit();
+    }
+    if (!isset($res['error'])) {
+        $res = CheckData();
     }
     return $res;
 }

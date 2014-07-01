@@ -234,7 +234,7 @@ function getTables()
     return $res;
 }
 
-function createTmpTables()
+function createTmpTables($in_transaction = false)
 {
     global $config;
     $db_user = $config[ 'user' ];
@@ -243,11 +243,14 @@ function createTmpTables()
     for ( $i = 0; $i < count( $tablist ); $i++ )
     {
         $res = PQuery( "SELECT * FROM information_schema.tables WHERE table_name = '".tmpTable( $tablist[$i], TRUE )."';");
-        if ($res['count'] == 0) {
+        if ($res['count'] == 0 && !isset($res['error'])) {
             $tables[] = $tablist[$i];
         }
     }
-    $query = 'BEGIN;';
+    if (count($tables) == 0) {
+        return array('count' => 0);
+    }
+    $query = ($in_transaction) ? '' : 'BEGIN; LOCK "MapSettings";';
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
         $table = $tables[ $i ];
@@ -256,14 +259,16 @@ function createTmpTables()
         $query .= 'ALTER TABLE "'.$tmpT.'" OWNER TO '.$db_user.';';
         $query .= ' INSERT INTO "'.$tmpT.'" SELECT * FROM "'.$table.'";';
     }
-    $query .= ' COMMIT;';
+    if (!$in_transaction) {
+	$query .= ' COMMIT;';
+    }
     return PQuery( $query );
 }
 
-function dropTmpTables()
+function dropTmpTables($in_transaction = false)
 {
     $tables = getTables();
-    $query = 'BEGIN;';
+    $query = ($in_transaction) ? '' : 'BEGIN; LOCK "MapSettings";';
     $tbl_del = "";
     for ( $i = 0; $i < count( $tables ); $i++ )
     {
@@ -277,7 +282,9 @@ function dropTmpTables()
     }
     //$query .= ' TRUNCATE '.$tbl_del.';';
     $query .= ' DROP TABLE IF EXISTS '.$tbl_del.' CASCADE;';
-    $query .= ' COMMIT;';
+    if (!$in_transaction) {
+	$query .= ' COMMIT;';
+    }
     //print($query);
     return PQuery( $query );
 }
