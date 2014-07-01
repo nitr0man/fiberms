@@ -50,13 +50,15 @@ if ( $_GET[ 'mode' ] == 'GetCableLines' )
                 $node->appendChild( $node_attr );
             }
             $direction_row = getCableLineDirection( $cableLineId, -1, -1 );
-            if ( $direction_row[ 0 ][ 'name' ] != '-' )
+            $direction_href = '';
+            if ( isset($direction_row[ 0 ]) && $direction_row[ 0 ][ 'name' ] != '-' )
             {
-                $direction_href = '<a href="NetworkNodes.php?mode=charac&nodeid='.$direction_row[ 0 ][ 'NetworkNode' ].'">'.$direction_row[ 0 ][ 'name' ].'</a> - <a href="NetworkNodes.php?mode=charac&nodeid='.$direction_row[ 1 ][ 'NetworkNode' ].'">'.$direction_row[ 1 ][ 'name' ].'</a>';
+                $direction_href .= '<a href="NetworkNodes.php?mode=charac&nodeid='.$direction_row[ 0 ][ 'NetworkNode' ].'">'.$direction_row[ 0 ][ 'name' ].'</a>';
             }
-            else
+            $direction_href .= '-';
+            if ( isset($direction_row[ 1 ]) && $direction_row[ 1 ][ 'name' ] != '-' )
             {
-                $direction_href = '-';
+                $direction_href .= '<a href="NetworkNodes.php?mode=charac&nodeid='.$direction_row[ 1 ][ 'NetworkNode' ].'">'.$direction_row[ 1 ][ 'name' ].'</a>';
             }
 
             $cableId = $cableLine->appendChild( $dom->createElement( 'cableLineId' ) );
