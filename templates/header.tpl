@@ -6,7 +6,7 @@
   <meta name="description" content="" />
   <meta name="keywords" content="" />
   {if (!isset($smarty.get.print))}
-	<link href="main_style.css" rel="stylesheet" type="text/css" media="screen" />  
+	<link href="style/main.css" rel="stylesheet" type="text/css" media="screen" />  
 	<link rel="stylesheet" type="text/css" href="style/map-menu-v.css" />
     <link rel="stylesheet" type="text/css" href="style/map-menu.css" />
   {/if}

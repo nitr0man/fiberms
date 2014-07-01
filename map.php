@@ -6,8 +6,7 @@ require_once 'auth.php';
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <title>Карта - FiberMS</title>
-        <link rel="stylesheet" type="text/css" href="style_popup.css" />
-        <link rel="stylesheet" type="text/css" href="style_popup2.css">
+        <link rel="stylesheet" type="text/css" href="style/popup.css" />
         <style type="text/css">
             #controlToggle li {
                 list-style: none;

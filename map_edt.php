@@ -25,9 +25,9 @@ setMapUserActivity();
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta name="apple-mobile-web-app-capable" content="yes">
         <title>Карта - FiberMS</title>
-        <link rel="stylesheet" href="ext-all.css" type="text/css">
+        <link rel="stylesheet" href="style/ext-all.css" type="text/css">
         <link rel="stylesheet" href="style/buttons.css" type="text/css">
-        <link rel="stylesheet" href="map_edt.css" type="text/css">
+        <link rel="stylesheet" href="style/map_edt.css" type="text/css">
         <style type="text/css">
             #controlToggle li {
                 list-style: none;
