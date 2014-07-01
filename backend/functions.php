@@ -2,6 +2,15 @@
 
 require_once 'config.php';
 
+$query_count = 0;
+$connection = PConnect( $config[ 'host' ], $config[ 'db' ], $config[ 'user' ],
+     $config[ 'pass' ] );
+if ( !$connection )
+{
+    die( "Could not open connection to database server" );
+}
+
+
 function PConnect( $host, $db, $user, $pass )
 {
     global $connection;
