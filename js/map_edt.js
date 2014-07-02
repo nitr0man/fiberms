@@ -233,11 +233,11 @@ function init() {
                 strokeWidth: 2,
                 labelYOffset: 10,
                 label: "${label}",
-                fontColor: 'red',
-                fontSize: 9,
-                fontWeight: "bold",
+                fontColor: '#faa',
+                fontSize: 10,
+                fontFamily: "Arial",
                 labelOutlineColor: "black",
-                labelOutlineWidth: 1
+                labelOutlineWidth: 3
             } );
 
     layerNodes = new OpenLayers.Layer.Vector(
