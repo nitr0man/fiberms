@@ -244,8 +244,9 @@ function init() {
                 labelYOffset: 10,
                 label: "${label}",
                 fontColor: '#faa',
-                fontSize: 10,
+                fontSize: 11,
                 fontFamily: "Arial",
+                fontWeight: "bold",
                 labelOutlineColor: "black",
                 labelOutlineWidth: 3
             } );
