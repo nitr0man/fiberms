@@ -68,7 +68,7 @@ function addNodeMsg( event ) {
                 name: 'name',
                 value: ''
             },
-            {
+/*            {
                 fieldLabel: 'Квартира',
                 name: 'apartment',
                 value: ''
@@ -77,7 +77,7 @@ function addNodeMsg( event ) {
                 fieldLabel: 'Здание',
                 name: 'building',
                 value: ''
-            },
+            },*/
             {
                 fieldLabel: 'Примечание',
                 name: 'note',
@@ -91,8 +91,8 @@ function addNodeMsg( event ) {
                     var form = this.up( 'form' ).getForm();
                     jsonNodeCoor.name = form.getValues().name;
                     jsonNodeCoor.NetworkBoxId = form.getValues().networkBox;
-                    jsonNodeCoor.building = form.getValues().building;
-                    jsonNodeCoor.apartment = form.getValues().apartment;
+/*                    jsonNodeCoor.building = form.getValues().building;
+                    jsonNodeCoor.apartment = form.getValues().apartment;*/
                     jsonNodeCoor.note = form.getValues().note;
                     if ( jsonNodeCoor.name == "" || jsonNodeCoor.NetworkBoxId == "" ) {
                         alert( 'Заполните поля!' );

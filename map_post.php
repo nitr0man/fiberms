@@ -58,8 +58,8 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     elseif ( $_POST[ 'mode' ] == "addNode" )
     {
         $NetworkBoxId = $obj->{'NetworkBoxId'};
-        $apartment = $obj->{'apartment'};
-        $building = $obj->{'building'};
+        $apartment = NULL;
+        $building = NULL;
         $note = $obj->{'note'};
         $name = $obj->{'name'};
         addNode( $coors, $name, $NetworkBoxId, $note, NULL,
