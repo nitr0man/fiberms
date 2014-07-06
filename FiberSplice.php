@@ -132,7 +132,7 @@ else
         for ( $i = 0; $i < $res[ 'count' ]; $i++ )
         {
             $ComboBox_FibersSpliceOrganizer_Values[] = $res[ 'rows' ][ $i ][ 'id' ];
-            $ComboBox_FibersSpliceOrganizer_Text[] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeId' ].")";
+            $ComboBox_FibersSpliceOrganizer_Text[] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeMarking' ].")";
         }
         $smarty->assign( "ComboBox_FibersSpliceOrganizer_values",
                 $ComboBox_FibersSpliceOrganizer_Values );
@@ -191,7 +191,7 @@ else
         for ( $i = 0; $i < $res[ 'count' ]; $i++ )
         {
             $ComboBox_FibersSpliceOrganizer_Values[] = $res[ 'rows' ][ $i ][ 'id' ];
-            $ComboBox_FibersSpliceOrganizer_Text[] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeId' ].")";
+            $ComboBox_FibersSpliceOrganizer_Text[] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeMarking' ].")";
         }
         $smarty->assign( "ComboBox_FibersSpliceOrganizer_values",
                 $ComboBox_FibersSpliceOrganizer_Values );
