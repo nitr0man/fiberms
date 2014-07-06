@@ -89,7 +89,8 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 }
 else
 {
-    if ( isset($_GET[ 'mode' ]) && ($_GET[ 'mode' ] == 'change') and (isset( $_GET[ 'networknodeid' ] )) and (isset( $_GET[ 'clid1' ] )) and (isset( $_GET[ 'fiber1' ] )) )
+    if ( isset($_GET['mode' ]) && ($_GET['mode'] == 'add' ||
+	($_GET['mode'] == 'change' && isset($_GET['networknodeid']) && isset($_GET['clid1']) && isset($_GET['fiber1']))))
     {
         if ( $_SESSION[ 'class' ] > 1 )
         {
@@ -98,21 +99,20 @@ else
         }
 
         $smarty->assign( "mode", "add_change" );
-        $smarty->assign( "mod", "1" );
+        $smarty->assign( "mod", ($_GET[ 'mode' ] == 'change') ? '1' : '2' );
         $smarty->assign( "back", getenv( "HTTP_REFERER" ) );
+        $smarty->assign( "IsA", (isset($_GET[ 'isa' ])) ? $_GET[ 'isa' ] : '' );
+        $smarty->assign( "curr_fiber", (isset($_GET[ 'fiber2' ])) ? $_GET[ 'fiber2' ] : '-1' );
+        $smarty->assign( "fiber1", $_GET[ 'fiber1' ] );
 
         $networkNodeId = $_GET[ 'networknodeid' ];
-        $OFJ_id = $_GET[ 'spliceid' ];
-        $cableLineId2 = $_GET[ 'clid2' ];
-        $fiber = $_GET[ 'fiber2' ];
+        $smarty->assign( "NetworkNodeId", $networkNodeId );
 
-        $res = getNodeFibers( $networkNodeId, $OFJ_id );
-        $fso = $res[ 'rows' ][ 0 ][ 'FiberSpliceOrganizer' ];
-        $smarty->assign( "attenuation", $res[ 'rows' ][ 0 ][ 'attenuation' ] );
-        $smarty->assign( "note", $res[ 'rows' ][ 0 ][ 'note' ] );
+        $cableLineId1 = $_GET[ 'clid1' ];
+        $smarty->assign( "clid1", $cableLineId1 );
 
+        $fiber = ($_GET[ 'mode' ] == 'change') ? $_GET[ 'fiber2' ] : -1;
         $res = getFiberTable( $networkNodeId );
-        $fibers = getFibers( $networkNodeId, $cableLineId2, $fiber );
 
         $cl_array = $res[ 'cl_array' ];
         for ( $i = 0; $i < $cl_array[ 'count' ]; $i++ )
@@ -120,71 +120,36 @@ else
             $ComboBox_CableLinePoint_Values[] = $cl_array[ 'rows' ][ $i ][ 'clid' ];
             $ComboBox_CableLinePoint_Text[] = $cl_array[ 'rows' ][ $i ][ 'name' ];
         }
-        $cable1 = $cl_array[ 'rows' ][ $res[ 'CableLines' ][ $_GET[ 'clid1' ] ] ][ 'name' ];
-
-        $smarty->assign( "cable1", $cable1 );
-        $smarty->assign( "fiber1", $_GET[ 'fiber1' ] );
-        $smarty->assign( "Combobox_Fibers_selected", $_GET[ 'fiber2' ] );
-        $smarty->assign( "ComboBox_Fibers_values", $fibers );
-        $smarty->assign( "ComboBox_Fibers_text", $fibers );
-
-        $res = getFiberSpliceOrganizerInfo( -1, -1, $networkNodeId );
-        for ( $i = 0; $i < $res[ 'count' ]; $i++ )
-        {
-            $ComboBox_FibersSpliceOrganizer_Values[] = $res[ 'rows' ][ $i ][ 'id' ];
-            $ComboBox_FibersSpliceOrganizer_Text[] = $res[ 'rows' ][ $i ][ 'id' ]." (".$res[ 'rows' ][ $i ][ 'FiberSpliceOrganizationTypeMarking' ].")";
-        }
-        $smarty->assign( "ComboBox_FibersSpliceOrganizer_values",
-                $ComboBox_FibersSpliceOrganizer_Values );
-        $smarty->assign( "ComboBox_FibersSpliceOrganizer_text",
-                $ComboBox_FibersSpliceOrganizer_Text );
-        $smarty->assign( "Combobox_FibersSpliceOrganizer_selected", $fso );
         $smarty->assign( "ComboBox_CableLines_values",
                 $ComboBox_CableLinePoint_Values );
         $smarty->assign( "ComboBox_CableLines_text",
                 $ComboBox_CableLinePoint_Text );
-        $smarty->assign( "ComboBox_CableLines_selected", $cableLineId2 );
-        $smarty->assign( "IsA", (isset($_GET[ 'isa' ])) ? $_GET[ 'isa' ] : '' );
-        $smarty->assign( "SpliceId", $_GET[ 'spliceid' ] );
-        $smarty->assign( "NetworkNodeId", $networkNodeId );
-        $smarty->assign( "curr_fiber", $_GET[ 'fiber2' ] );
-        $smarty->assign( "clid1", '' );
-    }
-    elseif ( isset($_GET[ 'mode' ]) && $_GET[ 'mode' ] == 'add' )
-    {
 
-        if ( $_SESSION[ 'class' ] > 1 )
-        {
-            $message = '!!!';
-            showMessage( $message, 0 );
-        }
-
-        $smarty->assign( "mode", "add_change" );
-        $smarty->assign( "mod", "2" );
-        $smarty->assign( "back", getenv( "HTTP_REFERER" ) );
-
-        $networkNodeId = $_GET[ 'networknodeid' ];
-        $cableLineId1 = $_GET[ 'clid1' ];
-        $fiber = -1;
-
-        $res = getFiberTable( $networkNodeId );
-        $cableLineId2 = $res[ 'cl_array' ][ 'rows' ][ 0 ][ 'clid' ];
-        $fibers = getFibers( $networkNodeId, $cableLineId2, $fiber );
-
-        $cl_array = $res[ 'cl_array' ];
-        for ( $i = 0; $i < $cl_array[ 'count' ]; $i++ )
-        {
-            $ComboBox_CableLinePoint_Values[] = $cl_array[ 'rows' ][ $i ][ 'clid' ];
-            $ComboBox_CableLinePoint_Text[] = $cl_array[ 'rows' ][ $i ][ 'name' ];
-        }
-        $cable1 = $cl_array[ 'rows' ][ $res[ 'CableLines' ][ $_GET[ 'clid1' ] ] ][ 'name' ];
-
+        $cable1 = $cl_array[ 'rows' ][ $res[ 'CableLines' ][ $cableLineId1 ] ][ 'name' ];
         $smarty->assign( "cable1", $cable1 );
-        $smarty->assign( "fiber1", $_GET[ 'fiber1' ] );
-        $smarty->assign( "Combobox_Fibers_selected", '' );
+
+        $cableLineId2 = ($_GET[ 'mode' ] == 'change') ? $_GET[ 'clid2' ] : $res[ 'cl_array' ][ 'rows' ][ 0 ][ 'clid' ];
+        $smarty->assign( "ComboBox_CableLines_selected", $cableLineId2 );
+
+        $fibers = getFibers( $networkNodeId, $cableLineId2, $fiber );
+        $smarty->assign( "Combobox_Fibers_selected", (isset($_GET[ 'fiber2' ])) ? $_GET[ 'fiber2' ] : '' );
         $smarty->assign( "ComboBox_Fibers_values", $fibers );
         $smarty->assign( "ComboBox_Fibers_text", $fibers );
 
+        if ($_GET[ 'mode' ] == 'change') {
+            $OFJ_id = $_GET[ 'spliceid' ];
+            $smarty->assign( "SpliceId", $OFJ_id );
+
+            $res = getNodeFibers( $networkNodeId, $OFJ_id );
+            $fso = $res[ 'rows' ][ 0 ][ 'FiberSpliceOrganizer' ];
+            $smarty->assign( "attenuation", $res[ 'rows' ][ 0 ][ 'attenuation' ] );
+            $smarty->assign( "note", $res[ 'rows' ][ 0 ][ 'note' ] );
+        } else {
+            $smarty->assign( "attenuation", '' );
+            $smarty->assign( "note", '' );
+            $smarty->assign( "SpliceId", '' );
+            $fso = '';
+        }
         $res = getFiberSpliceOrganizerInfo( -1, -1, $networkNodeId );
         $ComboBox_FibersSpliceOrganizer_Values = array();
         $ComboBox_FibersSpliceOrganizer_Text = array();
@@ -197,17 +162,9 @@ else
                 $ComboBox_FibersSpliceOrganizer_Values );
         $smarty->assign( "ComboBox_FibersSpliceOrganizer_text",
                 $ComboBox_FibersSpliceOrganizer_Text );
-        $smarty->assign( "Combobox_FibersSpliceOrganizer_selected", '' );
-        $smarty->assign( "ComboBox_CableLines_values",
-                $ComboBox_CableLinePoint_Values );
-        $smarty->assign( "ComboBox_CableLines_text",
-                $ComboBox_CableLinePoint_Text );
-        $smarty->assign( "ComboBox_CableLines_selected", $cableLineId2 );
-        $smarty->assign( "NetworkNodeId", $networkNodeId );
-        $smarty->assign( "curr_fiber", '-1' );
-        $smarty->assign( "clid1", $cableLineId1 );
-        $smarty->assign( "attenuation", '' );
-        $smarty->assign( "note", '' );
+        $smarty->assign( "Combobox_FibersSpliceOrganizer_selected", $fso );
+
+
     }
     elseif ( isset( $_GET[ 'networknodeid' ] ) )
     {
