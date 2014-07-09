@@ -123,6 +123,7 @@ blockquote { margin: 10px 25px 10px 25px; padding: 20px 25px 15px 45px; backgrou
     margin: 20px;
     border: 1px solid #686868;
     border-radius: 7px;
+    padding: 2px;
     /*text-align: center;*/  
 }
 
@@ -130,7 +131,7 @@ select {
     width: 100%;
 }
 
-input {
+input, textarea {
     width: 100%;
 }
 
