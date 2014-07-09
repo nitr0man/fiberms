@@ -8,9 +8,6 @@
 <input type="hidden" value="{$back}" name="back">
 	<table id="contable">
 		<tr>
-		<td>
-		</tr>		
-		<tr>
 		<td><label class="events_anonce">Кабель 1</label></td><td> <input type="text" value="{$cable1}" name="cable" readonly></td>
 		</tr>
 		<tr>
@@ -20,11 +17,10 @@
 		<td><label class="events_anonce">Кабель 2</label></td><td> <select name="CableLines" onChange="javascript: GetFiber(document.fibersplice.CableLines.value,document.fibersplice.NetworkNodeId.value,document.fibersplice.curr_fiber.value,3);"> {html_options values=$ComboBox_CableLines_values selected=$ComboBox_CableLines_selected output=$ComboBox_CableLines_text}</select></td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Волокно 2</label></td>
-			<td> {include file="FiberSplice_content_Fibers.tpl"}<!--select name="Fibers"> {html_options values=$ComboBox_Fibers_values selected=$Combobox_Fibers_selected output=$ComboBox_Fibers_text}</select--></td>
+		<td><label class="events_anonce">Волокно 2</label></td><td>{include file="FiberSplice_content_Fibers.tpl"}</td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Кассета</label></td><td> <select name="FibersSpliceOrganizer"> {html_options values=$ComboBox_FibersSpliceOrganizer_values selected=$Combobox_FibersSpliceOrganizer_selected output=$ComboBox_FibersSpliceOrganizer_text}</select></td>
+		<td><label class="events_anonce">Кассета <a href="FSO.php?mode=add">+</a></label></td><td> <select name="FibersSpliceOrganizer"> {html_options values=$ComboBox_FibersSpliceOrganizer_values selected=$Combobox_FibersSpliceOrganizer_selected output=$ComboBox_FibersSpliceOrganizer_text}</select></input></td>
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Затухание</label></td><td> <input type="text" value="{$attenuation}" name="attenuation"></input></td>
