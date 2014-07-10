@@ -134,7 +134,11 @@ else
 
         $smarty->assign( "mode", "add_change" );
         $smarty->assign( "mod", "2" );
-        $smarty->assign( "back", getenv( "HTTP_REFERER" ) );
+        $back = getenv( "HTTP_REFERER" );
+        if (isset($_GET['parent_back'])) {
+            $back .= ((parse_url($back, PHP_URL_QUERY)) ? '&' : '?') . 'back=' . urlencode($_GET['parent_back']);
+        }
+        $smarty->assign( "back",  $back);
 
         $res = FSOT_SELECT( '', '' );
         $rows2 = $res[ 'rows' ];
@@ -146,6 +150,8 @@ else
         }
         $smarty->assign( "FSOT_values", $FSOT_Values );
         $smarty->assign( "FSOT_text", $FSOT_Text );
+        $smarty->assign( "FSOT_selected", '');
+        $smarty->assign( "id", '');
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and (isset( $_GET[ 'fsoid' ] )) )
     {

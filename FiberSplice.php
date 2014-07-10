@@ -100,7 +100,7 @@ else
 
         $smarty->assign( "mode", "add_change" );
         $smarty->assign( "mod", ($_GET[ 'mode' ] == 'change') ? '1' : '2' );
-        $smarty->assign( "back", getenv( "HTTP_REFERER" ) );
+        $smarty->assign( "back", (isset($_GET[ 'back' ])) ? $_GET[ 'back' ] : getenv( "HTTP_REFERER" ) );
         $smarty->assign( "IsA", (isset($_GET[ 'isa' ])) ? $_GET[ 'isa' ] : '' );
         $smarty->assign( "curr_fiber", (isset($_GET[ 'fiber2' ])) ? $_GET[ 'fiber2' ] : '-1' );
         $smarty->assign( "fiber1", $_GET[ 'fiber1' ] );

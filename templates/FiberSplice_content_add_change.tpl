@@ -20,7 +20,7 @@
 		<td><label class="events_anonce">Волокно 2</label></td><td>{include file="FiberSplice_content_Fibers.tpl"}</td>
 		</tr>
 		<tr>
-		<td><label class="events_anonce">Кассета <a href="FSO.php?mode=add">+</a></label></td><td> <select name="FibersSpliceOrganizer"> {html_options values=$ComboBox_FibersSpliceOrganizer_values selected=$Combobox_FibersSpliceOrganizer_selected output=$ComboBox_FibersSpliceOrganizer_text}</select></input></td>
+		<td><label class="events_anonce">Кассета <a href="FSO.php?mode=add&parent_back={$back|escape:'url'}">+</a></label></td><td> <select name="FibersSpliceOrganizer"> {html_options values=$ComboBox_FibersSpliceOrganizer_values selected=$Combobox_FibersSpliceOrganizer_selected output=$ComboBox_FibersSpliceOrganizer_text}</select></input></td>
 		</tr>
 		<tr>
 		<td><label class="events_anonce">Затухание</label></td><td> <input type="text" value="{$attenuation}" name="attenuation"></input></td>
