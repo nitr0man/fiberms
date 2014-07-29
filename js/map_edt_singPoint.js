@@ -26,8 +26,8 @@ function setSingPoint( event ) {
         CableLineId: "",
         name: "",
         NetworkBoxId: "",
-        apartment: "",
-        building: "",
+/*        apartment: "",
+        building: "",*/
         note: "",
         coorArr: [ ]
     };
@@ -98,7 +98,7 @@ function setSingPoint( event ) {
                     name: 'name',
                     value: ''
                 },
-                {
+/*                {
                     fieldLabel: 'Квартира',
                     name: 'apartment',
                     value: ''
@@ -107,7 +107,7 @@ function setSingPoint( event ) {
                     fieldLabel: 'Здание',
                     name: 'building',
                     value: ''
-                },
+                },*/
                 {
                     fieldLabel: 'Примечание',
                     name: 'note',
@@ -121,8 +121,8 @@ function setSingPoint( event ) {
                         var form = this.up( 'form' ).getForm();
                         jsonSingPointCoor.name = form.getValues().name;
                         jsonSingPointCoor.NetworkBoxId = form.getValues().networkBox;
-                        jsonSingPointCoor.building = form.getValues().building;
-                        jsonSingPointCoor.apartment = form.getValues().apartment;
+/*                        jsonSingPointCoor.building = form.getValues().building;
+                        jsonSingPointCoor.apartment = form.getValues().apartment;*/
                         jsonSingPointCoor.note = form.getValues().note;
                         if ( jsonSingPointCoor.name == ""
                                 || jsonSingPointCoor.NetworkBoxId == "" ) {
@@ -190,7 +190,7 @@ function setSingPoint( event ) {
                 name: 'meterSign',
                 value: ''
             },
-            {
+/*            {
                 fieldLabel: 'Квартира',
                 name: 'apartment',
                 value: ''
@@ -199,7 +199,7 @@ function setSingPoint( event ) {
                 fieldLabel: 'Здание',
                 name: 'building',
                 value: ''
-            },
+            },*/
             {
                 fieldLabel: 'Примечание',
                 name: 'note',
@@ -212,8 +212,8 @@ function setSingPoint( event ) {
                 handler: function() {
                     var form = this.up( 'form' ).getForm();
                     jsonSingPointCoor.CableLineId = selectedCableLineId;
-                    jsonSingPointCoor.apartment = form.getValues().apartment;
-                    jsonSingPointCoor.building = form.getValues().building;
+/*                    jsonSingPointCoor.apartment = form.getValues().apartment;
+                    jsonSingPointCoor.building = form.getValues().building;*/
                     jsonSingPointCoor.meterSign = form.getValues().meterSign;
                     jsonSingPointCoor.note = form.getValues().note;
                     jsonSingPointCoor.networkNode = form.getValues().networkNode;

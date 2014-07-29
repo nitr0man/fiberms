@@ -2,8 +2,8 @@ function addNodeMsg( event ) {
     var jsonNodeCoor = {
         name: "",
         NetworkBoxId: "",
-        apartment: "",
-        building: "",
+/*        apartment: "",
+        building: "",*/
         note: "",
         coorArr: [ ]
     };

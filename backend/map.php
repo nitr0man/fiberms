@@ -259,8 +259,8 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     $NetworkBoxId = $nodeInfo[ 'NetworkBoxId' ];
     $note = $nodeInfo[ 'note' ];
     $SettlementGeoSpatial = "NULL";
-    $building = $nodeInfo[ 'building' ];
-    $apartment = $nodeInfo[ 'apartment' ];
+    $building = "NULL";
+    $apartment = "NULL";
     PQuery( "BEGIN WORK;" );
     $res = NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
             $SettlementGeoSpatial, $building, $apartment, $tmpT );
