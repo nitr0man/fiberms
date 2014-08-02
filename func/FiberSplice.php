@@ -281,7 +281,6 @@ function trace( $spliceId = -1, $fiberId = -1, $traceDepth = 0, $baseFiber = fal
     {
         return $result;
     }
-    error_log("trace($spliceId $fiberId $traceDepth)");
     $traceDepth++;
     if ( $spliceId != -1 && $fiberId != -1 )
     {

@@ -244,7 +244,6 @@ function fillCableLengthBySign($res)
         if ($res2['count'] > 1) {
             $start = $res2['rows'][0]['meterSign'];
             $end = end($res2['rows'])['meterSign'];
-            error_log($res['rows'][$j]['CableLine']." - $start..$end");
             if (is_numeric($start) && is_numeric($end)) {
                 $res['rows'][$j]['length2'] = abs((int)$end - (int)$start);
                 if (!$res['rows'][$j]['length'])
