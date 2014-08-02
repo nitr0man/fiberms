@@ -5,6 +5,8 @@ require_once 'config.php';
 $query_count = 0;
 $connection = PConnect( $config[ 'host' ], $config[ 'db' ], $config[ 'user' ],
      $config[ 'pass' ] );
+$inTransaction = false;
+
 if ( !$connection )
 {
     die( "Could not open connection to database server" );
@@ -320,5 +322,42 @@ function removeDup( $arr )
     }
     return $arr;
 }
+
+
+function startTransaction()
+{
+    global $inTransaction;
+    if ($inTransaction)
+	return false;
+    $res = PQuery("BEGIN WORK;");
+    if (isset($res['error']))
+	return false;
+    $inTransaction = true;
+    return true;
+};
+
+function commitTransaction()
+{
+    global $inTransaction;
+    if (!$inTransaction)
+	return false;
+    $res = PQuery("COMMIT WORK;");
+    if (isset($res['error']))
+	return false;
+    $inTransaction = false;
+    return true;
+};
+
+function rollbackTransaction()
+{
+    global $inTransaction;
+    if (!$inTransaction)
+	return false;
+    $res = PQuery("ROLLBACK WORK;");
+    if (isset($res['error']))
+	return false;
+    $inTransaction = false;
+    return true;
+};
 
 ?>

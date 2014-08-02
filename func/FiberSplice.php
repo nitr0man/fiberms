@@ -13,6 +13,7 @@ require_once "util.php";
 
 function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer, $attenuation, $note )
 {
+    $trans = startTransaction();
     $wr[ 'id' ] = $OFJ_id;
     $res = OpticalFiberJoin_SELECT( 1, $wr );
     $OpticalFiberSplice = $res[ 'rows' ][ 0 ][ 'OpticalFiberSplice' ];
@@ -26,6 +27,8 @@ function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer, $a
     $res = OpticalFiberJoin_UPDATE( $upd, $wr );
     if ( isset( $res[ 'error' ] ) )
     {
+	if ($trans)
+	    rollbackTransaction();
         return $res;
     }
     unset( $wr );
@@ -37,31 +40,44 @@ function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer, $a
     $res = OpticalFiberSplice_UPDATE( $upd, $wr );
     if ( isset( $res[ 'error' ] ) )
     {
+	if ($trans)
+	    rollbackTransaction();
         return $res;
     }
-    return 1;
+    return ($trans) ? commitTransaction() : 1;
 }
 
 function FiberSplice_Add( $CableLineA, $fiberA, $CableLineB, $fiberB,
      $FiberSpliceOrganizer, $NetworkNodeId, $attenuation, $note )
 {
+    $trans = startTransaction();
     $ins[ 'NetworkNode' ] = $NetworkNodeId;
     $ins[ 'FiberSpliceOrganizer' ] = $FiberSpliceOrganizer;
     $ins[ 'attenuation' ] = $attenuation;
     $ins[ 'note' ] = $note;
     $res = OpticalFiberSplice_INSERT( $ins );
+    if ( isset( $res[ 'error' ] ) )
+    {
+	if ($trans)
+	    rollbackTransaction();
+        return $res;
+    }
     $OFS_id = $res[ 'rows' ][ 0 ][ 'id' ];
     $res = addOpticalFiberJoin( $CableLineA, $fiberA, $OFS_id );
     if ( isset( $res[ 'error' ] ) )
     {
+	if ($trans)
+	    rollbackTransaction();
         return $res;
     }
     $res = addOpticalFiberJoin( $CableLineB, $fiberB, $OFS_id );
     if ( isset( $res[ 'error' ] ) )
     {
+	if ($trans)
+	    rollbackTransaction();
         return $res;
     }
-    return 1;
+    return ($trans) ? commitTransaction() : 1;
 }
 
 /* --------------- */
