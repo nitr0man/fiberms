@@ -179,6 +179,21 @@ function getSplices( $spliceId = -1, $fiberId = -1, $baseFiber = false )
     return $res[ 'rows' ];
 }
 
+function getSplice( $CableLineA, $fiberA, $CableLineB, $fiberB, $NetworkNode)
+{
+    $query = 'SELECT ofs.id FROM "OpticalFiberSplice" ofs
+		    LEFT JOIN "OpticalFiberJoin" ofj1 ON ofj1."OpticalFiberSplice" = ofs.id
+		    LEFT JOIN "OpticalFiber" of1 ON of1.id = ofj1."OpticalFiber"
+		    LEFT JOIN "OpticalFiberJoin" ofj2 ON ofj2."OpticalFiberSplice" = ofs.id
+		    LEFT JOIN "OpticalFiber" of2 ON of2.id = ofj2."OpticalFiber"
+		    WHERE of1."CableLine" = ' . intval($CableLineA) .
+		    ' AND of1.fiber = ' . intval($fiberA) .
+		    ' AND of2."CableLine" = ' . intval($CableLineB) .
+		    ' AND of2.fiber = ' . intval($fiberB) .
+		    ' AND ofs."NetworkNode" = ' . intval($NetworkNode);
+    return PQuery($query);
+}
+
 function getFibs( $spliceIds = -1, $fiberId = -1 )
 {
     $result = array( );

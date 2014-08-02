@@ -13,6 +13,8 @@ require_once "util.php";
 
 function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer, $attenuation, $note )
 {
+    if ($FiberSpliceOrganizer == '')
+	return array('error' => 'Выберите кассету!');
     $trans = startTransaction();
     $wr[ 'id' ] = $OFJ_id;
     $res = OpticalFiberJoin_SELECT( 1, $wr );
@@ -50,6 +52,15 @@ function FiberSplice_Mod( $OFJ_id, $CableLine, $fiber, $FiberSpliceOrganizer, $a
 function FiberSplice_Add( $CableLineA, $fiberA, $CableLineB, $fiberB,
      $FiberSpliceOrganizer, $NetworkNodeId, $attenuation, $note )
 {
+    if ($CableLineA == $CableLineB && $fiberA == $fiberB)
+	return array('error' => 'Сварка волокна само с собой!');
+    if ($FiberSpliceOrganizer == '')
+	return array('error' => 'Выберите кассету!');
+    $splice = getSplice($CableLineA, $fiberA, $CableLineB, $fiberB, $NetworkNodeId);
+    if (isset($splice['error']))
+	return $res;
+    if ($splice['count'] > 0)
+	return array('error' => 'Сварка уже существует!');
     $trans = startTransaction();
     $ins[ 'NetworkNode' ] = $NetworkNodeId;
     $ins[ 'FiberSpliceOrganizer' ] = $FiberSpliceOrganizer;
