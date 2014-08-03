@@ -109,6 +109,11 @@ function setSingPoint( event ) {
                     value: ''
                 },*/
                 {
+                    fieldLabel: 'Расположение',
+                    name: 'place',
+                    value: ''
+                },
+                {
                     fieldLabel: 'Примечание',
                     name: 'note',
                     value: ''
@@ -123,6 +128,7 @@ function setSingPoint( event ) {
                         jsonSingPointCoor.NetworkBoxId = form.getValues().networkBox;
 /*                        jsonSingPointCoor.building = form.getValues().building;
                         jsonSingPointCoor.apartment = form.getValues().apartment;*/
+                        jsonSingPointCoor.place = form.getValues().place;
                         jsonSingPointCoor.note = form.getValues().note;
                         if ( jsonSingPointCoor.name == ""
                                 || jsonSingPointCoor.NetworkBoxId == "" ) {

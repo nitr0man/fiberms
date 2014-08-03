@@ -186,14 +186,14 @@ function deleteCableLine( $CableLineId, $tmpT = FALSE )
 }
 
 function addNode( $coors, $name, $NetworkBoxId, $note, $SettlementGeoSpatial,
-        $building, $apartment, $tmpT = FALSE )
+        $building, $apartment, $place, $tmpT = FALSE )
 {
     $OpenGIS = "(".$coors[ 0 ]->lon.",".$coors[ 0 ]->lat.")";
     $apartment = "NULL";
     $building = "NULL";
     $SettlementGeoSpatial = "NULL";
     NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
-            $SettlementGeoSpatial, $building, $apartment, $tmpT );
+            $SettlementGeoSpatial, $building, $apartment, $place, $tmpT );
 }
 
 function deleteNode( $coors, $tmpT = FALSE )
@@ -258,12 +258,13 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
     $name = $nodeInfo[ 'name' ];
     $NetworkBoxId = $nodeInfo[ 'NetworkBoxId' ];
     $note = $nodeInfo[ 'note' ];
+    $place = $nodeInfo[ 'place' ];
     $SettlementGeoSpatial = "NULL";
     $building = "NULL";
     $apartment = "NULL";
     PQuery( "BEGIN WORK;" );
     $res = NetworkNode_Add( $name, $NetworkBoxId, $note, $OpenGIS,
-            $SettlementGeoSpatial, $building, $apartment, $tmpT );
+            $SettlementGeoSpatial, $building, $apartment, $place, $tmpT );
     if (isset($res['error'])) {
 	PQuery( "ROLLBACK WORK;" );
 	return array('error' => $res['error']);
@@ -338,7 +339,8 @@ function divCableLine( $coors, $CableLineId, $nodeInfo, $tmpT = FALSE )
         }
         CableLinePoint_INSERT( $ins, $tmpT );
     }
-    OpticalFiberJoin_replaceCableLine( $CableLine['id'], $NCableLineId, end($CableLinePoints)['NetworkNode'], $tmpT );
+    if (isset(end($CableLinePoints)['NetworkNode']))
+        OpticalFiberJoin_replaceCableLine( $CableLine['id'], $NCableLineId, end($CableLinePoints)['NetworkNode'], $tmpT );
     $res = PQuery( "COMMIT WORK;" );
     return array('error' => (isset($res['error'])) ? $res['error'] : false );
 }

@@ -79,6 +79,11 @@ function addNodeMsg( event ) {
                 value: ''
             },*/
             {
+                fieldLabel: 'Расположение',
+                name: 'place',
+                value: ''
+            },
+            {
                 fieldLabel: 'Примечание',
                 name: 'note',
                 value: ''
@@ -94,6 +99,7 @@ function addNodeMsg( event ) {
 /*                    jsonNodeCoor.building = form.getValues().building;
                     jsonNodeCoor.apartment = form.getValues().apartment;*/
                     jsonNodeCoor.note = form.getValues().note;
+                    jsonNodeCoor.place = form.getValues().place;
                     if ( jsonNodeCoor.name == "" || jsonNodeCoor.NetworkBoxId == "" ) {
                         alert( 'Заполните поля!' );
                     } else {

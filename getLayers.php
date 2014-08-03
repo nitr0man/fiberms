@@ -271,8 +271,8 @@ elseif ( $_GET[ 'mode' ] == 'GetNetworkNodesDescription' )
             }
             $desc = 'Ящик: <a target="_blank" href="NetworkBox.php?mode=charac&boxid='.$rows[ $i ][ 'NetworkBox' ].'">'.$rows[ $i ][ 'inventoryNumber' ].'</a><br>'.
                  'Тип ящика: <a target="_blank" href="NetworkBoxType.php?mode=charac&boxtypeid='.$rows[ $i ][ 'NetworkBoxType' ].'">'.$rows[ $i ][ 'NBTmarking' ].'</a><br>'.
-                 'Примечание: './* nl2br($rows[$i]['note']) */str_replace( array(
-                     "\r\n", "\n", "\r" ), "<br>", $rows[ $i ][ 'note' ] ).'<br>'.
+                 'Расположение: '.$rows[ $i ][ 'place' ].'<br>'.
+                 'Примечание: '.str_replace(array("\r\n", "\n", "\r"), "<br>", $rows[ $i ][ 'note' ] ).'<br>'.
                  'Входящие линии: <ul>'.
                  '<li>Всего: '.(string)($cableLinesZeroFibers + $cableLinesNotZeroFibers).'</li>'.
                  '<li>0 волокон: '.$cableLinesZeroFibers.'</li>'.

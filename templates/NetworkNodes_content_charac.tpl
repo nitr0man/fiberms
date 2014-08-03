@@ -18,6 +18,9 @@
 			<td><label class="events_anonce">Координаты</label></td><td> <label class="events_anonce">{$OpenGIS}</label> </td>
 		</tr>
 		<tr>
+			<td><label class="events_anonce">Расположение</label></td><td> <label class="events_anonce">{$place}</label> </td>
+		</tr>
+		<tr>
 			<td><label class="events_anonce">Примечание</label></td><td><label class="events_anonce">{$note}</label></td>
 		</tr>
 	</table>

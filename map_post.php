@@ -62,8 +62,9 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $building = NULL;
         $note = $obj->{'note'};
         $name = $obj->{'name'};
+        $place = $obj->{'place'};
         addNode( $coors, $name, $NetworkBoxId, $note, NULL,
-                $building, $apartment, TRUE );
+                $building, $apartment, $place, TRUE );
         setTmpMapLastEdit();
     }
     elseif ( $_POST[ 'mode' ] == "deleteNode" )
@@ -80,9 +81,10 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     {
         $nodeInfo[ 'name' ] = $obj->{'name'};
         $nodeInfo[ 'NetworkBoxId' ] = $obj->{'NetworkBoxId'};
-        $nodeInfo[ 'apartment' ] = $obj->{'apartment'};
-        $nodeInfo[ 'building' ] = $obj->{'building'};
+        /*$nodeInfo[ 'apartment' ] = $obj->{'apartment'};
+        $nodeInfo[ 'building' ] = $obj->{'building'};*/
         $nodeInfo[ 'note' ] = $obj->{'note'};
+        $nodeInfo[ 'place' ] = $obj->{'place'};
         $ret = divCableLine( $coors, $CableLineId, $nodeInfo, TRUE );
         if ($ret['error']) {
             print json_encode($ret);

@@ -7,7 +7,7 @@ require_once("backend/CableType.php");
 require_once("backend/OpticalFiberSplice.php");
 
 function NetworkNode_Check( $name, $networkBox, $note, $OpenGIS,
-        $SettlementGeoSpatial, $building, $apartment )
+        $SettlementGeoSpatial, $building, $apartment, $place )
 {
     $result = 1;
     /* здесь проверка */
@@ -19,16 +19,17 @@ function NetworkNode_Check( $name, $networkBox, $note, $OpenGIS,
 }
 
 function NetworkNode_Mod( $id, $name, $networkBox, $note, $OpenGIS,
-        $SettlementGeoSpatial, $building, $apartment )
+        $SettlementGeoSpatial, $building, $apartment, $place )
 {
     if ( NetworkNode_Check( $name, $networkBox, $note, $OpenGIS,
-                    $SettlementGeoSpatial, $building, $apartment ) == 0 )
+                    $SettlementGeoSpatial, $building, $apartment, $place ) == 0 )
     {
         return 0;
     }
     $upd[ 'name' ] = $name;
     $upd[ 'NetworkBox' ] = $networkBox;
     $upd[ 'note' ] = $note;
+    $upd[ 'place' ] = $place;
     $upd[ 'OpenGIS' ] = $OpenGIS;
     $upd[ 'SettlementGeoSpatial' ] = $SettlementGeoSpatial;
     $upd[ 'Building' ] = $building;
@@ -43,10 +44,10 @@ function NetworkNode_Mod( $id, $name, $networkBox, $note, $OpenGIS,
 }
 
 function NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
-        $SettlementGeoSpatial, $building, $apartment, $tmpT = FALSE )
+        $SettlementGeoSpatial, $building, $apartment, $place, $tmpT = FALSE )
 {
     if ( NetworkNode_Check( $name, $networkBox, $note, $OpenGIS,
-                    $SettlementGeoSpatial, $building, $apartment ) == 0 )
+                    $SettlementGeoSpatial, $building, $apartment, $place ) == 0 )
     {
         return 0;
     }
@@ -60,6 +61,7 @@ function NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
         $ins[ 'NetworkBox' ] = $networkBox;
     }
     $ins[ 'note' ] = $note;
+    $ins[ 'place' ] = $place;
     $ins[ 'OpenGIS' ] = $OpenGIS;
     //$ins[ 'SettlementGeoSpatial' ] = $SettlementGeoSpatial;
     //$ins[ 'Building' ] = $building;

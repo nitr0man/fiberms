@@ -204,11 +204,13 @@ else
             if ( isset($direction_rows[ 0 ][ 'NetworkNode' ]) && $direction_rows[ 0 ][ 'NetworkNode' ] == $networkNodeId )
             {
                 $direction[ 'name' ] = $direction_rows[ 1 ][ 'name' ];
+                $direction[ 'place' ] = $direction_rows[ 1 ][ 'place' ];
                 $direction[ 'NetworkNode' ] = $direction_rows[ 1 ][ 'NetworkNode' ];
             }
             else
             {
                 $direction[ 'name' ] = $direction_rows[ 0 ][ 'name' ];
+                $direction[ 'place' ] = isset($direction_rows[ 0 ][ 'place' ]) ? $direction_rows[ 0 ][ 'place' ] : '';
                 $direction[ 'NetworkNode' ] = (isset($direction_rows[ 0 ][ 'NetworkNode' ])) ? $direction_rows[ 0 ][ 'NetworkNode' ] : '';
             }
             if ( $direction[ 'name' ] == '-' )
@@ -217,13 +219,14 @@ else
             }
             else
             {
+                $place = ( isset($direction[ 'place' ]) && strlen($direction[ 'place' ]) > 0) ? '<br><small>'.$direction[ 'place' ].'</small>' : '';
                 if ( isset( $_GET[ 'print' ] ) )
                 {
-                    $table_text_direction .= '<td colspan=3>'.$direction[ 'name' ].'</td>';
+                    $table_text_direction .= '<td colspan=3>'.$direction[ 'name' ].$place.'</td>';
                 }
                 else
                 {
-                    $table_text_direction .= '<td colspan=3>'.'<a href="NetworkNodes.php?mode=charac&nodeid='.$direction[ 'NetworkNode' ].'">'.$direction[ 'name' ].'</a>'.'</td>';
+                    $table_text_direction .= '<td colspan=3>'.'<a href="NetworkNodes.php?mode=charac&nodeid='.$direction[ 'NetworkNode' ].'">'.$direction[ 'name' ].'</a>'.$place.'</td>';
                 }
             }
             if ( isset( $_GET[ 'print' ] ) )

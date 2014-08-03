@@ -14,11 +14,12 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $name = $_POST[ 'name' ];
         $networkBox = $_POST[ 'boxes' ];
         $note = $_POST[ 'note' ];
+        $place = $_POST[ 'place' ];
         $OpenGIS =  ($_POST[ 'OpenGIS' ] == '') ? 'NULL' : $_POST[ 'OpenGIS' ];
         $apartment = $building = $SettlementGeoSpatial = 'NULL';
 
         $res = NetworkNode_Mod( $id, $name, $networkBox, $note, $OpenGIS,
-                $SettlementGeoSpatial, $building, $apartment );
+                $SettlementGeoSpatial, $building, $apartment, $place );
         if ( isset( $res[ 'error' ] ) )
         {
             $message = $res[ 'error' ];
@@ -41,11 +42,12 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
         $name = $_POST[ 'name' ];
         $networkBox = $_POST[ 'boxes' ];
         $note = $_POST[ 'note' ];
+        $place = $_POST[ 'place' ];
         $OpenGIS =  ($_POST[ 'OpenGIS' ] == '') ? 'NULL' : $_POST[ 'OpenGIS' ];
         $apartment = $building = $SettlementGeoSpatial = 'NULL';
 
         $res = NetworkNode_Add( $name, $networkBox, $note, $OpenGIS,
-                $SettlementGeoSpatial, $building, $apartment );
+                $SettlementGeoSpatial, $building, $apartment, $place );
         if ( isset( $res[ 'error' ] ) )
         {
             $message = $res[ 'error' ];
@@ -142,6 +144,7 @@ else
         $clpRows = $res[ 'NetworkNode' ][ 'CableLinePoints' ][ 'rows' ];
 
         $i = -1;
+        $CableLinePoints_arr = array();
         while ( ++$i < $res[ 'NetworkNode' ][ 'CableLinePoints' ][ 'count' ] )
         {
             $CableLinePoints_arr[] = $clpRows[ $i ][ 'id' ];
@@ -182,9 +185,10 @@ else
         $fiberSpliceCount = $rows[ 'fiberSpliceCount' ];
         if ( $res[ 'NetworkNode' ][ 'CableLinePoints' ][ 'count' ] > 0 )
         {
-            $changeDeleteFiberSplice = '<a href="FiberSplice.php?networknodeid='.$nodeId.'">Отобразить сварки</a>';
-        }
-        $changeDeleteFiberSplice .= '<br><a href="NetworkNodes.php?mode=change&nodeid='.$nodeId.'">Изменить</a>';
+            $changeDeleteFiberSplice = '<a href="FiberSplice.php?networknodeid='.$nodeId.'">Отобразить сварки</a><br/>';
+        } else
+            $changeDeleteFiberSplice = '';
+        $changeDeleteFiberSplice .= '<a href="NetworkNodes.php?mode=change&nodeid='.$nodeId.'">Изменить</a>';
         $wr[ 'NetworkNode' ] = $nodeId;
         $res2 = CableLinePoint_SELECT( $wr );
         if ( $res2[ 'count' ] == 0 )
@@ -205,6 +209,7 @@ else
         $smarty->assign( "NetworkBox", $invNum );
         $smarty->assign( "FiberSpliceCount", $fiberSpliceCount );
         $smarty->assign( "note", nl2br( $rows[ 'note' ] ) );
+        $smarty->assign( "place", $rows[ 'place' ]);
         $smarty->assign( "OpenGIS", $rows[ 'OpenGIS' ] );
         $smarty->assign( "ChangeDeleteFiberSplice", $changeDeleteFiberSplice );
     }
@@ -233,6 +238,7 @@ else
         $smarty->assign( "name", $rows[ 0 ][ 'name' ] );
         $smarty->assign( "NetworkBox", $rows[ 0 ][ 'NetworkBox' ] );
         $smarty->assign( "note", $rows[ 0 ][ 'note' ] );
+        $smarty->assign( "place", $rows[ 0 ][ 'place' ] );
         $smarty->assign( "OpenGIS", $rows[ 0 ][ 'OpenGIS' ] );
         $networkBox = $rows[ 0 ][ 'NetworkBox' ];
 
@@ -286,6 +292,7 @@ else
         $smarty->assign( "name", '' );
         $smarty->assign( "NetworkBox", '' );
         $smarty->assign( "note", '' );
+        $smarty->assign( "place", '' );
         $smarty->assign( "OpenGIS", '' );
     }
     elseif ( ($_GET[ 'mode' ] == 'delete') and (isset( $_GET[ 'nodeid' ] )) )

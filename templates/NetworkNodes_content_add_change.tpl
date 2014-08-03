@@ -17,6 +17,9 @@
 			<td><label class="events_anonce">Координаты</label></td><td><input name="OpenGIS" type="text" value="{$OpenGIS}" /></td>
 		</tr>
 		<tr>
+			<td><label class="events_anonce">Расположение</label></td><td><input name="place" type="text" value="{$place}" /></td>
+		</tr>
+		<tr>
 			<td><label class="events_anonce">Примечание</label></td><td><textarea name="note" form="NetworkNode">{$note}</textarea></td>
 		</tr>
 		<tr>

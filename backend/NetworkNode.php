@@ -65,7 +65,7 @@ function NetworkNode_DELETE( $wr, $tmpT = FALSE )
 
 function getNetworkNode_NetworkBoxName( $networkNodeId )
 {
-    $query = 'SELECT "NN".id, "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
+    $query = 'SELECT "NN".id, "NN"."name", "NN"."NetworkBox", "NN"."note", "NN".place, "NN"."SettlementGeoSpatial", 
         "NN"."OpenGIS", "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NBT"."marking" AS "NBTMarking"
   		FROM "NetworkNode" AS "NN"
 		LEFT JOIN "NetworkBox" AS "NB" ON "NB".id="NN"."NetworkBox" 
@@ -87,7 +87,7 @@ function getNetworkNode_NetworkBoxName( $networkNodeId )
 function getNetworkNodeList_NetworkBoxName( $sort, $wr,
         $linesPerPage = -1, $skip = -1, $tmpT = FALSE )
 {
-    $query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN"."SettlementGeoSpatial", 
+    $query = 'SELECT "NN".id, "NN"."OpenGIS", "NN"."name", "NN"."NetworkBox", "NN"."note", "NN".place, "NN"."SettlementGeoSpatial", 
         "NN"."Building", "NN"."Apartment", "NB"."inventoryNumber", "NB"."NetworkBoxType", "NBT"."marking" AS "NBTmarking"
   		FROM "'.tmpTable( 'NetworkNode', $tmpT ).'" AS "NN"
   		LEFT JOIN "'.tmpTable( 'NetworkBox', $tmpT ).'" AS "NB" ON "NB".id="NN"."NetworkBox"

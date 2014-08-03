@@ -637,6 +637,7 @@ CREATE TABLE "NetworkNode" (
     "OpenGIS" point,
     name name NOT NULL,
     "NetworkBox" integer,
+    place character varying(64),
     note text,
     "SettlementGeoSpatial" integer,
     "Building" integer,
