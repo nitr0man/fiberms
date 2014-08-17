@@ -208,7 +208,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
             $sId = $spliceIds[ $i ][ 'OpticalFiberSplice' ];
             $query = 'SELECT "of"."CableLine", "of"."fiber", "ofj"."OpticalFiberSplice", "ofj"."OpticalFiber", "of"."note",
                         "ofs"."NetworkNode", "ofs"."FiberSpliceOrganizer", 
-                        "cl"."name" AS "cl_name", "nn"."name" AS "nn_name", round(cl.length / 100.0, 2) AS length
+                        "cl"."name" AS "cl_name", "nn"."name" AS "nn_name", nn.place, round(cl.length / 100.0, 2) AS length
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
                     LEFT JOIN "OpticalFiberSplice" AS "ofs" ON "ofs".id = '.$sId.'
@@ -276,7 +276,7 @@ function fillCableLengthBySign($res)
 function getAllInfoBySpliceId( $spliceId )
 {
     $query = 'SELECT "of"."CableLine", "of"."fiber", "of"."note", "ofs"."NetworkNode",
-            "ofs"."FiberSpliceOrganizer", "cl"."name" AS "cl_name", "nn"."name" AS "nn_name",
+            "ofs"."FiberSpliceOrganizer", "cl"."name" AS "cl_name", "nn"."name" AS "nn_name", nn.place,
             round(cl.length / 100.0, 2) AS length, "ofj"."OpticalFiber", "ofj".id AS "ofj_id"
             FROM "OpticalFiberJoin" AS "ofj"
             LEFT JOIN "OpticalFiber" AS "of" ON "of".id = "ofj"."OpticalFiber"

@@ -45,7 +45,7 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $traceArr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$NetworkNode.'">'
              .$NetworkNodeName.'</a>, кассета '.$organizer;
         $traceArr[] = $trace_res[ $i ][ 'length' ] . (($trace_res[$i]['rlength']) ? ' / '.$trace_res[$i]['rlength'] : '');
-        $traceArr[] = '-';
+        $traceArr[] = $trace_res[ $i ][ 'place' ];
     }
 }
 $smarty->assign( "data", $traceArr );
