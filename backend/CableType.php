@@ -422,8 +422,11 @@ function getCableLinesFrag( $cableLines, $tmpT = FALSE )
             if ( !preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/', $OpenGIS,
                             $matches ) )
             {
-                preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/', $NNOpenGis,
-                        $matches );
+                if (!preg_match_all( '/(?<lon>[0-9.]+),(?<lat>[0-9.]+)/', $NNOpenGis,
+                    $matches )) {
+                    error_log("Line $cableLine, point ".$rows[$j]['id'].": no coordinates!!!");
+                    continue;
+                }
             }
             if ( ( $rows[ $j ][ 'note' ] != '' ) || ( $rows[ $j ][ 'meterSign' ] != '' ) )
             {
