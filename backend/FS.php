@@ -158,7 +158,6 @@ function getSplices( $spliceId = -1, $fiberId = -1, $baseFiber = false )
                 FROM "OpticalFiberJoin"
                 WHERE "OpticalFiber" = '.pg_escape_string( $fiberId ).'
                     AND "OpticalFiberSplice"'.$op.pg_escape_string( $spliceId );
-        //error_log( $query );
         $res = PQuery( $query );
     }
     elseif ( $spliceId != -1 )
@@ -166,7 +165,6 @@ function getSplices( $spliceId = -1, $fiberId = -1, $baseFiber = false )
         $query = 'SELECT "OpticalFiberSplice", "OpticalFiber"
                 FROM "OpticalFiberJoin"
                 WHERE "OpticalFiberSplice" = '.pg_escape_string( $spliceId );
-        //error_log( $query );
         $res = PQuery( $query );
     }
     else
@@ -215,7 +213,6 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
                     LEFT JOIN "CableLine" AS "cl" ON "cl".id = "of"."CableLine"
                     LEFT JOIN "NetworkNode" AS "nn" ON "nn".id = "ofs"."NetworkNode"
                     WHERE "ofj"."OpticalFiberSplice" = '.$sId.' AND "of"."CableLine" != '.$cableLineId;
-            //error_log( $query );
             $res = PQuery( $query );
             $res = fillCableLengthBySign($res);
             $result = array_merge( $result, $res[ 'rows' ] );
@@ -230,7 +227,6 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
                     WHERE "ofj"."OpticalFiberSplice" = '.$sId;
-            //error_log( $query );
             $res = PQuery( $query );
             $result = array_merge( $result, $res[ 'rows' ] );
         }
@@ -245,7 +241,6 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
                     FROM "OpticalFiber" AS "of"
                     LEFT JOIN "OpticalFiberJoin" AS "ofj" ON "ofj"."OpticalFiber" = "of".id
                     WHERE "of"."CableLine" != '.$cableLineId;
-        //error_log( $query );
         $res = PQuery( $query );
         $result = array_merge( $result, $res[ 'rows' ] );
     }
