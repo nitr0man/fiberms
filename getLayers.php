@@ -226,11 +226,11 @@ elseif ( $_GET[ 'mode' ] == 'GetSingularCableLinePoints' )
             $lat = $matches[ 'y' ][ 0 ];
             $lon = $matches[ 'x' ][ 0 ];
             $clpId = $rows[ $i ][ 'CLPId' ];
-            $title = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">'.$rows[ $i ][ 'CableLineName' ].'</a>';
-            $description = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">Отметка: '.$rows[ $i ][ 'meterSign' ].'</a>';
+            $title = '<a target="_blank" href="CableLine.php?mode=charac&cablelineid='.$rows[ $i ][ 'CableLine' ].'">'.$rows[ $i ][ 'CableLineName' ].'</a>';
+            $description = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">Отметка: '.$rows[ $i ][ 'meterSign' ].'<br/>Комментарий: '.$rows[ $i ][ 'note' ].'</a>';
             $icon = "pic/rhomb_pic.png";
             $iconSize = "8,8";
-            $iconOffset = "-5,-5";
+            $iconOffset = "-4,-4";
 
             $pois_text .= $lat."\t".$lon."\t".$title."\t".$description."\t".$icon."\t".$iconSize."\t".$iconOffset."\n";
         }
