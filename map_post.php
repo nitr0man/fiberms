@@ -36,11 +36,11 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
     {
         require_once ( "func/CableType.php" );
 
-        $apartment = $obj->{'apartment'};
-        $building = $obj->{'building'};
+        /*$apartment = $obj->{'apartment'};
+        $building = $obj->{'building'};*/
         $meterSign = $obj->{'meterSign'};
         $note = $obj->{'note'};
-        $networkNode = $obj->{'networkNode'};
+        $networkNode = isset($obj->{'networkNode'}) ? $obj->{'networkNode'} : "";
         addSingPoint( $coors, $CableLineId, $networkNode, "NULL", "NULL",
                 $meterSign, $note );
         setTmpMapLastEdit();
