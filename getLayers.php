@@ -161,7 +161,7 @@ elseif ( $_GET[ 'mode' ] == 'GetNodesMarkers' )
             $description = $i;
             $icon = "pic/node_pic.png";
             $iconSize = "10,10";
-            $iconOffset = "-3,-3";
+            $iconOffset = "-5,-5";
 
             $pois_text .= $lat."\t".$lon."\t".$title."\t".$description."\t".$icon."\t".$iconSize."\t".$iconOffset."\n";
         }
@@ -229,7 +229,7 @@ elseif ( $_GET[ 'mode' ] == 'GetSingularCableLinePoints' )
             $title = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">'.$rows[ $i ][ 'CableLineName' ].'</a>';
             $description = '<a target="_blank" href="CableLinePoint.php?mode=change&cablelineid='.$rows[ $i ][ 'CableLine' ].'&cablelinepointid='.$clpId.'">Отметка: '.$rows[ $i ][ 'meterSign' ].'</a>';
             $icon = "pic/rhomb_pic.png";
-            $iconSize = "7,7";
+            $iconSize = "8,8";
             $iconOffset = "-5,-5";
 
             $pois_text .= $lat."\t".$lon."\t".$title."\t".$description."\t".$icon."\t".$iconSize."\t".$iconOffset."\n";
