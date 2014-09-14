@@ -46,4 +46,27 @@ function genPages($link, $pagesCount, $page) {
 	}
 	return $pages;
 }
+
+function gen_csv($data, $fields = NULL,  $separator = ';') {
+    $ret = '';
+    if ($fields) {
+	foreach ($fields as $field => $title) {
+	    $ret .= $title . $separator;
+	}
+	$ret .= "\r\n";
+    }
+    foreach ($data as $row) {
+	if ($fields) {
+	    foreach ($fields as $field => $title) {
+		$ret .= $row[$field] . $separator;
+	    }
+	} else {
+	    foreach ($row as $data) {
+		$ret .= $data . $separator;
+	    }
+	}
+	$ret .= "\r\n";
+    }
+    return $ret;
+}
 ?>

@@ -15,6 +15,7 @@
 					<ul>
 						<li><a href="NetworkNodes.php">Все узлы</a></li>
 						<li><a href="NetworkNodes.php?mode=add">Добавить узел</a></li>
+						<li><a href="export.php?format=csv&data=nodes">Экспорт в CSV</a></li>
 					</ul>
 				</li>
 				<li id="li4"><a href="#">Линии</a>
@@ -30,7 +31,7 @@
 						<li id="li4"><a href="FSO.php">Список кассет</a></li>
 						<li id="li4"><a href="FSO.php?mode=add">Добавить кассету</a></li>
 						<li id="li4"><a href="FSOT.php">Список типов кассет</a></li>
-						<li id="li4"><a href="FSOT.php?mode=add">Добавить тип кассеты</a></li>			  
+						<li id="li4"><a href="FSOT.php?mode=add">Добавить тип кассеты</a></li>
 					</ul>
 				</li>
 				<li id="li4"><a href="#">Карта</a>
