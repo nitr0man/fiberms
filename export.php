@@ -24,7 +24,7 @@ $res = ['count' => 0];
 $fields = array();
 
 if ($_GET[ 'data' ] == 'nodes') {
-    $fields = ['id' => 'id', 'name' => 'name', 'lon' => 'lon', 'lat' => 'lat', 'comments' => 'comments'];
+    $fields = ['id' => 'id', 'name' => 'name', 'lon' => 'lon', 'lat' => 'lat', 'fiberSpliceCount' => 'fiberSpliceCount', 'place' => 'place', 'note' => 'note'];
     $res = getNetworkNodeList_NetworkBoxName('name', '');
     $i = -1;
     while (++$i < $res['count']) {
@@ -35,8 +35,8 @@ if ($_GET[ 'data' ] == 'nodes') {
 	    $res['rows'][$i]['lon'] = '';
 	    $res['rows'][$i]['lat'] = '';
 	}
-	$place = ($res['rows'][$i]['place'] != '') ? $res['rows'][$i]['place'] . (($res['rows'][$i]['note'] != '') ? ' - ' : '') : '' ;
-	$res['rows'][$i]['comments'] = str_replace([';', '"'], [',', '\''], $place . $res['rows'][$i]['note']);
+	$res['rows'][$i]['place'] = str_replace([';', '"'], [',', '\''], $res['rows'][$i]['place']);
+	$res['rows'][$i]['note'] = str_replace([';', '"'], [',', '\''], $res['rows'][$i]['note']);
     }
 }
 
