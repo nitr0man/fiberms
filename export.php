@@ -2,6 +2,7 @@
 
 require_once("auth.php");
 require_once("backend/NetworkNode.php");
+require_once("backend/CableType.php");
 require_once("design_func.php");
 
 header('charset=utf-8');
@@ -24,7 +25,7 @@ $res = ['count' => 0];
 $fields = array();
 
 if ($_GET[ 'data' ] == 'nodes') {
-    $fields = ['id' => 'id', 'name' => 'name', 'lon' => 'lon', 'lat' => 'lat', 'fiberSpliceCount' => 'fiberSpliceCount', 'place' => 'place', 'note' => 'note'];
+    $fields = ['id' => 'id', 'name' => 'name', 'lon' => 'longitude', 'lat' => 'lattitude', 'fiberSpliceCount' => 'fiberSpliceCount', 'place' => 'place', 'note' => 'note'];
     $res = getNetworkNodeList_NetworkBoxName('name', '');
     $i = -1;
     while (++$i < $res['count']) {
