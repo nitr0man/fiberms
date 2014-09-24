@@ -268,7 +268,7 @@ function CableLinePoint_DELETE( $wr, $tmpT = FALSE )
 function getCableLinePoint_NetworkNodeName( $cableLineId )
 {
     $query = 'SELECT "clp".id, "clp"."OpenGIS", "clp"."CableLine", "clp"."meterSign", "clp"."NetworkNode", "clp"."note", 
-       "clp"."Apartment", "clp"."Building", "clp"."SettlementGeoSpatial", "NN"."name"
+       "clp"."Apartment", "clp"."Building", "clp"."SettlementGeoSpatial", "NN"."name", "NN"."OpenGIS" AS "NNOpenGIS"
 	FROM "CableLinePoint" AS "clp"  LEFT JOIN "NetworkNode" AS "NN" ON "NN".id = "clp"."NetworkNode" WHERE "CableLine"='.$cableLineId.' ORDER BY "clp"."sequence"';
     $result = PQuery( $query );
     return $result;

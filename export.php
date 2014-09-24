@@ -40,6 +40,26 @@ if ($_GET[ 'data' ] == 'nodes') {
 	$res['rows'][$i]['note'] = str_replace([';', '"'], [',', '\''], $res['rows'][$i]['note']);
     }
 }
+elseif ($_GET[ 'data' ] == 'lines') {
+    $fields = ['id' => 'id', 'name' => 'name', 'coords' => 'coordinates', 'fibers' => 'fibers', 'marking' => 'marking', 'manufacturer' => 'manufacturer', 'length' => 'length', 'comment' => 'comment'];
+    $res = getCableLineList(1, '');
+    $i = -1;
+    while (++$i < $res['count']) {
+	$coords = '';
+	$clp = getCableLinePoint_NetworkNodeName($res['rows'][$i]['id']);
+	if ($clp['count']) {
+	    foreach ($clp['rows'] as $point) {
+		if (preg_match('/\(([0-9\.]+)\,([0-9\.]+)\)/', $point['OpenGIS'], $matches)) {
+		    $coords .= $matches[1] . ',' . $matches[2] . ',0 ';
+		} elseif (preg_match('/\(([0-9\.]+)\,([0-9\.]+)\)/', $point['NNOpenGIS'], $matches)) {
+		    $coords .= $matches[1] . ',' . $matches[2] . ',0 ';
+		}
+	    }
+	}
+	$res['rows'][$i]['coords'] = trim($coords);
+	$res['rows'][$i]['comment'] = str_replace([';', '"'], [',', '\''], $res['rows'][$i]['comment']);
+    }
+}
 
 if (!$res['count']) {
     die_hdr('Не найдены объекты!');
