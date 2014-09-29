@@ -25,7 +25,7 @@ $res = ['count' => 0];
 $fields = array();
 
 if ($_GET[ 'data' ] == 'nodes') {
-    $fields = ['id' => 'id', 'name' => 'name', 'lon' => 'longitude', 'lat' => 'lattitude', 'fiberSpliceCount' => 'fiberSpliceCount', 'place' => 'place', 'note' => 'note'];
+    $fields = ['id' => 'id', 'name' => 'name', 'lon' => 'longitude', 'lat' => 'lattitude', 'fiberSpliceCount' => 'fiberSpliceCount', 'place' => 'place', 'NBTmarking' => 'marking', 'note' => 'note'];
     $res = getNetworkNodeList_NetworkBoxName('name', '');
     $i = -1;
     while (++$i < $res['count']) {
