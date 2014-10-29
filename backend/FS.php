@@ -6,24 +6,24 @@ require_once("backend/LoggingIs.php");
 function FSO_SELECT( $ob, $wr, $linesPerPage = -1, $skip = -1 )
 {
     $query = 'SELECT * FROM "FiberSpliceOrganizer"';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
+    $query .= $where;
     if ( $ob != '' )
     {
         $query .= ' ORDER BY '.$ob;
     }
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "FiberSpliceOrganizer"';
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "FiberSpliceOrganizer"' . $where;
+    $res = PQuery( $query );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 
@@ -62,10 +62,12 @@ function FSO_DELETE( $wr )
 function FSOT_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
 {
     $query = 'SELECT * FROM "FiberSpliceOrganizerType"';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
+    $query .= $where;
     if ( $sort == 1 )
     {
         $query .= ' ORDER BY "marking"';
@@ -74,16 +76,14 @@ function FSOT_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY "marking"';
     }
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "FiberSpliceOrganizerType"';
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
-    $result[ 'allPages' ] = $allPages;
+    $query2 = 'SELECT COUNT(*) AS "count" FROM "FiberSpliceOrganizerType"' . $where;
+    $res = PQuery( $query2 );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 
@@ -363,16 +363,14 @@ function getFiberSpliceOrganizerInfo( $linesPerPage = -1, $skip = -1,
     }
     $query .= ' GROUP BY "fso".id, "fsot"."marking", "fsot"."manufacturer", "nn".id,
         "fso"."FiberSpliceOrganizationType", "nn"."name"';
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "FiberSpliceOrganizer"';
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "FiberSpliceOrganizer"';
+    $res = PQuery( $query );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 

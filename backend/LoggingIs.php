@@ -52,7 +52,9 @@ function loggingIs( $type, $tableName, $values, $record )
 function loggingIs_SELECT( $linesPerPage = -1, $skip = -1 )
 {
     $query = 'SELECT "laa".id, "laa"."table", "laa"."record", to_char("laa"."time", \'yyyy-mm-dd HH24:MI:SS\') AS "time", "laa"."action", "laa"."description", "laa"."admin", "u"."username", "ltl"."name" FROM "LogAdminActions" AS "laa" LEFT JOIN "Users" AS "u" ON "u".id="laa"."admin" LEFT JOIN "LogTableList" AS "ltl" ON "ltl".id="laa"."table" ORDER BY "time" DESC';
-    $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
+    if ($linesPerPage > 0 && $skip >= 0) {
+	$query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
+    }
     $result = PQuery( $query );
     $query = 'SELECT COUNT(*) AS "count" FROM "LogAdminActions"';
     $res = PQuery( $query );

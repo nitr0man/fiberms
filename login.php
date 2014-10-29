@@ -1,5 +1,5 @@
 <?php
-if ($_POST['login'] == 'login')
+if (isset($_POST['login']) && $_POST['login'] == 'login')
 {
 	require_once("backend/functions.php");
 	require_once("design_func.php");
@@ -24,13 +24,13 @@ if ($_POST['login'] == 'login')
 		setcookie('token', $token, time() + 60 * 60 * 24 * 14);
 	}
 	PQuery('UPDATE "Users" SET "token"=\''.$token.'\' WHERE "username"=\''.$login.'\'');
-    $_SESSION['user'] = $login;
-    $_SESSION['class'] = $res['rows'][0]['class'];
+	$_SESSION['user'] = $login;
+	$_SESSION['class'] = $res['rows'][0]['class'];
 	header("Location: ".getenv("HTTP_REFERER"));
 }
 else
 {
-	require_once("smarty.php");
-	$smarty->display('login.tpl');
+	require_once("auth.php");
+	header("Location: ".str_replace(strrchr(__FILE__, '/'), "", $_SERVER['REQUEST_URI']));
 }
 ?>

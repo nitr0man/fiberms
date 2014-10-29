@@ -11,38 +11,38 @@ function showMessage($message, $error) {
 	die();
 }
 
-function genPages($link, $pagesCount, $page) {
-	if ($page == 1) {
-		$pages = '1';
+function genPageLink($link, $page, $pagename, $selected) {
+	if ($selected) {
+		return "<b>$pagename</b> ";
 	} else {
-		$pages = '<a href="'.$link.'page=1">1</a>';
+		return '<a href="'.$link.'page='.$page.'">'.$pagename.'</a> ';
 	}
+}
+
+function genPages($link, $pagesCount, $page, $all='Все') {
+	$pages = '';
+	if ($all && ($pagesCount > 1 || $page == 0)) {
+		$pages .= genPageLink($link, 0, $all, $page == 0);
+	}
+	$pages .= genPageLink($link, 1, '1', $page == 1);
 	$start = $page-5;
 	if ($start <= 2) {
 		$start = 2;
 	} else {
-		$pages .= ' .. ';
+		$pages .= '.. ';
 	}
 	$count = $page+5;
 	if ($count >= $pagesCount-1) {
 		$count = $pagesCount-1;
 		$End = '';
 	} else {
-		$End = '..';
+		$End = '.. ';
 	}
 	for ($i = $start; $i <= $count; $i++) {
-		if ($i == $page) {
-			$pages .= ' '.$i.' ';
-		} else {
-			$pages .= ' <a href="'.$link.'page='.$i.'">'.$i.'</a> ';
-		}
+		$pages .= genPageLink($link, $i, "$i", $page == $i);
 	}
-	if ($page < $pagesCount) {
-		$pages .= $End.' <a href="'.$link.'page='.$pagesCount.'">'.$pagesCount.'</a>';
-	} else {
-		if ($page != 1) {
-			$pages .= $End.''.$pagesCount.'';
-		}
+	if ($pagesCount > 1) {
+	    $pages .= $End . genPageLink($link, $pagesCount, "$pagesCount", $page == $pagesCount);
 	}
 	return $pages;
 }

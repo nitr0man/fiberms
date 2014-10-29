@@ -3,6 +3,7 @@
 require_once("auth.php");
 require_once("smarty.php");
 require_once("func/CableType.php");
+require_once("func/util.php");
 require_once("design_func.php");
 
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
@@ -64,8 +65,8 @@ else
     if ( !isset( $_GET[ 'mode' ] ) )
     {        
         $pagesLink = '';
-        $page = (isset( $_GET[ 'page' ] )) ? $_GET[ 'page' ] : 1;
-        $sort = (isset( $_GET[ 'sort' ] )) ? $_GET[ 'sort' ] : 0;
+        $page = condAssign($_GET, 'page', 1);
+        $sort = condAssign($_GET, 'sort', 0);
         if ( !isset( $_GET[ 'typeid' ] ) )
         {
             $res = getCableLineList( $sort, '', $config[ 'LinesPerPage' ],

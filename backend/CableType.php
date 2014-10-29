@@ -133,12 +133,13 @@ function CableLine_DELETE( $wr, $tmpT = FALSE  )
 
 function CableType_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
 {
-    $allPages = 0;
     $query = 'SELECT * FROM "CableType"';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
+    $query .= $where;
     if ( $sort == 1 )
     {
         $query .= ' ORDER BY "marking"';
@@ -147,16 +148,14 @@ function CableType_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY "marking"';
     }
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if (($linesPerPage > 0) && ($skip >= 0 ))
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "CableType"';
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
-    unset( $field, $value );
     $result = PQuery( $query );
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "CableType"' . $where;
+    $res = PQuery( $query );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 
@@ -305,26 +304,19 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
 		LEFT JOIN "'.tmpTable( 'OpticalFiber', $tmpT ).'" AS "OF" ON "OF"."CableLine" = "cl".id
 		LEFT JOIN "'.tmpTable( 'OpticalFiberJoin', $tmpT ).'" AS "OFJ" ON "OFJ"."OpticalFiber" = "OF".id
                 LEFT JOIN "'.tmpTable( 'NetworkNode', $tmpT ).'" AS "NN" ON "NN"."id" = "clp"."NetworkNode"';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
+    $query .= $where;
     if ( $sort == 1 )
     {
         $query .= ' ORDER BY "name"';
     }
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "'.tmpTable( 'CableLine',
-                        $tmpT ).'" ';
-        if ( $wr != '' )
-        {
-            $query2 .= genWhere( $wr );
-        }
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
 
@@ -335,7 +327,10 @@ function getCableLineList( $sort, $wr, $linesPerPage = -1, $skip = -1,
         $result[ 'rows' ][ $i ][ 'FiberSpliceCount' ] = (isset($splices[ $id ])) ? $splices[ $id ][ 'FiberSpliceCount' ] : 0;
     }
 
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "' .
+             tmpTable('CableLine', $tmpT ) . '"' . $where;
+    $res = PQuery( $query );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 

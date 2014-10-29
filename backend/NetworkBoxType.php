@@ -6,10 +6,12 @@ require_once("backend/LoggingIs.php");
 function NetworkBox_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
 {
     $query = 'SELECT * FROM "NetworkBox"';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
+    $query .= $where;
     if ( $sort == 1 )
     {
         $query .= ' ORDER BY "inventoryNumber"';
@@ -18,16 +20,14 @@ function NetworkBox_SELECT( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     {
         $query .= ' ORDER BY "inventoryNumber"';
     }
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "NetworkBox"';
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "NetworkBox"' . $where;
+    $res = PQuery( $query );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 
@@ -66,24 +66,24 @@ function NetworkBox_DELETE( $wr )
 function NetworkBoxType_SELECT( $ob, $wr, $linesPerPage = -1, $skip = -1 )
 {
     $query = 'SELECT * FROM "NetworkBoxType"';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
+    $query .= $where;
     if ( $ob != '' )
     {
         $query .= ' ORDER BY '.$ob;
     }
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "NetworkBoxType"';
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "NetworkBoxType" ' . $where;
+    $res = PQuery( $query );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 
@@ -124,29 +124,24 @@ function getNetworkBoxList( $sort, $wr, $linesPerPage = -1, $skip = -1 )
     $query = 'SELECT "NB".id, "NB"."NetworkBoxType", "NB"."inventoryNumber", "NBT"."marking", "NN"."name" AS "NNname", "NN".id AS "NNid" FROM "NetworkBox" AS "NB"';
     $query .= ' LEFT JOIN "NetworkBoxType" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"';
     $query .= ' LEFT JOIN "NetworkNode" AS "NN" ON "NN"."NetworkBox"="NB".id';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
-    $query .= ' ORDER BY "inventoryNumber"';
+    $query .= $where . ' ORDER BY "inventoryNumber"';
     if ( $sort == 1 )
     {
         $query .= ' ORDER BY "NB"."inventoryNumber" ';
     }
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "NetworkBox"';
-        if ( $wr != '' )
-        {
-            $query2 .= genWhere( $wr );
-        }
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "NetworkBox"' . $where;
+    $res = PQuery( $query );
+    $result[ 'allPages' ] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 

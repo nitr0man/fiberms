@@ -92,22 +92,19 @@ function getNetworkNodeList_NetworkBoxName( $sort, $wr,
   		FROM "'.tmpTable( 'NetworkNode', $tmpT ).'" AS "NN"
   		LEFT JOIN "'.tmpTable( 'NetworkBox', $tmpT ).'" AS "NB" ON "NB".id="NN"."NetworkBox"
   		LEFT JOIN "'.tmpTable( 'NetworkBoxType', $tmpT ).'" AS "NBT" ON "NBT".id="NB"."NetworkBoxType"';
+    $where = '';
     if ( $wr != '' )
     {
-        $query .= genWhere( $wr );
+        $where = genWhere( $wr );
     }
+    $query .= $where;
     if ( $sort )
     {
         $query .= ' ORDER BY '.genFieldName($sort, 'NN');
     }
-    $allPages = 0;
-    if ( ($linesPerPage != -1) and ($skip != -1) )
+    if ( ($linesPerPage > 0 ) and ($skip >= 0) )
     {
         $query .= ' LIMIT '.$linesPerPage.' OFFSET '.$skip;
-        $query2 = 'SELECT COUNT(*) AS "count" FROM "'.tmpTable( 'NetworkNode',
-                        $tmpT ).'"';
-        $res = PQuery( $query2 );
-        $allPages = $res[ 'rows' ][ 0 ][ 'count' ];
     }
     $result = PQuery( $query );
 
@@ -118,7 +115,10 @@ function getNetworkNodeList_NetworkBoxName( $sort, $wr,
         $result[ 'rows' ][ $i ][ 'fiberSpliceCount' ] = $splices[ $id ][ 'fiberSpliceCount' ];
     }
 
-    $result[ 'allPages' ] = $allPages;
+    $query = 'SELECT COUNT(*) AS "count" FROM "' .
+             tmpTable('NetworkNode', $tmpT) . '"' . $where;
+    $res = PQuery( $query );
+    $result['allPages'] = $res[ 'rows' ][ 0 ][ 'count' ];
     return $result;
 }
 
