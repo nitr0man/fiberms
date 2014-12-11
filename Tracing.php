@@ -21,7 +21,11 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $CableLine = $trace_res[ $i ][ 'CableLine' ];
         $CableLineName = $trace_res[ $i ][ 'cl_name' ];
         $fiber = $trace_res[ $i ][ 'fiber' ];
-        $fiberNote = $trace_res[ $i ][ 'note' ];
+        $fiberNote = $trace_res[ $i ][ 'cl_note' ]
+        if (strlen($fiberNote) > 0 && strlen($trace_res[ $i ][ 'note' ]) > 0) {
+            $fiberNote .= ', ';
+        }
+        $fiberNote .= $trace_res[ $i ][ 'note' ];
         if ( $trace_res[ $i ][ 'CableLine' ] == $clid ||
              (isset($trace_res[ $i ][ 'id' ]) && $trace_res[ $i ][ 'id' ] == $fiberId ))
         {
