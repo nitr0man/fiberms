@@ -21,7 +21,7 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $CableLine = $trace_res[ $i ][ 'CableLine' ];
         $CableLineName = $trace_res[ $i ][ 'cl_name' ];
         $fiber = $trace_res[ $i ][ 'fiber' ];
-        $fiberNote = $trace_res[ $i ][ 'cl_note' ]
+        $fiberNote = $trace_res[ $i ][ 'cl_note' ];
         if (strlen($fiberNote) > 0 && strlen($trace_res[ $i ][ 'note' ]) > 0) {
             $fiberNote .= ', ';
         }
@@ -45,11 +45,16 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $NetworkNode = $trace_res[ $i ][ 'NetworkNode' ];
         $NetworkNodeName = $trace_res[ $i ][ 'nn_name' ];
         $organizer = $trace_res[ $i ][ 'FiberSpliceOrganizer' ];
+        $note =  $trace_res[ $i ][ 'place' ];
+        if (strlen($note) > 0 && strlen($trace_res[ $i ][ 'ofs_note' ]) > 0) {
+            $note .= ', ';
+        }
+        $note .= $trace_res[ $i ][ 'ofs_note' ];
         $traceArr[] = "Узел";
         $traceArr[] = '<a href="NetworkNodes.php?mode=charac&nodeid='.$NetworkNode.'">'
              .$NetworkNodeName.'</a>, кассета '.$organizer;
         $traceArr[] = $trace_res[ $i ][ 'length' ] . (($trace_res[$i]['rlength']) ? ' / '.$trace_res[$i]['rlength'] : '');
-        $traceArr[] = $trace_res[ $i ][ 'place' ];
+        $traceArr[] = $note;
     }
 }
 $smarty->assign( "data", $traceArr );
