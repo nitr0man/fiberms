@@ -206,7 +206,7 @@ function getFibs( $spliceIds = -1, $fiberId = -1 )
             $sId = $spliceIds[ $i ][ 'OpticalFiberSplice' ];
             $query = 'SELECT "of"."CableLine", "of"."fiber", "of"."note",
                         "ofj"."OpticalFiberSplice", "ofj"."OpticalFiber",
-                        "ofs"."NetworkNode", "ofs"."FiberSpliceOrganizer", ofs.note as ofs_note
+                        "ofs"."NetworkNode", "ofs"."FiberSpliceOrganizer", ofs.note as ofs_note,
                         "cl"."name" AS "cl_name", cl.comment as cl_note,
                         round(cl.length / 100.0, 2) AS length,
                         "nn"."name" AS "nn_name", nn.place
