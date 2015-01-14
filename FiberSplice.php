@@ -281,7 +281,7 @@ else
                         }
                         else
                         {
-                            $linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.'>[x]</a>';
+                            $linksD = ' <a href="FiberSplice.php?mode=delete&spliceid='.$splice_id.'"&networknodeid='.$networkNodeId.' onclick="return confirm(\'Удалить?\');">[x]</a>';
                             $clid = $res[ 'cl_array' ][ 'rows' ][ $j ][ 'clid' ];
                             $linksT = ' <a href="Tracing.php?spliceId='.$res[ 'SpliceArray' ][ $j ][ $i ][ 4 ].'&fiberId=-1&clid='.$clid.'">[T]</a>';
                             $table_text_fibers .= '<td>'.'<a href="FiberSplice.php?mode=change&fiber1='.$fiber1
