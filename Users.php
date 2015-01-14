@@ -4,6 +4,17 @@ require_once("auth.php");
 require_once("smarty.php");
 require "backend/Users.php";
 
+function print_m($msg) {
+    print "<table id='contable'>
+    <tr>
+        <td>
+            $msg
+        </td>
+    </tr>
+</table>";
+
+}
+
 if ($_SESSION['class'] != 1) {
     $smarty->assign("message", "Недостаточно прав!<br /><a href='" .
                     str_replace(strrchr(__FILE__, '/'), "", $_SERVER['REQUEST_URI']) . 
@@ -62,7 +73,7 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
                 $upd[ 'password' ] = md5( $password );
             }
             Users_UPDATE( $upd, $wr );
-            print("Пользователь изменен!<br />
+            print_m("Пользователь изменен!<br />
 				<a href=\"Users.php\">Назад</a>" );
         }
         else
@@ -71,15 +82,14 @@ if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
             $res = Users_SELECT( '', $wr );
             if ( $res[ 'count' ] > 0 )
             {
-                print("Пользователь с такими логином существует!<br />
+                print_m("Пользователь с такими логином существует!<br />
 				      <a href=\"Users.php\">Назад</a>" );
-                die();
             }
             $ins[ 'username' ] = $login;
             $ins[ 'password' ] = md5( $password );
             $ins[ 'class' ] = $group;
             Users_INSERT( $ins );
-            print("Пользователь добавлен!<br />
+            print_m("Пользователь добавлен!<br />
 			<a href=\"Users.php\">Назад</a>" );
         }
     }
