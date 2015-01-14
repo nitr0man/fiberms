@@ -16,9 +16,7 @@ function print_m($msg) {
 }
 
 if ($_SESSION['class'] != 1) {
-    $smarty->assign("message", "Недостаточно прав!<br /><a href='" .
-                    str_replace(strrchr(__FILE__, '/'), "", $_SERVER['REQUEST_URI']) . 
-                    "'>Назад</a>" );
+    $smarty->assign("message", "Недостаточно прав!<br /><a href='".$_SERVER['HTTP_REFERER']."'>Назад</a>" );
     $smarty->display( 'message.tpl' );
     die();
 }
