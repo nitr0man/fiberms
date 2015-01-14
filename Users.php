@@ -4,6 +4,14 @@ require_once("auth.php");
 require_once("smarty.php");
 require "backend/Users.php";
 
+if ($_SESSION['class'] != 1) {
+    $smarty->assign("message", "Недостаточно прав!<br /><a href='" .
+                    str_replace(strrchr(__FILE__, '/'), "", $_SERVER['REQUEST_URI']) . 
+                    "'>Назад</a>" );
+    $smarty->display( 'message.tpl' );
+    die();
+}
+
 if ( $_SERVER[ "REQUEST_METHOD" ] == 'POST' )
 {
     if ( $_POST[ 'mode' ] == 1 )
