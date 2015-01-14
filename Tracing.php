@@ -25,6 +25,9 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         if (strlen($fiberNote) > 0 && strlen($trace_res[ $i ][ 'note' ]) > 0) {
             $fiberNote .= ', ';
         }
+        if (strlen($trace_res[ $i ][ 'note' ]) > 0) {
+            $trace_res[ $i ][ 'note' ] = '<b>' . $trace_res[ $i ][ 'note' ] . '</b>';
+        }
         $fiberNote .= $trace_res[ $i ][ 'note' ];
         if ( $trace_res[ $i ][ 'CableLine' ] == $clid ||
              (isset($trace_res[ $i ][ 'id' ]) && $trace_res[ $i ][ 'id' ] == $fiberId ))
@@ -48,6 +51,9 @@ for ( $i = 0; $i < count( $trace_res ); $i++ )
         $note =  $trace_res[ $i ][ 'place' ];
         if (strlen($note) > 0 && strlen($trace_res[ $i ][ 'ofs_note' ]) > 0) {
             $note .= ', ';
+        }
+        if (strlen($trace_res[ $i ][ 'ofs_note' ]) > 0) {
+            $trace_res[ $i ][ 'ofs_note' ] = '<b>' . $trace_res[ $i ][ 'ofs_note' ] . '</b>';
         }
         $note .= $trace_res[ $i ][ 'ofs_note' ];
         $traceArr[] = "Узел";
